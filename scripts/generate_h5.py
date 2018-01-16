@@ -1,3 +1,10 @@
+"""
+The data is originally given in separate folders, one for the images and another for the metadata:
+    - Images: Each typhoon sequence has a folder, within which all the frames can be found in H5 format.
+    - Metadata: Each typhoon sequence has a corresponding TSV file with all the features.
+To this end, this script generates a H5 file per each typhoon sequence, containing an array with all the sequence
+frames and a list with all the metadata.
+"""
 from os.path import join, isdir
 from os import listdir
 from utils import read_images, read_tsv
