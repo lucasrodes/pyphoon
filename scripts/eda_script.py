@@ -1,5 +1,6 @@
 import numpy as np
-from eda_metadata import read, plot_hist, plot_2feature_heatmap
+from eda_metadata import plot_hist, plot_2feature_heatmap
+from utils import read_tsvs
 
 # PARAMS
 use_only_raw = True  # True: Use non-interpolated samples. False: Use all data samples
@@ -8,8 +9,8 @@ shall_plot_hist = False  # True: Plot histogram of data according to certain fea
 shall_plot_heatmap = True  # True: Plot heatmap between two features
 
 
-# Read data and convert to numpy array
-f = read()
+# Read tsv data and convert to numpy array
+f = read_tsvs()
 data = np.array(f)
 # Only consider data since 1978
 data = data[data[:, 0] > 1977]
