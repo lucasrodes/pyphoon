@@ -4,8 +4,8 @@ typhoon image
 """
 
 
-from vis import DisplayImage
-from utils import read_h5file
+from pyphoon.utils.io import read_h5file, load_TyphoonSequence, \
+    create_TyphoonSequence, TyphoonSequence
 
 # PARSER
 """
@@ -19,22 +19,23 @@ option = 2
 if option == 1:
     # FOLDER
     path = 'original_data/image/201626/'
-    visualization = DisplayImage(folder_path=path)
-    visualization.run()
+    typhoon_sequence = create_TyphoonSequence(path)
+    typhoon_sequence.visualize()
 elif option == 2:
     # H5 FILE
-    path = "data/201626.h5"
-    visualization = DisplayImage(h5file_path=path)
-    visualization.run()
+    path = "data/199114.h5"
+    typhoon_sequence = load_TyphoonSequence(path)
+    typhoon_sequence.visualize(start_frame=40, end_frame=50, interval=1000)
+"""
 elif option == 3:
     # DATA ARRAY
     path = "data/201626.h5"
     data = read_h5file(path)
-    visualization = DisplayImage(data=data['X'], id=data['name'])
-    visualization.generate_gif()
-elif option==4:
+    typhoon_sequence = TyphoonSequence(data=data)
+    DisplaySequence(typhoon_sequence).generate_gif()
+elif option == 4:
     # Global params
-    path = "data/global_params.h5"
+    path = "data/201626.h5"
     data = read_h5file(path)
-    visualization = DisplayImage(data=np.array(data['mean']), id=data['name'])
-    visualization.run()
+    DisplaySequence(TyphoonSequence(data=data)).run()
+"""
