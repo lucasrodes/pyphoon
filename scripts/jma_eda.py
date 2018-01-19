@@ -1,6 +1,10 @@
+"""
+Examines different features in the JMA dataset. This includes some histograms, heatmaps etc.
+"""
+
 import numpy as np
-from eda_metadata import plot_hist, plot_2feature_heatmap
-from utils import read_tsvs
+from pyphoon.utils.eda_jma import plot_hist, plot_2feature_heatmap
+from pyphoon.utils.io import read_tsvs
 
 # PARAMS
 use_only_raw = True  # True: Use non-interpolated samples. False: Use all data samples
@@ -10,8 +14,7 @@ shall_plot_heatmap = True  # True: Plot heatmap between two features
 
 
 # Read tsv data and convert to numpy array
-f = read_tsvs()
-data = np.array(f)
+data = np.array(read_tsvs())
 # Only consider data since 1978
 data = data[data[:, 0] > 1977]
 # Number of recorded typhoons and features
