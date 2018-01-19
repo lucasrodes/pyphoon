@@ -38,7 +38,7 @@ if generate_lat_lng_file:
 
 # Heatmap
 if shall_plot_heatmap:
-    plot_2feature_heatmap(data, index1=7, index2=4)
+    plot_2feature_heatmap(data, index1=8, index2=4)
 
 data_extra = data[data[:, 4] == 6]
 data_tc = data[data[:, 4] != 6]

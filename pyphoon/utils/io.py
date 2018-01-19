@@ -1,9 +1,10 @@
 import numpy as np
+import os
 from os.path import isfile, join, isdir
 from os import listdir
 import h5py
-from skimage import transform
 import pandas as pd
+from preprocessing import resize_image
 
 
 def get_h5_filenames(directory):
@@ -23,16 +24,29 @@ def get_h5_filenames(directory):
 
 
 def read_h5file(filename):
-    """ Reads an H5 file to get the sampels and labels
+    """ Reads an H5 file to get all its content
     :param filename: name of the H5 file
-    :return: Samples and labels, as matrix and list, respectively
+    :return: Content of the H% file as a dictionary
     """
     f = h5py.File(filename, 'r')
+    # List all groups
+    keys = list(f.keys())
     # Get the data
-    X = list(f['X'])
-    Y = list(f['Y'])
-    # Convert to numpy array
-    return X, Y
+    data = {key: list(f[key]) for key in keys}
+    # Get file name
+    name = filename.split('/')[-1].split('.h5')[-2]
+    data['name'] = name
+    return data
+
+
+def write_h5file(filename, data):
+    """ Creates an H5 file with the given data
+    :param filename: Name (whole path) of the new H5 file
+    :param data: Dictionary containing the data to be stored. Keys refer to the names, while values to the data itself.
+    """
+    h5f = h5py.File(filename, 'w')
+    for key, value in data.items():
+        h5f.create_dataset(key, data=value)
 
 
 def read_tsvs(directory='original_data/jma/'):
@@ -97,36 +111,6 @@ def read_image(filename):
     # Convert to numpy array
     data = np.array(data)
     return data
-
-
-def resize_image(image, basewidth):
-    return transform.resize(image, (basewidth, basewidth), order=0)
-
-
-def _split(files, ratio):
-    indices = np.random.choice(len(files), size=round(ratio * len(files)), replace=False)
-    count = 0
-    files_1 = []
-    files_2 = []
-    for file in files:
-        if count in indices:
-            files_1.append(file)
-        else:
-            files_2.append(file)
-        count += 1
-    return files_1, files_2
-
-
-def split(ratio_test, ratio_val, directory="original_data/image/"):
-    files = [f for f in listdir(directory) if isdir(join(directory, f))]
-
-    # Randomly select some files for training, validation and test
-    np.random.seed(0)
-    _files_train, files_test = _split(files, ratio=ratio_test)
-    files_train, files_valid = _split(_files_train, ratio=ratio_val)
-
-    return files_train, files_valid, files_test
-
 
 ##################
 ##################
