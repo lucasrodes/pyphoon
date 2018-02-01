@@ -1,9 +1,32 @@
 # -*- coding: utf-8 -*-
+"""
+Get to know the stats behind your best track data. This module focuses on
+the, JMA provided data. Therefore we encourage your to read on the details of
+the data format at `JMA RSMC Tokyo-Typhoon Center`_.
 
+.. _JMA RSMC Tokyo-Typhoon Center:
+        http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html
+
+If you are trying to generate plots in a server where no graphic interface is
+provided, it has been sugested to use a non-interactive backend such as `agg`.
+
+>>> import matplotlib
+>>> matplotlib.use('agg')
+
+Methods are summarized below.
+
++-------------------------------+---------------------------------------------------------------------------+
+| method name                   | Description                                                               |
++===============================+===========================================================================+
+| :func:`update_feature_names`  | Update default JMA list of feature names.                                 |
++-------------------------------+---------------------------------------------------------------------------+
+| :func:`plot_hist`             | Histogram of a certain feature from the samples in data                   |
++-------------------------------+---------------------------------------------------------------------------+
+| :func:`plot_2feature_heatmap` | Heatmap of the data based on the values they take on two given features.  |
++-------------------------------+---------------------------------------------------------------------------+
+"""
 import numpy as np
-from os import listdir
-from os.path import isfile, join
-import matplotlib
+# import matplotlib
 # matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -17,10 +40,22 @@ feature_names = ["year", "month", "day", "hour", "class", "latitude",
                  "speed", "direction", "interpolated"]
 
 
-def plot_hist(data, feature_index, bins=100, show_fig=False, save_fig=False,
+def update_feature_names(names):
+    """ Use this method to update the default feature names. Feature names
+    refer to each column in JMA provided TSV files.
+
+    :param names: List with feature names. Length of the list must coincide
+        with length of TSV files.
+    :return: list
+    """
+    feature_names = names
+
+
+def plot_hist(data, feature_index, bins=100, show_fig=False,
+              title="untitled", save_fig=False,
               fig_name="untitled"):
     """ Generates a histogram of a certain feature from the samples in data.
-        This image may be stored or just displayed.
+    This image may be stored or just displayed.
 
     :param data: Dataframe with best track data. Details on all features can
                     be found at the `JMA RSMC Tokyo-Typhoon Center`_ website.
@@ -33,6 +68,8 @@ def plot_hist(data, feature_index, bins=100, show_fig=False, save_fig=False,
     :type bins: int, default 100
     :param show_fig: Flag to plot the histogram.
     :type show_fig: bool, default False
+    :param title: Title of the plot
+    :type title: str
     :param save_fig: Set to true if image should be saved.
     :type save_fig: bool, default False
     :param fig_name: Filename of stored imaged.
@@ -42,24 +79,30 @@ def plot_hist(data, feature_index, bins=100, show_fig=False, save_fig=False,
         http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html
 
     :Example: In the following example we load the best track data. Note that we
-                only consider data starting from 1978. We take the forth
-                feature, which is the class index. Hence, we aim to visualize
-                the distribution of samples depending on the class they belong
-                to.
+        only consider data starting from 1978. We take the forth
+        feature, which is the class index. Hence, we want to visualize
+        the distribution of samples depending on the class they belong
+        to.
 
-    >>> from pyphoon.utils.io import read_tsvs
-    >>> from pyphoon.utils.eda_jma import plot_hist
-    >>> # Load data
-    >>> data = np.array(read_tsvs())
-    >>> # Only consider data since 1978
-    >>> data = data[data[:, 0] > 1977]
-    >>> plot_hist(data, show_fig=True, feature_index=4, bins=-1)
+        >>> from pyphoon.utils.io import read_tsvs
+        >>> from pyphoon.utils.eda_jma import plot_hist
+        >>> import numpy as np
+        >>> # Load data and convert to np.array
+        >>> data = np.array(read_tsvs(directory="original_data/jma"))
+        >>> # Only consider data since 1978
+        >>> data = data[data[:, 0] > 1977]
+        >>> plot_hist(data, show_fig=True, title="Class distribution", feature_index=4, bins=-1)
+
+        .. figure:: ../../docs/source/_static/pyphoon_utils_eda_jma_2.png
+               :scale: 100 %
+               :alt: map to buried treasure
     """
     data = np.array(data)
     if bins == -1:
         # bins = np.sort(list(set(raw_data[:, index])))
         bins = len(set(data[:, feature_index]))
     plt.hist(data[:, feature_index], bins=bins)
+    plt.title(title)
     if show_fig:
         plt.show()
     if save_fig:
@@ -67,7 +110,8 @@ def plot_hist(data, feature_index, bins=100, show_fig=False, save_fig=False,
 
 
 def plot_2feature_heatmap(data, index1, index2=4, annotation=True,
-                          linewidths=.5, show_fig=False, save_fig=False,
+                          linewidths=.5, show_fig=False,
+                          title="untitled", save_fig=False,
                           fig_name="untitled"):
     """ Plots heatmap of the data based on the values they take on two given
     features.
@@ -85,25 +129,35 @@ def plot_2feature_heatmap(data, index1, index2=4, annotation=True,
     :type linewidths: float
     :param show_fig: Flag to plot the histogram.
     :type show_fig: bool, default False
+    :param title: Title of the plot
+    :type title: str
     :param save_fig: Set to true if image should be saved.
     :type save_fig: bool, default False
     :param fig_name: Filename of stored imaged.
     :type fig_name: bool, default "untitled"
 
-    :Example: In the following example we load the best track data. Note that we
-                only consider data starting from 1978. We take the seventh and
-                forth features, which represent the pressure and the class
-                identifier, respectively. Hence, we aim to visualize
-                the distribution of the pressure values depending on the class
-                they belong to.
+    |
 
-    >>> from pyphoon.utils.io import read_tsvs
-    >>> from pyphoon.utils.eda_jma import plot_2feature_heatmap
-    >>> # Load data
-    >>> data = np.array(read_tsvs())
-    >>> # Only consider data since 1978
-    >>> data = data[data[:, 0] > 1977]
-    >>> plot_2feature_heatmap(data, index1=7, index2=4, linewidths=0, annot=False)
+    :Example: In the following example we load the best track data. Note that we
+        only consider data starting from 1978. We take the eighth and
+        forth features, which represent the wind speed and the class
+        identifier, respectively. Hence, we aim to visualize
+        the distribution of the pressure values depending on the class
+        they belong to.
+
+        >>> from pyphoon.utils.io import read_tsvs
+        >>> from pyphoon.utils.eda_jma import plot_2feature_heatmap
+        >>> import numpy as np
+        >>> # Load data and convert to np.array
+        >>> data = np.array(read_tsvs())
+        >>> # Only consider data since 1978
+        >>> data = data[data[:, 0] > 1977]
+        >>> plot_2feature_heatmap(data, index1=7, index2=4, linewidths=0, title="Wind (class)", annot=False)
+
+        .. figure:: ../../docs/source/_static/pyphoon_utils_eda_jma_1.png
+           :scale: 100 %
+           :alt: map to buried treasure
+
     """
     feature1 = np.sort(list(set(data[:, index1])))
     feature2 = np.sort(list(set(data[:, index2])))
@@ -121,6 +175,7 @@ def plot_2feature_heatmap(data, index1, index2=4, annotation=True,
     plt.yticks(rotation=0)
     plt.xlabel(feature_names[index2])
     plt.ylabel(feature_names[index1])
+    plt.title(title)
     if show_fig:
         plt.show()
     if save_fig:
