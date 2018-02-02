@@ -1,5 +1,6 @@
 # pyPhoon
-Tools for Digital Typhoon DL/ML Project
+Tools for Digital Typhoon DL/ML Project. You can find the documentation of 
+this library is hosted at [http://lcsrg.me/pyphoon](http://lcsrg.me/pyphoon).
 
 ## Contents
 
@@ -14,6 +15,7 @@ Tools for Digital Typhoon DL/ML Project
 
 
 ## Documentation
+
 For details on the library, please refer to the documentation. To visualize it, please type the following in your terminal:
 
 ```
