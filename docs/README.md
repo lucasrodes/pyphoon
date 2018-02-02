@@ -16,6 +16,7 @@ This generates the corresponding HTML files under `source/html`. To visualize
  it you can simply run an http server
  
 ```
+cd docs/build/html
 $ python -m http.server 8000
 ```
 
