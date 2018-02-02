@@ -21,4 +21,4 @@ $ cd docs/build/html
 $ python -m http.server 8000
 ```
 
-Browser: [http://localhost:8000](http://localhost:8000)
+And then navigate to [http://localhost:8000](http://localhost:8000) using your browser.
