@@ -13,14 +13,12 @@ Tools for Digital Typhoon DL/ML Project
 | [comments](comments)     | Comments from the authors as they worked in the project         |
 
 
-### Documentation
-
-To provide clearer
-Terminal:
+## Documentation
+For details on the library, please refer to the documentation. To visualize it, please type the following in your terminal:
 
 ```
-$ cd docs
-$ python http.server 8000
+$ cd docs/build/html
+$ python -m http.server 8000
 ```
 
 Browser: [http://localhost:8000](http://localhost:8000)
