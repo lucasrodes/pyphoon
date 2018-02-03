@@ -6,8 +6,7 @@ from os.path import isfile, join
 from datetime import datetime as dt
 import matplotlib.pyplot as plt
 from matplotlib import animation
-import moviepy.editor as mpy
-import numpy as np
+# import moviepy.editor as mpy
 
 
 def get_ids_images(sequence_folder):
@@ -41,6 +40,7 @@ def get_id_image(path_to_file):
     *YYYYMMDDHH*
 
     :param path_to_file: Path to the HDF image file.
+    :type path_to_file: str
     :return: Image id
     :rtype: int
     """
@@ -52,6 +52,7 @@ def get_ids_best(best_data):
     the data to generate the id.
 
     :param best_data: Array containing the data from Best Track.
+    :type best_data: numpy.array
     :return: List with the ids of all samples from input Best Track data.
     :rtype: list
     """
@@ -147,7 +148,7 @@ class DisplaySequence(object):
         ).run()
     """
     def __init__(self, typhoon_sequence=None, raw_data=None, name="untitled",
-                 interval=100, start_frame=0, end_frame=-1):
+                 interval=100, start_frame=0, end_frame=None):
         if typhoon_sequence:
             self.data = typhoon_sequence.data['X']
             self.name = typhoon_sequence.name
@@ -157,24 +158,21 @@ class DisplaySequence(object):
         else:
             raise Exception("Missing argument. Use either argument "
                             "<typhoon_sequence> or <raw_data>")
-        self.data = self.data[start_frame:end_frame]
-        self.interval = interval
-        self.im = None
+        if end_frame is None:
+            self.data = self.data[start_frame:]
+        else:
+            self.data = self.data[start_frame:end_frame]
         self.start_frame = start_frame
+        self.interval = interval
 
-    def get_frame(self, idx):
-        """ Gets the image frame at the position specified by idx.
-
-        :param idx: Frame index within the typhoon sequence
-        :return: Array containing the image
-        """
-        return self.data[idx]
+        self.fig = plt.figure()
+        self.ax = plt.gca()
+        self.im = self.ax.imshow(self.data[0], cmap="Greys")
 
     def _init(self):
         """ Resets initial image value
         """
-        image = self.get_frame(0)
-        self.im.set_data(image)
+        self.im.set_data(self.data[0])
 
     def _animate(self, i):
         """ Updates the image frame.
@@ -182,35 +180,28 @@ class DisplaySequence(object):
         :param i: Index of the frame
         :type i: int
         """
-        image = self.get_frame(i)
-        plt.xlabel(self.start_frame+i)
-        self.im.set_data(image)
+        self.ax.set_title(self.name + " | " + str(self.start_frame+i))
+        self.im.set_data(self.data[i])
 
     def run(self):
         """ Runs the animation
         """
-        fig = plt.figure()
-        plt.title(self.name)
-        self.im = plt.imshow(self.get_frame(0), cmap="Greys")
-        _ = animation.FuncAnimation(fig, self._animate, init_func=self._init,
-                                    interval=self.interval, frames=len(
-                self.data) - 1, repeat=True)
+        _ = animation.FuncAnimation(self.fig,
+                                    func=self._animate,
+                                    init_func=self._init,
+                                    interval=self.interval,
+                                    frames=len(self.data) - 1,
+                                    repeat=True)
         plt.show()
 
-    def get_frame_gif(self, idx):
-        """ Gets the image frame at position idx.
-
-        :param idx: Frame index within the typhoon sequence
-        :type idx: int
-        :return: Array containing the image
+    def run_html(self):
+        """ Runs the animation
         """
-        frame = self.data[idx]
-        frames = np.array([frame, frame, frame])
-        return frames
+        anim = animation.FuncAnimation(self.fig,
+                                       func=self._animate,
+                                       init_func=self._init,
+                                       interval=self.interval,
+                                       frames=len(self.data) - 1,
+                                       repeat=True)
+        return anim.to_html5_video()
 
-    def generate_gif(self):
-        """ Generates and stores a gif animation from the input typhoon
-        sequence.
-        """
-        clip = mpy.VideoClip(self.get_frame_gif, duration=15.0)
-        clip.write_gif(self.name+'.gif', fps=15)

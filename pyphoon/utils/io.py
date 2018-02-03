@@ -38,9 +38,7 @@ import h5py
 import numpy as np
 from pyphoon.utils.utils import get_ids_best, get_ids_images, h5file_2_name, \
     folder_2_name
-from pyphoon.preprocessing.preprocessing import resize_image, interpolate
 from datetime import datetime as dt
-from pyphoon.utils.utils import DisplaySequence
 
 
 #######################################
@@ -290,8 +288,8 @@ class TyphoonSequence(object):
         :param idx_1: Index of second frame.
         :type idx_1: int
         :param mode: Frame distance can be obtained from two sources: images
-        or best track data. For the former use ``mode='image'``, for the
-        latter use ``mode='best'``.
+            or best track data. For the former use ``mode='image'``, for the
+            latter use ``mode='best'``.
         :type mode: str
         :return: Time distance between frames in seconds.
         :rtype: int
@@ -367,14 +365,14 @@ def read_h5file(path_to_file):
     # List all groups
     keys = list(f.keys())
     # Get the data
-    data = {key: list(f[key]) for key in keys if key != "name"}
+    data = {key: f[key][:] for key in keys if key != "name"}
     # Get file name
     # name = path_to_file.split('/')[-1].split('.h5')[-2]
     # data['name'] = name
     return data
 
 
-def write_h5file(data, path_to_file):
+def write_h5file(data, path_to_file, compression=None):
     """ Constructs and stores an H5 file containing the given data.
 
     :param data: Dictionary containing the data to be stored. Keys stand for
@@ -382,10 +380,12 @@ def write_h5file(data, path_to_file):
     :type data: dict
     :param path_to_file: Path where the new H5 file will be created.
     :type path_to_file: str
+    :param compression: Use to compress H5 file.
+    :type compression: str
     """
     h5f = h5py.File(path_to_file, 'w')
     for key, value in data.items():
-        h5f.create_dataset(key, data=value)
+        h5f.create_dataset(key, data=value, compression=compression)
 
 
 ###########################
@@ -397,6 +397,7 @@ def read_tsvs(directory='original_data/jma/'):
     elements, each being a list of typhoon features.
 
     :param directory: Path of the JMA metadata
+    :type directory: str
     :return: List with the metadata of the *N* images
     """
     files = listdir(directory)
@@ -411,6 +412,7 @@ def read_tsv(path_to_file):
     """ Reads a TSV file from the best track dataset.
 
     :param path_to_file: Complete path to the TSV file
+    :type path_to_file: str
     :return: *NxD* Numpy array (*N*: #samples, *D*: #features)
     """
     metadata = []
@@ -467,13 +469,14 @@ def check_constant_distance_in_tsv(path_best="original_data/jma",
 #  IMAGES RELATED FUNCTIONS  #
 ##############################
 
-def read_images(path_to_folder, resize=None):
+def read_images(path_to_folder):
     """ Reads all image files within a given folder. Note that all images are
     assumed to have the same dimensionality. In addition, an image should have
     been stored as a dataset, with name 'infrared', in an HDF file.
 
     :param path_to_folder: Complete path to the folder containing HDF image
         files.
+    :type path_to_folder: str
     :return: *NxWxH* Numpy array (*N*: #images, *W*: image width, *H*: image
         height)
     """
@@ -481,8 +484,6 @@ def read_images(path_to_folder, resize=None):
     images = []
     for file in files:
         img = read_image(join(path_to_folder, file))
-        if resize:
-            img = resize_image(img, basewidth=resize)
         images.append(img)
     return np.array(images)
 
