@@ -65,5 +65,3 @@ directory ``data/integration_0`` and stores them as images under
 .. literalinclude:: _static/examples/corrupted_images.py
     :linenos:
     :language: python
-
-O

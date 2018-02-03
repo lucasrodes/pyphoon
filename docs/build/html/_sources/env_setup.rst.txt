@@ -1,0 +1,39 @@
+Setting up the environment
+==========================
+
+For this project, a docker container has been used. In particular, we used a
+modified version of the docker [deepo](https://github.com/ufoym/deepo), which
+ provides a version with GPU support to most DL/ML frameworks.
+
+Installation
+------------
+1. Install [Docker](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-centos-7)
+
+Update the package database:
+
+::
+    $ sudo yum check-update
+
+
+```
+$ curl -fsSL https://get.docker.com/ | sh
+```
+
+```
+$ sudo systemctl start docker
+```
+
+```
+$ sudo systemctl status docker
+```
+
+```
+```
+
+```
+```
+
+```
+```
+
+

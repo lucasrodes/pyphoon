@@ -474,8 +474,8 @@ will be stored.</td>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pyphoon.utils.io.TyphoonSequence.image_ids">
-<code class="descname">image_ids</code><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.image_ids" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.utils.io.TyphoonSequence.images_ids">
+<code class="descname">images_ids</code><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.images_ids" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -483,6 +483,44 @@ will be stored.</td>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List with image ids.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.utils.io.TyphoonSequence.images_complete_id">
+<code class="descname">images_complete_id</code><span class="sig-paren">(</span><em>idx</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.images_complete_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the complete id of a certain image frame. This means that
+typhoon name is also included. In particular it has the the following
+structure: <em>typhonID_YYYYMMDDHH</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>idx</strong> (<em>int</em>) – Index of the image frame.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Complete id of the image frame.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.utils.io.TyphoonSequence.images_date">
+<code class="descname">images_date</code><span class="sig-paren">(</span><em>idx</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.images_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains the date from a certain image frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>idx</strong> (<em>int</em>) – Image frame position at the sequence.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Date of image frame at position idx.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">datetime.datetime</td>
 </tr>
 </tbody>
 </table>
@@ -519,41 +557,83 @@ will be stored.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyphoon.utils.io.TyphoonSequence.get_frame">
-<code class="descname">get_frame</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.get_frame" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dt id="pyphoon.utils.io.TyphoonSequence.best_complete_id">
+<code class="descname">best_complete_id</code><span class="sig-paren">(</span><em>idx</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.best_complete_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the complete id of a certain best track frame. This means that
+typhoon name is also included. In particular it has the the following
+structure: <em>typhonID_YYYYMMDDHH</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> – </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>idx</strong> (<em>int</em>) – Index of the best track frame.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Complete id of the best track frame.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyphoon.utils.io.TyphoonSequence.get_frame_id">
-<code class="descname">get_frame_id</code><span class="sig-paren">(</span><em>frame</em>, <em>complete=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.get_frame_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the id of a certain frame. The id is basically the</p>
+<dt id="pyphoon.utils.io.TyphoonSequence.best_date">
+<code class="descname">best_date</code><span class="sig-paren">(</span><em>idx</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.best_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains the date from a certain best track frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>idx</strong> (<em>int</em>) – Best track frame position at the sequence.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Date of best track frame at position idx.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">datetime.datetime</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.utils.io.TyphoonSequence.get_date_from_id">
+<code class="descname">get_date_from_id</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.get_date_from_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the date of the frame at position idx</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> – Identifier of an image or best track frame</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Date of the frame</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">datetime.datetime</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.utils.io.TyphoonSequence.get_image_frames_distance">
+<code class="descname">get_image_frames_distance</code><span class="sig-paren">(</span><em>idx_0</em>, <em>idx_1</em>, <em>mode='image'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.get_image_frames_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains the time distance in seconds between frames at position
+idx_0 and idx_1.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>frame</strong> (<em>int</em>) – Index of the frame.</li>
-<li><strong>complete</strong> (<em>bool</em>) – </li>
+<li><strong>idx_0</strong> (<em>int</em>) – Index of first frame.</li>
+<li><strong>idx_1</strong> (<em>int</em>) – Index of second frame.</li>
+<li><strong>mode</strong> (<em>str</em>) – Frame distance can be obtained from two sources: images
+or best track data. For the former use <code class="docutils literal"><span class="pre">mode='image'</span></code>, for the
+latter use <code class="docutils literal"><span class="pre">mode='best'</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Id of the frame. Its format is <em>YYYYMMDDHH</em> according to the
-date of the data.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Time distance between frames in seconds.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
 </td>
 </tr>
 </tbody>
@@ -561,58 +641,19 @@ date of the data.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyphoon.utils.io.TyphoonSequence.find_corrupted_frames">
-<code class="descname">find_corrupted_frames</code><span class="sig-paren">(</span><em>mean_th=None</em>, <em>max_th=None</em>, <em>min_th=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.find_corrupted_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds corrupted frames within the sequence under certain
-criteria. There are three different categories under which a frame
-can fall as corrupted.</p>
-<ol class="arabic simple">
-<li>Mean-corrupted: A frame is considered <em>mean-corrupted</em> if its
-pixel intensity mean is not in the range given by the function
-argument <em>mean_th</em>.</li>
-<li>Max-corrupted: A frame is considered <em>max-corrupted</em> if its
-maximum pixel intensity value is not within the range given by the
-function argument <em>max_th</em>.</li>
-<li>Min-corrupted: A frame is considered <em>min-corrupted</em> if its
-minimum pixel intensity value is not within the range given by the
-function argument <em>min_th</em>.</li>
-</ol>
+<dt id="pyphoon.utils.io.TyphoonSequence.insert_frames">
+<code class="descname">insert_frames</code><span class="sig-paren">(</span><em>frames</em>, <em>frames_ids</em>, <em>idx</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.insert_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a batch of frames at a certain position. It also adds the
+corresponding image_ids.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mean_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image pixel
-intensity mean. By default range [235, 292] is used.</li>
-<li><strong>mean_th</strong> – Minimum and maximum value accepted for an image
-maximum pixel intensity value. By default range [277,
-324] is used.</li>
-<li><strong>mean_th</strong> – Minimum and maximum value accepted for an image
-minimum pixel intensity value. By default range [165,
-235] is used.</li>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>frames</strong> (<em>list</em>) – List of names to be inserted.</li>
+<li><strong>frames_ids</strong> (<em>list</em>) – List of image ids corresponding to frames.</li>
+<li><strong>idx</strong> (<em>int</em>) – Position at which frames are to be inserted.</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List with corrupted frame indices. Also a list with the details
-about the corrupted files.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="k">import</span> <span class="n">load_TyphoonSequence</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load sequence from HDF file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/201626.h5&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">load_TyphoonSequence</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">corrupted_frames</span><span class="p">,</span> <span class="n">corrupted_info</span> <span class="o">=</span> <span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">find_corrupted_frames</span><span class="p">()</span>
-</pre></div>
-</div>
 </td>
 </tr>
 </tbody>
@@ -663,7 +704,7 @@ field names, values are the corresponding data.</td>
 
 <dl class="function">
 <dt id="pyphoon.utils.io.write_h5file">
-<code class="descclassname">pyphoon.utils.io.</code><code class="descname">write_h5file</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.write_h5file" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pyphoon.utils.io.</code><code class="descname">write_h5file</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em>, <em>compression='gzip'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.write_h5file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructs and stores an H5 file containing the given data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -673,6 +714,7 @@ field names, values are the corresponding data.</td>
 <li><strong>data</strong> (<em>dict</em>) – Dictionary containing the data to be stored. Keys stand for
 data field names, values are the corresponding data.</li>
 <li><strong>path_to_file</strong> (<em>str</em>) – Path where the new H5 file will be created.</li>
+<li><strong>compression</strong> (<em>str</em>) – Use to compress H5 file.</li>
 </ul>
 </td>
 </tr>
@@ -919,7 +961,7 @@ extension).</p>
 
 <dl class="class">
 <dt id="pyphoon.utils.utils.DisplaySequence">
-<em class="property">class </em><code class="descclassname">pyphoon.utils.utils.</code><code class="descname">DisplaySequence</code><span class="sig-paren">(</span><em>typhoon_sequence=None</em>, <em>raw_data=None</em>, <em>name='untitled'</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.utils.DisplaySequence" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pyphoon.utils.utils.</code><code class="descname">DisplaySequence</code><span class="sig-paren">(</span><em>typhoon_sequence=None</em>, <em>raw_data=None</em>, <em>name='untitled'</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.utils.DisplaySequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Used to animate a batch of images.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -979,48 +1021,15 @@ extension).</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pyphoon.utils.utils.DisplaySequence.get_frame">
-<code class="descname">get_frame</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.utils.DisplaySequence.get_frame" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the image frame at the position specified by index.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> – Frame index within the typhoon sequence</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Array containing the image</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="pyphoon.utils.utils.DisplaySequence.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.utils.DisplaySequence.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the animation</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyphoon.utils.utils.DisplaySequence.get_frame_gif">
-<code class="descname">get_frame_gif</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.utils.DisplaySequence.get_frame_gif" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the image frame at position index.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>int</em>) – Frame index within the typhoon sequence</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Array containing the image</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyphoon.utils.utils.DisplaySequence.generate_gif">
-<code class="descname">generate_gif</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.utils.DisplaySequence.generate_gif" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates and stores a gif animation from the input typhoon
-sequence.</p>
+<dt id="pyphoon.utils.utils.DisplaySequence.run_html">
+<code class="descname">run_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.utils.DisplaySequence.run_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the animation</p>
 </dd></dl>
 
 </dd></dl>

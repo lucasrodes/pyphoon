@@ -32,7 +32,7 @@ single HDF files.
 Having a high-level overview of the dataset may provide interesting insights.
 
 2.1 Image distribution
-----------------------
+**********************
 
 2.1 Mean image
 **************
@@ -59,8 +59,8 @@ given data.
 ********************
 
 The following example finds the corrupted frames in all sequences under the
-directory "data/integration_0" and stores them as images under
-"data/corrupted_0".
+directory ``data/integration_0`` and stores them as images under
+``data/corrupted_0``.
 
 .. literalinclude:: _static/examples/corrupted_images.py
     :linenos:

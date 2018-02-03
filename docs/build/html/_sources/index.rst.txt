@@ -7,13 +7,18 @@ pyphoon
 ===================================
 
 pyphoon is a python tool developed in 2018 by interns at Kitamoto Lab to
-support simple and easy interaction with *Digital Typhoon* dataset.
+support simple and easy interaction with *Digital Typhoon* dataset. It began
+as a set of tools meant to assist in the exploration of the data and possible
+detection of corrupted files. However, new features, such as actual models
+might be added as time passes.
 
-To this end, it provides tools to help in the exploration of such data or
-the detection of possible corrupted files.
 
-You can get familiar with this library by checking the several
-:doc:`examples <examples>` that we provide.
+Get familiar:
+
+* :doc:`Setting up the environment <env_setup>`
+* :doc:`Examples <examples>`
+
+
 
 Documentation
 =============
