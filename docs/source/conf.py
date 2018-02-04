@@ -94,6 +94,9 @@ todo_include_todos = True
 # a list of builtin themes.
 #
 html_theme = "classic"
+html_theme_options = {
+    "collapsiblesidebar": "true",
+}
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -111,12 +114,15 @@ html_static_path = ['_static']
 #
 # This is required for the alabaster theme
 # refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
+html_show_sourcelink = True
+html_copy_source = True
 html_sidebars = {
     '**': [
         #'about.html',
         #'navigation.html',
-        'relations.html',  # needs 'show_related': True theme option to display
-        'searchbox.html',
+        #'relations.html',  # needs 'show_related': True theme option to display
+        'localtoc.html',
+        'searchbox.html'
         #'donate.html',
     ]
 }
