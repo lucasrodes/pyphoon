@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 pyphoon
-===================================
+=======
 
 pyphoon is a python tool developed in 2018 by interns at Kitamoto Lab to
 support simple and easy interaction with *Digital Typhoon* dataset. It began
@@ -20,7 +20,7 @@ Get familiar:
 
 
 Documentation
-=============
+-------------
 
 For further details on any of the modules of this library check the
 corresponding link below.
@@ -33,7 +33,7 @@ corresponding link below.
 
 
 Known Issues
-============
+------------
 
 
 *   **Importing the library**
@@ -53,11 +53,3 @@ Known Issues
 
     >>> import matplotlib
     >>> matplotlib.use('agg')
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

@@ -22,6 +22,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
   </head>
@@ -111,7 +112,11 @@ and that we want to create the integrated dataset at <cite>../data/integration_0
 27
 28
 29
-30</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">isdir</span>
+30
+31
+32</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">isdir</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
 <span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">create_TyphoonSequence</span>
 
@@ -198,7 +203,11 @@ stored in <cite>../data/integration_0</cite> and store the results in <cite>../d
 33
 34
 35
-36</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+36
+37
+38</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">load_TyphoonSequence</span><span class="p">,</span> <span class="n">get_h5_filenames</span><span class="p">,</span> <span class="n">write_h5file</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
@@ -231,7 +240,7 @@ stored in <cite>../data/integration_0</cite> and store the results in <cite>../d
 <span class="c1"># Store images</span>
 <span class="n">write_h5file</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mu</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">maxv</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">minv</span><span class="p">},</span>
-    <span class="n">path_to_file</span><span class="o">=</span><span class="s1">&#39;data/preprocessing&#39;</span><span class="p">,</span>
+    <span class="n">path_to_file</span><span class="o">=</span><span class="s1">&#39;../data/preprocessing/params.h5&#39;</span><span class="p">,</span>
     <span class="n">compression</span><span class="o">=</span><span class="bp">None</span>
 <span class="p">)</span>
 </pre></div>
@@ -335,7 +344,11 @@ directory <code class="docutils literal"><span class="pre">data/integration_0</s
 40
 41
 42
-43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+43
+44
+45</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">load_TyphoonSequence</span><span class="p">,</span> <span class="n">get_h5_filenames</span>
 <span class="kn">from</span> <span class="nn">pyphoon.preprocessing.fix</span> <span class="kn">import</span> <span class="n">find_corrupted_frames</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
@@ -361,11 +374,11 @@ directory <code class="docutils literal"><span class="pre">data/integration_0</s
     <span class="n">_corrupted_frames</span><span class="p">,</span> <span class="n">_corrupted_info</span> <span class="o">=</span> <span class="n">find_corrupted_frames</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
     <span class="n">corrupted_frames</span><span class="p">[</span><span class="n">sequence</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_corrupted_frames</span>
 
-    <span class="c1">#  Save corrupted images a frames</span>
+    <span class="c1">#  Save corrupted images as frames</span>
     <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">corrupted_frame</span><span class="p">,</span> <span class="n">frame_info</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">_corrupted_frames</span><span class="p">,</span> <span class="n">_corrupted_info</span><span class="p">):</span>
         <span class="n">_info</span> <span class="o">=</span> <span class="s1">&#39; / &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">frame_info</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
-        <span class="n">frame_id</span> <span class="o">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">get_frame_id</span><span class="p">(</span><span class="n">corrupted_frame</span><span class="p">,</span> <span class="n">complete</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">frame_id</span> <span class="o">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">images_complete_id</span><span class="p">(</span><span class="n">corrupted_frame</span><span class="p">)</span>
         <span class="c1"># Clean plot</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">sequence</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">corrupted_frame</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greys&#39;</span><span class="p">)</span>
@@ -404,6 +417,26 @@ directory <code class="docutils literal"><span class="pre">data/integration_0</s
     </form>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Examples</a><ul>
+<li><a class="reference internal" href="#integrating-the-data">1. Integrating the data</a><ul>
+<li><a class="reference internal" href="#generate-a-typhoonsequence-hdf-file">1.1 Generate a TyphoonSequence HDF File</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dataset-overview">2. Dataset overview</a><ul>
+<li><a class="reference internal" href="#mean-image">2.1 Mean image</a></li>
+<li><a class="reference internal" href="#visualize-a-typhoonsequence">2.2 Visualize a TyphoonSequence</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#corrupted-files">3. Corrupted files</a><ul>
+<li><a class="reference internal" href="#corrupted-images">3.1 Corrupted images</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
         </div>
       </div>
       <div class="clearer"></div>
