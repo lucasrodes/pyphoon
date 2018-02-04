@@ -1,13 +1,15 @@
+import sys
+sys.path.insert(0, '..')
 from os.path import join, isdir
 from os import listdir
 from pyphoon.utils.io import create_TyphoonSequence
 
 # Directories
-directory_images = "original_data/image/"
-directory_best = "original_data/jma/"
-directory_new_file = "data/integration_0"
+directory_images = "../original_data/image/"
+directory_best = "../original_data/jma/"
+directory_new_file = "../data/integration_0"
 
-# Get typhoon sequence folders.
+# Get typhoon image sequence folders.
 folders = sorted([f for f in listdir(directory_images) if isdir(join(directory_images, f))])
 
 # Iterate over all folders

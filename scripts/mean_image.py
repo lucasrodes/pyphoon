@@ -1,10 +1,11 @@
+import sys
+sys.path.insert(0, '..')
 from os.path import join
-from pyphoon.utils.io import load_TyphoonSequence, get_h5_filenames
-import h5py
+from pyphoon.utils.io import load_TyphoonSequence, get_h5_filenames, write_h5file
 import numpy as np
 
 # Get filenames
-directory_images = "data/integration_0"
+directory_images = "../data/integration_0"
 files = get_h5_filenames(directory_images)
 
 # Parameters
@@ -30,8 +31,8 @@ for file in files:
 std = np.sqrt(mu2 - mu**2)
 
 # Store images
-h5f = h5py.File(join('data/preprocessing', 'params.h5'), 'w')
-h5f.create_dataset("mean", data=mu)
-h5f.create_dataset("std", data=std)
-h5f.create_dataset("max", data=maxv)
-h5f.create_dataset("min", data=minv)
+write_h5file(
+    data={"mean": mu, "std": std, "max": maxv, "min": minv},
+    path_to_file='../data/preprocessing/params.h5',
+    compression=None
+)
