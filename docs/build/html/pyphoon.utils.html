@@ -84,12 +84,6 @@ thoughts. Just bring data to live with it and start exploring!</p>
 <p>Get to know the stats behind your best track data. This module focuses on
 the, JMA provided data. Therefore we encourage your to read on the details of
 the data format at <a class="reference external" href="http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html">JMA RSMC Tokyo-Typhoon Center</a>.</p>
-<p>If you are trying to generate plots in a server where no graphic interface is
-provided, it has been sugested to use a non-interactive backend such as <cite>agg</cite>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;agg&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
 <p>Methods are summarized below.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -445,14 +439,19 @@ frames) value.</p>
 </div>
 <dl class="method">
 <dt id="pyphoon.utils.io.TyphoonSequence.save_as_h5">
-<code class="descname">save_as_h5</code><span class="sig-paren">(</span><em>path_to_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.save_as_h5" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_as_h5</code><span class="sig-paren">(</span><em>path_to_file</em>, <em>compression=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.TyphoonSequence.save_as_h5" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores the data as an HDF file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_file</strong> (<em>str</em>) – Path to the directory where typhoon sequence data
-will be stored.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path_to_file</strong> (<em>str</em>) – Path to the directory where typhoon sequence data
+will be stored.</li>
+<li><strong>compression</strong> (<em>str</em><em>, </em><em>default None</em>) – Set to a compression format. Find more details at
+the <a class="reference external" href="http://docs.h5py.org/en/latest/high/dataset.html">h5py documentation</a></li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -704,7 +703,7 @@ field names, values are the corresponding data.</td>
 
 <dl class="function">
 <dt id="pyphoon.utils.io.write_h5file">
-<code class="descclassname">pyphoon.utils.io.</code><code class="descname">write_h5file</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em>, <em>compression='gzip'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.write_h5file" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pyphoon.utils.io.</code><code class="descname">write_h5file</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em>, <em>compression</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.write_h5file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructs and stores an H5 file containing the given data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -714,7 +713,8 @@ field names, values are the corresponding data.</td>
 <li><strong>data</strong> (<em>dict</em>) – Dictionary containing the data to be stored. Keys stand for
 data field names, values are the corresponding data.</li>
 <li><strong>path_to_file</strong> (<em>str</em>) – Path where the new H5 file will be created.</li>
-<li><strong>compression</strong> (<em>str</em>) – Use to compress H5 file.</li>
+<li><strong>compression</strong> – Use to compress H5 file. Find more details at
+the <a class="reference external" href="http://docs.h5py.org/en/latest/high/dataset.html">h5py documentation</a></li>
 </ul>
 </td>
 </tr>
@@ -731,7 +731,7 @@ elements, each being a list of typhoon features.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> – Path of the JMA metadata</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> (<em>str</em>) – Path of the JMA metadata</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List with the metadata of the <em>N</em> images</td>
 </tr>
@@ -747,7 +747,7 @@ elements, each being a list of typhoon features.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_file</strong> – Complete path to the TSV file</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_file</strong> (<em>str</em>) – Complete path to the TSV file</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>NxD</em> Numpy array (<em>N</em>: #samples, <em>D</em>: #features)</td>
 </tr>
@@ -781,7 +781,7 @@ typhoon sequence.</p>
 
 <dl class="function">
 <dt id="pyphoon.utils.io.read_images">
-<code class="descclassname">pyphoon.utils.io.</code><code class="descname">read_images</code><span class="sig-paren">(</span><em>path_to_folder</em>, <em>resize=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.read_images" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pyphoon.utils.io.</code><code class="descname">read_images</code><span class="sig-paren">(</span><em>path_to_folder</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.utils.io.read_images" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all image files within a given folder. Note that all images are
 assumed to have the same dimensionality. In addition, an image should have
 been stored as a dataset, with name ‘infrared’, in an HDF file.</p>
@@ -789,7 +789,7 @@ been stored as a dataset, with name ‘infrared’, in an HDF file.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_folder</strong> – Complete path to the folder containing HDF image
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_folder</strong> (<em>str</em>) – Complete path to the folder containing HDF image
 files.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>NxWxH</em> Numpy array (<em>N</em>: #images, <em>W</em>: image width, <em>H</em>: image
@@ -860,7 +860,7 @@ which have the following structure:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_file</strong> – Path to the HDF image file.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_file</strong> (<em>str</em>) – Path to the HDF image file.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Image id</td>
 </tr>
@@ -879,7 +879,7 @@ the data to generate the id.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>best_data</strong> – Array containing the data from Best Track.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>best_data</strong> (<em>numpy.array</em>) – Array containing the data from Best Track.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List with the ids of all samples from input Best Track data.</td>
 </tr>

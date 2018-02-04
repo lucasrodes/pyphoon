@@ -46,8 +46,26 @@
             
   <div class="section" id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>Here we present some examples using the tools from the library. You can find
+these examples <a class="reference external" href="https://github.com/lucasrodes/pyphoon/tree/master/scripts">here</a>.</p>
+<p><strong>Contents:</strong></p>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#integrating-the-data"><span class="std std-ref">1. Integrating the data</span></a></div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#generate-a-typhoonsequence-hdf-file"><span class="std std-ref">1.1 Generate a TyphoonSequence HDF File</span></a></div>
+</div>
+<div class="line"><a class="reference internal" href="#dataset-overview"><span class="std std-ref">2. Dataset overview</span></a></div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#mean-image"><span class="std std-ref">2.1 Mean image</span></a></div>
+<div class="line"><a class="reference internal" href="#visualize-a-typhoonsequence"><span class="std std-ref">2.2 Visualize a TyphoonSequence</span></a></div>
+</div>
+<div class="line"><a class="reference internal" href="#corrupted-files"><span class="std std-ref">3. Corrupted files</span></a></div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#corrupted-images"><span class="std std-ref">3.1 Corrupted images</span></a></div>
+</div>
+</div>
 <div class="section" id="integrating-the-data">
-<h2>1. Integrating the data<a class="headerlink" href="#integrating-the-data" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>1. Integrating the data<a class="headerlink" href="#integrating-the-data" title="Permalink to this headline">¶</a></h2>
 <p>The Digital Typhoon data is build from two main sources:</p>
 <ul class="simple">
 <li><strong>Satellite imagery:</strong> Images of typhoons taken from several geostationary satellites since 1978.</li>
@@ -59,9 +77,11 @@ the same folder. The best track data comes as TSV files (one per sequence also).
 Therefore, the number of folders of images and TSV files should be the equal
 to the number of considered typhoon sequences.</p>
 <div class="section" id="generate-a-typhoonsequence-hdf-file">
-<h3>1.1 Generate a TyphoonSequence HDF File<a class="headerlink" href="#generate-a-typhoonsequence-hdf-file" title="Permalink to this headline">¶</a></h3>
+<span id="id2"></span><h3>1.1 Generate a TyphoonSequence HDF File<a class="headerlink" href="#generate-a-typhoonsequence-hdf-file" title="Permalink to this headline">¶</a></h3>
 <p>This library provides a set of tools to integrate both sources into
-single HDF files.</p>
+single HDF files. For this example, we suppose have the satellite images at
+<cite>../original_data/image/</cite> and the best track data at <cite>../original_data/jma/</cite>
+and that we want to create the integrated dataset at <cite>../data/integration_0</cite>.</p>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -96,11 +116,11 @@ single HDF files.</p>
 <span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">create_TyphoonSequence</span>
 
 <span class="c1"># Directories</span>
-<span class="n">directory_images</span> <span class="o">=</span> <span class="s2">&quot;original_data/image/&quot;</span>
-<span class="n">directory_best</span> <span class="o">=</span> <span class="s2">&quot;original_data/jma/&quot;</span>
-<span class="n">directory_new_file</span> <span class="o">=</span> <span class="s2">&quot;data/integration_0&quot;</span>
+<span class="n">directory_images</span> <span class="o">=</span> <span class="s2">&quot;../original_data/image/&quot;</span>
+<span class="n">directory_best</span> <span class="o">=</span> <span class="s2">&quot;../original_data/jma/&quot;</span>
+<span class="n">directory_new_file</span> <span class="o">=</span> <span class="s2">&quot;../data/integration_0&quot;</span>
 
-<span class="c1"># Get typhoon sequence folders.</span>
+<span class="c1"># Get typhoon image sequence folders.</span>
 <span class="n">folders</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">directory_images</span><span class="p">)</span> <span class="k">if</span> <span class="n">isdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">directory_images</span><span class="p">,</span> <span class="n">f</span><span class="p">))])</span>
 
 <span class="c1"># Iterate over all folders</span>
@@ -123,21 +143,26 @@ single HDF files.</p>
     <span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="n">path_newfile</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
+<p>We note that <a class="reference internal" href="pyphoon.utils.html#pyphoon.utils.io.TyphoonSequence.save_as_h5" title="pyphoon.utils.io.TyphoonSequence.save_as_h5"><code class="xref py py-func docutils literal"><span class="pre">save_as_h5()</span></code></a> has an
+option to save the data in a compressed format.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference external" href="https://github.com/lucasrodes/pyphoon/tree/master/scripts/generate_hdf_files.py">script</a></p>
+</div>
 </div>
 </div>
 <div class="section" id="dataset-overview">
-<h2>2. Dataset overview<a class="headerlink" href="#dataset-overview" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2>2. Dataset overview<a class="headerlink" href="#dataset-overview" title="Permalink to this headline">¶</a></h2>
 <p>Having a high-level overview of the dataset may provide interesting insights.</p>
-<div class="section" id="image-distribution">
-<h3>2.1 Image distribution<a class="headerlink" href="#image-distribution" title="Permalink to this headline">¶</a></h3>
-</div>
 <div class="section" id="mean-image">
-<h3>2.1 Mean image<a class="headerlink" href="#mean-image" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3>2.1 Mean image<a class="headerlink" href="#mean-image" title="Permalink to this headline">¶</a></h3>
 <p>It is interesting to obtain the mean image of the image dataset. In large
 datasets, like Digital Typhoon’s, loading all the data is not possible.
 Hence, the mean image has to be sequentially obtained.</p>
 <p>We can easily obtain the deviation image, the maximum value image and minimum
 value image as they do not require much more additional power.</p>
+<p>For this example, we use the already generated TyphoonSequence HDF files
+stored in <cite>../data/integration_0</cite> and store the results in <cite>../data/</cite>.</p>
 <div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -173,14 +198,12 @@ value image as they do not require much more additional power.</p>
 33
 34
 35
-36
-37</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
-<span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">load_TyphoonSequence</span><span class="p">,</span> <span class="n">get_h5_filenames</span>
-<span class="kn">import</span> <span class="nn">h5py</span>
+36</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">load_TyphoonSequence</span><span class="p">,</span> <span class="n">get_h5_filenames</span><span class="p">,</span> <span class="n">write_h5file</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 <span class="c1"># Get filenames</span>
-<span class="n">directory_images</span> <span class="o">=</span> <span class="s2">&quot;data/integration_0&quot;</span>
+<span class="n">directory_images</span> <span class="o">=</span> <span class="s2">&quot;../data/integration_0&quot;</span>
 <span class="n">files</span> <span class="o">=</span> <span class="n">get_h5_filenames</span><span class="p">(</span><span class="n">directory_images</span><span class="p">)</span>
 
 <span class="c1"># Parameters</span>
@@ -206,23 +229,67 @@ value image as they do not require much more additional power.</p>
 <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mu2</span> <span class="o">-</span> <span class="n">mu</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Store images</span>
-<span class="n">h5f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;data/preprocessing&#39;</span><span class="p">,</span> <span class="s1">&#39;params.h5&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
-<span class="n">h5f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">mu</span><span class="p">)</span>
-<span class="n">h5f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;std&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">std</span><span class="p">)</span>
-<span class="n">h5f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">maxv</span><span class="p">)</span>
-<span class="n">h5f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">minv</span><span class="p">)</span>
+<span class="n">write_h5file</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mu</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="n">std</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">maxv</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">minv</span><span class="p">},</span>
+    <span class="n">path_to_file</span><span class="o">=</span><span class="s1">&#39;data/preprocessing&#39;</span><span class="p">,</span>
+    <span class="n">compression</span><span class="o">=</span><span class="bp">None</span>
+<span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference external" href="https://github.com/lucasrodes/pyphoon/tree/master/scripts/mean_image.py">script</a></p>
+</div>
+</div>
+<div class="section" id="visualize-a-typhoonsequence">
+<span id="id6"></span><h3>2.2 Visualize a TyphoonSequence<a class="headerlink" href="#visualize-a-typhoonsequence" title="Permalink to this headline">¶</a></h3>
+<p>Visualizing a sequence can be sometimes helpful. In the following example we
+visualize the sequence <strong>197906</strong> stored at <cite>../sampledata/197906.h5</cite>.
+However, note that this can be extended to any other typhoon sequence.</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">load_TyphoonSequence</span>
+<span class="kn">from</span> <span class="nn">pyphoon.utils.utils</span> <span class="kn">import</span> <span class="n">DisplaySequence</span>
+
+<span class="c1"># Load sequence</span>
+<span class="n">sequence</span> <span class="o">=</span> <span class="n">load_TyphoonSequence</span><span class="p">(</span><span class="s1">&#39;../sampledata/197906.h5&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create DisplaySequence instance and run</span>
+<span class="n">DisplaySequence</span><span class="p">(</span>
+    <span class="n">typhoon_sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;197906&quot;</span><span class="p">,</span>
+    <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference external" href="https://github.com/lucasrodes/pyphoon/tree/master/scripts/visualize_sequence.py">script</a>,
+<a class="reference external" href="https://github.com/lucasrodes/pyphoon/tree/master/notebooks/Getting_Started.ipynb">notebook</a></p>
+</div>
 </div>
 </div>
 <div class="section" id="corrupted-files">
-<h2>3. Corrupted files<a class="headerlink" href="#corrupted-files" title="Permalink to this headline">¶</a></h2>
+<span id="id8"></span><h2>3. Corrupted files<a class="headerlink" href="#corrupted-files" title="Permalink to this headline">¶</a></h2>
 <p>Digital Typhoon is a project that aims to tackle a real-world issue. Hence,
 it contains real-world data, which often contains some errors. Finding and
 correcting those errors becomes essential so as to be able to rely on the
 given data.</p>
 <div class="section" id="corrupted-images">
-<h3>3.1 Corrupted images<a class="headerlink" href="#corrupted-images" title="Permalink to this headline">¶</a></h3>
+<span id="id9"></span><h3>3.1 Corrupted images<a class="headerlink" href="#corrupted-images" title="Permalink to this headline">¶</a></h3>
 <p>The following example finds the corrupted frames in all sequences under the
 directory <code class="docutils literal"><span class="pre">data/integration_0</span></code> and stores them as images under
 <code class="docutils literal"><span class="pre">data/corrupted_0</span></code>.</p>
@@ -268,14 +335,14 @@ directory <code class="docutils literal"><span class="pre">data/integration_0</s
 40
 41
 42
-43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span>
+43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">load_TyphoonSequence</span><span class="p">,</span> <span class="n">get_h5_filenames</span>
 <span class="kn">from</span> <span class="nn">pyphoon.preprocessing.fix</span> <span class="kn">import</span> <span class="n">find_corrupted_frames</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
 <span class="c1"># Directories</span>
-<span class="n">directory_files_0</span> <span class="o">=</span> <span class="s2">&quot;data/integration_0&quot;</span>
-<span class="n">directory_corrupted_0</span> <span class="o">=</span> <span class="s2">&quot;data/corrupted_0&quot;</span>
+<span class="n">directory_files_0</span> <span class="o">=</span> <span class="s2">&quot;../data/integration_0&quot;</span>
+<span class="n">directory_corrupted_0</span> <span class="o">=</span> <span class="s2">&quot;../data/corrupted_0&quot;</span>
 
 <span class="c1"># Get H5 file names</span>
 <span class="n">files_0</span> <span class="o">=</span> <span class="n">get_h5_filenames</span><span class="p">(</span><span class="n">directory_files_0</span><span class="p">)</span>
@@ -313,6 +380,10 @@ directory <code class="docutils literal"><span class="pre">data/integration_0</s
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="s2">&quot;files corrupted&quot;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference external" href="https://github.com/lucasrodes/pyphoon/tree/master/scripts/corrupted_images.py">script</a></p>
+</div>
 </div>
 </div>
 </div>

@@ -19,7 +19,6 @@ Get familiar:
 * :doc:`Examples <examples>`
 
 
-
 Documentation
 =============
 
@@ -31,6 +30,29 @@ corresponding link below.
 
     pyphoon.preprocessing <pyphoon.preprocessing>
     pyphoon.utils <pyphoon.utils>
+
+
+Known Issues
+============
+
+
+*   **Importing the library**
+    As of now, to correctly import the library, please make use of `sys.path` specifying the directory of the library.
+
+    >>> import sys
+    >>> sys.path.insert(0, 'path/to/pyphoon')
+
+
+*   **Using matplotlib in the server**
+    If you want to generate plots in the server make sure
+    If you are trying to generate plots in the server note that there might not
+    graphic interface. This can lead to an error when trying to import the
+    library `matplotlib`.
+
+    To avoid this, make sure to use a non-interactive backend such as `agg`.
+
+    >>> import matplotlib
+    >>> matplotlib.use('agg')
 
 
 Indices and tables

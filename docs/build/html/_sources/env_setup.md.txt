@@ -98,7 +98,7 @@ work, some symbolic links are created
     
     ```
     FROM ufoym/deepo
-    RUN pip install plotly moviepy
+    RUN pip install plotly moviepy jupyter notebook
     ```
     
     Save the file and build the docker image.
@@ -107,6 +107,9 @@ work, some symbolic links are created
     cd ~/.docker_images/<docker image folder name>/
     docker build -t <your_name>/deepo .
     ```
+    
+    *In the future we plan to generate the docker image and load to the Hub 
+    so that other researchers can easily import it.*
 
 *  **Create a Docker container**
     
@@ -167,7 +170,7 @@ exit
 
 ## Docker in Jupyter Notebook
 
-Simply execute your docker container and from the virtual machine run:
+Execute your docker container and run (inside the container):
 
 ```
 jupyter notebook --ip 0.0.0.0 --allow-root
