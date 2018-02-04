@@ -7,12 +7,6 @@ the data format at `JMA RSMC Tokyo-Typhoon Center`_.
 .. _JMA RSMC Tokyo-Typhoon Center:
         http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html
 
-If you are trying to generate plots in a server where no graphic interface is
-provided, it has been sugested to use a non-interactive backend such as `agg`.
-
->>> import matplotlib
->>> matplotlib.use('agg')
-
 Methods are summarized below.
 
 +-------------------------------+---------------------------------------------------------------------------+

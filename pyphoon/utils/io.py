@@ -179,14 +179,20 @@ class TyphoonSequence(object):
         self.data = data
         self.name = name
 
-    def save_as_h5(self, path_to_file):
+    def save_as_h5(self, path_to_file, compression=None):
         """ Stores the data as an HDF file.
 
         :param path_to_file: Path to the directory where typhoon sequence data
             will be stored.
         :type path_to_file: str
+        :param compression: Set to a compression format. Find more details at
+            the `h5py documentation`_
+        :type compression: str, default None
+
+        .. _h5py documentation:
+            http://docs.h5py.org/en/latest/high/dataset.html
         """
-        write_h5file(self.data, path_to_file)
+        write_h5file(self.data, path_to_file, compression=compression)
 
     @property
     def images(self):
@@ -372,7 +378,7 @@ def read_h5file(path_to_file):
     return data
 
 
-def write_h5file(data, path_to_file, compression=None):
+def write_h5file(data, path_to_file, compression):
     """ Constructs and stores an H5 file containing the given data.
 
     :param data: Dictionary containing the data to be stored. Keys stand for
@@ -380,8 +386,11 @@ def write_h5file(data, path_to_file, compression=None):
     :type data: dict
     :param path_to_file: Path where the new H5 file will be created.
     :type path_to_file: str
-    :param compression: Use to compress H5 file.
-    :type compression: str
+    :param compression: Use to compress H5 file. Find more details at
+            the `h5py documentation`_
+
+    .. _h5py documentation:
+            http://docs.h5py.org/en/latest/high/dataset.html
     """
     h5f = h5py.File(path_to_file, 'w')
     for key, value in data.items():
