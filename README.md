@@ -1,6 +1,10 @@
-# pyPhoon
-Tools for Digital Typhoon DL/ML Project. You can find the documentation of 
-this library is hosted at [http://lcsrg.me/pyphoon](http://lcsrg.me/pyphoon).
+# pyphoon
+This project developed as part of the [Digital Typhoon](http://digital-typhoon.org) project from [Kitamoto-sensei](http://www.nii.ac.jp/en/faculty/digital_content/kitamoto_asanobu/). 
+
+**pyphoon** provides a set of tools to enable easy and pythonic interaction 
+the Digital Typhoon dataset.
+
+For details, refer to the full documentation of the project at [http://lcsrg.me/pyphoon](http://lcsrg.me/pyphoon).
 
 ## Contents
 
@@ -14,15 +18,11 @@ this library is hosted at [http://lcsrg.me/pyphoon](http://lcsrg.me/pyphoon).
 | [comments](comments)     | Comments from the authors as they worked in the project         |
 
 
-## Set up
+## Installation
 
-This project has been developed using a docker image. To install docker visit
- [](). Once installed follow the steps below to set up the environment:
+Refer to the instructions [here](http://lcsrg.me/pyphoon/build/html/env_setup.html)
  
- 
-### Jupyter and Docker
-
-## Example
+## Getting started
 
 Easily visualize an animation of a sequence:
 
