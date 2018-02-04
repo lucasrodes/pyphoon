@@ -14,13 +14,31 @@ this library is hosted at [http://lcsrg.me/pyphoon](http://lcsrg.me/pyphoon).
 | [comments](comments)     | Comments from the authors as they worked in the project         |
 
 
-## Documentation
+## Set up
 
-For details on the library, please refer to the documentation. To visualize it, please type the following in your terminal:
+This project has been developed using a docker image. To install docker visit
+ [](). Once installed follow the steps below to set up the environment:
+ 
+ 
+### Jupyter and Docker
 
+## Example
+
+Easily visualize an animation of a sequence:
+
+```python
+from pyphoon.utils.io import load_TyphoonSequence
+from pyphoon.utils.utils import DisplaySequence
+
+# Load a sequence
+sequence = load_TyphoonSequence('../sampledata/197906.h5')
+
+# Visualize sequence
+DisplaySequence(
+    typhoon_sequence=sequence,
+    name="197906",
+    interval=300,
+).run()
 ```
-$ cd docs/build/html
-$ python -m http.server 8000
-```
 
-And then navigate to [http://localhost:8000](http://localhost:8000) using your browser.
+
