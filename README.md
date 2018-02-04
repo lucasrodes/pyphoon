@@ -1,10 +1,8 @@
 # pyphoon
-This project developed as part of the [Digital Typhoon](http://digital-typhoon.org) project from [Kitamoto-sensei](http://www.nii.ac.jp/en/faculty/digital_content/kitamoto_asanobu/). 
+Developed as part of the [Digital Typhoon](http://digital-typhoon.org) project from [Kitamoto-sensei](http://www.nii.ac.jp/en/faculty/digital_content/kitamoto_asanobu/). 
+P rovides a set of tools to enable easy and pythonic interaction the Digital Typhoon dataset.
 
-**pyphoon** provides a set of tools to enable easy and pythonic interaction 
-the Digital Typhoon dataset.
-
-For details, refer to the full documentation of the project at [http://lcsrg.me/pyphoon](http://lcsrg.me/pyphoon).
+**Full documentation: [http://lcsrg.me/pyphoon](http://lcsrg.me/pyphoon)**
 
 ## Contents
 
