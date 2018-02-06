@@ -38,6 +38,7 @@ work, some symbolic links are created
 ## Pre-requisites
 
 *   **GPU support**
+
     First, make sure you have installed the [NVIDIA driver](https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#how-do-i-install-the-nvidia-driver).
     Next, we need to install [docker](https://docs.docker.com/install/linux/docker-ce/centos/) and 
     [nvidia-docker](https://github.com/NVIDIA/nvidia-docker). 
@@ -70,28 +71,17 @@ work, some symbolic links are created
     details check their [website](https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-repository).
     
     Make sure to uninstall other docker versions
+    
     ```
     # Uninstall other versions
     sudo yum remove docker docker-common docker-selinux docker-engine
-    ```
-    
-    * *1. Set up the environment*
-    
-    ```
     # Install required packages
     sudo yum install -y yum-utils device-mapper-persistent-data lvm2
     # Set up stable repository
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     # Make sure to disable edge versions, otherwise nvidia-docker will not recognize docker
     sudo yum-config-manager --disable docker-ce-edge
-    ```
-    * *2. Install Docker CE*
-    
-    * Note: Make sure to install one of the docker versions that are [supported]
-    (https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#which-docker-packages-are-supported) by 
-    nvidia-docker.*
-    
-    ```
+    # Install docker-ce
     sudo yum install docker-ce
     ```
 
