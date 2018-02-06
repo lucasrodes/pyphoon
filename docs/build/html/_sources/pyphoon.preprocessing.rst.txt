@@ -10,3 +10,11 @@ pyphoon\.preprocessing\.preprocessing
     :undoc-members:
     :show-inheritance:
 
+pyphoon\.preprocessing\.fix
+--------------------------------------------
+
+.. automodule:: pyphoon.preprocessing.fix
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

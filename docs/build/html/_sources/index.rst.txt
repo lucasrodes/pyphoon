@@ -30,6 +30,7 @@ corresponding link below.
 
     pyphoon.preprocessing <pyphoon.preprocessing>
     pyphoon.utils <pyphoon.utils>
+    pyphoon.io <pyphoon.io>
 
 
 Known Issues
@@ -53,3 +54,4 @@ Known Issues
 
     >>> import matplotlib
     >>> matplotlib.use('agg')
+

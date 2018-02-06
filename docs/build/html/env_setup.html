@@ -81,24 +81,13 @@ work, some symbolic links are created</p>
 <div class="section" id="pre-requisites">
 <span id="pre-requisites"></span><h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p class="first"><strong>Install <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-centos-7">Docker</a></strong></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Update the package database:</span>
-<span class="n">sudo</span> <span class="n">yum</span> <span class="n">check</span><span class="o">-</span><span class="n">update</span>
-<span class="c1"># Add the official Docker repository, download the latest version of </span>
-<span class="n">Docker</span><span class="p">,</span> <span class="ow">and</span> <span class="n">install</span> <span class="n">it</span><span class="p">:</span>
-<span class="n">curl</span> <span class="o">-</span><span class="n">fsSL</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">get</span><span class="o">.</span><span class="n">docker</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="o">|</span> <span class="n">sh</span>
-<span class="c1"># Start Docker daemon:</span>
-<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">start</span> <span class="n">docker</span>
-<span class="c1"># Verify that it is running</span>
-<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">status</span> <span class="n">docker</span>
-<span class="c1"># Enable it auto-start at every server reboot</span>
-<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">docker</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first"><strong>GPU support: Install <a class="reference external" href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker</a></strong></p>
-<p>If your machine does not support GPU, ignore this step.</p>
-<p>Make sure you have installed the <a class="reference external" href="https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#how-do-i-install-the-nvidia-driver">NVIDIA driver</a>.</p>
+<li><p class="first"><strong>GPU support</strong>
+First, make sure you have installed the <a class="reference external" href="https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#how-do-i-install-the-nvidia-driver">NVIDIA driver</a>.
+Next, we need to install <a class="reference external" href="https://docs.docker.com/install/linux/docker-ce/centos/">docker</a> and
+<a class="reference external" href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker</a>.</p>
+<p>Note that by solely installing <code class="docutils literal"><span class="pre">nvidia-docker</span></code> we automatically install the
+last stable release of docker-ce.</p>
+<p>Hence, all we need to do is</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># If you have nvidia-docker 1.0 installed: we need to remove it and all existing GPU containers</span>
 <span class="n">docker</span> <span class="n">volume</span> <span class="n">ls</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">f</span> <span class="n">driver</span><span class="o">=</span><span class="n">nvidia</span><span class="o">-</span><span class="n">docker</span> <span class="o">|</span> <span class="n">xargs</span> <span class="o">-</span><span class="n">r</span> <span class="o">-</span><span class="n">I</span><span class="p">{}</span> <span class="o">-</span><span class="n">n1</span> <span class="n">docker</span> <span class="n">ps</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">a</span> <span class="o">-</span><span class="n">f</span> <span class="n">volume</span><span class="o">=</span><span class="p">{}</span> <span class="o">|</span> <span class="n">xargs</span> <span class="o">-</span><span class="n">r</span> <span class="n">docker</span> <span class="n">rm</span> <span class="o">-</span><span class="n">f</span>
 <span class="n">sudo</span> <span class="n">yum</span> <span class="n">remove</span> <span class="n">nvidia</span><span class="o">-</span><span class="n">docker</span>
@@ -113,6 +102,35 @@ work, some symbolic links are created</p>
 
 <span class="c1"># Test nvidia-smi with the latest official CUDA image</span>
 <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">runtime</span><span class="o">=</span><span class="n">nvidia</span> <span class="o">--</span><span class="n">rm</span> <span class="n">nvidia</span><span class="o">/</span><span class="n">cuda</span> <span class="n">nvidia</span><span class="o">-</span><span class="n">smi</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>No-GPU support</strong></p>
+<p>We will be installing docker from the repository for CentOS. For more
+details check their <a class="reference external" href="https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-repository">website</a>.</p>
+<p>Make sure to uninstall other docker versions</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Uninstall other versions</span>
+<span class="n">sudo</span> <span class="n">yum</span> <span class="n">remove</span> <span class="n">docker</span> <span class="n">docker</span><span class="o">-</span><span class="n">common</span> <span class="n">docker</span><span class="o">-</span><span class="n">selinux</span> <span class="n">docker</span><span class="o">-</span><span class="n">engine</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>1. Set up the environment</em></li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Install required packages</span>
+<span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">yum</span><span class="o">-</span><span class="n">utils</span> <span class="n">device</span><span class="o">-</span><span class="n">mapper</span><span class="o">-</span><span class="n">persistent</span><span class="o">-</span><span class="n">data</span> <span class="n">lvm2</span>
+<span class="c1"># Set up stable repository</span>
+<span class="n">sudo</span> <span class="n">yum</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">manager</span> <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">repo</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">docker</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">linux</span><span class="o">/</span><span class="n">centos</span><span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">ce</span><span class="o">.</span><span class="n">repo</span>
+<span class="c1"># Make sure to disable edge versions, otherwise nvidia-docker will not recognize docker</span>
+<span class="n">sudo</span> <span class="n">yum</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">manager</span> <span class="o">--</span><span class="n">disable</span> <span class="n">docker</span><span class="o">-</span><span class="n">ce</span><span class="o">-</span><span class="n">edge</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>2. Install Docker CE</em></li>
+<li>Note: Make sure to install one of the docker versions that are [supported]
+(https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#which-docker-packages-are-supported) by
+nvidia-docker.*</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">docker</span><span class="o">-</span><span class="n">ce</span>
 </pre></div>
 </div>
 </li>
@@ -215,16 +233,6 @@ your web browser in the host machine. Use the token as the password.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Setting up the environment</a><ul>
@@ -237,6 +245,16 @@ your web browser in the host machine. Use the token as the password.</p>
 </li>
 </ul>
 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>

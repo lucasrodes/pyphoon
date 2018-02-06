@@ -73,6 +73,202 @@
 <dd></dd></dl>
 
 </div>
+<div class="section" id="module-pyphoon.preprocessing.fix">
+<span id="pyphoon-preprocessing-fix"></span><h2>pyphoon.preprocessing.fix<a class="headerlink" href="#module-pyphoon.preprocessing.fix" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyphoon.preprocessing.fix.fix_sequence">
+<code class="descclassname">pyphoon.preprocessing.fix.</code><code class="descname">fix_sequence</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>gap_filling=False</em>, <em>display=False</em>, <em>params=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.preprocessing.fix.fix_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Goes through a typhoon sequence and corrects it. This includes
+detecting and correcting corrupted images as well as filling some
+image temporal gaps by using interpolation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data</li>
+<li><strong>gap_filling</strong> (<em>bool</em>) – </li>
+<li><strong>display</strong> – </li>
+<li><strong>params</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.preprocessing.fix.fill_gaps">
+<code class="descclassname">pyphoon.preprocessing.fix.</code><code class="descname">fill_gaps</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>n_frames_th=6</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.preprocessing.fix.fill_gaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fills the temporal image gaps of typhoon sequence with interpolated
+image frames.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data.</li>
+<li><strong>n_frames_th</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.preprocessing.fix.interpolate_image_frames">
+<code class="descclassname">pyphoon.preprocessing.fix.</code><code class="descname">interpolate_image_frames</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>frame_idx_0</em>, <em>frame_idx_1</em>, <em>n_frames=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.preprocessing.fix.interpolate_image_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linearly interpolates two frames from a typhoon sequence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data</li>
+<li><strong>frame_idx_0</strong> (<em>int</em>) – First frame index</li>
+<li><strong>frame_idx_1</strong> (<em>int</em>) – Second frame index</li>
+<li><strong>n_frames</strong> (<em>int</em>) – Number of frames to generate using interpolation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List with the new generated frames</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.preprocessing.fix.generate_image_frames_ids">
+<code class="descclassname">pyphoon.preprocessing.fix.</code><code class="descname">generate_image_frames_ids</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>frame_idx_0</em>, <em>frame_idx_1</em>, <em>n_frames=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.preprocessing.fix.generate_image_frames_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates ids of n_frames in between positions frame_idx_0 and
+fram_idx_1. This is useful when new image frames have been generated
+through interpolation and require an id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon</li>
+<li><strong>frame_idx_0</strong> (<em>int</em>) – Index of first frame</li>
+<li><strong>frame_idx_1</strong> (<em>int</em>) – Index of second frame</li>
+<li><strong>n_frames</strong> – Number of frames for which an id has to be generated.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of newly generated ids.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.preprocessing.fix.fix_frame">
+<code class="descclassname">pyphoon.preprocessing.fix.</code><code class="descname">fix_frame</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>index</em>, <em>display</em>, <em>min_th</em>, <em>max_th</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.preprocessing.fix.fix_frame" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Possible ways to correct:</dt>
+<dd><ol class="first last arabic simple">
+<li>Interpolate regions of affected pixels in nearby images</li>
+<li>Saturate pixel intensities within a pre-defined range</li>
+<li>Use mean image</li>
+<li>Discard image</li>
+</ol>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>typhoon_sequence</strong> – </li>
+<li><strong>index</strong> – </li>
+<li><strong>min_th</strong> – </li>
+<li><strong>max_th</strong> – </li>
+<li><strong>display</strong> – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.preprocessing.fix.test_var_args">
+<code class="descclassname">pyphoon.preprocessing.fix.</code><code class="descname">test_var_args</code><span class="sig-paren">(</span><em>farg</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.preprocessing.fix.test_var_args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.preprocessing.fix.find_corrupted_frames">
+<code class="descclassname">pyphoon.preprocessing.fix.</code><code class="descname">find_corrupted_frames</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>mean_th=None</em>, <em>max_th=None</em>, <em>min_th=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.preprocessing.fix.find_corrupted_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds corrupted frames within the sequence under certain
+criteria. There are three different categories under which a frame
+can fall as corrupted.</p>
+<ol class="arabic simple">
+<li>Mean-corrupted: A frame is considered <em>mean-corrupted</em> if its
+pixel intensity mean is not in the range given by the function
+argument <em>mean_th</em>.</li>
+<li>Max-corrupted: A frame is considered <em>max-corrupted</em> if its
+maximum pixel intensity value is not within the range given by the
+function argument <em>max_th</em>.</li>
+<li>Min-corrupted: A frame is considered <em>min-corrupted</em> if its
+minimum pixel intensity value is not within the range given by the
+function argument <em>min_th</em>.</li>
+</ol>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of a certain typhoon</li>
+<li><strong>mean_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image pixel
+intensity mean. By default range [235, 292] is used.</li>
+<li><strong>max_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image
+maximum pixel intensity value. By default range [277,
+324] is used.</li>
+<li><strong>min_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image
+minimum pixel intensity value. By default range [165,
+235] is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List with corrupted frame indices. Also a list with the details
+about the corrupted files.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="k">import</span> <span class="n">load_TyphoonList</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load sequence from HDF file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/201626.h5&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">load_TyphoonList</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corrupted_frames</span><span class="p">,</span> <span class="n">corrupted_info</span> <span class="o">=</span> <span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">find_corrupted_frames</span><span class="p">()</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -81,6 +277,15 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pyphoon.preprocessing</a><ul>
+<li><a class="reference internal" href="#module-pyphoon.preprocessing.preprocessing">pyphoon.preprocessing.preprocessing</a></li>
+<li><a class="reference internal" href="#module-pyphoon.preprocessing.fix">pyphoon.preprocessing.fix</a></li>
+</ul>
+</li>
+</ul>
+
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
@@ -91,14 +296,6 @@
     </form>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">pyphoon.preprocessing</a><ul>
-<li><a class="reference internal" href="#module-pyphoon.preprocessing.preprocessing">pyphoon.preprocessing.preprocessing</a></li>
-</ul>
-</li>
-</ul>
-
         </div>
       </div>
       <div class="clearer"></div>

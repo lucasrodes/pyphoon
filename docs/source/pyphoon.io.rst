@@ -1,19 +1,23 @@
-pyphoon\.preprocessing
+pyphoon\.io
 ==============================
 
-
-pyphoon\.preprocessing\.preprocessing
---------------------------------------------
-
-.. automodule:: pyphoon.preprocessing.preprocessing
+.. automodule:: pyphoon.io.__init__
     :members:
     :undoc-members:
     :show-inheritance:
 
-pyphoon\.preprocessing\.fix
+pyphoon\.io\.h5
 --------------------------------------------
 
-.. automodule:: pyphoon.preprocessing.fix
+.. automodule:: pyphoon.io.h5
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pyphoon\.io\.tsv
+--------------------------------------------
+
+.. automodule:: pyphoon.io.tsv
     :members:
     :undoc-members:
     :show-inheritance:

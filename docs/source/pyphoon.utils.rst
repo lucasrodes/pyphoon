@@ -16,8 +16,6 @@ thoughts. Just bring data to live with it and start exploring!
 +===========================+==================================================================+
 | :ref:`eda_jma <eda_jma>`  | Visualization to better understand JMA provided Best Track Data. |
 +---------------------------+------------------------------------------------------------------+
-| :ref:`io <io>`            | Read and Write operations for HDF, TSV files                     |
-+---------------------------+------------------------------------------------------------------+
 | :ref:`utils <utils>`      | Various utils to assist interaction with data                    |
 +---------------------------+------------------------------------------------------------------+
 
@@ -27,16 +25,6 @@ pyphoon\.utils\.eda\_jma
 -------------------------------
 
 .. automodule:: pyphoon.utils.eda_jma
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. _io:
-
-pyphoon\.utils\.io
--------------------------
-
-.. automodule:: pyphoon.utils.io
     :members:
     :undoc-members:
     :show-inheritance:
