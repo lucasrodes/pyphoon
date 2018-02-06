@@ -4,6 +4,8 @@ Provides a set of tools to enable easy and pythonic interaction the Digital Typh
 
 **Full documentation: [http://lcsrg.me/pyphoon](http://lcsrg.me/pyphoon)**
 
+> :warning: Find list of **todo** tasks [here](TODO.md).
+ 
 ## Contents
 
 | **Section**              | **Description**                                                 |
