@@ -30,14 +30,9 @@ essential tool to interact with the Digital Typhoon data.
 +-------------------------------------------+---------------------------------------------------------------------------------------------------+
 
 """
-
-from os import listdir
-from os.path import isfile, join, isdir
-
-import h5py
-import numpy as np
-from pyphoon.utils.utils import get_ids_best, get_ids_images, h5file_2_name, \
+from pyphoon.utils import get_ids_best, get_ids_images, h5file_2_name, \
     folder_2_name
+from pyphoon.io.h5 import write_h5file
 from datetime import datetime as dt
 
 
@@ -157,7 +152,8 @@ class TyphoonSequence(object):
         format: {X: ..., Y: ...}. The details on the shape of the dictionary
         are according to the output format of :func:`read_h5file`.
 
-        >>> from pyphoon.utils.io import read_h5file, TyphoonSequence
+        >>> from pyphoon.io import TyphoonList
+        >>> from pyphoon.io.h5 read_h5file
         >>> # Load sequence from a dictionary (format {X: ..., Y:...})
         >>> data = read_h5file(path_to_file="data/201626.h5")
         >>> typhoon_sequence_2 = TyphoonSequence(data=data, name="X")
@@ -172,7 +168,7 @@ class TyphoonSequence(object):
         >>> plt.imshow(typhoon_sequence_2.image[10])
         >>> plt.show())
 
-    .. seealso:: :class:`~pyphoon.utils.utils.DisplaySequence`
+    .. seealso:: :class:`~pyphoon.utils.DisplaySequence`
 
     """
     def __init__(self, data, name):
@@ -329,182 +325,3 @@ class TyphoonSequence(object):
         self.images[idx:idx] = frames
         # Insert ids
         self.images_ids[idx:idx] = frames_ids
-
-
-##########################
-#  H5 RELATED FUNCTIONS  #
-##########################
-
-def get_h5_filenames(directory):
-    """ Obtains the list of H5 file names within the given directory. If the
-    specified directory is a H5 file itself, then the name of the file is
-    returned.
-
-    :param directory: Path to an H5 file or a folder with a set of H5 files.
-    :type directory: str
-    :return: List with the paths to all H5 files available according to the
-        specified directory. List is empty if no file was found).
-    :rtype: list
-    """
-    if isdir(directory):
-        files = [f for f in listdir(directory) if
-                 f.endswith('.h5') and isfile(join(directory, f))]
-        files = sorted(files)
-    elif directory.endswith('.h5'):
-        directory = directory.split('/')[-1]
-        files = [directory]
-    else:
-        files = []
-    return files
-
-
-def read_h5file(path_to_file):
-    """ Reads an HDF file and returns its content in a dictionary-fashion.
-
-    :param path_to_file: Path to an H5 file.
-    :type path_to_file: str
-    :return: Content of the H5 file as a dictionary. Keys stand for data
-        field names, values are the corresponding data.
-    :rtype: dict
-    """
-    f = h5py.File(path_to_file, 'r')
-    # List all groups
-    keys = list(f.keys())
-    # Get the data
-    data = {key: f[key][:] for key in keys if key != "name"}
-    # Get file name
-    # name = path_to_file.split('/')[-1].split('.h5')[-2]
-    # data['name'] = name
-    return data
-
-
-def write_h5file(data, path_to_file, compression):
-    """ Constructs and stores an H5 file containing the given data.
-
-    :param data: Dictionary containing the data to be stored. Keys stand for
-        data field names, values are the corresponding data.
-    :type data: dict
-    :param path_to_file: Path where the new H5 file will be created.
-    :type path_to_file: str
-    :param compression: Use to compress H5 file. Find more details at
-            the `h5py documentation`_
-
-    .. _h5py documentation:
-            http://docs.h5py.org/en/latest/high/dataset.html
-    """
-    h5f = h5py.File(path_to_file, 'w')
-    for key, value in data.items():
-        h5f.create_dataset(key, data=value, compression=compression)
-
-
-###########################
-#  TSV RELATED FUNCTIONS  #
-###########################
-
-def read_tsvs(directory='original_data/jma/'):
-    """ Reads all the files from the jma directory and returns a list of *N*
-    elements, each being a list of typhoon features.
-
-    :param directory: Path of the JMA metadata
-    :type directory: str
-    :return: List with the metadata of the *N* images
-    """
-    files = listdir(directory)
-    metadata = []
-    for f in files:
-        f = join(directory, f)
-        metadata.extend(read_tsv(f))
-    return metadata
-
-
-def read_tsv(path_to_file):
-    """ Reads a TSV file from the best track dataset.
-
-    :param path_to_file: Complete path to the TSV file
-    :type path_to_file: str
-    :return: *NxD* Numpy array (*N*: #samples, *D*: #features)
-    """
-    metadata = []
-    if isfile(path_to_file):
-        ff = open(path_to_file, 'r').readlines()
-        for fff in ff:
-            _metadata = fff.split('\t')
-            _metadata[-1] = _metadata[-1].split('\n')[0]
-            __metadata = list(map(float, _metadata))
-            # index = [0, 1, 2, 3, 4]
-            # for i in index:
-            #    __metadata[i] = int(__metadata[i])
-            # __metadata[-1] = bool(__metadata[-1])
-            metadata.append(__metadata)
-    return metadata
-
-
-def check_constant_distance_in_tsv(path_best="original_data/jma",
-                                   time_distance=3600):
-    """ Checks that all provided JMA data is correct, i.e. that all samples
-    within a typhoon sequence have a constant tome distance between themselves.
-
-    :param path_best: Directory containing TSV files.
-    :type path_best: str
-    :param time_distance: Distance between frames in seconds.
-    :type time_distance: int
-    :return: List with the number of samples with distance different than 1h
-        with the previous one. Element n:th in the list refers to the n:th
-        typhoon sequence.
-    """
-
-    assert isinstance(time_distance, int), "time_distance is not aninteger: " \
-                                           "%r" % time_distance
-
-    files = listdir(path_best)
-    error = []
-    for file in files:
-        data = np.array(read_tsv(join(path_best, file)))
-        _error = 0
-        for i in range(len(data)-1):
-            d0 = dt(int(data[i][0]), int(data[i][1]), int(data[i][2]),
-                    int(data[i][3]))
-            d1 = dt(int(data[i+1][0]), int(data[i+1][1]), int(data[i+1][2]),
-                    int(data[i+1][3]))
-            delta = (d1-d0).total_seconds()
-            if delta != time_distance:
-                _error += 1
-                print("Error at", i, "of", delta, "seconds")
-        error.append(_error)
-    return error
-
-
-##############################
-#  IMAGES RELATED FUNCTIONS  #
-##############################
-
-def read_images(path_to_folder):
-    """ Reads all image files within a given folder. Note that all images are
-    assumed to have the same dimensionality. In addition, an image should have
-    been stored as a dataset, with name 'infrared', in an HDF file.
-
-    :param path_to_folder: Complete path to the folder containing HDF image
-        files.
-    :type path_to_folder: str
-    :return: *NxWxH* Numpy array (*N*: #images, *W*: image width, *H*: image
-        height)
-    """
-    files = get_h5_filenames(path_to_folder)
-    images = []
-    for file in files:
-        img = read_image(join(path_to_folder, file))
-        images.append(img)
-    return np.array(images)
-
-
-def read_image(path_to_file):
-    """ Reads an image from an HDF file. It assumes that the image was stored
-    as a dataset with name 'infrared'.
-
-    :param path_to_file: Path to the HDF file storing the image.
-    :type path_to_file: str
-    :return: Image
-    :rtype: list
-    """
-    data = read_h5file(path_to_file)
-    return data['infrared']

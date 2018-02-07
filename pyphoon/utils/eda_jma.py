@@ -78,7 +78,7 @@ def plot_hist(data, feature_index, bins=100, show_fig=False,
         the distribution of samples depending on the class they belong
         to.
 
-        >>> from pyphoon.utils.io import read_tsvs
+        >>> from pyphoon.io.tsv import read_tsvs
         >>> from pyphoon.utils.eda_jma import plot_hist
         >>> import numpy as np
         >>> # Load data and convert to np.array
@@ -139,7 +139,7 @@ def plot_2feature_heatmap(data, index1, index2=4, annotation=True,
         the distribution of the pressure values depending on the class
         they belong to.
 
-        >>> from pyphoon.utils.io import read_tsvs
+        >>> from pyphoon.io.tsv import read_tsvs
         >>> from pyphoon.utils.eda_jma import plot_2feature_heatmap
         >>> import numpy as np
         >>> # Load data and convert to np.array
