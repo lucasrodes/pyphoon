@@ -27,11 +27,11 @@ Refer to the instructions [here](http://lcsrg.me/pyphoon/build/html/env_setup.ht
 Easily visualize an animation of a sequence:
 
 ```python
-from pyphoon.utils.io import load_TyphoonSequence
-from pyphoon.utils.utils import DisplaySequence
+from pyphoon.io import read_typhoonlist_h5
+from pyphoon.utils import DisplaySequence
 
 # Load a sequence
-sequence = load_TyphoonSequence('../sampledata/197906.h5')
+sequence = read_typhoonlist_h5('../sampledata/197906.h5')
 
 # Visualize sequence
 DisplaySequence(
