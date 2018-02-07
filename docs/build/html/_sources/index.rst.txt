@@ -13,7 +13,7 @@ detection of corrupted files. However, new features, such as actual models
 might be added as time passes.
 
 
-Get familiar:
+**Get familiar:**
 
 * :doc:`Setting up the environment <env_setup>`
 * :doc:`Examples <examples>`

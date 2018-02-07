@@ -50,6 +50,7 @@
 <p>For this project, a docker container has been used. In particular, we used a
 modified version of the docker <a class="reference external" href="https://github.com/ufoym/deepo">deepo</a>, which
 provides a version with GPU support to most DL/ML frameworks.</p>
+<p><em>Note: Be aware that some of the commands might requite sudo permission</em></p>
 <div class="section" id="get-the-project-in-your-working-directory">
 <span id="get-the-project-in-your-working-directory"></span><h2>Get the project in your working directory<a class="headerlink" href="#get-the-project-in-your-working-directory" title="Permalink to this headline">¶</a></h2>
 <p>First of all, the project from GitHub should be retrieved. To accelerate the
@@ -84,10 +85,10 @@ work, some symbolic links are created</p>
 <li><p class="first"><strong>GPU support</strong></p>
 <p>First, make sure you have installed the <a class="reference external" href="https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#how-do-i-install-the-nvidia-driver">NVIDIA driver</a>.
 Next, we need to install <a class="reference external" href="https://docs.docker.com/install/linux/docker-ce/centos/">docker</a> and
-<a class="reference external" href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker</a>.</p>
-<p>Note that by solely installing <code class="docutils literal"><span class="pre">nvidia-docker</span></code> we automatically install the
-last stable release of docker-ce.</p>
-<p>Hence, all we need to do is</p>
+<a class="reference external" href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker</a>. Note that by
+solely installing <code class="docutils literal"><span class="pre">nvidia-docker</span></code> we automatically install the
+last stable release of docker-ce. Hence, all we need to do is install
+nvidia-docker.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># If you have nvidia-docker 1.0 installed: we need to remove it and all existing GPU containers</span>
 <span class="n">docker</span> <span class="n">volume</span> <span class="n">ls</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">f</span> <span class="n">driver</span><span class="o">=</span><span class="n">nvidia</span><span class="o">-</span><span class="n">docker</span> <span class="o">|</span> <span class="n">xargs</span> <span class="o">-</span><span class="n">r</span> <span class="o">-</span><span class="n">I</span><span class="p">{}</span> <span class="o">-</span><span class="n">n1</span> <span class="n">docker</span> <span class="n">ps</span> <span class="o">-</span><span class="n">q</span> <span class="o">-</span><span class="n">a</span> <span class="o">-</span><span class="n">f</span> <span class="n">volume</span><span class="o">=</span><span class="p">{}</span> <span class="o">|</span> <span class="n">xargs</span> <span class="o">-</span><span class="n">r</span> <span class="n">docker</span> <span class="n">rm</span> <span class="o">-</span><span class="n">f</span>
 <span class="n">sudo</span> <span class="n">yum</span> <span class="n">remove</span> <span class="n">nvidia</span><span class="o">-</span><span class="n">docker</span>
@@ -134,7 +135,11 @@ details check their <a class="reference external" href="https://docs.docker.com/
 </li>
 <li><p class="first"><strong>Modify image</strong></p>
 <p>Create a Dockerfile</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">~/.</span><span class="n">docker_images</span><span class="o">/&lt;</span><span class="n">docker</span> <span class="n">image</span> <span class="n">folder</span> <span class="n">name</span><span class="o">&gt;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Create docker images folder</span>
+<span class="n">mkdir</span> <span class="o">~/.</span><span class="n">docker_images</span>
+<span class="c1"># Create folder for new docker image</span>
+<span class="n">mkdir</span> <span class="o">~/.</span><span class="n">docker_images</span><span class="o">/&lt;</span><span class="n">docker</span> <span class="n">image</span> <span class="n">folder</span> <span class="n">name</span><span class="o">&gt;</span>
+<span class="c1"># Create docker file</span>
 <span class="n">vim</span> <span class="o">~/.</span><span class="n">docker_images</span><span class="o">/&lt;</span><span class="n">docker</span> <span class="n">image</span> <span class="n">folder</span> <span class="n">name</span><span class="o">&gt;/</span><span class="n">Dockerfile</span>
 </pre></div>
 </div>
@@ -154,7 +159,7 @@ so that other researchers can easily import it.</em></p>
 <li><p class="first"><strong>Create a Docker container</strong></p>
 <p>Finally, time to create a container of the Docker image. We will create
 it with GPU name <code class="docutils literal"><span class="pre">dlnii</span></code> (short for deep learning NII).</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">nvidia</span><span class="o">-</span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> 
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">nvidia</span><span class="o">-</span><span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> \
 <span class="o">-</span><span class="n">p</span> <span class="mi">8888</span><span class="p">:</span><span class="mi">8888</span> \
 <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">misc</span><span class="o">/</span><span class="n">fs9</span><span class="o">/&lt;</span><span class="n">user</span><span class="o">&gt;/</span><span class="p">:</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">storage</span> \
 <span class="o">-</span><span class="n">v</span> <span class="o">/</span><span class="n">misc</span><span class="o">/</span><span class="n">fs3</span><span class="o">/</span><span class="n">home</span><span class="o">/&lt;</span><span class="n">user</span><span class="o">&gt;/</span><span class="n">projects</span><span class="p">:</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">projects</span> \

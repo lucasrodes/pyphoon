@@ -10,10 +10,10 @@ pyphoon\.preprocessing\.preprocessing
     :undoc-members:
     :show-inheritance:
 
-pyphoon\.preprocessing\.fix
+pyphoon\.preprocessing\.clean
 --------------------------------------------
 
-.. automodule:: pyphoon.preprocessing.fix
+.. automodule:: pyphoon.preprocessing.clean
     :members:
     :undoc-members:
     :show-inheritance:

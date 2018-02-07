@@ -1,6 +1,7 @@
 pyphoon\.utils
 ======================
 
+
 This package provides tools to interact with stored files, which basically
 means opening them and visualizing them. This can be extremely helpful when
 you want to visualize a particular typhoon sequence or generate a GIF from
@@ -18,6 +19,11 @@ thoughts. Just bring data to live with it and start exploring!
 +---------------------------+------------------------------------------------------------------+
 | :ref:`utils <utils>`      | Various utils to assist interaction with data                    |
 +---------------------------+------------------------------------------------------------------+
+
+.. automodule:: pyphoon.io.__init__
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 .. _eda_jma:
 

@@ -1,6 +1,6 @@
 from os.path import join,
 from pyphoon.utils.io import load_TyphoonSequence, get_h5_filenames
-from pyphoon.preprocessing.fix import find_corrupted_frames
+from pyphoon.preprocessing.clean import find_corrupted_frames
 import matplotlib.pyplot as plt
 
 # Directories

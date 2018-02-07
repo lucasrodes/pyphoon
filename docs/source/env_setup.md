@@ -3,6 +3,8 @@
 For this project, a docker container has been used. In particular, we used a
 modified version of the docker [deepo](https://github.com/ufoym/deepo), which
  provides a version with GPU support to most DL/ML frameworks. 
+ 
+*Note: Be aware that some of the commands might requite sudo permission*
 
 
 ## Get the project in your working directory
@@ -41,12 +43,10 @@ work, some symbolic links are created
 
     First, make sure you have installed the [NVIDIA driver](https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#how-do-i-install-the-nvidia-driver).
     Next, we need to install [docker](https://docs.docker.com/install/linux/docker-ce/centos/) and 
-    [nvidia-docker](https://github.com/NVIDIA/nvidia-docker). 
-    
-    Note that by solely installing `nvidia-docker` we automatically install the 
-    last stable release of docker-ce.
-    
-    Hence, all we need to do is
+    [nvidia-docker](https://github.com/NVIDIA/nvidia-docker). Note that by 
+    solely installing `nvidia-docker` we automatically install the 
+    last stable release of docker-ce. Hence, all we need to do is install 
+    nvidia-docker.
     
     ```
     # If you have nvidia-docker 1.0 installed: we need to remove it and all existing GPU containers
@@ -99,7 +99,11 @@ work, some symbolic links are created
     Create a Dockerfile
 
     ```
+    # Create docker images folder
+    mkdir ~/.docker_images
+    # Create folder for new docker image
     mkdir ~/.docker_images/<docker image folder name>
+    # Create docker file
     vim ~/.docker_images/<docker image folder name>/Dockerfile
     ```
     
@@ -126,7 +130,7 @@ work, some symbolic links are created
     it with GPU name `dlnii` (short for deep learning NII). 
     
     ```
-    nvidia-docker run -it 
+    nvidia-docker run -it \
     -p 8888:8888 \
     -v /misc/fs9/<user>/:/root/storage \
     -v /misc/fs3/home/<user>/projects:/root/projects \

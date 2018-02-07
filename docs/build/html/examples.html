@@ -118,12 +118,12 @@ and that we want to create the integrated dataset at <cite>../data/integration_0
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">isdir</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
-<span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">create_TyphoonSequence</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">create_typhoonlist_from_source</span>
 
 <span class="c1"># Directories</span>
 <span class="n">directory_images</span> <span class="o">=</span> <span class="s2">&quot;../original_data/image/&quot;</span>
 <span class="n">directory_best</span> <span class="o">=</span> <span class="s2">&quot;../original_data/jma/&quot;</span>
-<span class="n">directory_new_file</span> <span class="o">=</span> <span class="s2">&quot;../data/integration_0&quot;</span>
+<span class="n">directory_new_file</span> <span class="o">=</span> <span class="s2">&quot;../data/others/integration_3&quot;</span>
 
 <span class="c1"># Get typhoon image sequence folders.</span>
 <span class="n">folders</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">directory_images</span><span class="p">)</span> <span class="k">if</span> <span class="n">isdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">directory_images</span><span class="p">,</span> <span class="n">f</span><span class="p">))])</span>
@@ -141,14 +141,14 @@ and that we want to create the integrated dataset at <cite>../data/integration_0
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot; new H5 file:&quot;</span><span class="p">,</span> <span class="n">path_newfile</span><span class="p">)</span>
 
     <span class="c1"># Create and store TyphoonSequence</span>
-    <span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">create_TyphoonSequence</span><span class="p">(</span>
+    <span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">create_typhoonlist_from_source</span><span class="p">(</span>
         <span class="n">path_images</span><span class="o">=</span><span class="n">path_images</span><span class="p">,</span>
         <span class="n">path_best</span><span class="o">=</span><span class="n">path_best</span>
     <span class="p">)</span>
-    <span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="n">path_newfile</span><span class="p">)</span>
+    <span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="n">path_newfile</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
-<p>We note that <a class="reference internal" href="pyphoon.utils.html#pyphoon.utils.io.TyphoonSequence.save_as_h5" title="pyphoon.utils.io.TyphoonSequence.save_as_h5"><code class="xref py py-func docutils literal"><span class="pre">save_as_h5()</span></code></a> has an
+<p>We note that <code class="xref py py-func docutils literal"><span class="pre">save_as_h5()</span></code> has an
 option to save the data in a compressed format.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -209,17 +209,19 @@ stored in <cite>../data/integration_0</cite> and store the results in <cite>../d
 39
 40
 41
-42</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+42
+43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;agg&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
-<span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">load_TyphoonSequence</span><span class="p">,</span> <span class="n">get_h5_filenames</span><span class="p">,</span> <span class="n">write_h5file</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">read_typhoonlist_h5</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="kn">import</span> <span class="n">get_h5_filenames</span><span class="p">,</span> <span class="n">write_h5file</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
 
 <span class="c1"># Get filenames</span>
-<span class="n">directory_images</span> <span class="o">=</span> <span class="s2">&quot;../data/sequences/compressed&quot;</span>
+<span class="n">directory_images</span> <span class="o">=</span> <span class="s2">&quot;../data/others/integration_3&quot;</span>
 <span class="n">files</span> <span class="o">=</span> <span class="n">get_h5_filenames</span><span class="p">(</span><span class="n">directory_images</span><span class="p">)</span>
 
 <span class="c1"># Parameters</span>
@@ -233,7 +235,7 @@ stored in <cite>../data/integration_0</cite> and store the results in <cite>../d
 <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
     <span class="c1"># Load sequence</span>
-    <span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">load_TyphoonSequence</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">directory_images</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span>
+    <span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">directory_images</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">images</span><span class="p">)</span>
 
     <span class="c1"># Sequentially update mean image</span>
@@ -278,16 +280,16 @@ However, note that this can be extended to any other typhoon sequence.</p>
 13
 14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">load_TyphoonSequence</span>
-<span class="kn">from</span> <span class="nn">pyphoon.utils.utils</span> <span class="kn">import</span> <span class="n">DisplaySequence</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">read_typhoonlist_h5</span>
+<span class="kn">from</span> <span class="nn">pyphoon.utils</span> <span class="kn">import</span> <span class="n">DisplaySequence</span>
 
 <span class="c1"># Load sequence</span>
-<span class="n">sequence</span> <span class="o">=</span> <span class="n">load_TyphoonSequence</span><span class="p">(</span><span class="s1">&#39;../sampledata/197906.h5&#39;</span><span class="p">)</span>
+<span class="n">sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span><span class="s1">&#39;../sampledata/197906.h5&#39;</span><span class="p">)</span>
 
 <span class="c1"># Create DisplaySequence instance and run</span>
 <span class="n">DisplaySequence</span><span class="p">(</span>
     <span class="n">typhoon_sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;197906&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;201626&quot;</span><span class="p">,</span>
     <span class="n">interval</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
 <span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
@@ -354,16 +356,22 @@ directory <code class="docutils literal"><span class="pre">data/integration_0</s
 42
 43
 44
-45</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+45
+46
+47
+48
+49</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
-<span class="kn">from</span> <span class="nn">pyphoon.utils.io</span> <span class="kn">import</span> <span class="n">load_TyphoonSequence</span><span class="p">,</span> <span class="n">get_h5_filenames</span>
-<span class="kn">from</span> <span class="nn">pyphoon.preprocessing.fix</span> <span class="kn">import</span> <span class="n">find_corrupted_frames</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">read_typhoonlist_h5</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="kn">import</span> <span class="n">get_h5_filenames</span>
+<span class="kn">from</span> <span class="nn">pyphoon.preprocessing.clean</span> <span class="kn">import</span> <span class="n">find_corrupted_frames</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
+<span class="c1"># TODO: Not compiling!</span>
 <span class="c1"># Directories</span>
-<span class="n">directory_files_0</span> <span class="o">=</span> <span class="s2">&quot;../data/sequences/compressed&quot;</span>
-<span class="n">directory_corrupted_0</span> <span class="o">=</span> <span class="s2">&quot;../data/corrupted/iter_0&quot;</span>
+<span class="n">directory_files_0</span> <span class="o">=</span> <span class="s2">&quot;../data/others/integration_3/&quot;</span>
+<span class="n">directory_corrupted_0</span> <span class="o">=</span> <span class="s2">&quot;../data/corrupted/iter_1&quot;</span>
 
 <span class="c1"># Get H5 file names</span>
 <span class="n">files_0</span> <span class="o">=</span> <span class="n">get_h5_filenames</span><span class="p">(</span><span class="n">directory_files_0</span><span class="p">)</span>
@@ -374,19 +382,20 @@ directory <code class="docutils literal"><span class="pre">data/integration_0</s
 
     <span class="c1"># Load sequence</span>
     <span class="n">path_file_0</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">directory_files_0</span><span class="p">,</span> <span class="n">file_0</span><span class="p">)</span>
-    <span class="n">sequence</span> <span class="o">=</span> <span class="n">load_TyphoonSequence</span><span class="p">(</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span>
         <span class="n">path_to_file</span><span class="o">=</span><span class="n">path_file_0</span>
     <span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file_0</span><span class="p">)</span>
 
     <span class="c1"># Get corrupted frame indices</span>
     <span class="n">_corrupted_frames</span><span class="p">,</span> <span class="n">_corrupted_info</span> <span class="o">=</span> <span class="n">find_corrupted_frames</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
     <span class="n">corrupted_frames</span><span class="p">[</span><span class="n">sequence</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">_corrupted_frames</span>
 
-    <span class="c1">#  Save corrupted images as frames</span>
+    <span class="c1">#  Save corrupted image frames as images</span>
     <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">corrupted_frame</span><span class="p">,</span> <span class="n">frame_info</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">_corrupted_frames</span><span class="p">,</span> <span class="n">_corrupted_info</span><span class="p">):</span>
         <span class="n">_info</span> <span class="o">=</span> <span class="s1">&#39; / &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">frame_info</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
-        <span class="n">frame_id</span> <span class="o">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">images_complete_id</span><span class="p">(</span><span class="n">corrupted_frame</span><span class="p">)</span>
+        <span class="n">frame_id</span> <span class="o">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">images_ids</span><span class="p">[</span><span class="n">corrupted_frame</span><span class="p">]</span>
         <span class="c1"># Clean plot</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">sequence</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="n">corrupted_frame</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greys&#39;</span><span class="p">)</span>
@@ -399,6 +408,7 @@ directory <code class="docutils literal"><span class="pre">data/integration_0</s
         <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
 
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="s2">&quot;files corrupted&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;---------------&quot;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table></div>
 <div class="admonition note">
