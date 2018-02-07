@@ -1,9 +1,10 @@
 import numpy as np
 import copy
+import time
 
 
-def fix_sequence(typhoon_sequence, gap_filling=False, display=False,
-                 n_frames_th=6, fix_params=None):
+def fix_sequence(typhoon_sequence, correct_frames=True, gap_filling=False,
+                 display=False, n_frames_th=6, fix_params=None):
     """ Goes through a typhoon sequence and corrects its frames. This includes
     detecting and correcting corrupted images as well as filling some
     image temporal gaps by using interpolation.
@@ -11,9 +12,13 @@ def fix_sequence(typhoon_sequence, gap_filling=False, display=False,
     :param typhoon_sequence: Sequence of typhoon data. All frames should
         belong to a certain typhoon sequence.
     :type typhoon_sequence: TyphoonList
-    :param gap_filling: Set to True if temporal image frame gaps should be
+    :param correct_frames: Set to False if frames should not be corrected.
+    :type correct_frames: bool, default True
+    :param gap_filling: Set to True if temporal image
+    frame gaps
+    should be
         filled with synthetic image frames.
-    :type gap_filling: bool
+    :type gap_filling: bool, default False
     :param display: Set to True if alerts and running information should be
         displayed
     :param n_frames_th:
@@ -33,7 +38,7 @@ def fix_sequence(typhoon_sequence, gap_filling=False, display=False,
         gaps are not filled and. To have information messages about the fixing
         process we set the option *display* to be True.
 
-        >>> from pyphoon.preprocessing.fix import fix_sequence
+        >>> from pyphoon.preprocessing.clean import fix_sequence
         >>> typhoon_sequence_new = fix_sequence(typhoon_sequence, display=True)
 
         If we want to change the detection/correction parameters, say to
@@ -53,18 +58,20 @@ def fix_sequence(typhoon_sequence, gap_filling=False, display=False,
     typhoon_sequence_new = copy.deepcopy(typhoon_sequence)
 
     # Correct frames
-    for index in range(len(typhoon_sequence_new.images)):
-        fix_frame(
-            typhoon_sequence_new,
-            index,
-            display=display,
-            params=fix_params,
-            detect_fct=_detect_corrupted_pixels_1,
-            correct_fct=_correct_corrupted_pixels_1
-        )
+    if correct_frames:
+        for index in range(len(typhoon_sequence_new.images)):
+            fix_frame(
+                typhoon_sequence_new,
+                index,
+                display=display,
+                params=fix_params,
+                detect_fct=_detect_corrupted_pixels_1,
+                correct_fct=_correct_corrupted_pixels_1
+            )
 
     #  Fill temporal gaps
     if gap_filling:
+        t0 = time.time()
         fill_gaps(typhoon_sequence_new, n_frames_th)
 
     return typhoon_sequence_new
@@ -92,7 +99,6 @@ def fix_frame(typhoon_sequence, index, display, params, detect_fct,
     :type detect_fct: callable
     :param correct_fct: Corrupted pixel area correction function.
     :type correct_fct: callable
-
     """
     print("\n-----------\nindex:", index) if display else 0
 
@@ -101,9 +107,14 @@ def fix_frame(typhoon_sequence, index, display, params, detect_fct,
 
     # CORRECT AREA
     if True in pos:
+        # Correct frame
         typhoon_sequence.images[index][pos] = \
             correct_fct(typhoon_sequence, index, pos, detect_fct, display,
                         params=params)
+        # Add fix-flag: Frame has been corrected
+        image_id = typhoon_sequence.images_ids[index]
+        index_best = typhoon_sequence.best_ids.index(image_id)
+        typhoon_sequence.data['Y'][index_best, -1] = 1
 
 
 def _detect_corrupted_pixels_1(image_frame, params):
@@ -259,25 +270,32 @@ def _fill_gaps(typhoon_sequence_raw, typhoon_sequence, index, n_frames_cum,
     :rtype: int
     """
     # Distance in hours between frame at position index and frame at index - 1
-    n_frames = typhoon_sequence_raw.get_image_frames_distance(index - 1, index)
+    frame_dist = typhoon_sequence_raw.get_image_frames_distance(index - 1,
+                                                                index) -1
 
     # Fill gap only if frame distance is below a certain threshold
-    if 1 < n_frames <= n_frames_th:
+    if 0 < frame_dist < n_frames_th+10:
         # Interpolate frames
         new_frames = interpolate_image_frames(typhoon_sequence_raw,
                                               index - 1, index,
-                                              n_frames=n_frames-1)
+                                              n_frames=frame_dist)
         # Generate ids for new frames
         new_frames_ids = generate_image_frames_ids(typhoon_sequence_raw,
-                                                   index- 1, index,
-                                                   n_frames=n_frames-1)
+                                                   index-1, index,
+                                                   n_frames=frame_dist)
+        # Add synthetic image flags for new frames
+        index_best = typhoon_sequence.best_ids.index(new_frames_ids[0])
+        for idx in range(len(new_frames)):
+            typhoon_sequence.data['Y'][index_best + idx, -2] = 1
+            typhoon_sequence.data['Y'][index_best + idx, -1] = 2
 
         # Insert new image frames and ids
+        # TODO: This takes a lot of time!
         typhoon_sequence.insert_frames(new_frames, new_frames_ids, index +
                                        n_frames_cum)
-        n_frames_cum += n_frames-1
-    elif n_frames> n_frames_th:
-        print(index, n_frames)
+        n_frames_cum += frame_dist
+    elif frame_dist >= n_frames_th:
+        print(index, frame_dist)
     return n_frames_cum
 
 
@@ -300,6 +318,8 @@ def interpolate_image_frames(typhoon_sequence, frame_idx_0, frame_idx_1,
     frame_1 = typhoon_sequence.images[frame_idx_1]
     frames_new = [((n_frames-n)*frame_0 + (n+1)*frame_1) / (n_frames+1) for
                   n in range(n_frames)]
+    # TODO: Reduce number of different values appearing in all elements in
+    # frames_new
     return frames_new
 
 
@@ -320,11 +340,15 @@ def generate_image_frames_ids(typhoon_sequence, frame_idx_0, frame_idx_1,
     :return: List of newly generated ids.
     :rtype: list
     """
-    dif = typhoon_sequence.images_date(frame_idx_1) - \
-          typhoon_sequence.images_date(frame_idx_0)
+    dif = typhoon_sequence.images_dates(frame_idx_1) - \
+          typhoon_sequence.images_dates(frame_idx_0)
 
-    ids_new = [int((typhoon_sequence.images_date(frame_idx_0) + (n + 1) / (
-        n_frames + 1) * dif).strftime("%Y%m%d%H")) for n in range(n_frames)]
+    name = typhoon_sequence.images_ids[0].split('_')[0]
+    ids_new = [
+        name + "_" + (typhoon_sequence.images_dates(frame_idx_0) + (n + 1)/(
+            n_frames + 1) * dif).strftime("%Y%m%d%H") for n in range(n_frames)
+    ]
+
     return ids_new
 
 
@@ -369,10 +393,10 @@ def find_corrupted_frames(typhoon_sequence, mean_th=None, max_th=None,
 
     :Example:
 
-        >>> from pyphoon.io import load_TyphoonList
+        >>> from pyphoon.io import read_typhoonlist_h5
         >>> # Load sequence from HDF file
         >>> path = "data/201626.h5"
-        >>> typhoon_sequence = load_TyphoonList(path_to_file=path)
+        >>> typhoon_sequence = read_typhoonlist_h5(path_to_file=path)
         >>> corrupted_frames, corrupted_info = typhoon_sequence.find_corrupted_frames()
     """
     # Get mean, maximum and minimum values of each image in the sequence
@@ -424,86 +448,3 @@ def find_corrupted_frames(typhoon_sequence, mean_th=None, max_th=None,
 #######################################
 #           NON-MAINTAINED            #
 #######################################
-
-def _correct_frame2(typhoon_sequence, index, display, min_th, max_th):
-    """
-    Possible ways to correct:
-        1. Interpolate regions of affected pixels in nearby images
-        2. Saturate pixel intensities within a pre-defined range
-        3. Use mean image
-        4. Discard image
-
-    :param typhoon_sequence:
-    :param index:
-    :param min_th:
-    :param max_th:
-    :param display:
-    """
-    K = len(typhoon_sequence.images)
-
-    # GET AFFECTED AREA
-    pos = _get_corrupted_pixels2(typhoon_sequence.images[index], min_th, max_th)
-
-    typhoon_sequence.images[index][pos] = 0
-
-    if True in pos and False:
-        print("\n-----------\nindex:", index) if display else 0
-
-        # BACKWARD
-        if index > 0:
-            region_n = typhoon_sequence.images[index - 1][pos]
-            c_n = np.ones_like(region_n)
-            pos_n = get_corrupted_pixels(region_n, min_th[pos], max_th[pos])
-
-            k = 2
-            print(" backward") if display else 0
-            print("  1") if display else 0
-            while True in pos_n and index - k >= 0:
-                print("  -", k) if display else 0
-                region_n[pos_n] = typhoon_sequence.images[index - k][pos][pos_n]
-                c_n[pos_n] *= np.exp(-k + 1)
-                pos_n = get_corrupted_pixels(region_n, min_th[pos], max_th[pos])
-                k += 1
-
-            if True in pos_n:
-                # TODO: Change to mean image values (using pos)
-                print("  exception") if display else 0
-                region_n[pos_n] = 270
-                c_n[pos_n] *= np.exp(-k + 1)
-
-        else:
-            c_n = 0
-            region_n = 0
-
-        # FORWARD
-        if index < K - 1:
-            region_p = typhoon_sequence.images[index + 1][pos]
-            c_p = np.ones_like(region_p)
-            pos_p = get_corrupted_pixels(region_p, min_th[pos], max_th[pos])
-
-            k = 2
-            print(" forward") if display else 0
-            print("  1") if display else 0
-            while True in pos_p and index + k < K:
-                print("  +", k) if display else 0
-                region_p[pos_p] = typhoon_sequence.images[index+k][pos][pos_p]
-                c_p[pos_p] *= np.exp(-k+1)
-                pos_p = get_corrupted_pixels(region_p, min_th[pos], max_th[pos])
-                k += 1
-
-            if True in pos_p:
-                # TODO: Change to mean image values (using pos)
-                print("  exception") if display else 0
-                region_p[pos_p] = 270
-                c_p[pos_p] *= np.exp(-k + 1)
-        else:
-            c_p = 0
-            region_p = 0
-
-        # INTERPOLATE
-        typhoon_sequence.images[index][pos] = (c_n * region_n +
-                                               c_p * region_p) / (c_n + c_p)
-
-
-def _get_corrupted_pixels2(image, _min_th, _max_th):
-    return (image < _min_th) + (image > _max_th)
