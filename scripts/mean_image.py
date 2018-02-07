@@ -1,11 +1,15 @@
 import sys
 sys.path.insert(0, '..')
+import matplotlib
+matplotlib.use('agg')
 from os.path import join
-from pyphoon.utils.io import load_TyphoonSequence, get_h5_filenames, write_h5file
+from pyphoon.io import read_typhoonlist_h5
+from pyphoon.io.h5 import get_h5_filenames, write_h5file
 import numpy as np
 
+
 # Get filenames
-directory_images = "../data/integration_0"
+directory_images = "../data/others/integration_3"
 files = get_h5_filenames(directory_images)
 
 # Parameters
@@ -17,8 +21,9 @@ minv = 0
 
 # Iterate over all HDF files
 for file in files:
+    print(file)
     # Load sequence
-    typhoon_sequence = load_TyphoonSequence(join(directory_images, file))
+    typhoon_sequence = read_typhoonlist_h5(join(directory_images, file))
     X = np.array(typhoon_sequence.images)
 
     # Sequentially update mean image
@@ -33,6 +38,6 @@ std = np.sqrt(mu2 - mu**2)
 # Store images
 write_h5file(
     data={"mean": mu, "std": std, "max": maxv, "min": minv},
-    path_to_file='../data/preprocessing/params.h5',
+    path_to_file='../data/preprocessing/params_0.h5',
     compression=None
 )
