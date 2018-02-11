@@ -114,38 +114,108 @@ and that we want to create the integrated dataset at <cite>../data/integration_0
 29
 30
 31
-32</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;agg&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">isdir</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">create_typhoonlist_from_source</span>
+<span class="kn">from</span> <span class="nn">pyphoon.preprocessing.clean</span> <span class="kn">import</span> <span class="n">fix_sequence</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
 
 <span class="c1"># Directories</span>
 <span class="n">directory_images</span> <span class="o">=</span> <span class="s2">&quot;../original_data/image/&quot;</span>
 <span class="n">directory_best</span> <span class="o">=</span> <span class="s2">&quot;../original_data/jma/&quot;</span>
-<span class="n">directory_new_file</span> <span class="o">=</span> <span class="s2">&quot;../data/others/integration_3&quot;</span>
+<span class="c1"># Path destination</span>
+<span class="n">path_normal</span> <span class="o">=</span> <span class="s1">&#39;../data/sequences/compressed_1/&#39;</span>
+<span class="n">path_corrected</span> <span class="o">=</span> <span class="s1">&#39;../data/sequences/corrected_1/&#39;</span>
+<span class="n">path_gapfilled</span> <span class="o">=</span> <span class="s1">&#39;../data/sequences/gapfilled_1/&#39;</span>
 
 <span class="c1"># Get typhoon image sequence folders.</span>
-<span class="n">folders</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">directory_images</span><span class="p">)</span> <span class="k">if</span> <span class="n">isdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">directory_images</span><span class="p">,</span> <span class="n">f</span><span class="p">))])</span>
+<span class="n">folders</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">directory_images</span><span class="p">)</span> <span class="k">if</span> <span class="n">isdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">directory_images</span><span class="p">,</span> <span class="n">f</span><span class="p">))])</span>
 
-<span class="c1"># Iterate over all folders</span>
-<span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">:</span>
-    <span class="n">path_images</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">directory_images</span><span class="p">,</span> <span class="n">folder</span><span class="p">)</span>
-    <span class="n">path_best</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">directory_best</span><span class="p">,</span> <span class="n">folder</span><span class="o">+</span><span class="s1">&#39;.tsv&#39;</span><span class="p">)</span>
-    <span class="n">path_newfile</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">directory_new_file</span><span class="p">,</span> <span class="n">folder</span> <span class="o">+</span> <span class="s1">&#39;.h5&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">folders</span><span class="p">))</span>
 
-    <span class="c1"># User info</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot; source images:&quot;</span><span class="p">,</span> <span class="n">path_images</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot; source metadata:&quot;</span><span class="p">,</span> <span class="n">path_best</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot; new H5 file:&quot;</span><span class="p">,</span> <span class="n">path_newfile</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># Iterate over all folders</span>
+<span class="sd">for folder in folders:</span>
+<span class="sd">    file = folder+&quot;.h5&quot;</span>
+<span class="sd">    path_images = join(directory_images, folder)</span>
+<span class="sd">    path_best = join(directory_best, folder+&#39;.tsv&#39;)</span>
+<span class="sd">    # path_newfile = join(directory_new_file, folder + &#39;.h5&#39;)</span>
 
-    <span class="c1"># Create and store TyphoonSequence</span>
-    <span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">create_typhoonlist_from_source</span><span class="p">(</span>
-        <span class="n">path_images</span><span class="o">=</span><span class="n">path_images</span><span class="p">,</span>
-        <span class="n">path_best</span><span class="o">=</span><span class="n">path_best</span>
-    <span class="p">)</span>
-    <span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="n">path_newfile</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
+<span class="sd">    # User info</span>
+<span class="sd">    print(folder)</span>
+<span class="sd">    print(file)</span>
+<span class="sd">    print(&quot; source images:&quot;, path_images)</span>
+<span class="sd">    print(&quot; source metadata:&quot;, path_best)</span>
+<span class="sd">    # print(&quot; new H5 file:&quot;, path_newfile)</span>
+
+<span class="sd">    # Create and store TyphoonSequence</span>
+<span class="sd">    t0 = time.time()</span>
+<span class="sd">    sequence = create_typhoonlist_from_source(</span>
+<span class="sd">        path_images=path_images,</span>
+<span class="sd">        path_best=path_best</span>
+<span class="sd">    )</span>
+<span class="sd">    print(&quot; loaded&quot;, time.time() - t0)</span>
+
+<span class="sd">    # Save</span>
+<span class="sd">    t0 = time.time()</span>
+<span class="sd">    sequence.save_as_h5(join(path_normal, file), compression=&quot;gzip&quot;)</span>
+<span class="sd">    print(&quot; compressed&quot;, time.time() - t0)</span>
+
+<span class="sd">    # Correct</span>
+<span class="sd">    t0 = time.time()</span>
+<span class="sd">    sequence = fix_sequence(sequence, gap_filling=False, display=False)</span>
+<span class="sd">    sequence.save_as_h5(join(path_corrected, file), compression=&quot;gzip&quot;)</span>
+<span class="sd">    print(&quot; corrected&quot;, time.time() - t0)</span>
+
+<span class="sd">    # Fill gaps</span>
+<span class="sd">    t0 = time.time()</span>
+<span class="sd">    sequence = fix_sequence(sequence, gap_filling=True, display=False)</span>
+<span class="sd">    sequence.save_as_h5(join(path_gapfilled, file), compression=&quot;gzip&quot;)</span>
+<span class="sd">    print(&quot; gapfilling&quot;, time.time() - t0)</span>
+
+<span class="sd">    #sequence.save_as_h5(path_newfile, compression=&#39;gzip&#39;)</span>
+<span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 </td></tr></table></div>
 <p>We note that <code class="xref py py-func docutils literal"><span class="pre">save_as_h5()</span></code> has an

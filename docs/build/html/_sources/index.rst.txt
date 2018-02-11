@@ -16,6 +16,7 @@ might be added as time passes.
 **Get familiar:**
 
 * :doc:`Setting up the environment <env_setup>`
+* :doc:`Building the Dataset <build_dataset>`
 * :doc:`Examples <examples>`
 
 

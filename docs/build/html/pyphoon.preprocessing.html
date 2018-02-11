@@ -85,25 +85,12 @@ image temporal gaps by using interpolation.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.utils.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data. All frames should
 belong to a certain typhoon sequence.</li>
 <li><strong>correct_frames</strong> (<em>bool</em><em>, </em><em>default True</em>) – Set to False if frames should not be corrected.</li>
-<li><strong>gap_filling</strong> – Set to True if temporal image</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p>frame gaps
-should be</p>
-<blockquote>
-<div>filled with synthetic image frames.</div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>gap_filling</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True if temporal image
+frame gaps should be filled with synthetic image frames.</li>
 <li><strong>display</strong> – Set to True if alerts and running information should be
 displayed</li>
 <li><strong>n_frames_th</strong> – </li>

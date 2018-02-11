@@ -12,35 +12,17 @@ exploration and understanding of the dataset you are working with.
 Overall, this package is the perfect bridge between your stored data and your
 thoughts. Just bring data to live with it and start exploring!
 
-+---------------------------+------------------------------------------------------------------+
-| module name               | Description                                                      |
-+===========================+==================================================================+
-| :ref:`eda_jma <eda_jma>`  | Visualization to better understand JMA provided Best Track Data. |
-+---------------------------+------------------------------------------------------------------+
-| :ref:`utils <utils>`      | Various utils to assist interaction with data                    |
-+---------------------------+------------------------------------------------------------------+
 
 .. automodule:: pyphoon.io.__init__
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. _eda_jma:
 
 pyphoon\.utils\.eda\_jma
 -------------------------------
 
 .. automodule:: pyphoon.utils.eda_jma
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. _utils:
-
-pyphoon\.utils\.utils
-----------------------------
-
-.. automodule:: pyphoon.utils.utils
     :members:
     :undoc-members:
     :show-inheritance:

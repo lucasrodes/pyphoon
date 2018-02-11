@@ -15,9 +15,7 @@ def fix_sequence(typhoon_sequence, correct_frames=True, gap_filling=False,
     :param correct_frames: Set to False if frames should not be corrected.
     :type correct_frames: bool, default True
     :param gap_filling: Set to True if temporal image
-    frame gaps
-    should be
-        filled with synthetic image frames.
+        frame gaps should be filled with synthetic image frames.
     :type gap_filling: bool, default False
     :param display: Set to True if alerts and running information should be
         displayed
