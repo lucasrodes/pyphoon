@@ -45,7 +45,7 @@ single HDF files. For this example, we assume the following paths for the
 respective data sources.
 
 *   **Satellite images:** Directory with all satellite imagery folders (one
-per sequence), ``../original_data/image/``
+    per sequence), ``../original_data/image/``
 *   **Best track data:** Directory with a TSV file per sequence, ``../original_data/jma/``
 
 In the code example below, we generate three different datasets:
