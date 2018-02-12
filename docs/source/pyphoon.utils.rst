@@ -13,11 +13,10 @@ Overall, this package is the perfect bridge between your stored data and your
 thoughts. Just bring data to live with it and start exploring!
 
 
-.. automodule:: pyphoon.io.__init__
+.. automodule:: pyphoon.utils.__init__
     :members:
     :undoc-members:
     :show-inheritance:
-
 
 pyphoon\.utils\.eda\_jma
 -------------------------------

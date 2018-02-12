@@ -41,15 +41,29 @@ to the number of considered typhoon sequences.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This library provides a set of tools to integrate both sources into
-single HDF files. For this example, we suppose have the satellite images at
-`../original_data/image/` and the best track data at `../original_data/jma/`
-and that we want to create the integrated dataset at `../data/integration_0`.
+single HDF files. For this example, we assume the following paths for the
+respective data sources.
+
+*   **Satellite images:** Directory with all satellite imagery folders (one
+per sequence), ``../original_data/image/``
+*   **Best track data:** Directory with a TSV file per sequence, ``../original_data/jma/``
+
+In the code example below, we generate three different datasets:
+
+*   **Original data:** Sequences stored as single H5 files. Placed at ``../data/sequences/compressed_1/``
+*   **Corrected data:** Sequences stored as single H5 files with corrected
+    satellite imagery. Placed at ``../data/sequences/corrected_1/``
+*   **Gapfilled data:** Sequences stored as single H5 files with corrected
+    satellite imagery and image temporal gaps filled with synthetic frames.
+    Placed at ``../data/sequences/gapfilled_1/``
+
+We note that we store all the HDF generated files using compression.
 
 .. literalinclude:: ../../scripts/generate_hdf_files.py
     :linenos:
     :language: python
 
-We note that :func:`~pyphoon.utils.io.TyphoonSequence.save_as_h5` has an
+We note that :func:`~pyphoon.io.__init__.TyphoonList.save_as_h5` has an
 option to save the data in a compressed format.
 
 .. note::
@@ -69,13 +83,13 @@ Having a high-level overview of the dataset may provide interesting insights.
 ^^^^^^^^^^^^^^
 It is interesting to obtain the mean image of the image dataset. In large
 datasets, like Digital Typhoon's, loading all the data is not possible.
-Hence, the mean image has to be sequentially obtained.
+Hence, the mean image has to be sequentially obtained. We can easily obtain
+the deviation image, the maximum value image and minimum value image as they
+do not require much more additional computation.
 
-We can easily obtain the deviation image, the maximum value image and minimum
-value image as they do not require much more additional power.
-
-For this example, we use the already generated TyphoonSequence HDF files
-stored in `../data/integration_0` and store the results in `../data/`.
+For this example, we use the already generated datasets. In particular we
+will use the corrected version, stored at ``../data/sequences/corrected_1/``.
+ The resulting images wil be stored at ``../data/params/params_1``.
 
 .. literalinclude:: ../../scripts/mean_image.py
     :linenos:
@@ -91,7 +105,7 @@ stored in `../data/integration_0` and store the results in `../data/`.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Visualizing a sequence can be sometimes helpful. In the following example we
-visualize the sequence **197906** stored at `../sampledata/197906.h5`.
+visualize the sequence **197906** stored at ``../sampledata/197906.h5``.
 However, note that this can be extended to any other typhoon sequence.
 
 .. literalinclude:: ../../scripts/visualize_sequence.py
@@ -119,14 +133,16 @@ given data.
 3.1 Corrupted images
 ^^^^^^^^^^^^^^^^^^^^
 
-The following example finds the corrupted frames in all sequences under the
-directory ``data/integration_0`` and stores them as images under
-``data/corrupted_0``.
+To find the corrupted files in our dataset, we employ the method
+:func:`~pyphoon.clean.__init__.find_corrupted_frames_1`, which implements a
+very simple approach for detecting possible corrupted pixels. For this
+example, we use the data in ``../data/sequences/compressed_1`` as dataset and
+store the images considered as *corrupted* at ``../data/iter_n``.
 
-.. literalinclude:: ../../scripts/corrupted_images.py
+.. literalinclude:: ../../scripts/find_corrupted_images.py
     :linenos:
     :language: python
 
 .. note::
     `script <https://github
-    .com/lucasrodes/pyphoon/tree/master/scripts/corrupted_images.py>`_
+    .com/lucasrodes/pyphoon/tree/master/scripts/find_corrupted_images.py>`_

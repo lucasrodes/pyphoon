@@ -211,8 +211,57 @@ through interpolation and require an id.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyphoon.clean.__init__.find_corrupted_frames">
-<code class="descclassname">pyphoon.clean.__init__.</code><code class="descname">find_corrupted_frames</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>mean_th=None</em>, <em>max_th=None</em>, <em>min_th=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.__init__.find_corrupted_frames" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.clean.__init__.find_corrupted_frames_1">
+<code class="descclassname">pyphoon.clean.__init__.</code><code class="descname">find_corrupted_frames_1</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>mean_th=None</em>, <em>max_th=None</em>, <em>min_th=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.__init__.find_corrupted_frames_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds corrupted frames within the sequence under certain
+criteria. This simple approach basically verifies that all pixel values
+are within a range, defined by variables <strong>max_th</strong> and <strong>min_th</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.utils.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of a certain typhoon</li>
+<li><strong>mean_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image pixel
+intensity mean. By default range [235, 292] is used.</li>
+<li><strong>max_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image
+maximum pixel intensity value. By default range [277,
+324] is used.</li>
+<li><strong>min_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image
+minimum pixel intensity value. By default range [165,
+235] is used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List with corrupted frame indices. Also a list with the details
+about the corrupted files.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="k">import</span> <span class="n">read_typhoonlist_h5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load sequence from HDF file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/201626.h5&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corrupted_frames</span><span class="p">,</span> <span class="n">corrupted_info</span> <span class="o">=</span> <span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">find_corrupted_frames_1</span><span class="p">()</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.clean.__init__.find_corrupted_frames_2">
+<code class="descclassname">pyphoon.clean.__init__.</code><code class="descname">find_corrupted_frames_2</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>mean_th=None</em>, <em>max_th=None</em>, <em>min_th=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.__init__.find_corrupted_frames_2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds corrupted frames within the sequence under certain
 criteria. There are three different categories under which a frame
 can fall as corrupted.</p>
@@ -261,7 +310,7 @@ about the corrupted files.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load sequence from HDF file</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/201626.h5&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">corrupted_frames</span><span class="p">,</span> <span class="n">corrupted_info</span> <span class="o">=</span> <span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">find_corrupted_frames</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corrupted_frames</span><span class="p">,</span> <span class="n">corrupted_info</span> <span class="o">=</span> <span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">find_corrupted_frames_2</span><span class="p">()</span>
 </pre></div>
 </div>
 </td>

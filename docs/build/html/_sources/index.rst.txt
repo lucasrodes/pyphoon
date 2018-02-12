@@ -10,7 +10,8 @@ pyphoon
 <http://agora.ex.nii.ac.jp/~kitamoto/index.html.en>`_ to
 provide simple, easy and a pythonic interaction with the *Digital Typhoon*
 dataset. It contains a wide set of tools to assist in the exploration of the
-data and detection of possible corrupted files. You can find the GitHub re
+data and detection of possible corrupted files. You can find the GitHub
+repository `here <http://github.com/lucasrodes/pyphoon>`_.
 
 
 **Get Familiar:** Set up the required environment and test some of the code
@@ -22,7 +23,8 @@ provided examples.
 
 **Available Projects:** List of projects developed using **pyphoon**.
 
-    -   `Tropical Cyclone vs. Extra-Tropical Cyclone classifier <http://www.google.com>`_
+    -   `Tropical Cyclone vs. Extra-Tropical Cyclone classifier
+        <http://github.com/lucasrodes/tcxtc-deep-classifier>`_
 
 Documentation
 -------------
