@@ -156,7 +156,7 @@ and that we want to create the integrated dataset at <cite>../data/integration_0
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">isdir</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">create_typhoonlist_from_source</span>
-<span class="kn">from</span> <span class="nn">pyphoon.preprocessing.clean</span> <span class="kn">import</span> <span class="n">fix_sequence</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean.clean</span> <span class="kn">import</span> <span class="n">fix_sequence</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 
@@ -435,7 +435,7 @@ directory <code class="docutils literal"><span class="pre">data/integration_0</s
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">read_typhoonlist_h5</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="kn">import</span> <span class="n">get_h5_filenames</span>
-<span class="kn">from</span> <span class="nn">pyphoon.preprocessing.clean</span> <span class="kn">import</span> <span class="n">find_corrupted_frames</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean.clean</span> <span class="kn">import</span> <span class="n">find_corrupted_frames</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
 <span class="c1"># TODO: Not compiling!</span>
