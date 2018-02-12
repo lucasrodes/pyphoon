@@ -29,14 +29,15 @@ from pyphoon.io import read_typhoonlist_h5
 from pyphoon.utils import DisplaySequence
 
 # Load a sequence
-sequence = read_typhoonlist_h5('../sampledata/197906.h5')
+sequence = read_typhoonlist_h5('sampledata/201725.h5')
 
 # Visualize sequence
 DisplaySequence(
     typhoon_sequence=sequence,
     name="201725",
-    interval=300,
+    interval=100,
 ).run()
 ```
 
+![](assets/201725.gif)
 
