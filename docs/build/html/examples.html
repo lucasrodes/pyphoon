@@ -58,7 +58,7 @@ these examples <a class="reference external" href="https://github.com/lucasrodes
 <div class="line"><a class="reference internal" href="#dataset-overview"><span class="std std-ref">2. Dataset overview</span></a></div>
 <div class="line-block">
 <div class="line"><a class="reference internal" href="#mean-image"><span class="std std-ref">2.1 Mean image</span></a></div>
-<div class="line"><a class="reference internal" href="#visualize-a-typhoonsequence"><span class="std std-ref">2.2 Visualize a TyphoonSequence</span></a></div>
+<div class="line"><a class="reference internal" href="#visualize-a-typhoonsequence"><span class="std std-ref">2.2 Visualize a TyphoonList</span></a></div>
 </div>
 <div class="line"><a class="reference internal" href="#corrupted-files"><span class="std std-ref">3. Corrupted files</span></a></div>
 <div class="line-block">
@@ -330,8 +330,8 @@ stored in <cite>../data/integration_0</cite> and store the results in <cite>../d
 <p class="last"><a class="reference external" href="https://github.com/lucasrodes/pyphoon/tree/master/scripts/mean_image.py">script</a></p>
 </div>
 </div>
-<div class="section" id="visualize-a-typhoonsequence">
-<span id="id6"></span><h3>2.2 Visualize a TyphoonSequence<a class="headerlink" href="#visualize-a-typhoonsequence" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="visualize-a-typhoonlist">
+<span id="visualize-a-typhoonsequence"></span><h3>2.2 Visualize a TyphoonList<a class="headerlink" href="#visualize-a-typhoonlist" title="Permalink to this headline">¶</a></h3>
 <p>Visualizing a sequence can be sometimes helpful. In the following example we
 visualize the sequence <strong>197906</strong> stored at <cite>../sampledata/197906.h5</cite>.
 However, note that this can be extended to any other typhoon sequence.</p>
@@ -372,13 +372,13 @@ However, note that this can be extended to any other typhoon sequence.</p>
 </div>
 </div>
 <div class="section" id="corrupted-files">
-<span id="id8"></span><h2>3. Corrupted files<a class="headerlink" href="#corrupted-files" title="Permalink to this headline">¶</a></h2>
+<span id="id7"></span><h2>3. Corrupted files<a class="headerlink" href="#corrupted-files" title="Permalink to this headline">¶</a></h2>
 <p>Digital Typhoon is a project that aims to tackle a real-world issue. Hence,
 it contains real-world data, which often contains some errors. Finding and
 correcting those errors becomes essential so as to be able to rely on the
 given data.</p>
 <div class="section" id="corrupted-images">
-<span id="id9"></span><h3>3.1 Corrupted images<a class="headerlink" href="#corrupted-images" title="Permalink to this headline">¶</a></h3>
+<span id="id8"></span><h3>3.1 Corrupted images<a class="headerlink" href="#corrupted-images" title="Permalink to this headline">¶</a></h3>
 <p>The following example finds the corrupted frames in all sequences under the
 directory <code class="docutils literal"><span class="pre">data/integration_0</span></code> and stores them as images under
 <code class="docutils literal"><span class="pre">data/corrupted_0</span></code>.</p>
@@ -504,7 +504,7 @@ directory <code class="docutils literal"><span class="pre">data/integration_0</s
 </li>
 <li><a class="reference internal" href="#dataset-overview">2. Dataset overview</a><ul>
 <li><a class="reference internal" href="#mean-image">2.1 Mean image</a></li>
-<li><a class="reference internal" href="#visualize-a-typhoonsequence">2.2 Visualize a TyphoonSequence</a></li>
+<li><a class="reference internal" href="#visualize-a-typhoonlist">2.2 Visualize a TyphoonList</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#corrupted-files">3. Corrupted files</a><ul>

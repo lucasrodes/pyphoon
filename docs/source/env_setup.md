@@ -1,8 +1,8 @@
 # Setting up the environment
 
-For this project, a docker container has been used. In particular, we used a
-modified version of the docker [deepo](https://github.com/ufoym/deepo), which
- provides a version with GPU support to most DL/ML frameworks. 
+For this project and others that are based on this, a docker container has been 
+used. In particular, we used a modified version of the docker [deepo](https://github.com/ufoym/deepo), 
+which provides a version with GPU support to most DL/ML frameworks. 
 
 If you are unfamiliar with docker you can check the following tutorials:
 
@@ -18,7 +18,7 @@ But, basically, what you need to know is that a Docker container is a Virtual
 **Note:** Be aware that some of the commands might requite sudo permission
 
 
-## Get the project in your working directory
+## 1. Get the project in your working directory
     
 First of all, the project from GitHub should be retrieved. To accelerate the 
 work, some symbolic links are created 
@@ -48,7 +48,7 @@ work, some symbolic links are created
     You might want to add `original_data` and `data` to your .gitignore.
     
     
-## Pre-requisites
+## 2. Pre-requisites
 
 *   **GPU support**
 
@@ -97,7 +97,7 @@ work, some symbolic links are created
     ```
 
 
-## Creating our Docker Container
+## 3. Creating our Docker Container
 
 *  **Obtain the all-in-one image from [Docker Hub](https://hub.docker.com/r/ufoym/deepo)**
     
@@ -192,7 +192,7 @@ work, some symbolic links are created
     docker stop <container name>
     ```
 
-## Run Jupyter Notebook in your localhost from Docker!
+## 4. Run Jupyter Notebook in your localhost from Docker!
 
 The main idea is to port forward from your host machine until the docker 
 virtual environment.

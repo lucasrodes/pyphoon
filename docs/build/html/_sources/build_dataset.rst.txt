@@ -66,8 +66,8 @@ ensuring that the dataset is splitted at sequence-level. After verifying
 that each chunk contains 50/50 of both categories, we proceed to randomly
 select 4 chunks for testing (20% of data) and rest for training (80%).
 
-*       **Training**: Chunks 1 - 15
-
+*       **Training**: Chunks 1 - 13
+*       **Validation**: Chunks 14, 15
 *       **Test**: Chunks 16 - 19
 
 1.4 Normalizing dataset

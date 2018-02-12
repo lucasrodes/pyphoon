@@ -87,7 +87,7 @@ stored in `../data/integration_0` and store the results in `../data/`.
 
 .. _visualize-a-typhoonsequence:
 
-2.2 Visualize a TyphoonSequence
+2.2 Visualize a TyphoonList
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Visualizing a sequence can be sometimes helpful. In the following example we

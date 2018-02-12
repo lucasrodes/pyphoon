@@ -6,19 +6,23 @@
 pyphoon
 =======
 
-pyphoon is a python tool developed in 2018 by interns at Kitamoto Lab to
-support simple and easy interaction with *Digital Typhoon* dataset. It began
-as a set of tools meant to assist in the exploration of the data and possible
-detection of corrupted files. However, new features, such as actual models
-might be added as time passes.
+`pyphoon <http://github.com/lucasrodes/pyphoon>`_ is a python library developed since 2018 by interns at `Kitamoto Lab
+<http://agora.ex.nii.ac.jp/~kitamoto/index.html.en>`_ to
+provide simple, easy and a pythonic interaction with the *Digital Typhoon*
+dataset. It contains a wide set of tools to assist in the exploration of the
+data and detection of possible corrupted files. You can find the GitHub re
 
 
-**Get familiar:**
+**Get Familiar:** Set up the required environment and test some of the code
+provided examples.
 
-* :doc:`Setting up the environment <env_setup>`
-* :doc:`Building the Dataset <build_dataset>`
-* :doc:`Examples <examples>`
+    -   :doc:`Setting up the environment <env_setup>`
+    -   :doc:`Code examples <examples>`
 
+
+**Available Projects:** List of projects developed using **pyphoon**.
+
+    -   `Tropical Cyclone vs. Extra-Tropical Cyclone classifier <http://www.google.com>`_
 
 Documentation
 -------------
@@ -29,9 +33,10 @@ corresponding link below.
 ..  toctree::
     :maxdepth: 2
 
-    pyphoon.preprocessing <pyphoon.preprocessing>
-    pyphoon.utils <pyphoon.utils>
     pyphoon.io <pyphoon.io>
+    pyphoon.clean <pyphoon.clean>
+    pyphoon.utils <pyphoon.utils>
+
 
 
 Known Issues
@@ -39,19 +44,19 @@ Known Issues
 
 
 *   **Importing the library**
-    As of now, to correctly import the library, please make use of `sys.path` specifying the directory of the library.
+
+    As of now, to correctly import the library, please make use of `sys.path`
+    specifying the directory of the library. In the future, however, we plan on
+    pushing this library to PyPI repository.
 
     >>> import sys
     >>> sys.path.insert(0, 'path/to/pyphoon')
 
 
 *   **Using matplotlib in the server**
-    If you want to generate plots in the server make sure
-    If you are trying to generate plots in the server note that there might not
-    graphic interface. This can lead to an error when trying to import the
-    library `matplotlib`.
-
-    To avoid this, make sure to use a non-interactive backend such as `agg`.
+    Trying to generate plots in the server without graphical interface can
+    lead to an error when trying to import the library `matplotlib`. To avoid
+    this, make sure to use a non-interactive backend such as `agg`.
 
     >>> import matplotlib
     >>> matplotlib.use('agg')

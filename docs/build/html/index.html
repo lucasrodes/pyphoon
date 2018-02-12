@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/sidebar.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pyphoon.preprocessing" href="pyphoon.preprocessing.html" /> 
+    <link rel="next" title="pyphoon.io" href="pyphoon.io.html" /> 
   </head>
   <body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -38,7 +38,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pyphoon.preprocessing.html" title="pyphoon.preprocessing"
+          <a href="pyphoon.io.html" title="pyphoon.io"
              accesskey="N">next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">pyphoon 2018a documentation</a> &#187;</li> 
       </ul>
@@ -51,35 +51,38 @@
             
   <div class="section" id="pyphoon">
 <h1>pyphoon<a class="headerlink" href="#pyphoon" title="Permalink to this headline">¶</a></h1>
-<p>pyphoon is a python tool developed in 2018 by interns at Kitamoto Lab to
-support simple and easy interaction with <em>Digital Typhoon</em> dataset. It began
-as a set of tools meant to assist in the exploration of the data and possible
-detection of corrupted files. However, new features, such as actual models
-might be added as time passes.</p>
-<p><strong>Get familiar:</strong></p>
-<ul class="simple">
+<p><a class="reference external" href="http://github.com/lucasrodes/pyphoon">pyphoon</a> is a python library developed since 2018 by interns at <a class="reference external" href="http://agora.ex.nii.ac.jp/~kitamoto/index.html.en">Kitamoto Lab</a> to
+provide simple, easy and a pythonic interaction with the <em>Digital Typhoon</em>
+dataset. It contains a wide set of tools to assist in the exploration of the
+data and detection of possible corrupted files. You can find the GitHub re</p>
+<p><strong>Get Familiar:</strong> Set up the required environment and test some of the code
+provided examples.</p>
+<blockquote>
+<div><ul class="simple">
 <li><a class="reference internal" href="env_setup.html"><span class="doc">Setting up the environment</span></a></li>
-<li><a class="reference internal" href="build_dataset.html"><span class="doc">Building the Dataset</span></a></li>
-<li><a class="reference internal" href="examples.html"><span class="doc">Examples</span></a></li>
+<li><a class="reference internal" href="examples.html"><span class="doc">Code examples</span></a></li>
 </ul>
+</div></blockquote>
+<p><strong>Available Projects:</strong> List of projects developed using <strong>pyphoon</strong>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://www.google.com">Tropical Cyclone vs. Extra-Tropical Cyclone classifier</a></li>
+</ul>
+</div></blockquote>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <p>For further details on any of the modules of this library check the
 corresponding link below.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pyphoon.preprocessing.html">pyphoon.preprocessing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pyphoon.preprocessing.html#module-pyphoon.preprocessing.preprocessing">pyphoon.preprocessing.preprocessing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyphoon.preprocessing.html#module-pyphoon.preprocessing.clean">pyphoon.preprocessing.clean</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="pyphoon.utils.html">pyphoon.utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pyphoon.utils.html#module-pyphoon.utils.eda_jma">pyphoon.utils.eda_jma</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pyphoon.io.html#module-pyphoon.io.h5">pyphoon.io.h5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pyphoon.io.html#module-pyphoon.io.tsv">pyphoon.io.tsv</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.clean.html">pyphoon.clean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.utils.html">pyphoon.utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.utils.html#module-pyphoon.utils.eda_jma">pyphoon.utils.eda_jma</a></li>
 </ul>
 </li>
 </ul>
@@ -88,19 +91,19 @@ corresponding link below.</p>
 <div class="section" id="known-issues">
 <h2>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p class="first"><strong>Importing the library</strong>
-As of now, to correctly import the library, please make use of <cite>sys.path</cite> specifying the directory of the library.</p>
+<li><p class="first"><strong>Importing the library</strong></p>
+<p>As of now, to correctly import the library, please make use of <cite>sys.path</cite>
+specifying the directory of the library. In the future, however, we plan on
+pushing this library to PyPI repository.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;path/to/pyphoon&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first"><strong>Using matplotlib in the server</strong>
-If you want to generate plots in the server make sure
-If you are trying to generate plots in the server note that there might not
-graphic interface. This can lead to an error when trying to import the
-library <cite>matplotlib</cite>.</p>
-<p>To avoid this, make sure to use a non-interactive backend such as <cite>agg</cite>.</p>
+Trying to generate plots in the server without graphical interface can
+lead to an error when trying to import the library <cite>matplotlib</cite>. To avoid
+this, make sure to use a non-interactive backend such as <cite>agg</cite>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;agg&#39;</span><span class="p">)</span>
 </pre></div>
@@ -149,7 +152,7 @@ library <cite>matplotlib</cite>.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="pyphoon.preprocessing.html" title="pyphoon.preprocessing"
+          <a href="pyphoon.io.html" title="pyphoon.io"
              >next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">pyphoon 2018a documentation</a> &#187;</li> 
       </ul>

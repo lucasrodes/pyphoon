@@ -47,9 +47,9 @@
             
   <div class="section" id="setting-up-the-environment">
 <span id="setting-up-the-environment"></span><h1>Setting up the environment<a class="headerlink" href="#setting-up-the-environment" title="Permalink to this headline">¶</a></h1>
-<p>For this project, a docker container has been used. In particular, we used a
-modified version of the docker <a class="reference external" href="https://github.com/ufoym/deepo">deepo</a>, which
-provides a version with GPU support to most DL/ML frameworks.</p>
+<p>For this project and others that are based on this, a docker container has been
+used. In particular, we used a modified version of the docker <a class="reference external" href="https://github.com/ufoym/deepo">deepo</a>,
+which provides a version with GPU support to most DL/ML frameworks.</p>
 <p>If you are unfamiliar with docker you can check the following tutorials:</p>
 <ul class="simple">
 <li><a class="reference external" href="https://www.youtube.com/watch?v=YFl2mCHdv24">Learn Docker in 12 Minutes 🐳</a></li>
@@ -62,7 +62,7 @@ repository, <a class="reference external" href="https://hub.docker.com/">Docker 
 fresh and new every time you run it.</p>
 <p><strong>Note:</strong> Be aware that some of the commands might requite sudo permission</p>
 <div class="section" id="get-the-project-in-your-working-directory">
-<span id="get-the-project-in-your-working-directory"></span><h2>Get the project in your working directory<a class="headerlink" href="#get-the-project-in-your-working-directory" title="Permalink to this headline">¶</a></h2>
+<span id="get-the-project-in-your-working-directory"></span><h2>1. Get the project in your working directory<a class="headerlink" href="#get-the-project-in-your-working-directory" title="Permalink to this headline">¶</a></h2>
 <p>First of all, the project from GitHub should be retrieved. To accelerate the
 work, some symbolic links are created</p>
 <ul>
@@ -90,7 +90,7 @@ work, some symbolic links are created</p>
 </ul>
 </div>
 <div class="section" id="pre-requisites">
-<span id="pre-requisites"></span><h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">¶</a></h2>
+<span id="pre-requisites"></span><h2>2. Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first"><strong>GPU support</strong></p>
 <p>First, make sure you have installed the <a class="reference external" href="https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#how-do-i-install-the-nvidia-driver">NVIDIA driver</a>.
@@ -136,7 +136,7 @@ details check their <a class="reference external" href="https://docs.docker.com/
 </ul>
 </div>
 <div class="section" id="creating-our-docker-container">
-<span id="creating-our-docker-container"></span><h2>Creating our Docker Container<a class="headerlink" href="#creating-our-docker-container" title="Permalink to this headline">¶</a></h2>
+<span id="creating-our-docker-container"></span><h2>3. Creating our Docker Container<a class="headerlink" href="#creating-our-docker-container" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first"><strong>Obtain the all-in-one image from <a class="reference external" href="https://hub.docker.com/r/ufoym/deepo">Docker Hub</a></strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">lucasrodesg</span><span class="o">/</span><span class="n">deepo</span>
@@ -217,7 +217,7 @@ it using</p>
 </ul>
 </div>
 <div class="section" id="run-jupyter-notebook-in-your-localhost-from-docker">
-<span id="run-jupyter-notebook-in-your-localhost-from-docker"></span><h2>Run Jupyter Notebook in your localhost from Docker!<a class="headerlink" href="#run-jupyter-notebook-in-your-localhost-from-docker" title="Permalink to this headline">¶</a></h2>
+<span id="run-jupyter-notebook-in-your-localhost-from-docker"></span><h2>4. Run Jupyter Notebook in your localhost from Docker!<a class="headerlink" href="#run-jupyter-notebook-in-your-localhost-from-docker" title="Permalink to this headline">¶</a></h2>
 <p>The main idea is to port forward from your host machine until the docker
 virtual environment.</p>
 <p>You basically need to use</p>
@@ -245,10 +245,10 @@ machine and use the token as the password.</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Setting up the environment</a><ul>
-<li><a class="reference internal" href="#get-the-project-in-your-working-directory">Get the project in your working directory</a></li>
-<li><a class="reference internal" href="#pre-requisites">Pre-requisites</a></li>
-<li><a class="reference internal" href="#creating-our-docker-container">Creating our Docker Container</a></li>
-<li><a class="reference internal" href="#run-jupyter-notebook-in-your-localhost-from-docker">Run Jupyter Notebook in your localhost from Docker!</a></li>
+<li><a class="reference internal" href="#get-the-project-in-your-working-directory">1. Get the project in your working directory</a></li>
+<li><a class="reference internal" href="#pre-requisites">2. Pre-requisites</a></li>
+<li><a class="reference internal" href="#creating-our-docker-container">3. Creating our Docker Container</a></li>
+<li><a class="reference internal" href="#run-jupyter-notebook-in-your-localhost-from-docker">4. Run Jupyter Notebook in your localhost from Docker!</a></li>
 </ul>
 </li>
 </ul>
