@@ -34,7 +34,7 @@ sequence = read_typhoonlist_h5('../sampledata/197906.h5')
 # Visualize sequence
 DisplaySequence(
     typhoon_sequence=sequence,
-    name="197906",
+    name="201725",
     interval=300,
 ).run()
 ```
