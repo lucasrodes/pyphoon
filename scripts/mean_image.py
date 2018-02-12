@@ -2,6 +2,7 @@ import sys
 sys.path.insert(0, '..')
 import matplotlib
 matplotlib.use('agg')
+
 from os.path import join
 from pyphoon.io import read_typhoonlist_h5
 from pyphoon.io.h5 import get_h5_filenames, write_h5file
@@ -9,7 +10,7 @@ import numpy as np
 
 
 # Get filenames
-directory_images = "../data/others/integration_3"
+directory_images = "../data/sequences/corrected_1"
 files = get_h5_filenames(directory_images)
 
 # Parameters
@@ -38,6 +39,6 @@ std = np.sqrt(mu2 - mu**2)
 # Store images
 write_h5file(
     data={"mean": mu, "std": std, "max": maxv, "min": minv},
-    path_to_file='../data/preprocessing/params_0.h5',
-    compression=None
+    path_to_file='../data/params/params_0.h5',
+    compression='gzip'
 )
