@@ -210,6 +210,8 @@ class DisplaySequence(object):
     :cvar interval: Interval between frames while visualizing the animation.
     :cvar start_frame: First frame of the sequence to visualize.
     :cvar end_frame: Last frame of the sequence to visualize.
+    :cvar axis: Set to True if axis are to be displayed.
+    :cvar title: Set to false if no title should be shown in the figure.
 
     |
 
@@ -246,7 +248,8 @@ class DisplaySequence(object):
         ).run()
     """
     def __init__(self, typhoon_sequence=None, raw_data=None, name="untitled",
-                 interval=100, start_frame=0, end_frame=None, axis=True):
+                 interval=100, start_frame=0, end_frame=None, axis=False,
+                 title=True):
 
         if typhoon_sequence is not None:
             self.data = typhoon_sequence.data['X']
@@ -272,6 +275,7 @@ class DisplaySequence(object):
         self.interval = interval
 
         self.axis = axis
+        self.title = title
         self.fig = plt.figure()
         self.ax = plt.gca()
         if not self.axis:
@@ -289,7 +293,7 @@ class DisplaySequence(object):
         :param i: Index of the frame
         :type i: int
         """
-        if self.axis:
+        if self.title:
             self.ax.set_title(
                 str(self.data_id[i]) + " | " +
                 str(self.start_frame+i) + " | " +

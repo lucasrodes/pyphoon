@@ -74,15 +74,12 @@ class TyphoonList(object):
         >>> plt.imshow(typhoon_sequence_2.image[10])
         >>> plt.show())
 
-    .. seealso:: :class:`~pyphoon.utils.DisplaySequence`
+    .. seealso:: :class:`~pyphoon.utils.__init__.DisplaySequence`
 
     """
     def __init__(self, data, name):
         self.data = data
         self.name = name
-        # TODO: add default flag if there is none
-        np.append(self.data['Y'], np.zeros((self.data['Y'].shape[0], 1)),
-                  axis=1)
 
     @property
     def images(self):
@@ -293,6 +290,12 @@ def create_typhoonlist_from_source(path_images, path_best=None):
         data['Y_ids'] = get_best_ids(Y, seq_name)
         data['Y'][:, -2] = [best_id in data['X_ids'] for best_id in data[
             'Y_ids']]
+
+    # Ensure that all image have associated best data!
+    data['X'] = np.array([data['X'][i] for i in range(len(data['X'])) if
+                          data['X_ids'][i] in data['Y_ids']])
+    data['X_ids'] = [image_id for image_id in data['X_ids'] if image_id in
+                     data['Y_ids']]
     # Get name of the
     name = folder_2_name(path_images)
     return TyphoonList(data, name=name)
