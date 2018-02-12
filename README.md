@@ -1,11 +1,14 @@
-# pyphoon
+# [pyphoon](http://lcsrg.me/pyphoon)
 Developed as part of the [Digital Typhoon](http://digital-typhoon.org) project from [Kitamoto-sensei](http://www.nii.ac.jp/en/faculty/digital_content/kitamoto_asanobu/). 
 Provides a set of tools to enable easy and pythonic interaction the Digital Typhoon dataset.
 
 **Full documentation: [http://lcsrg.me/pyphoon](http://lcsrg.me/pyphoon)**
 
-> :warning: Find list of **todo** tasks [here](TODO.md).
- 
+
+![Alt Text](assets/201725.gif)
+
+
+
 ## Contents
 
 | **Section**              | **Description**                                                 |
@@ -15,7 +18,6 @@ Provides a set of tools to enable easy and pythonic interaction the Digital Typh
 | [scripts](scripts)       | Some example scripts using library tools                        |
 | [notebooks](notebooks)   | Notebooks with example code using library tools                 |
 | [sampledata](sampledata) | Sample data from Digital Typhoon, used in scripts and notebooks |
-| [comments](comments)     | Comments from the authors as they worked in the project         |
 
 
 ## Installation
