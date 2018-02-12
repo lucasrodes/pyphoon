@@ -4,9 +4,8 @@ Provides a set of tools to enable easy and pythonic interaction the Digital Typh
 
 **Full documentation: [http://lcsrg.me/pyphoon](http://lcsrg.me/pyphoon)**
 
-+-------------------------|-------------------------+
-| ![](assets/201725.gif)  |  ![](assets/201725.gif) |
-+-------------------------|-------------------------+
+:------------------------:|:------------------------:
+ ![](assets/201725.gif)   |  ![](assets/201725.gif) 
 
 
 
