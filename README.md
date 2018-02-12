@@ -41,3 +41,12 @@ DisplaySequence(
 
 ![](assets/201725.gif)
 
+
+## More
+
+**pyphoon** is being used as a baseline for multiple projects at NII. 
+
+* [**tcxtc-deep-classifier**](http://github.com/lucasrodes/tcxtc-deep-classifier): Deep Learning for classification of 
+typhoon satellite imagery in two categories: Tropical Cyclone and 
+Extra-Tropical Cyclone 
+
