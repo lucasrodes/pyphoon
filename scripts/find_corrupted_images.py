@@ -1,20 +1,20 @@
 import sys
 sys.path.insert(0, '..')
+
 from os.path import join
 from pyphoon.io import read_typhoonlist_h5
 from pyphoon.io.h5 import get_h5_filenames
-from pyphoon.preprocessing.clean import find_corrupted_frames
+from pyphoon.clean import find_corrupted_frames
 import matplotlib.pyplot as plt
 
-# TODO: Not compiling!
 # Directories
-directory_files_0 = "../data/others/integration_3/"
-directory_corrupted_0 = "../data/corrupted/iter_1"
+directory_files_0 = "../data/sequences/compressed_1"
+directory_corrupted_0 = "../data/corrupted/iter_2"
 
 # Get H5 file names
 files_0 = get_h5_filenames(directory_files_0)
 
-# Iterate over all files from integration_0
+# Iterate over all files in dataset
 corrupted_frames = {}
 for file_0 in files_0:
 
@@ -23,6 +23,7 @@ for file_0 in files_0:
     sequence = read_typhoonlist_h5(
         path_to_file=path_file_0
     )
+
     print("\n", file_0)
 
     # Get corrupted frame indices
