@@ -246,7 +246,7 @@ class DisplaySequence(object):
         ).run()
     """
     def __init__(self, typhoon_sequence=None, raw_data=None, name="untitled",
-                 interval=100, start_frame=0, end_frame=None):
+                 interval=100, start_frame=0, end_frame=None, axis=True):
 
         if typhoon_sequence is not None:
             self.data = typhoon_sequence.data['X']
@@ -271,8 +271,11 @@ class DisplaySequence(object):
         self.start_frame = start_frame
         self.interval = interval
 
+        self.axis = axis
         self.fig = plt.figure()
         self.ax = plt.gca()
+        if not self.axis:
+            plt.axis('off')
         self.im = self.ax.imshow(self.data[0], cmap="Greys")
 
     def _init(self):
@@ -286,22 +289,28 @@ class DisplaySequence(object):
         :param i: Index of the frame
         :type i: int
         """
-        self.ax.set_title(
-            str(self.data_id[i]) + " | " +
-            str(self.start_frame+i) + " | " +
-            str(int(self.flag_fix[i]))
-        )
+        if self.axis:
+            self.ax.set_title(
+                str(self.data_id[i]) + " | " +
+                str(self.start_frame+i) + " | " +
+                str(int(self.flag_fix[i]))
+            )
         self.im.set_data(self.data[i])
 
-    def run(self):
+    def run(self, save=False):
         """ Runs the animation
         """
-        _ = animation.FuncAnimation(self.fig,
-                                    func=self._animate,
-                                    init_func=self._init,
-                                    interval=self.interval,
-                                    frames=len(self.data),
-                                    repeat=True)
+        anim = animation.FuncAnimation(self.fig,
+                                       func=self._animate,
+                                       init_func=self._init,
+                                       interval=self.interval,
+                                       frames=len(self.data),
+                                       repeat=True
+        )
+
+        if save:
+            anim.save(self.name+'.gif', dpi=80, writer='imagemagick')
+
         plt.show()
 
     def run_html(self):

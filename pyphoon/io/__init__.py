@@ -361,6 +361,11 @@ def read_typhoonlist_h5(path_to_file, path_images=None, overwrite_ids=False,
         data['Y'] = data['Y'][pos]
         data['Y_ids'] = list(np.array(data['Y_ids'])[pos])
 
+    # Ensure that all image have associated best data!
+    data['X'] = np.array([data['X'][i] for i in range(len(data['X'])) if
+                          data['X_ids'][i] in data['Y_ids']])
+    data['X_ids'] = [image_id for image_id in data['X_ids'] if image_id in
+                     data['Y_ids']]
     # Obtain Sequence name
     name = h5file_2_name(path_to_file)
     return TyphoonList(data, name=name)
