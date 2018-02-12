@@ -6,6 +6,7 @@ Provides a set of tools to enable easy and pythonic interaction the Digital Typh
 
 
 ![Alt Text](assets/201725.gif)
+![Alt Text](assets/201725.gif)
 
 
 
