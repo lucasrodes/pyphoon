@@ -66,7 +66,7 @@ image temporal gaps by using interpolation.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.utils.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data. All frames should
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data. All frames should
 belong to a certain typhoon sequence.</li>
 <li><strong>correct_frames</strong> (<em>bool</em><em>, </em><em>default True</em>) – Set to False if frames should not be corrected.</li>
 <li><strong>gap_filling</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True if temporal image
@@ -82,7 +82,7 @@ corrupted image frame regions.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Fixed typhoon sequence</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="pyphoon.utils.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList">TyphoonList</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList">TyphoonList</a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"><p class="first">For this example, we use the typhoon sequence <em>198702</em>.</p>
@@ -122,7 +122,7 @@ correct those.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.utils.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data.</li>
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data.</li>
 <li><strong>index</strong> (<em>int</em>) – Frame position within <em>typhoon_sequence</em>.</li>
 <li><strong>display</strong> (<em>bool</em>) – Set to True to have information messages printed.</li>
 <li><strong>params</strong> (<em>dict</em>) – Parameters required for detection and correction functions.</li>
@@ -145,7 +145,7 @@ interpolated image frames.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.utils.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data.</li>
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data.</li>
 <li><strong>n_frames_th</strong> (<em>int</em>) – Threshold above which it should not be interpolated
 anymore. This is done so as to prevent from filling too long gaps,
 which could lead to very blurry and distorted frames.</li>
@@ -165,7 +165,7 @@ which could lead to very blurry and distorted frames.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.utils.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data</li>
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data</li>
 <li><strong>frame_idx_0</strong> (<em>int</em>) – First frame index</li>
 <li><strong>frame_idx_1</strong> (<em>int</em>) – Second frame index</li>
 <li><strong>n_frames</strong> (<em>int</em>) – Number of frames to generate using interpolation</li>
@@ -193,7 +193,7 @@ through interpolation and require an id.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.utils.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon</li>
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon</li>
 <li><strong>frame_idx_0</strong> (<em>int</em>) – Index of first frame</li>
 <li><strong>frame_idx_1</strong> (<em>int</em>) – Index of second frame</li>
 <li><strong>n_frames</strong> – Number of frames for which an id has to be generated.</li>
@@ -221,7 +221,7 @@ are within a range, defined by variables <strong>max_th</strong> and <strong>min
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.utils.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of a certain typhoon</li>
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of a certain typhoon</li>
 <li><strong>mean_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image pixel
 intensity mean. By default range [235, 292] is used.</li>
 <li><strong>max_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image
@@ -281,7 +281,7 @@ function argument <em>min_th</em>.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.utils.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of a certain typhoon</li>
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.__init__.TyphoonList" title="pyphoon.io.__init__.TyphoonList"><em>TyphoonList</em></a>) – Sequence of a certain typhoon</li>
 <li><strong>mean_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image pixel
 intensity mean. By default range [235, 292] is used.</li>
 <li><strong>max_th</strong> (<em>list</em>) – Minimum and maximum value accepted for an image

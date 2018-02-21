@@ -211,7 +211,7 @@ class DisplaySequence(object):
     :cvar start_frame: First frame of the sequence to visualize.
     :cvar end_frame: Last frame of the sequence to visualize.
     :cvar axis: Set to True if axis are to be displayed.
-    :cvar title: Set to false if no title should be shown in the figure.
+    :cvar show_title: Set to false if no title should be shown in the figure.
 
     |
 
@@ -249,7 +249,7 @@ class DisplaySequence(object):
     """
     def __init__(self, typhoon_sequence=None, raw_data=None, name="untitled",
                  interval=100, start_frame=0, end_frame=None, axis=False,
-                 title=True):
+                 show_title=True, alt_title=None):
 
         if typhoon_sequence is not None:
             self.data = typhoon_sequence.data['X']
@@ -275,7 +275,8 @@ class DisplaySequence(object):
         self.interval = interval
 
         self.axis = axis
-        self.title = title
+        self.alt_title = alt_title
+        self.show_title = show_title
         self.fig = plt.figure()
         self.ax = plt.gca()
         if not self.axis:
@@ -293,15 +294,18 @@ class DisplaySequence(object):
         :param i: Index of the frame
         :type i: int
         """
-        if self.title:
-            self.ax.set_title(
-                str(self.data_id[i]) + " | " +
-                str(self.start_frame+i) + " | " +
-                str(int(self.flag_fix[i]))
-            )
+        if self.show_title:
+            if self.alt_title is not None:
+                self.ax.set_title(self.alt_title)
+            else:
+                self.ax.set_title(
+                    str(self.data_id[i]) + " | " +
+                    str(self.start_frame+i) + " | " +
+                    str(int(self.flag_fix[i]))
+                )
         self.im.set_data(self.data[i])
 
-    def run(self, save=False):
+    def run(self, save=False, filename="untitled"):
         """ Runs the animation
         """
         anim = animation.FuncAnimation(self.fig,
@@ -313,7 +317,7 @@ class DisplaySequence(object):
         )
 
         if save:
-            anim.save(self.name+'.gif', dpi=80, writer='imagemagick')
+            anim.save(filename+'.gif', dpi=80, writer='imagemagick')
 
         plt.show()
 
