@@ -67,7 +67,6 @@ def fix_sequence(typhoon_sequence, correct_frames=True, gap_filling=False,
 
     #  Fill temporal gaps
     if gap_filling:
-        t0 = time.time()
         fill_gaps(typhoon_sequence_new, n_frames_th)
 
     return typhoon_sequence_new
@@ -176,7 +175,8 @@ def _correct_corrupted_pixels_1(typhoon_sequence, index, pos,
         while True in pos_n and index - k >= 0:
             print("  -", k) if display else 0
             region_n[pos_n] = typhoon_sequence.images[index - k][pos][pos_n]
-            c_n[pos_n] *= np.exp(-k + 1)
+            if k < 15:
+                c_n[pos_n] *= np.exp(-1)
             pos_n = detect_fct(region_n, params)
             k += 1
 
@@ -184,7 +184,7 @@ def _correct_corrupted_pixels_1(typhoon_sequence, index, pos,
             # TODO: Change to mean image values (using pos)
             print("  exception") if display else 0
             region_n[pos_n] = 270
-            c_n[pos_n] *= np.exp(-k + 1)
+            # c_n[pos_n] *= np.exp(-1)
 
     else:
         c_n = 0
@@ -202,7 +202,8 @@ def _correct_corrupted_pixels_1(typhoon_sequence, index, pos,
         while True in pos_p and index + k < K:
             print("  +", k) if display else 0
             region_p[pos_p] = typhoon_sequence.images[index + k][pos][pos_p]
-            c_p[pos_p] *= np.exp(-k + 1)
+            if k < 15:
+                c_p[pos_p] *= np.exp(-1)
             pos_p = detect_fct(region_p, params)
             k += 1
 
@@ -210,11 +211,14 @@ def _correct_corrupted_pixels_1(typhoon_sequence, index, pos,
             # TODO: Change to mean image values (using pos)
             print("  exception") if display else 0
             region_p[pos_p] = 270
-            c_p[pos_p] *= np.exp(-k + 1)
+            # c_p[pos_p] *= np.exp(-1)
     else:
         c_p = 0
         region_p = 0
 
+    print("index", index)
+    print(c_n)
+    print(c_p)
     return (c_n*region_n + c_p*region_p)/(c_n + c_p)
 
 

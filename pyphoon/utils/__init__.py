@@ -221,6 +221,7 @@ class DisplaySequence(object):
         :class:`~pyphoon.utils.io.TyphoonList` instance
 
         >>> from pyphoon.io import read_typhoonlist_h5
+        >>> from pyphoon.utils import DisplaySequence
         >>> # Load sequence from HDF file
         >>> path = "data/201626.h5"
         >>> typhoon_sequence = read_typhoonlist_h5(path_to_file=path)
@@ -235,6 +236,7 @@ class DisplaySequence(object):
 
         >>> from pyphoon.io.h5 import read_h5file
         >>> from pyphoon.io import read_typhoonlist_h5
+        >>> from pyphoon.utils import DisplaySequence
         >>> # Load sequence from HDF file
         >>> path = "data/201626.h5"
         >>> typhoon_sequence = read_typhoonlist_h5(path_to_file=path)

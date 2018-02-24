@@ -80,10 +80,13 @@ def write_h5file(data, path_to_file, compression):
     """
     with h5py.File(path_to_file, 'w') as h5f:
         for key, value in data.items():
-            # Encode byte-string lists
-            if isinstance(value, list) and isinstance(value[0], str):
-                _value = value
-                value = [n.encode("ascii", "ignore") for n in _value]
+            if isinstance(value, list):
+                if not value:
+                    continue
+                # Encode byte-string lists
+                elif isinstance(value[0], str):
+                    _value = value
+                    value = [n.encode("ascii", "ignore") for n in _value]
             h5f.create_dataset(key, data=value, compression=compression)
 
 
