@@ -15,8 +15,8 @@ essential tool to interact with the Digital Typhoon data.
 """
 from pyphoon.io.h5 import read_h5file, write_h5file, read_source_images
 from pyphoon.io.tsv import read_tsv
-from pyphoon.utils import get_date_from_id
-from pyphoon.utils import get_best_ids, get_image_ids, h5file_2_name, \
+from pyphoon.io.utils import get_date_from_id
+from pyphoon.io.utils import get_best_ids, get_image_ids, h5file_2_name, \
     folder_2_name
 import numpy as np
 
