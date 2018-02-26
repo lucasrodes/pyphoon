@@ -13,7 +13,7 @@ essential tool to interact with the Digital Typhoon data.
 | :func:`read_typhoonlist_h5`               | Load previously stored (as H5) typhoon sequence data as a :class:`TyphoonSequence` instance       |
 +-------------------------------------------+---------------------------------------------------------------------------------------------------+
 """
-from pyphoon.io.h5 import read_h5file, write_h5file, read_images
+from pyphoon.io.h5 import read_h5file, write_h5file, read_source_images
 from pyphoon.io.tsv import read_tsv
 from pyphoon.utils import get_date_from_id
 from pyphoon.utils import get_best_ids, get_image_ids, h5file_2_name, \
@@ -22,8 +22,8 @@ import numpy as np
 
 
 class TyphoonList(object):
-    """ Object encapsulating the images and best track data of a certain
-    typhoon sequence.
+    """ Object encapsulating the images and, optionally, the best track data
+    of a certain typhoon sequence.
 
     :cvar data: Dictionary-shape data. The details on the shape of the
         dictionary are according to the output format of :func:`read_h5file`.
@@ -40,7 +40,7 @@ class TyphoonList(object):
         Accessing only one single file rather than several files per
         each sequence significantly reduces execution time.
 
-        >>> from pyphoon.io import create_typhoonlist_from_source
+        >>> from pyphoon.io.typhoonlist import create_typhoonlist_from_source
         >>> path_images='../original_data/image/201626/'
         >>> path_best='../original_data/jma/201626.tsv'
         >>> typhoon_sequence = create_typhoonlist_from_source(path_images=path_images, path_best=path_best)
@@ -50,7 +50,7 @@ class TyphoonList(object):
         done in multiple ways. The easiest way is to retrieve the data
         from an HDF file generated using `create_typhoonlist_from_source`.
 
-        >>> from pyphoon.io import read_typhoonlist_h5
+        >>> from pyphoon.io.typhoonlist import read_typhoonlist_h5
         >>> # Load sequence from HDF file
         >>> path = "data/201626.h5"
         >>> typhoon_sequence = read_typhoonlist_h5(path_to_file=path)
@@ -59,7 +59,7 @@ class TyphoonList(object):
         format: {X: ..., Y: ...}. The details on the shape of the dictionary
         are according to the output format of :func:`read_h5file`.
 
-        >>> from pyphoon.io import TyphoonList
+        >>> from pyphoon.io.typhoonlist import TyphoonList
         >>> from pyphoon.io.h5 import read_h5file
         >>> # Load sequence from a dictionary (format {X: ..., Y:...})
         >>> data = read_h5file(path_to_file="data/201626.h5")
@@ -189,9 +189,9 @@ class TyphoonList(object):
         :rtype: tuple
         """
         s0 = self.data['X'].shape
-        s1 = (len(self.data['X_ids']), 1)
+        s1 = (len(self.data['X_ids']))
         s2 = self.data['Y'].shape
-        s3 = (len(self.data['Y_ids']), 1)
+        s3 = (len(self.data['Y_ids']))
         s = (s0, s1, s2, s3)
         return s
 
@@ -210,7 +210,7 @@ class TyphoonList(object):
                 len(self.data['Y_ids']):
             return len(self.data['X'])
         else:
-            return None
+            return 0
 
     def __iter__(self):
         if len(self):
@@ -273,7 +273,7 @@ def create_typhoonlist_from_source(path_images, path_best=None):
 
     # Get the images from the HDF file and their corresponding IDs.
     data = {
-        'X': read_images(path_images),
+        'X': read_source_images(path_images),
         'X_ids': get_image_ids(path_images),
     }
 
@@ -288,17 +288,22 @@ def create_typhoonlist_from_source(path_images, path_best=None):
         data['Y'][:, -2] = [best_id in data['X_ids'] for best_id in data[
             'Y_ids']]
 
-    # Ensure that all image have associated best data!
-    data['X'] = np.array([data['X'][i] for i in range(len(data['X'])) if
-                          data['X_ids'][i] in data['Y_ids']])
-    data['X_ids'] = [image_id for image_id in data['X_ids'] if image_id in
-                     data['Y_ids']]
+        # Ensure that all image have associated best data!
+        data['X'] = np.array([data['X'][i] for i in range(len(data['X'])) if
+                              data['X_ids'][i] in data['Y_ids']])
+        data['X_ids'] = [image_id for image_id in data['X_ids'] if image_id in
+                         data['Y_ids']]
+    else:
+        data['Y'] = np.array([])
+        data['Y_ids'] = []
+
     # Get name of the
     name = folder_2_name(path_images)
     return TyphoonList(data, name=name)
 
 
 # Johny M. Reggae artist
+# TODO: Refactor completely!
 def read_typhoonlist_h5(path_to_file, path_images=None, overwrite_ids=False,
                         overwrite_flags=False, alignment=False):
     """ Loads a typhoon sequence stored as an HDF file as an instance of

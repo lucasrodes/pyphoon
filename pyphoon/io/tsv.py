@@ -1,6 +1,7 @@
 from os import listdir
 from os.path import isfile, join
 from datetime import datetime as dt
+import numpy as np
 
 
 ###########################
@@ -45,8 +46,7 @@ def read_tsv(path_to_file):
     return metadata
 
 
-def check_constant_distance_in_tsv(path_best="original_data/jma",
-                                   time_distance=3600):
+def check_constant_distance_in_tsv(path_best, time_distance=3600):
     """ Checks that all provided JMA data is correct, i.e. that all samples
     within a typhoon sequence have a constant tome distance between themselves.
 
@@ -54,9 +54,9 @@ def check_constant_distance_in_tsv(path_best="original_data/jma",
     :type path_best: str
     :param time_distance: Distance between frames in seconds.
     :type time_distance: int
-    :return: List with the number of samples with distance different than 1h
-        with the previous one. Element n:th in the list refers to the n:th
-        typhoon sequence.
+    :return: List providing, per each sequence (tsv file), the number of
+        time-gaps greater than *time_distance* without a satellite image.
+        Element n:th in the list refers to the n:th typhoon sequence.
     """
 
     assert isinstance(time_distance, int), "time_distance is not aninteger: " \

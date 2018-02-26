@@ -94,7 +94,7 @@ def write_h5file(data, path_to_file, compression):
 #  IMAGES RELATED FUNCTIONS  #
 ##############################
 
-def read_images(path_to_folder):
+def read_source_images(path_to_folder):
     """ Reads all image files within a given folder. Note that all images are
     assumed to have the same dimensionality. In addition, an image should have
     been stored as a dataset, with name 'infrared', in an HDF file.
@@ -108,12 +108,12 @@ def read_images(path_to_folder):
     files = get_h5_filenames(path_to_folder)
     images = []
     for file in files:
-        img = read_image(join(path_to_folder, file))
+        img = read_source_image(join(path_to_folder, file))
         images.append(img)
     return np.array(images)
 
 
-def read_image(path_to_file):
+def read_source_image(path_to_file):
     """ Reads an image from an HDF file. It assumes that the image was stored
     as a dataset with name 'infrared'.
 
