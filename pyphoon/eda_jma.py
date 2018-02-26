@@ -79,7 +79,7 @@ def plot_hist(data, feature_index, bins=100, show_fig=False,
         to.
 
         >>> from pyphoon.io.tsv import read_tsvs
-        >>> from pyphoon.utils.eda_jma import plot_hist
+        >>> from pyphoon.eda_jma import plot_hist
         >>> import numpy as np
         >>> # Load data and convert to np.array
         >>> data = np.array(read_tsvs(directory="original_data/jma"))
@@ -140,7 +140,7 @@ def plot_2feature_heatmap(data, index1, index2=4, annotation=True,
         they belong to.
 
         >>> from pyphoon.io.tsv import read_tsvs
-        >>> from pyphoon.utils.eda_jma import plot_2feature_heatmap
+        >>> from pyphoon.eda_jma import plot_2feature_heatmap
         >>> import numpy as np
         >>> # Load data and convert to np.array
         >>> data = np.array(read_tsvs())
