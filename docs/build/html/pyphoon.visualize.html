@@ -1,0 +1,174 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pyphoon.visualize &#8212; pyphoon 2018a documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2018a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pyphoon 2018a documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-pyphoon.visualize">
+<span id="pyphoon-visualize"></span><h1>pyphoon.visualize<a class="headerlink" href="#module-pyphoon.visualize" title="Permalink to this headline">¶</a></h1>
+<p>This module provides tools to visualise Digital Typhoon related data.
+This can be extremely helpful when you want to visualize a particular typhoon
+sequence or generate a GIF from it.</p>
+<p>Overall, this package is the perfect bridge between your stored data and your
+thoughts. Just bring data to life with it and start exploring!</p>
+<dl class="class">
+<dt id="pyphoon.visualize.DisplaySequence">
+<em class="property">class </em><code class="descclassname">pyphoon.visualize.</code><code class="descname">DisplaySequence</code><span class="sig-paren">(</span><em>typhoon_sequence=None</em>, <em>raw_data=None</em>, <em>name='untitled'</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em>, <em>axis=False</em>, <em>show_title=True</em>, <em>alt_title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualize.DisplaySequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Used to animate a batch of images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>typhoon_sequence</strong> – <code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code> instance.</li>
+<li><strong>raw_data</strong> – List of frames.</li>
+<li><strong>name</strong> – Name of the sequence.</li>
+<li><strong>interval</strong> – Interval between frames while visualizing the animation.</li>
+<li><strong>start_frame</strong> – First frame of the sequence to visualize.</li>
+<li><strong>end_frame</strong> – Last frame of the sequence to visualize.</li>
+<li><strong>axis</strong> – Set to True if axis are to be displayed.</li>
+<li><strong>show_title</strong> – Set to false if no title should be shown in the figure.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><p class="first">There are two options to visualize a sequence of frames. Either using a
+<code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code> instance</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">read_typhoonlist_h5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualize</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load sequence from HDF file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/201626.h5&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DisplaySequence</span><span class="p">(</span>
+<span class="go">    typhoon_sequence=typhoon_sequence,</span>
+<span class="go">    interval=100,</span>
+<span class="go">    start_frame=0,</span>
+<span class="go">    end_frame=-1</span>
+<span class="go">).run()</span>
+</pre></div>
+</div>
+<p>or directly feeding a raw list of frames.</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="k">import</span> <span class="n">read_h5file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">read_typhoonlist_h5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualize</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load sequence from HDF file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/201626.h5&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">images</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DisplaySequence</span><span class="p">(</span>
+<span class="go">    raw_data=data,</span>
+<span class="go">    name=&quot;201626&quot;,</span>
+<span class="go">    interval=100,</span>
+<span class="go">    start_frame=0,</span>
+<span class="go">    end_frame=-1</span>
+<span class="go">).run()</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyphoon.visualize.DisplaySequence.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>save=False</em>, <em>filename='untitled'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualize.DisplaySequence.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the animation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.visualize.DisplaySequence.run_html">
+<code class="descname">run_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualize.DisplaySequence.run_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the animation</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pyphoon 2018a documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Lucas Rodes-Guirao.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

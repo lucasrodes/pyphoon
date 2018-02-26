@@ -37,7 +37,8 @@ corresponding link below.
 
     pyphoon.io <pyphoon.io>
     pyphoon.clean <pyphoon.clean>
-    pyphoon.utils <pyphoon.utils>
+    pyphoon.visualize <pyphoon.visualize>
+    pyphoon.eda_jma <pyphoon.eda_jma>
 
 
 
