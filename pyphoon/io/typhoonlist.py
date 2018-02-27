@@ -459,6 +459,7 @@ def create_typhoonlist_from_source(name, **kwargs):
     return TyphoonList(data, name=name)
 
 
+# TODO: Preserve name of typhoon!
 def load_typhoonlist_h5(path_to_file, alignment=False):
     """ Loads a typhoon sequence stored as an H5 file as an instance of
     TyphoonList.
