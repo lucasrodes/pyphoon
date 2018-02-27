@@ -1,6 +1,8 @@
 pyphoon\.io
 ==============================
 
+.. automodule:: pyphoon.io.__init__
+
 pyphoon\.io\.typhoonlist
 --------------------------------------------
 

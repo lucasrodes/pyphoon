@@ -53,13 +53,87 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pyphoon-io">
-<h1>pyphoon.io<a class="headerlink" href="#pyphoon-io" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pyphoon.io.__init__">
+<span id="pyphoon-io"></span><h1>pyphoon.io<a class="headerlink" href="#module-pyphoon.io.__init__" title="Permalink to this headline">¶</a></h1>
+<p>Digital Typhoon data comes, at the moment, from two sources:</p>
+<ul class="simple">
+<li><strong>Satellite images</strong>: 512x512 infrared images, with the typhoon eye at the
+image centre. Each typhoon sequence’s images come as folders with their
+respective images as H5 files.</li>
+<li><strong>Best Track data</strong>: Provided by <a class="reference external" href="http://www.jma.go.jp/jma/indexe.html">JMA</a>, it contains data characterizing
+the state of a certain typhoon. There is data since 1951. Each typhoon
+sequence’s data comes in a TSV file.</li>
+</ul>
+<p>To this end, this module provides a set of tools to integrate the different
+sources and ease the interaction with those.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">module</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#module-pyphoon.io.typhoonlist" title="pyphoon.io.typhoonlist"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.io.typhoonlist</span></code></a></td>
+<td>Methods and classes related to <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#module-pyphoon.io.h5" title="pyphoon.io.h5"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.io.h5</span></code></a></td>
+<td>Reading and writing operations on H5 files.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-pyphoon.io.tsv" title="pyphoon.io.tsv"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.io.tsv</span></code></a></td>
+<td>Reading and writing operations</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#module-pyphoon.io.utils" title="pyphoon.io.utils"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.io.utils</span></code></a></td>
+<td>Other tools</td>
+</tr>
+</tbody>
+</table>
 <div class="section" id="module-pyphoon.io.typhoonlist">
 <span id="pyphoon-io-typhoonlist"></span><h2>pyphoon.io.typhoonlist<a class="headerlink" href="#module-pyphoon.io.typhoonlist" title="Permalink to this headline">¶</a></h2>
-<p>This module provides a handful of tools to read (and also write) several
-data formats (e.g. HDF and TSV files). Therefore, this has become an
-essential tool to interact with the Digital Typhoon data.</p>
+<p>This module contains one of the most important and essential components of the
+library, namely the class <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a>,
+which enables easy analysis and integration of data (e.g. HDF and TSV files)
+related to a specific typhoon sequence.</p>
+<div class="section" id="getting-started">
+<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h3>
+<p>Creating a TyphoonList object is very easy. It can be generated using only
+the image data.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">create_typhoonlist_from_source</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">create_typhoonlist_from_source</span><span class="p">(</span>
+<span class="go">    images=&#39;../original_data/image/199607/&#39;</span>
+<span class="go">    )</span>
+</pre></div>
+</div>
+<p>Additionally, if best data is available, the object can be created using it.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">create_typhoonlist_from_source</span><span class="p">(</span>
+<span class="go">    images=&#39;../original_data/image/199607/&#39;,</span>
+<span class="go">    best=&#39;../original_data/jma/199607/&#39;</span>
+<span class="go">    )</span>
+</pre></div>
+</div>
+<p>A TyphoonList object can be easily exported as a H5 file.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="s2">&quot;../data/199607.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Such new generated H5 file can be loaded again as a <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">read_typhoonlist_h5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="s2">&quot;../data/199607.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once a sequence is loaded, you may want to plot a specific frame. it is very
+simple. Only need to set a start and end frames and an interval (time between
+frames) value.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="contents">
+<h3>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -75,19 +149,22 @@ essential tool to interact with the Digital Typhoon data.</p>
 <td>Class encapsulating images and best track data of a certain typhoon sequence</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#pyphoon.io.typhoonlist.create_typhoonlist_from_source" title="pyphoon.io.typhoonlist.create_typhoonlist_from_source"><code class="xref py py-func docutils literal"><span class="pre">create_typhoonlist_from_source()</span></code></a></td>
-<td>Creation of a <code class="xref py py-class docutils literal"><span class="pre">TyphoonSequence</span></code> instance using best track and satellite image data sources</td>
+<td>Creation of a <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a> instance using best track and satellite image data sources</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#pyphoon.io.typhoonlist.read_typhoonlist_h5" title="pyphoon.io.typhoonlist.read_typhoonlist_h5"><code class="xref py py-func docutils literal"><span class="pre">read_typhoonlist_h5()</span></code></a></td>
-<td>Load previously stored (as H5) typhoon sequence data as a <code class="xref py py-class docutils literal"><span class="pre">TyphoonSequence</span></code> instance</td>
+<td>Load previously stored (as H5) typhoon sequence data as a <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a> instance</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section" id="methods-and-classes">
+<h3>Methods and classes<a class="headerlink" href="#methods-and-classes" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pyphoon.io.typhoonlist.TyphoonList">
-<em class="property">class </em><code class="descclassname">pyphoon.io.typhoonlist.</code><code class="descname">TyphoonList</code><span class="sig-paren">(</span><em>data</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pyphoon.io.typhoonlist.</code><code class="descname">TyphoonList</code><span class="sig-paren">(</span><em>data</em>, <em>name</em>, <em>classic=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Object encapsulating the images and, optionally, the best track data
-of a certain typhoon sequence.</p>
+<p>Object encapsulating the images and, optionally, other data sources,
+(e.g. best track data) of a certain typhoon sequence.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -101,65 +178,183 @@ dictionary are according to the output format of <code class="xref py py-func do
 </tr>
 </tbody>
 </table>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
+<dl class="method">
+<dt id="pyphoon.io.typhoonlist.TyphoonList.fields">
+<code class="descname">fields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>A TyphoonList instance can have several fields available. These
+include:</p>
+<blockquote>
+<div><ul class="simple">
+<li>images: Array with the sequence image data.</li>
+<li>best: Array with the sequence best track data.</li>
+</ul>
+</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><p class="first">Creating a TyphoonList object and storing it as an HDF
-file is very easy. You just need to create an instance of
-TyphoonList and pass the paths of the image files and best
-track data fro ma certain typhoon sequence. This way, both data are
-merged and can be stored as a single HDF file.</p>
-<p>Accessing only one single file rather than several files per
-each sequence significantly reduces execution time.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">create_typhoonlist_from_source</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path_images</span><span class="o">=</span><span class="s1">&#39;../original_data/image/201626/&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path_best</span><span class="o">=</span><span class="s1">&#39;../original_data/jma/201626.tsv&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">create_typhoonlist_from_source</span><span class="p">(</span><span class="n">path_images</span><span class="o">=</span><span class="n">path_images</span><span class="p">,</span> <span class="n">path_best</span><span class="o">=</span><span class="n">path_best</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="s2">&quot;data/201626.h5&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Loading a sequence as a TyphoonList object can be
-done in multiple ways. The easiest way is to retrieve the data
-from an HDF file generated using <cite>create_typhoonlist_from_source</cite>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">read_typhoonlist_h5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load sequence from HDF file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;data/201626.h5&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>We can also load a typhoon sequence straight from a dictionary with
-format: {X: …, Y: …}. The details on the shape of the dictionary
-are according to the output format of <code class="xref py py-func docutils literal"><span class="pre">read_h5file()</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">TyphoonList</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="k">import</span> <span class="n">read_h5file</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load sequence from a dictionary (format {X: ..., Y:...})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">read_h5file</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="s2">&quot;data/201626.h5&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence_2</span> <span class="o">=</span> <span class="n">TyphoonList</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="docutils">
-<dt>Once a sequence is loaded, you may want to plot a specific frame.</dt>
-<dd><p class="first last">it is very simple. Only need to set a start and end frames and an
-interval (time between frames) value.</p>
-</dd>
-</dl>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">typhoon_sequence_2</span><span class="o">.</span><span class="n">image</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">())</span>
-</pre></div>
-</div>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List with the keys of the available fields. These keys can
+then be used as the key argument in function <code class="xref py py-func docutils literal"><span class="pre">get()</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.io.typhoonlist.TyphoonList.get_data">
+<code class="descname">get_data</code><span class="sig-paren">(</span><em>key</em>, <em>date=None</em>, <em>id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the data from the specified field. If a date or id is
+specified, only a specific element is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>str</em>) – Field name of the data to be returned.</li>
+<li><strong>date</strong> (<em>datetime.datetime</em>) – Set to a date to retrieve the typhoon happening by then.
+This field prevails in case argument <code class="docutils literal"><span class="pre">id</span></code> is also used.</li>
+<li><strong>id</strong> (<em>str</em>) – Set to an id to retrieve the typhoon with that id.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data corresponding to <code class="docutils literal"><span class="pre">key</span></code>. Single sample if <code class="docutils literal"><span class="pre">date</span></code> or
+<code class="docutils literal"><span class="pre">id</span></code> are used.</p>
 </td>
 </tr>
 </tbody>
 </table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><code class="xref py py-class docutils literal"><span class="pre">DisplaySequence</span></code></p>
-</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.io.typhoonlist.TyphoonList.get_id">
+<code class="descname">get_id</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similarly to <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList.get_data" title="pyphoon.io.typhoonlist.TyphoonList.get_data"><code class="xref py py-func docutils literal"><span class="pre">get_data()</span></code></a>, this method returns the list of ids
+corresponding to a specific data field specified by <code class="docutils literal"><span class="pre">key</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<em>str</em>) – Field to retrieve ids from.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List with ids.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.io.typhoonlist.TyphoonList.get_date">
+<code class="descname">get_date</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.get_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similarly to <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList.get_data" title="pyphoon.io.typhoonlist.TyphoonList.get_data"><code class="xref py py-func docutils literal"><span class="pre">get_data()</span></code></a> and <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList.get_id" title="pyphoon.io.typhoonlist.TyphoonList.get_id"><code class="xref py py-func docutils literal"><span class="pre">get_id()</span></code></a>, this method
+returns the list of dates corresponding to a specific data field
+specified by <code class="docutils literal"><span class="pre">key</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>key</strong> (<em>str</em>) – Field to retrieve dates from.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List with dates.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.io.typhoonlist.TyphoonList.get_sample_distance">
+<code class="descname">get_sample_distance</code><span class="sig-paren">(</span><em>key</em>, <em>idx_0</em>, <em>idx_1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.get_sample_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains the distance between samples idx_0 and idx_1 from data
+field specified by <code class="docutils literal"><span class="pre">key</span></code>. Distance is measured in slots of 1h,
+i.e. a distance of 2 means that both sampels are two hours apart. By
+default, distance of 1 is expected since the maximum observation
+frequency is of 1 hour.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> (<em>str</em>) – Frame distance can be obtained from different sources. To
+this end, you can specify the which field to look at using <code class="docutils literal"><span class="pre">key</span></code>.</li>
+<li><strong>idx_0</strong> (<em>int</em>) – Index of first frame.</li>
+<li><strong>idx_1</strong> (<em>int</em>) – Index of second frame.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Time distance between frames in hours.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.io.typhoonlist.TyphoonList.insert_samples">
+<code class="descname">insert_samples</code><span class="sig-paren">(</span><em>key</em>, <em>new_samples</em>, <em>new_ids</em>, <em>idx</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.insert_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a batch of new samples (and the corresponding ids) at a
+certain position from a certain data field (specified by <code class="docutils literal"><span class="pre">key</span></code>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> – Key of the field to introduce the new data in.</li>
+<li><strong>new_samples</strong> (<em>list</em>) – List of new samples to be inserted.</li>
+<li><strong>new_ids</strong> (<em>list</em>) – List of new ids corresponding to the new samples.</li>
+<li><strong>idx</strong> (<em>int</em>) – Position at which samples are to be inserted.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.io.typhoonlist.TyphoonList.save_as_h5">
+<code class="descname">save_as_h5</code><span class="sig-paren">(</span><em>path_to_file</em>, <em>compression=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.save_as_h5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the data as an HDF file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path_to_file</strong> (<em>str</em>) – Path to the directory where typhoon sequence data
+will be stored.</li>
+<li><strong>compression</strong> (<em>str</em><em>, </em><em>default None</em>) – Set to a compression format. Find more details at
+the <a class="reference external" href="http://docs.h5py.org/en/latest/high/dataset.html">h5py documentation</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyphoon.io.typhoonlist.TyphoonList.shape">
+<code class="descname">shape</code><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns shape of typhoonlist as a dictionary, where each key
+stands for a data field and its corresponding value comes as a tuple:
+(shape_of_data, shape_of_ids).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Shape of typhoonlist</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pyphoon.io.typhoonlist.TyphoonList.images">
 <code class="descname">images</code><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.images" title="Permalink to this definition">¶</a></dt>
@@ -168,6 +363,22 @@ interval (time between frames) value.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List with sequence images</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyphoon.io.typhoonlist.TyphoonList.best">
+<code class="descname">best</code><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.best" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List with best track data. If no best data was loaded,
+it returns and empty list.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
@@ -190,6 +401,22 @@ interval (time between frames) value.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="pyphoon.io.typhoonlist.TyphoonList.best_ids">
+<code class="descname">best_ids</code><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.best_ids" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List with best track ids. If no best data was loaded,
+it returns and empty list.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="pyphoon.io.typhoonlist.TyphoonList.images_dates">
 <code class="descname">images_dates</code><span class="sig-paren">(</span><em>idx</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.images_dates" title="Permalink to this definition">¶</a></dt>
@@ -203,36 +430,6 @@ interval (time between frames) value.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List with dates of image frames.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">datetime.datetime</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pyphoon.io.typhoonlist.TyphoonList.best">
-<code class="descname">best</code><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.best" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List with best track data.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pyphoon.io.typhoonlist.TyphoonList.best_ids">
-<code class="descname">best_ids</code><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.best_ids" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List with best track ids.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list</td>
 </tr>
 </tbody>
 </table>
@@ -284,69 +481,11 @@ latter use <code class="docutils literal"><span class="pre">mode='best'</span></
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="pyphoon.io.typhoonlist.TyphoonList.insert_frames">
-<code class="descname">insert_frames</code><span class="sig-paren">(</span><em>frames</em>, <em>frames_ids</em>, <em>idx</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.insert_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Insert a batch of frames at a certain position. It also adds the
-corresponding image_ids.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>frames</strong> (<em>list</em>) – List of names to be inserted.</li>
-<li><strong>frames_ids</strong> (<em>list</em>) – List of image ids corresponding to frames.</li>
-<li><strong>idx</strong> (<em>int</em>) – Position at which frames are to be inserted.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pyphoon.io.typhoonlist.TyphoonList.shape">
-<code class="descname">shape</code><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns shape of typhoonlist as: (a, b, c, d), where a: shape of
-image frame array, b: shape of image ids list, c: shape of best data
-array, d: shape of best data ids list.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Shape of typhoonlist</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyphoon.io.typhoonlist.TyphoonList.save_as_h5">
-<code class="descname">save_as_h5</code><span class="sig-paren">(</span><em>path_to_file</em>, <em>compression=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList.save_as_h5" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores the data as an HDF file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path_to_file</strong> (<em>str</em>) – Path to the directory where typhoon sequence data
-will be stored.</li>
-<li><strong>compression</strong> (<em>str</em><em>, </em><em>default None</em>) – Set to a compression format. Find more details at
-the <a class="reference external" href="http://docs.h5py.org/en/latest/high/dataset.html">h5py documentation</a></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="function">
 <dt id="pyphoon.io.typhoonlist.create_typhoonlist_from_source">
-<code class="descclassname">pyphoon.io.typhoonlist.</code><code class="descname">create_typhoonlist_from_source</code><span class="sig-paren">(</span><em>path_images</em>, <em>path_best=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.create_typhoonlist_from_source" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pyphoon.io.typhoonlist.</code><code class="descname">create_typhoonlist_from_source</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.create_typhoonlist_from_source" title="Permalink to this definition">¶</a></dt>
 <dd><p>Groups the images and best track data from a certain typhoon and
 generates a <cite>TyphoonList</cite> instance. As input it requires an HDF
 file containing the images from a certain typhoon sequence an,
@@ -360,21 +499,19 @@ Track (TSV file).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>str</em>) – Name of the typhoon sequence</li>
 <li><strong>path_images</strong> (<em>str</em>) – Path to the typhoon sequence H5 file (images data).</li>
-<li><strong>path_best</strong> (<em>str</em>) – Path to the typhoon sequence TSV file (best track data).
-given sequence.</li>
+<li><strong>path_best</strong> – Path to the typhoon sequence TSV file (best track data).</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Object containing images and bes track data of a typhoon sequence.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList">TyphoonList</a></p>
 </td>
 </tr>
 </tbody>
 </table>
+<p>given sequence.
+:type path_best: str
+:return: Object containing images and bes track data of a typhoon sequence.
+:rtype: TyphoonList</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a></p>
@@ -392,33 +529,34 @@ corresponding best track metadata (Y). Additionally, it may have ids.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>path_to_file</strong> (<em>str</em>) – Path to the HDF file to load.</li>
-<li><strong>path_images</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to the original image folder (i.e. folder
-containing image H5 files). This path is relevant if the IDs or dates of
-any of the data (images or best data) are to be set. Otherwise ignore.</li>
-<li><strong>overwrite_ids</strong> (<em>bool</em>) – Set to True if the loaded typhoon sequence does
-have IDs already but you want to overwrite them.</li>
-<li><strong>overwrite_flags</strong> – </li>
-<li><strong>alignment</strong> (<em>bool</em>) – Set to True if frames and best data are to be
-aligned.</li>
+<li><strong>path_images</strong> – Path to the original image folder (i.e. folder</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Object containing images and bes track data of a typhoon sequence.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">TyphoonList instance</p>
 </td>
 </tr>
 </tbody>
 </table>
+<p>containing image H5 files). This path is relevant if the IDs or dates of
+any of the data (images or best data) are to be set. Otherwise ignore.
+:type path_images: str, optional
+:param overwrite_ids: Set to True if the loaded typhoon sequence does
+have IDs already but you want to overwrite them.
+:type overwrite_ids: bool
+:param overwrite_flags:
+:type overwrite_flags:
+:param alignment: Set to True if frames and best data are to be
+aligned.
+:type alignment: bool
+:return: Object containing images and bes track data of a typhoon sequence.
+:rtype: TyphoonList instance</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a></p>
 </div>
 </dd></dl>
 
+</div>
 </div>
 <div class="section" id="module-pyphoon.io.h5">
 <span id="pyphoon-io-h5"></span><h2>pyphoon.io.h5<a class="headerlink" href="#module-pyphoon.io.h5" title="Permalink to this headline">¶</a></h2>
@@ -444,8 +582,8 @@ specified directory. List is empty if no file was found).</td>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyphoon.io.h5.read_h5file">
-<code class="descclassname">pyphoon.io.h5.</code><code class="descname">read_h5file</code><span class="sig-paren">(</span><em>path_to_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.read_h5file" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.io.h5.read_h5groupfile">
+<code class="descclassname">pyphoon.io.h5.</code><code class="descname">read_h5groupfile</code><span class="sig-paren">(</span><em>path_to_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.read_h5groupfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads an HDF file and returns its content in a dictionary-fashion.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -463,8 +601,8 @@ field names, values are the corresponding data.</td>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyphoon.io.h5.write_h5file">
-<code class="descclassname">pyphoon.io.h5.</code><code class="descname">write_h5file</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em>, <em>compression</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.write_h5file" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.io.h5.write_h5groupfile">
+<code class="descclassname">pyphoon.io.h5.</code><code class="descname">write_h5groupfile</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em>, <em>compression</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.write_h5groupfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructs and stores an H5 file containing the given data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -522,12 +660,60 @@ as a dataset with name ‘infrared’.</p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="pyphoon.io.h5.read_h5file">
+<code class="descclassname">pyphoon.io.h5.</code><code class="descname">read_h5file</code><span class="sig-paren">(</span><em>path_to_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.read_h5file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads an HDF file and returns its content in a dictionary-fashion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_file</strong> (<em>str</em>) – Path to an H5 file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Content of the H5 file as a dictionary. Keys stand for data
+field names, values are the corresponding data.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Deprecated for <a class="reference internal" href="#pyphoon.io.h5.read_h5groupfile" title="pyphoon.io.h5.read_h5groupfile"><code class="xref py py-func docutils literal"><span class="pre">read_h5groupfile()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.io.h5.write_h5file">
+<code class="descclassname">pyphoon.io.h5.</code><code class="descname">write_h5file</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em>, <em>compression</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.write_h5file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs and stores an H5 file containing the given data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>dict</em>) – Dictionary containing the data to be stored. Keys stand for
+data field names, values are the corresponding data.</li>
+<li><strong>path_to_file</strong> (<em>str</em>) – Path where the new H5 file will be created.</li>
+<li><strong>compression</strong> – Use to compress H5 file. Find more details at
+the <a class="reference external" href="http://docs.h5py.org/en/latest/high/dataset.html">h5py documentation</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">Deprecated for <a class="reference internal" href="#pyphoon.io.h5.write_h5groupfile" title="pyphoon.io.h5.write_h5groupfile"><code class="xref py py-func docutils literal"><span class="pre">write_h5groupfile()</span></code></a></p>
+</div>
+</dd></dl>
+
 </div>
 <div class="section" id="module-pyphoon.io.tsv">
 <span id="pyphoon-io-tsv"></span><h2>pyphoon.io.tsv<a class="headerlink" href="#module-pyphoon.io.tsv" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="pyphoon.io.tsv.read_tsvs">
-<code class="descclassname">pyphoon.io.tsv.</code><code class="descname">read_tsvs</code><span class="sig-paren">(</span><em>directory='original_data/jma/'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.tsv.read_tsvs" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pyphoon.io.tsv.</code><code class="descname">read_tsvs</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.tsv.read_tsvs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all the files from the jma directory and returns a list of <em>N</em>
 elements, each being a list of typhoon features.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -661,24 +847,6 @@ the data to generate the id.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyphoon.io.utils.get_date_from_id">
-<code class="descclassname">pyphoon.io.utils.</code><code class="descname">get_date_from_id</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.utils.get_date_from_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the date of the frame at position idx</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<em>str</em>) – Identifier of an image or best track frame</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Date of the frame</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">datetime.datetime</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="pyphoon.io.utils.get_image_dates">
 <code class="descclassname">pyphoon.io.utils.</code><code class="descname">get_image_dates</code><span class="sig-paren">(</span><em>sequence_folder</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.utils.get_image_dates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the dates from all image H5 files stored in <em>sequence_folder</em>.</p>
@@ -732,6 +900,49 @@ files.</td>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of datetime.datetime elements.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.io.utils.id2date">
+<code class="descclassname">pyphoon.io.utils.</code><code class="descname">id2date</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.utils.id2date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the date of the frame at position idx</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>identifier</strong> (<em>str</em>) – Identifier of an image or best track frame</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Date of the frame</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">datetime.datetime</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.io.utils.date2id">
+<code class="descclassname">pyphoon.io.utils.</code><code class="descname">date2id</code><span class="sig-paren">(</span><em>date</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.utils.date2id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the id of a sample given its date and the id of the typhoon
+sequence it belongs to.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>date</strong> (<em>datetime.datetime</em>) – Date of the sample</li>
+<li><strong>name</strong> (<em>str</em>) – Name of the typhoon sequence, e.g. “199607”.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Id of the sample corresponding to the given sequence name and date.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -819,7 +1030,12 @@ extension).</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">pyphoon.io</a><ul>
-<li><a class="reference internal" href="#module-pyphoon.io.typhoonlist">pyphoon.io.typhoonlist</a></li>
+<li><a class="reference internal" href="#module-pyphoon.io.typhoonlist">pyphoon.io.typhoonlist</a><ul>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#contents">Contents</a></li>
+<li><a class="reference internal" href="#methods-and-classes">Methods and classes</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-pyphoon.io.h5">pyphoon.io.h5</a></li>
 <li><a class="reference internal" href="#module-pyphoon.io.tsv">pyphoon.io.tsv</a></li>
 <li><a class="reference internal" href="#module-pyphoon.io.utils">pyphoon.io.utils</a></li>
