@@ -2,11 +2,10 @@ import h5py
 from os import listdir
 from os.path import isfile, join, isdir
 import numpy as np
+import warnings
+import collections
+import ast
 
-
-##########################
-#  H5 RELATED FUNCTIONS  #
-##########################
 
 def get_h5_filenames(directory):
     """ Obtains the list of H5 file names within the given directory. If the
@@ -31,44 +30,39 @@ def get_h5_filenames(directory):
     return files
 
 
-def read_h5file(path_to_file):
-    """ Reads an HDF file and returns its content in a dictionary-fashion.
+def read_h5groupfile(path_to_file):
+    """ Reads an H5 file and returns its content in a dictionary-fashion.
+    Note that the H5 file is assumed to have a set of groups with two
+    datasets ('data' and 'ids'). The groups refer to the different data
+    fields used as source data for Digital Typhoon.
 
     :param path_to_file: Path to an H5 file.
     :type path_to_file: str
     :return: Content of the H5 file as a dictionary. Keys stand for data
-        field names, values are the corresponding data.
+        field names, the corresponding value is a dictionary with two fields:
+        'data', which contains the data itself and 'ids' which contains the
+        ids associated to the samples from 'data'. Hence, the format of the
+        returned file is a 2-nested dictionary.
     :rtype: dict
     """
-    with h5py.File(path_to_file, 'r') as h5f:
-        keys = list(h5f.keys())
-        data = {}
-        for key in keys:
-            if key != "name":
-                # Decode list of byte-strings
-                value = h5f[key][:]
-                if (isinstance(value, np.ndarray)) and isinstance(value[0],
-                                                                  bytes):
-                    _value = value
-                    value = [n.decode("utf-8") for n in _value]
-                data[key] = value
+    data = collections.defaultdict(dict)
 
-    # f = h5py.File(path_to_file, 'r')
-    # List all groups
-    # keys = list(f.keys())
-    # Get the data
-    # data = {key: f[key][:] for key in keys if key != "name"}
-    # Get file name
-    # name = path_to_file.split('/')[-1].split('.h5')[-2]
-    # data['name'] = name
-    return data
+    with h5py.File(path_to_file, 'r') as hf:
+        for key, value in hf.items():
+            data[key]['data'] = value.get('data').value
+            data[key]['ids'] = ast.literal_eval(value.get('ids').value)
+
+    return dict(data)
 
 
-def write_h5file(data, path_to_file, compression):
+def write_h5groupfile(data, path_to_file, compression):
     """ Constructs and stores an H5 file containing the given data.
 
     :param data: Dictionary containing the data to be stored. Keys stand for
-        data field names, values are the corresponding data.
+        data field names, the corresponding value is a dictionary with two
+        fields: 'data', which contains the data itself and 'ids' which
+        contains the ids associated to the samples from 'data'. Hence,
+        ``data`` is a 2-nested dictionary.
     :type data: dict
     :param path_to_file: Path where the new H5 file will be created.
     :type path_to_file: str
@@ -78,21 +72,17 @@ def write_h5file(data, path_to_file, compression):
     .. _h5py documentation:
             http://docs.h5py.org/en/latest/high/dataset.html
     """
-    with h5py.File(path_to_file, 'w') as h5f:
+    with h5py.File(path_to_file, 'w') as hf:
         for key, value in data.items():
-            if isinstance(value, list):
-                if not value:
-                    continue
-                # Encode byte-string lists
-                elif isinstance(value[0], str):
-                    _value = value
-                    value = [n.encode("ascii", "ignore") for n in _value]
-            h5f.create_dataset(key, data=value, compression=compression)
+            g1 = hf.create_group(key)
+            g1.create_dataset('data', data=value['data'],
+                              compression=compression)
+            g1.create_dataset('ids', data=str(value['ids']))
 
 
-##############################
-#  IMAGES RELATED FUNCTIONS  #
-##############################
+################################################################################
+#  IMAGES RELATED FUNCTIONS
+################################################################################
 
 def read_source_images(path_to_folder):
     """ Reads all image files within a given folder. Note that all images are
@@ -122,5 +112,68 @@ def read_source_image(path_to_file):
     :return: Image
     :rtype: list
     """
-    data = read_h5file(path_to_file)
-    return data['infrared']
+    with h5py.File(path_to_file, 'r') as h5f:
+        image = h5f.get('infrared').value
+    return image
+
+
+################################################################################
+# DEPRECATED
+################################################################################
+def read_h5file(path_to_file):
+    """ Reads an HDF file and returns its content in a dictionary-fashion.
+
+    :param path_to_file: Path to an H5 file.
+    :type path_to_file: str
+    :return: Content of the H5 file as a dictionary. Keys stand for data
+        field names, values are the corresponding data.
+    :rtype: dict
+
+    .. seealso:: Deprecated for :func:`read_h5groupfile`
+
+    """
+    warnings.warn("deprecated, use read_h5groupfile() instead",
+                  DeprecationWarning)
+    with h5py.File(path_to_file, 'r') as h5f:
+        keys = list(h5f.keys())
+        data = {}
+        for key in keys:
+            if key != "name":
+                # Decode list of byte-strings
+                value = h5f[key][:]
+                if (isinstance(value, np.ndarray)) and isinstance(value[0],
+                                                                  bytes):
+                    _value = value
+                    value = [n.decode("utf-8") for n in _value]
+                data[key] = value
+    return data
+
+
+def write_h5file(data, path_to_file, compression):
+    """ Constructs and stores an H5 file containing the given data.
+
+    :param data: Dictionary containing the data to be stored. Keys stand for
+        data field names, values are the corresponding data.
+    :type data: dict
+    :param path_to_file: Path where the new H5 file will be created.
+    :type path_to_file: str
+    :param compression: Use to compress H5 file. Find more details at
+            the `h5py documentation`_
+
+    .. seealso:: Deprecated for :func:`write_h5groupfile`
+
+    .. _h5py documentation:
+            http://docs.h5py.org/en/latest/high/dataset.html
+    """
+    warnings.warn("deprecated, use write_h5groupfile() instead",
+                  DeprecationWarning)
+    with h5py.File(path_to_file, 'w') as h5f:
+        for key, value in data.items():
+            if isinstance(value, list):
+                if not value:
+                    continue
+                # Encode byte-string lists
+                elif isinstance(value[0], str):
+                    _value = value
+                    value = [n.encode("ascii", "ignore") for n in _value]
+            h5f.create_dataset(key, data=value, compression=compression)

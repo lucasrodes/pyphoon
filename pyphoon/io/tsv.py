@@ -8,7 +8,7 @@ import numpy as np
 #  TSV RELATED FUNCTIONS  #
 ###########################
 
-def read_tsvs(directory='original_data/jma/'):
+def read_tsvs(directory):
     """ Reads all the files from the jma directory and returns a list of *N*
     elements, each being a list of typhoon features.
 
