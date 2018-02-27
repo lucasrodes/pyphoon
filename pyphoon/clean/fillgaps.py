@@ -25,8 +25,8 @@ def generate_new_frames_1(typhoon_sequence, frame_idx_0, frame_idx_1,
     :return: List with the new generated frames
     :rtype: list
     """
-    frame_0 = typhoon_sequence.images[frame_idx_0]
-    frame_1 = typhoon_sequence.images[frame_idx_1]
+    frame_0 = typhoon_sequence.get_data('images')[frame_idx_0]
+    frame_1 = typhoon_sequence.get_data('images')[frame_idx_1]
     frames_new = [((n_frames-n)*frame_0 + (n+1)*frame_1) / (n_frames+1) for
                   n in range(n_frames)]
     # TODO: Reduce number of different values appearing in all elements in

@@ -33,11 +33,11 @@ def correct_corrupted_pixels_1(typhoon_sequence, index, pos,
     :type params: dict
     :return:
     """
-    K = len(typhoon_sequence.images)
+    K = len(typhoon_sequence.get_data('images'))
 
     # BACKWARD
     if index > 0:
-        region_n = typhoon_sequence.images[index - 1][pos]
+        region_n = typhoon_sequence.get_data('images')[index - 1][pos]
         c_n = np.ones_like(region_n)
         pos_n = detect_fct(region_n, params)
 
@@ -46,7 +46,8 @@ def correct_corrupted_pixels_1(typhoon_sequence, index, pos,
         print("  - 1") if display else 0
         while True in pos_n and index - k >= 0:
             print("  -", k) if display else 0
-            region_n[pos_n] = typhoon_sequence.images[index - k][pos][pos_n]
+            region_n[pos_n] = typhoon_sequence.get_data('images')[index - k][
+                pos][pos_n]
             if k < 15:
                 c_n[pos_n] *= np.exp(-1)
             pos_n = detect_fct(region_n, params)
@@ -64,7 +65,7 @@ def correct_corrupted_pixels_1(typhoon_sequence, index, pos,
 
     # FORWARD
     if index < K - 1:
-        region_p = typhoon_sequence.images[index + 1][pos]
+        region_p = typhoon_sequence.get_data('images')[index + 1][pos]
         c_p = np.ones_like(region_p)
         pos_p = detect_fct(region_p, params)
 
@@ -73,7 +74,8 @@ def correct_corrupted_pixels_1(typhoon_sequence, index, pos,
         print("  + 1") if display else 0
         while True in pos_p and index + k < K:
             print("  +", k) if display else 0
-            region_p[pos_p] = typhoon_sequence.images[index + k][pos][pos_p]
+            region_p[pos_p] = typhoon_sequence.get_data('images')[index + k][
+                pos][pos_p]
             if k < 15:
                 c_p[pos_p] *= np.exp(-1)
             pos_p = detect_fct(region_p, params)

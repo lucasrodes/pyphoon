@@ -5,7 +5,7 @@ import copy
 ################################################################################
 
 
-class TyphoonListFixAlgorithm(object):
+class TyphoonListImageFixAlgorithm(object):
     """
     Encapsulates an algorithm to correct and clean ("fix") a typhoon sequence.
 
@@ -30,6 +30,7 @@ class TyphoonListFixAlgorithm(object):
         self.fillgaps_fct = fillgaps_fct
         self.detect_params = detect_params
         self.n_frames_th = n_frames_th
+        self.fixed_ids = {'corrected': None, 'generated': None}
 
     def apply(self, typhoon_sequence, display=False):
         """ Applies the defined fix algorithm to a given typhoon
@@ -46,10 +47,12 @@ class TyphoonListFixAlgorithm(object):
 
         # Detect and correct corrupted frames
         if self.detect_fct is not None and self.correct_fct is not None:
-            self.detect_and_correct(typhoon_sequence_new, display)
+            ids = self.detect_and_correct(typhoon_sequence_new, display)
+            self.fixed_ids['corrected'] = ids
         # Generate synthetic images
         if self.fillgaps_fct is not None:
-            self.fill_gaps(typhoon_sequence_new)
+            ids = self.fill_gaps(typhoon_sequence_new)
+            self.fixed_ids['generated'] = ids
 
         return typhoon_sequence_new
 
@@ -62,31 +65,37 @@ class TyphoonListFixAlgorithm(object):
         :type typhoon_sequence: :class:`~pyphoon.io.typhoonlist.TyphoonList`
         :param display: Set to True to print execution information.
         :type display: bool
+        :return: Ids of the corrected images
+        :rtype: list
 
         .. seealso:: :mod:`pyphoon.clean.detection`,
                     :mod:`pyphoon.clean.correction`
 
         """
-        for index in range(len(typhoon_sequence.images)):
+        new_ids = []
+
+        for index in range(len(typhoon_sequence.get_data('images'))):
             print("\n-----------\nindex:", index) if display else 0
 
             # GET AFFECTED AREA
-            pos = self.detect_fct(typhoon_sequence.images[index],
+            pos = self.detect_fct(typhoon_sequence.get_data('images')[index],
                                   params=self.detect_params)
 
             # CORRECT AREA
             if True in pos:
                 # Correct frame
-                typhoon_sequence.images[index][pos] = \
+                typhoon_sequence.get_data('images')[index][pos] = \
                     self.correct_fct(typhoon_sequence, index, pos,
                                      self.detect_fct, display,
                                      params=self.detect_params)
+                new_ids.append(typhoon_sequence.get_id('images')[index])
                 """
                 # Add fix-flag: Frame has been corrected
                 image_id = typhoon_sequence.images_ids[index]
                 index_best = typhoon_sequence.best_ids.index(image_id)
                 typhoon_sequence.data['Y'][index_best, -1] = 1
                 """
+        return new_ids
 
     def fill_gaps(self, typhoon_sequence):
         """ Fills the gaps in the given typhoon sequence using the method
@@ -94,18 +103,23 @@ class TyphoonListFixAlgorithm(object):
 
         :param typhoon_sequence: Input typhoon sequence to be fixed.
         :type typhoon_sequence: :class:`~pyphoon.io.typhoonlist.TyphoonList`
+        :return: List with the ids of the new generated frames
+        :rtype: list
 
         .. seealso:: :mod:`pyphoon.clean.fillgaps`
         """
         # Copy typhoon sequence
         typhoon_sequence_raw = copy.deepcopy(typhoon_sequence)
+        new_ids = []
 
         n_frames_cum = 0  # index shift in new typhoon sequence
-        for index in range(len(typhoon_sequence_raw.images)):
+        for index in range(len(typhoon_sequence_raw.get_data('images'))):
             if index != 0:
-                n_frames_cum = self._fill_gaps(typhoon_sequence_raw,
-                                               typhoon_sequence, index,
-                                               n_frames_cum)
+                n_frames_cum, _new_ids = self._fill_gaps(typhoon_sequence_raw,
+                                                         typhoon_sequence,
+                                                         index, n_frames_cum)
+                new_ids.extend(_new_ids)
+        return new_ids
 
     def _fill_gaps(self, typhoon_sequence_raw, typhoon_sequence, index,
                    n_frames_cum):
@@ -129,10 +143,12 @@ class TyphoonListFixAlgorithm(object):
         :rtype: int
         """
 
+        new_frames_ids = []
         # Distance in hours between frame at position index and frame at
         # index - 1
-        frame_dist = typhoon_sequence_raw.get_image_frames_distance(index - 1,
-                                                                    index) - 1
+        frame_dist = typhoon_sequence_raw.get_sample_distance('images',
+                                                              index - 1,
+                                                              index) - 1
 
         # Fill gap only if frame distance is below a certain threshold
         if 0 < frame_dist < self.n_frames_th:
@@ -153,12 +169,14 @@ class TyphoonListFixAlgorithm(object):
 
             # Insert new image frames and ids
             # TODO: This takes a lot of time!
-            typhoon_sequence.insert_frames(new_frames, new_frames_ids, index +
-                                           n_frames_cum)
+            typhoon_sequence.insert_samples('images', new_frames,
+                                            new_frames_ids, index +
+                                            n_frames_cum)
             n_frames_cum += frame_dist
-        elif frame_dist >= n_frames_th:
-            print(index, frame_dist)
-        return n_frames_cum
+        elif frame_dist >= self.n_frames_th:
+            pass
+            # print(index, frame_dist)
+        return n_frames_cum, new_frames_ids
 
 
 ################################################################################
@@ -181,13 +199,13 @@ def generate_image_frames_ids(typhoon_sequence, frame_idx_0, frame_idx_1,
     :return: List of newly generated ids.
     :rtype: list
     """
-    dif = typhoon_sequence.images_dates(frame_idx_1) - \
-          typhoon_sequence.images_dates(frame_idx_0)
+    dif = typhoon_sequence.get_date('images')[frame_idx_1] - \
+          typhoon_sequence.get_date('images')[frame_idx_0]
 
-    name = typhoon_sequence.images_ids[0].split('_')[0]
+    name = typhoon_sequence.get_id('images')[0].split('_')[0]
     ids_new = [
         name + "_" + (
-        typhoon_sequence.images_dates(frame_idx_0) + (n + 1) / (
+        typhoon_sequence.get_date('images')[frame_idx_0] + (n + 1) / (
             n_frames + 1) * dif).strftime("%Y%m%d%H") for n in
         range(n_frames)
     ]
