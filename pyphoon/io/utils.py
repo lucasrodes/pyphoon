@@ -4,13 +4,12 @@ Some tools ot assist in reading source data
 
 from datetime import datetime as dt
 from pyphoon.io.h5 import get_h5_filenames
-# import moviepy.editor as mpy
 
 
 ############################
 #        IMAGE IDs         #
 ############################
-
+# TODO: Move ids generators to Conversors section
 def get_image_ids(sequence_folder):
     """ Gets ids for each image within a folder.
 
@@ -77,25 +76,6 @@ def get_best_ids(best_data, seq_name):
 #          DATES           #
 ############################
 
-def get_date_from_id(identifier):
-    """ Gets the date of the frame at position idx
-
-    :param identifier: Identifier of an image or best track frame
-    :type identifier: str
-    :return: Date of the frame
-    :rtype: datetime.datetime
-    """
-    # Ignore typhoon id section
-    identifier = identifier.split('_')[1]
-
-    year = int(identifier[:4])
-    month = int(identifier[4:6])
-    day = int(identifier[6:8])
-    hour = int(identifier[8:])
-    date = dt(year, month, day, hour)
-    return date
-
-
 ############################
 #       IMAGE DATES        #
 ############################
@@ -150,8 +130,42 @@ def get_best_dates(best_data):
 
 
 ############################
-#          OTHERS          #
+#        CONVERSORS        #
 ############################
+
+
+def id2date(identifier):
+    """ Gets the date of the frame at position idx
+
+    :param identifier: Identifier of an image or best track frame
+    :type identifier: str
+    :return: Date of the frame
+    :rtype: datetime.datetime
+    """
+    # Ignore typhoon id section
+    identifier = identifier.split('_')[1]
+
+    year = int(identifier[:4])
+    month = int(identifier[4:6])
+    day = int(identifier[6:8])
+    hour = int(identifier[8:])
+    date = dt(year, month, day, hour)
+    return date
+
+
+def date2id(date, name):
+    """ Generates the id of a sample given its date and the id of the typhoon
+    sequence it belongs to.
+
+    :param date: Date of the sample
+    :type date: datetime.datetime
+    :param name: Name of the typhoon sequence, e.g. "199607".
+    :type name: str
+    :return: Id of the sample corresponding to the given sequence name and date.
+    :rtype: str
+    """
+    return name + "_" + date.strftime("%Y%m%d%H")
+
 
 def h5file_2_name(path_h5file):
     """ Given a path to an HDF file, obtains the file name (without format
