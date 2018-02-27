@@ -75,10 +75,9 @@ class TyphoonList(object):
     :var name: Name of the sequence (str).
     """
 
-    def __init__(self, data, name, classic=True):
+    def __init__(self, data, name):
         self.data = data
         self.name = name
-        self.classic = classic
 
     ############################################################################
     #  DATA ACCESS
@@ -185,7 +184,14 @@ class TyphoonList(object):
         self.data[key]['data'] = np.insert(self.data[key]['data'], idx,
                                            new_samples, axis=0)
         # Insert ids
-        self.data[key]['ids'][idx:idx] = new_ids
+        keys = list(self.data[key]['ids'].keys())
+        values = list(self.data[key]['ids'].values())
+        original_length = len(keys)
+
+        keys[idx:idx] = new_ids
+        values[idx:] = range(values[idx-1], len(new_ids) + original_length)
+
+        self.data[key]['ids'] = dict(zip(keys, values))
 
     ############################################################################
     #  STORING
@@ -440,7 +446,7 @@ def create_typhoonlist_from_source(name, **kwargs):
 
             data['best'] = {
                 'data': Y,
-                'ids': get_best_ids(Y, name)
+                'ids': dict(zip(get_best_ids(Y, name), range(len(Y))))
             }
 
             """
