@@ -161,7 +161,7 @@ frames) value.</p>
 <h3>Methods and classes<a class="headerlink" href="#methods-and-classes" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pyphoon.io.typhoonlist.TyphoonList">
-<em class="property">class </em><code class="descclassname">pyphoon.io.typhoonlist.</code><code class="descname">TyphoonList</code><span class="sig-paren">(</span><em>data</em>, <em>name</em>, <em>classic=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pyphoon.io.typhoonlist.</code><code class="descname">TyphoonList</code><span class="sig-paren">(</span><em>data</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Object encapsulating the images and, optionally, other data sources,
 (e.g. best track data) of a certain typhoon sequence.</p>
@@ -519,6 +519,33 @@ Track (TSV file).</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="pyphoon.io.typhoonlist.load_typhoonlist_h5">
+<code class="descclassname">pyphoon.io.typhoonlist.</code><code class="descname">load_typhoonlist_h5</code><span class="sig-paren">(</span><em>path_to_file</em>, <em>alignment=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.load_typhoonlist_h5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a typhoon sequence stored as an H5 file as an instance of
+TyphoonList.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path_to_file</strong> (<em>str</em>) – Path to the HDF file to load.</li>
+<li><strong>alignment</strong> – Set to True if frames and best data are to be</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>aligned.
+:type alignment: bool
+:return: Object containing images and bes track data of a typhoon sequence.
+:rtype: TyphoonList instance</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="pyphoon.io.typhoonlist.read_typhoonlist_h5">
 <code class="descclassname">pyphoon.io.typhoonlist.</code><code class="descname">read_typhoonlist_h5</code><span class="sig-paren">(</span><em>path_to_file</em>, <em>path_images=None</em>, <em>overwrite_ids=False</em>, <em>overwrite_flags=False</em>, <em>alignment=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.read_typhoonlist_h5" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads a typhoon sequence stored as an HDF file as an instance of
@@ -584,7 +611,10 @@ specified directory. List is empty if no file was found).</td>
 <dl class="function">
 <dt id="pyphoon.io.h5.read_h5groupfile">
 <code class="descclassname">pyphoon.io.h5.</code><code class="descname">read_h5groupfile</code><span class="sig-paren">(</span><em>path_to_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.read_h5groupfile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads an HDF file and returns its content in a dictionary-fashion.</p>
+<dd><p>Reads an H5 file and returns its content in a dictionary-fashion.
+Note that the H5 file is assumed to have a set of groups with two
+datasets (‘data’ and ‘ids’). The groups refer to the different data
+fields used as source data for Digital Typhoon.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -592,7 +622,10 @@ specified directory. List is empty if no file was found).</td>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_file</strong> (<em>str</em>) – Path to an H5 file.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Content of the H5 file as a dictionary. Keys stand for data
-field names, values are the corresponding data.</td>
+field names, the corresponding value is a dictionary with two fields:
+‘data’, which contains the data itself and ‘ids’ which contains the
+ids associated to the samples from ‘data’. Hence, the format of the
+returned file is a 2-nested dictionary.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
 </tr>
@@ -610,7 +643,10 @@ field names, values are the corresponding data.</td>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>data</strong> (<em>dict</em>) – Dictionary containing the data to be stored. Keys stand for
-data field names, values are the corresponding data.</li>
+data field names, the corresponding value is a dictionary with two
+fields: ‘data’, which contains the data itself and ‘ids’ which
+contains the ids associated to the samples from ‘data’. Hence,
+<code class="docutils literal"><span class="pre">data</span></code> is a 2-nested dictionary.</li>
 <li><strong>path_to_file</strong> (<em>str</em>) – Path where the new H5 file will be created.</li>
 <li><strong>compression</strong> – Use to compress H5 file. Find more details at
 the <a class="reference external" href="http://docs.h5py.org/en/latest/high/dataset.html">h5py documentation</a></li>
