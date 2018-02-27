@@ -22,6 +22,7 @@ from pyphoon.clean.fillgaps import generate_new_frames_1
 #  Input 1: Directory with original satellite images
 #  Input 2: Directory with original Best data
 ################################################################################
+
 path_images = '../original_data/image/'
 path_best = '../original_data/jma/'
 
@@ -29,6 +30,7 @@ path_best = '../original_data/jma/'
 # DEFINE
 #  Directories for corrected and interpolated images
 ################################################################################
+
 # Detection/Correction
 detect_fct = detect_corrupted_pixels_1  # Detection method
 correct_fct = correct_corrupted_pixels_1  # Correction method
