@@ -9,38 +9,19 @@ thoughts. Just bring data to life with it and start exploring!
 Getting Started
 ^^^^^
 
-There are two options to visualize a sequence of frames. Either using a
-:class:`~pyphoon.utils.io.TyphoonList` instance
+Let us visualize the sequence ``201626``, stored at "../data/201626.h5". We
+load it, as usual, using
+:func:`~pyphoon.utils.io.typhoonlist.load_typhoonlist_h5`.
 
->>> from pyphoon.io.typhoonlist import read_typhoonlist_h5
+>>> from pyphoon.io.typhoonlist import load_typhoonlist_h5
 >>> from pyphoon.visualize import DisplaySequence
 >>> # Load sequence from HDF file
 >>> path = "data/201626.h5"
->>> typhoon_sequence = read_typhoonlist_h5(path_to_file=path)
+>>> typhoon_sequence = load_typhoonlist_h5(path_to_file=path)
 >>> DisplaySequence(
     typhoon_sequence=typhoon_sequence,
     interval=100,
-    start_frame=0,
-    end_frame=-1
 ).run()
-
-or directly feeding a raw list of frames.
-
->>> from pyphoon.io.h5 import read_h5file
->>> from pyphoon.io.typhoonlist import read_typhoonlist_h5
->>> from pyphoon.visualize import DisplaySequence
->>> # Load sequence from HDF file
->>> path = "data/201626.h5"
->>> typhoon_sequence = read_typhoonlist_h5(path_to_file=path)
->>> data = typhoon_sequence.images
->>> DisplaySequence(
-    raw_data=data,
-    name="201626",
-    interval=100,
-    start_frame=0,
-    end_frame=-1
-).run()
-
 
 Methods and classes
 ^^^^^
