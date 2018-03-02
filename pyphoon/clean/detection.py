@@ -2,6 +2,7 @@
 This submodule contains different methods to detect corrupted images. The
 standard notation is ``detect_corrupted_pixels_<method index>``.
 """
+# TODO: Generic method able to call specific detection methods. See decorators
 ################################################################################
 # Detection methods
 ################################################################################

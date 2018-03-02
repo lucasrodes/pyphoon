@@ -8,8 +8,8 @@ tools to fix such problems.
 .. note:: In the future, this library should provide tools to, not only
     correct corrupted images but other sorts of data
 
-Getting started
-^^^^
+**Getting started**
+
 
 In this example we will fix a sequence by using method
 :func:`~pyphoon.clean.detection.detect_corrupted_pixels_1` to detect
@@ -18,7 +18,7 @@ corrupted frames,
 those and :func:`~pyphoon.clean.fillgaps.generate_new_frames_1` to
 generate new frames in order to fill some temporal gaps.
 
->>> from pyphoon.clean.fix import TyphoonListFixAlgorithm
+>>> from pyphoon.clean.fix import TyphoonListImageFixAlgorithm
 >>> from pyphoon.clean.detection import detect_corrupted_pixels_1
 >>> from pyphoon.clean.correction import correct_corrupted_pixels_1
 >>> from pyphoon.clean.fillgaps import generate_new_frames_1
@@ -28,7 +28,7 @@ Once the aforementioned methods are loaded, we can define an instance of
 which contains information related to the detection and fillgaps
 methods.
 
->>> fix_algorithm = TyphoonListFixAlgorithm(
+>>> fix_algorithm = TyphoonListImageFixAlgorithm(
     detect_fct=detect_corrupted_pixels_1,
     correct_fct=correct_corrupted_pixels_1,
     fillgaps_fct=generate_new_frames_1,
@@ -45,8 +45,7 @@ algorithm to it.
 >>> seq = create_typhoonlist_from_source('../original_data/image/199607')
 >>> seq_fixed = fix_algorithm.apply(seq)
 
-Modules
-^^^^
+**Modules**
 
 +-------------------------------------------+-----------------------------------------------------------+
 | module                                    | Description                                               |
