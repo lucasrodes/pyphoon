@@ -25,11 +25,15 @@ Refer to the instructions [here](http://lcsrg.me/pyphoon/build/html/env_setup.ht
 Easily visualize an animation of a sequence:
 
 ```python
-from pyphoon.io.typhoonlist import load_typhoonlist_h5
+from pyphoon.io.typhoonlist import create_typhoonlist_from_source
 from pyphoon.visualize import DisplaySequence
 
 # Load a sequence
-sequence = load_typhoonlist_h5('sampledata/201725.h5')
+sequence = create_typhoonlist_from_source(
+    name='201725',
+    images='sampledata/201725.h5',
+    best=''
+)
 
 # Visualize sequence
 DisplaySequence(
