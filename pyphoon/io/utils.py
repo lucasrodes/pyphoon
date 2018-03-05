@@ -152,6 +152,17 @@ def id2date(identifier):
     date = dt(year, month, day, hour)
     return date
 
+def id2seqno(identifier):
+    """
+    Gets sequence number from id
+    :param identifier: 
+    :return:
+    """
+    parts = str.split(identifier, sep='_')
+    if (not len(parts) == 2) or not len(identifier) == 17:
+        Exception('wrong id format provided')
+    return parts[0]
+
 
 def date2id(date, name):
     """ Generates the id of a sample given its date and the id of the typhoon
