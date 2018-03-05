@@ -94,13 +94,14 @@ def read_source_images(path_to_folder):
     :type path_to_folder: str
     :return: *NxWxH* Numpy array (*N*: #images, *W*: image width, *H*: image
         height)
+    :rtype: list
     """
     files = get_h5_filenames(path_to_folder)
     images = []
     for file in files:
         img = read_source_image(join(path_to_folder, file))
         images.append(img)
-    return np.array(images)
+    return images
 
 
 def read_source_image(path_to_file):
@@ -110,7 +111,7 @@ def read_source_image(path_to_file):
     :param path_to_file: Path to the HDF file storing the image.
     :type path_to_file: str
     :return: Image
-    :rtype: list
+    :rtype: a
     """
     with h5py.File(path_to_file, 'r') as h5f:
         image = h5f.get('infrared').value

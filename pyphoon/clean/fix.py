@@ -56,6 +56,11 @@ class TyphoonListImageFixAlgorithm(object):
 
         return typhoon_sequence_new
 
+    def clear(self):
+        """ Resets the list of corrected/generated frame ids.
+        """
+        self.fixed_ids = {'corrected': None, 'generated': None}
+
     def detect_and_correct(self, typhoon_sequence, display):
         """ Detects and corrects irregularities in image frames from
         ``typhoon_sequence``  using the methods specified by attributes

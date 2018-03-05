@@ -158,7 +158,25 @@ Placed at <code class="docutils literal"><span class="pre">../data/sequences/gap
 59
 60
 61
-62</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># TODO: Refactor</span>
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># TODO: Refactor &amp; TEST</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
@@ -167,7 +185,10 @@ Placed at <code class="docutils literal"><span class="pre">../data/sequences/gap
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">isdir</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="kn">import</span> <span class="n">create_typhoonlist_from_source</span>
-<span class="kn">from</span> <span class="nn">pyphoon.clean</span> <span class="kn">import</span> <span class="n">fix_sequence</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean.fix</span> <span class="kn">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean.detection</span> <span class="kn">import</span> <span class="n">detect_corrupted_pixels_1</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean.correction</span> <span class="kn">import</span> <span class="n">correct_corrupted_pixels_1</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean.fillgaps</span> <span class="kn">import</span> <span class="n">generate_new_frames_1</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 
@@ -175,15 +196,25 @@ Placed at <code class="docutils literal"><span class="pre">../data/sequences/gap
 <span class="n">directory_images</span> <span class="o">=</span> <span class="s2">&quot;../original_data/image/&quot;</span>
 <span class="n">directory_best</span> <span class="o">=</span> <span class="s2">&quot;../original_data/jma/&quot;</span>
 <span class="c1"># Path destination</span>
-<span class="n">path_normal</span> <span class="o">=</span> <span class="s1">&#39;../data/sequences/compressed_1/&#39;</span>
-<span class="n">path_corrected</span> <span class="o">=</span> <span class="s1">&#39;../data/sequences/corrected_1/&#39;</span>
-<span class="n">path_gapfilled</span> <span class="o">=</span> <span class="s1">&#39;../data/sequences/gapfilled_1/&#39;</span>
+<span class="n">path_normal</span> <span class="o">=</span> <span class="s1">&#39;../data/sequences/compressed_2/&#39;</span>
+<span class="n">path_corrected</span> <span class="o">=</span> <span class="s1">&#39;../data/sequences/corrected_2/&#39;</span>
+<span class="n">path_gapfilled</span> <span class="o">=</span> <span class="s1">&#39;../data/sequences/gapfilled_2/&#39;</span>
 
 <span class="c1"># Get typhoon image sequence folders.</span>
 <span class="n">folders</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">directory_images</span><span class="p">)</span> <span class="k">if</span> <span class="n">isdir</span><span class="p">(</span><span class="n">join</span><span class="p">(</span>
     <span class="n">directory_images</span><span class="p">,</span> <span class="n">f</span><span class="p">))])</span>
 
-
+<span class="c1"># Define correction algorithm</span>
+<span class="n">correct_algorithm</span> <span class="o">=</span> <span class="n">TyphoonListImageFixAlgorithm</span><span class="p">(</span>
+    <span class="n">detect_fct</span><span class="o">=</span><span class="n">detect_corrupted_pixels_1</span><span class="p">,</span>
+    <span class="n">correct_fct</span><span class="o">=</span><span class="n">correct_corrupted_pixels_1</span><span class="p">,</span>
+    <span class="n">detect_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;min_th&#39;</span><span class="p">:</span> <span class="mi">170</span><span class="p">,</span> <span class="s1">&#39;max_th&#39;</span><span class="p">:</span> <span class="mi">310</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="c1"># Define generating algorithm</span>
+<span class="n">generation_algorithm</span> <span class="o">=</span> <span class="n">TyphoonListImageFixAlgorithm</span><span class="p">(</span>
+    <span class="n">fillgaps_fct</span><span class="o">=</span><span class="n">generate_new_frames_1</span><span class="p">,</span>
+    <span class="n">n_frames_th</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
 <span class="c1"># Iterate over all folders</span>
 <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">:</span>
     <span class="c1"># Get paths</span>
@@ -199,27 +230,32 @@ Placed at <code class="docutils literal"><span class="pre">../data/sequences/gap
     <span class="c1"># Create and store TyphoonSequence</span>
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">sequence</span> <span class="o">=</span> <span class="n">create_typhoonlist_from_source</span><span class="p">(</span>
-        <span class="n">path_images</span><span class="o">=</span><span class="n">path_images</span><span class="p">,</span>
-        <span class="n">path_best</span><span class="o">=</span><span class="n">path_best</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
+        <span class="n">images</span><span class="o">=</span><span class="n">path_images</span><span class="p">,</span>
+        <span class="n">best</span><span class="o">=</span><span class="n">path_best</span>
     <span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot; H5 file created in&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;sec&quot;</span><span class="p">)</span>
 
     <span class="c1"># Save original</span>
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_normal</span><span class="p">,</span> <span class="n">filename</span><span class="p">),</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot; compressed in&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;sec&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot; original stored in&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;sec&quot;</span><span class="p">)</span>
 
     <span class="c1"># Save corrected</span>
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">sequence</span> <span class="o">=</span> <span class="n">fix_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">gap_filling</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">correct_algorithm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
     <span class="n">sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_corrected</span><span class="p">,</span> <span class="n">filename</span><span class="p">),</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot; corrected in&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;sec&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot; corrected stored in&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;sec&quot;</span><span class="p">)</span>
 
     <span class="c1"># Save gapfilled</span>
     <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">sequence</span> <span class="o">=</span> <span class="n">fix_sequence</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <span class="n">gap_filling</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">generation_algorithm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
     <span class="n">sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_gapfilled</span><span class="p">,</span> <span class="n">filename</span><span class="p">),</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot; gaps filled in&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;sec&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot; gap-filled stored in&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">,</span> <span class="s2">&quot;sec&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Clear ids info</span>
+    <span class="n">correct_algorithm</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">generation_algorithm</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 </pre></div>
 </td></tr></table></div>
 <p>We note that <code class="xref py py-func docutils literal"><span class="pre">save_as_h5()</span></code> has an
@@ -293,7 +329,7 @@ will use the corrected version, stored at <code class="docutils literal"><span c
 <span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;agg&#39;</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
-<span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">read_typhoonlist_h5</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">load_typhoonlist_h5</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="kn">import</span> <span class="n">get_h5_filenames</span><span class="p">,</span> <span class="n">write_h5file</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
@@ -313,7 +349,7 @@ will use the corrected version, stored at <code class="docutils literal"><span c
 <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
     <span class="c1"># Load sequence</span>
-    <span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">directory_images</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span>
+    <span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">load_typhoonlist_h5</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">directory_images</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">images</span><span class="p">)</span>
 
     <span class="c1"># Sequentially update mean image</span>
@@ -364,11 +400,11 @@ However, note that this can be extended to any other typhoon sequence.</p>
 <span class="c1">#import matplotlib</span>
 <span class="c1">#matplotlib.use(&#39;agg&#39;)</span>
 
-<span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">read_typhoonlist_h5</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">load_typhoonlist_h5</span>
 <span class="kn">from</span> <span class="nn">pyphoon.utils</span> <span class="kn">import</span> <span class="n">DisplaySequence</span>
 
 <span class="c1"># Load sequence</span>
-<span class="n">sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span><span class="s1">&#39;../sampledata/201725.h5&#39;</span><span class="p">)</span>
+<span class="n">sequence</span> <span class="o">=</span> <span class="n">load_typhoonlist_h5</span><span class="p">(</span><span class="s1">&#39;../sampledata/201725.h5&#39;</span><span class="p">)</span>
 
 <span class="c1"># Create DisplaySequence instance and run</span>
 <span class="n">DisplaySequence</span><span class="p">(</span>
@@ -445,13 +481,11 @@ store the images considered as <em>corrupted</em> at <code class="docutils liter
 45
 46
 47
-48
-49
-50</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+48</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
-<span class="kn">from</span> <span class="nn">pyphoon.io</span> <span class="kn">import</span> <span class="n">read_typhoonlist_h5</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="kn">import</span> <span class="n">load_typhoonlist_h5</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="kn">import</span> <span class="n">get_h5_filenames</span>
 <span class="kn">from</span> <span class="nn">pyphoon.clean</span> <span class="kn">import</span> <span class="n">find_corrupted_frames_1</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
@@ -469,9 +503,7 @@ store the images considered as <em>corrupted</em> at <code class="docutils liter
 
     <span class="c1"># Load sequence</span>
     <span class="n">path_file_0</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">directory_files_0</span><span class="p">,</span> <span class="n">file_0</span><span class="p">)</span>
-    <span class="n">sequence</span> <span class="o">=</span> <span class="n">read_typhoonlist_h5</span><span class="p">(</span>
-        <span class="n">path_to_file</span><span class="o">=</span><span class="n">path_file_0</span>
-    <span class="p">)</span>
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">load_typhoonlist_h5</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="n">path_file_0</span><span class="p">)</span>
 
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">file_0</span><span class="p">)</span>
 

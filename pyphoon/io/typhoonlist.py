@@ -6,10 +6,8 @@ related to a specific typhoon sequence.
 
 Getting Started
 ^^^^^
-
 Creating a TyphoonList object is very easy. It can be generated using only
 the image data.
-
 >>> from pyphoon.io.typhoonlist import create_typhoonlist_from_source
 >>> typhoon_sequence = create_typhoonlist_from_source(
     images='../original_data/image/199607/'
@@ -28,8 +26,8 @@ A TyphoonList object can be easily exported as a H5 file.
 
 Such new generated H5 file can be loaded again as a :class:`TyphoonList`.
 
->>> from pyphoon.io.typhoonlist import read_typhoonlist_h5
->>> typhoon_sequence = read_typhoonlist_h5(path_to_file="../data/199607.h5")
+>>> from pyphoon.io.typhoonlist import load_typhoonlist_h5
+>>> typhoon_sequence = load_typhoonlist_h5(path_to_file="../data/199607.h5")
 
 Once a sequence is loaded, you may want to plot a specific frame. it is very
 simple. Only need to set a start and end frames and an interval (time between
@@ -41,7 +39,6 @@ frames) value.
 
 Contents
 ^^^^^
-
 +-------------------------------------------+---------------------------------------------------------------------------------------------------+
 | method/class name                         | Description                                                                                       |
 +===========================================+===================================================================================================+
@@ -64,6 +61,7 @@ from pyphoon.io.utils import get_best_ids, get_image_ids, h5file_2_name, \
     folder_2_name
 import numpy as np
 import warnings
+import collections, ast, h5py
 
 
 class TyphoonList(object):
@@ -85,6 +83,7 @@ class TyphoonList(object):
     def fields(self):
         """ A TyphoonList instance can have several fields available. These
         include:
+
             * images: Array with the sequence image data.
             * best: Array with the sequence best track data.
 
@@ -181,8 +180,11 @@ class TyphoonList(object):
         """
         # TODO: Insert in image array is very slow!
         # Insert frames
-        self.data[key]['data'] = np.insert(self.data[key]['data'], idx,
-                                           new_samples, axis=0)
+        #self.data[key]['data'] = np.insert(self.data[key]['data'], idx,
+        #                                   new_samples, axis=0)
+        self.data[key]['data'][idx:idx] = new_samples
+        #self.data[key]['data'] = np.append(self.data[key]['data'],
+        #                                   new_samples, axis=0)
         # Insert ids
         keys = list(self.data[key]['ids'].keys())
         values = list(self.data[key]['ids'].values())
@@ -205,7 +207,6 @@ class TyphoonList(object):
         :param compression: Set to a compression format. Find more details at
             the `h5py documentation`_
         :type compression: str, default None
-
         .. _h5py documentation:
             http://docs.h5py.org/en/latest/high/dataset.html
         """
@@ -228,174 +229,10 @@ class TyphoonList(object):
         shape = {}
         if key is None:
             for key, value in self.data.items():
-                shape[key] = (value['data'].shape, len(value['ids']))
+                shape[key] = np.shape(value['data'])
         else:
-            shape[key] = (self.data[key]['data'].shape, len(self.data[key][
-                                                                'ids']))
+            shape[key] = np.shape(self.data[key]['data'])
         return shape
-
-    # TODO: revise (generalization to new features)
-    def __len__(self):
-        """ Returns number of elements in the list. If not consistent (i.e.
-        number of elements differs between data fields) it returns value 0.
-        To make sure that it returns a valid number, note that the
-        list should be read using the option *alignment* from
-        :func:`read_typhoonlist_h5`.
-
-        :return: Length of list
-        """
-        length = 0
-        for key, value in self.data.items():
-            if length == 0:
-                if len(value['data']) == len(value['ids']):
-                    length = len(value['data'])
-                else:
-                    return 0
-            else:
-                if not len(value['data']) == len(value['ids']) == length:
-                    return 0
-        return length
-
-    # TODO: revise (generalization to new features)
-    def __iter__(self):
-        if self.classic:
-            if len(self):
-                for i in range(len(self)):
-                    v0 = self.data['X'][i]
-                    v1 = self.data['X_ids'][i]
-                    v2 = self.data['Y'][i]
-                    v3 = self.data['Y_ids'][i]
-                    yield {'X': v0, 'X_ids': v1, 'Y': v2, 'Y_ids':
-                        v3}
-            else:
-                yield None
-        else:
-            if len(self):
-                for i in range(len(self)):
-                    v0 = self.data['images']['data'][i]
-                    v1 = self.data['images']['ids'][i]
-                    v2 = self.data['best']['data'][i]
-                    v3 = self.data['best']['ids'][i]
-                    yield {'images': v0, 'images_ids': v1, 'best': v2,
-                           'best_ids': v3}
-            else:
-                yield None
-
-    ############################################################################
-    # DEPRECATED
-    ############################################################################
-    @property
-    def images(self):
-        """
-        :return: List with sequence images
-        :rtype: list
-        """
-        warnings.warn("deprecated, use get() instead", DeprecationWarning)
-        if self.classic:
-            return self.data['X']
-        else:
-            return self.data['images']['data']
-
-    @property
-    def best(self):
-        """
-        :return: List with best track data. If no best data was loaded,
-            it returns and empty list.
-        :rtype: list
-        """
-        warnings.warn("deprecated, use get() instead", DeprecationWarning)
-        if self.classic:
-            return self.data['Y']
-        else:
-            return self.data['best']['data']
-
-    @property
-    def images_ids(self):
-        """
-        :return: List with image ids.
-        :rtype: list
-        """
-        warnings.warn("deprecated, use get_id() instead", DeprecationWarning)
-        if self.classic:
-            return self.data['X_ids']
-        else:
-            return self.data['images']['ids']
-
-    @property
-    def best_ids(self):
-        """
-        :return: List with best track ids. If no best data was loaded,
-            it returns and empty list.
-        :rtype: list
-        """
-        warnings.warn("deprecated, use get_id() instead",  DeprecationWarning)
-        if self.classic:
-            return self.data['Y_ids']
-        else:
-            return self.data['best']['ids']
-
-    def images_dates(self, idx):
-        """ Obtains the date from a certain image frame.
-
-        :param idx: Frame index from *self.images* to retrieve date from.
-        :type idx: int
-        :return: List with dates of image frames.
-        :rtype: datetime.datetime
-        """
-        warnings.warn("deprecated, use get_date() instead", DeprecationWarning)
-        if self.classic:
-            return id2date(self.data['X_ids'][idx])
-        else:
-            return id2date(self.get_id['images'][idx])
-
-    def best_dates(self, idx):
-        """ Obtains the date from a certain best track frame.
-
-        :param idx: Sample index from *self.best* to retrieve date from.
-        :type idx: int
-        :return: List with dates of best track frame at position idx.
-        :rtype: datetime.datetime
-        """
-        warnings.warn("deprecated, use get_date() instead", DeprecationWarning)
-        if self.classic:
-            return id2date(self.data['Y_ids'][idx])
-        else:
-            return id2date(self.data['best']['ids'][idx])
-
-            # TODO: Change to current version
-
-    def get_image_frames_distance(self, idx_0, idx_1, mode='image'):
-        """ Obtains the time distance in seconds between frames at position
-        idx_0 and idx_1.
-
-        :param idx_0: Index of first frame.
-        :type idx_0: int
-        :param idx_1: Index of second frame.
-        :type idx_1: int
-        :param mode: Frame distance can be obtained from two sources: images
-            or best track data. For the former use ``mode='image'``, for the
-            latter use ``mode='best'``.
-        :type mode: str
-        :return: Time distance between frames in hours.
-        :rtype: int
-        """
-        warnings.warn("deprecated, use get_frame_distance() instead",
-                      DeprecationWarning)
-        # Get identifiers
-        if mode == 'image' or mode == 'best':
-            if mode == 'image':
-                date_frame_0 = self.images_dates(idx_0)
-                date_frame_1 = self.images_dates(idx_1)
-            else:
-                date_frame_0 = self.best_dates(idx_0)
-                date_frame_1 = self.best_dates(idx_1)
-            # Get time distance between identifiers
-            return int(
-                (date_frame_1 - date_frame_0).total_seconds() // 3600)
-        else:
-            raise Exception(
-                "argument mode can take two values: image or best")
-    # TODO: method to export images
 
 
 #######################################
@@ -407,23 +244,20 @@ def create_typhoonlist_from_source(name, **kwargs):
     generates a `TyphoonList` instance. As input it requires an HDF
     file containing the images from a certain typhoon sequence an,
     optionally, a TSV file with best track data of the same typhoon
-    sequence. If the HDF and TSV files refer to different sequences the
-    data will be wrongly saved.
-
-    This function is very relevant when mergin the two main data
+    sequence.
+    This function is very relevant when it comes to merging the two main data
     components of this dataset: Images (folder with h5 files) and Best
     Track (TSV file).
 
     :param name: Name of the typhoon sequence
     :type name: str
-    :param path_images: Path to the typhoon sequence H5 file (images data).
-    :type path_images: str
-    :param path_best: Path to the typhoon sequence TSV file (best track data).
-    given sequence.
-    :type path_best: str
+    :param kwargs: Use the keys to define the available data sources paths.
+        This include:
+
+        * images: Path to image dataset.
+        * best: Path to best track data.
     :return: Object containing images and bes track data of a typhoon sequence.
     :rtype: TyphoonList
-
     .. seealso:: :class:`TyphoonList`
     """
     data = {}
@@ -442,25 +276,10 @@ def create_typhoonlist_from_source(name, **kwargs):
             # corresponding IDs. Also, detect samples in best data belonging
             # to existing image frames in the sequence
             Y = np.array(read_tsv(value))
-            Y = np.append(Y, np.zeros((Y.shape[0], 2)), axis=1)
-
             data['best'] = {
                 'data': Y,
                 'ids': dict(zip(get_best_ids(Y, name), range(len(Y))))
             }
-
-            """
-            data['best']['data'][:, -2] = [best_id in data['images']['ids'] for
-                                           best_id in data['best']['ids']]
-            
-            # Ensure that all image have associated best data!
-            data['images']['data'] = np.array([data['images']['data'][i] for i in
-                                               range(len(data['images']['data']))
-                                               if data['images']['ids'][i] in data[
-                                                   'best']['ids']])
-            data['images']['ids'] = [image_id for image_id in data['images'][
-                'ids'] if image_id in data['best']['ids']]
-            """
 
     return TyphoonList(data, name=name)
 
@@ -469,7 +288,6 @@ def create_typhoonlist_from_source(name, **kwargs):
 def load_typhoonlist_h5(path_to_file, alignment=False):
     """ Loads a typhoon sequence stored as an H5 file as an instance of
     TyphoonList.
-
     :param path_to_file: Path to the HDF file to load.
     :type path_to_file: str
     :param alignment: Set to True if frames and best data are to be
@@ -481,7 +299,13 @@ def load_typhoonlist_h5(path_to_file, alignment=False):
     .. seealso:: :class:`TyphoonList`
     """
     # Read H5 file
-    data = read_h5groupfile(path_to_file)
+    data = collections.defaultdict(dict)
+
+    with h5py.File(path_to_file, 'r') as hf:
+        for key, value in hf.items():
+            data[key]['data'] = value.get('data').value
+            data[key]['ids'] = ast.literal_eval(value.get('ids').value)
+    data = dict(data)
 
     # Align data
     if alignment:

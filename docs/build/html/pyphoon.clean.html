@@ -65,15 +65,14 @@ tools to fix such problems.</p>
 <p class="last">In the future, this library should provide tools to, not only
 correct corrupted images but other sorts of data</p>
 </div>
-<div class="section" id="getting-started">
-<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p><strong>Getting started</strong></p>
 <p>In this example we will fix a sequence by using method
 <a class="reference internal" href="#pyphoon.clean.detection.detect_corrupted_pixels_1" title="pyphoon.clean.detection.detect_corrupted_pixels_1"><code class="xref py py-func docutils literal"><span class="pre">detect_corrupted_pixels_1()</span></code></a> to detect
 corrupted frames,
 <a class="reference internal" href="#pyphoon.clean.correction.correct_corrupted_pixels_1" title="pyphoon.clean.correction.correct_corrupted_pixels_1"><code class="xref py py-func docutils literal"><span class="pre">correct_corrupted_pixels_1()</span></code></a> to correct
 those and <a class="reference internal" href="#pyphoon.clean.fillgaps.generate_new_frames_1" title="pyphoon.clean.fillgaps.generate_new_frames_1"><code class="xref py py-func docutils literal"><span class="pre">generate_new_frames_1()</span></code></a> to
 generate new frames in order to fill some temporal gaps.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.fix</span> <span class="k">import</span> <span class="n">TyphoonListFixAlgorithm</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.fix</span> <span class="k">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.detection</span> <span class="k">import</span> <span class="n">detect_corrupted_pixels_1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.correction</span> <span class="k">import</span> <span class="n">correct_corrupted_pixels_1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.fillgaps</span> <span class="k">import</span> <span class="n">generate_new_frames_1</span>
@@ -83,7 +82,7 @@ generate new frames in order to fill some temporal gaps.</p>
 <code class="docutils literal"><span class="pre">TyphoonListFixAlgorithm</span></code>. Note the parameter <code class="docutils literal"><span class="pre">params</span></code>,
 which contains information related to the detection and fillgaps
 methods.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fix_algorithm</span> <span class="o">=</span> <span class="n">TyphoonListFixAlgorithm</span><span class="p">(</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fix_algorithm</span> <span class="o">=</span> <span class="n">TyphoonListImageFixAlgorithm</span><span class="p">(</span>
 <span class="go">    detect_fct=detect_corrupted_pixels_1,</span>
 <span class="go">    correct_fct=correct_corrupted_pixels_1,</span>
 <span class="go">    fillgaps_fct=generate_new_frames_1,</span>
@@ -101,9 +100,7 @@ algorithm to it.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seq_fixed</span> <span class="o">=</span> <span class="n">fix_algorithm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="modules">
-<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
+<p><strong>Modules</strong></p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="42%" />
@@ -129,7 +126,6 @@ algorithm to it.</p>
 </tr>
 </tbody>
 </table>
-</div>
 <div class="section" id="module-pyphoon.clean.fix">
 <span id="pyphoon-clean-fix"></span><h2>pyphoon.clean.fix<a class="headerlink" href="#module-pyphoon.clean.fix" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -183,6 +179,12 @@ sequence.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.clean.fix.TyphoonListImageFixAlgorithm.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.fix.TyphoonListImageFixAlgorithm.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the list of corrected/generated frame ids.</p>
 </dd></dl>
 
 <dl class="method">
@@ -382,8 +384,6 @@ synthetic images. The standard notation is <code class="docutils literal"><span 
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">pyphoon.clean</a><ul>
-<li><a class="reference internal" href="#getting-started">Getting started</a></li>
-<li><a class="reference internal" href="#modules">Modules</a></li>
 <li><a class="reference internal" href="#module-pyphoon.clean.fix">pyphoon.clean.fix</a></li>
 <li><a class="reference internal" href="#module-pyphoon.clean.detection">pyphoon.clean.detection</a></li>
 <li><a class="reference internal" href="#module-pyphoon.clean.correction">pyphoon.clean.correction</a></li>

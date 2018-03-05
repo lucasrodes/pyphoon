@@ -4,6 +4,7 @@ standard notation is ``correct_corrupted_pixels_<method index>``.
 """
 
 import numpy as np
+# TODO: Generic method able to call specific correction methods. See decorators
 ################################################################################
 # Correction methods
 ################################################################################
