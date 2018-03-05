@@ -149,7 +149,7 @@ def id2seqno(identifier):
     parts = str.split(identifier, sep='_')
     if (not len(parts) == 2) or not len(identifier) == 17:
         Exception('wrong id format provided')
-    return parts[0]
+    return int(parts[0])
 
 
 def date2id(date, name):
