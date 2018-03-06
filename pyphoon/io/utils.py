@@ -1,5 +1,5 @@
 """
-Some tools ot assist in reading source data
+Some tools ot assist in reading source data.
 """
 
 from datetime import datetime as dt
@@ -12,6 +12,7 @@ from pyphoon.io.h5 import get_h5_filenames
 # TODO: Move ids generators to Conversors section
 def get_image_ids(sequence_folder):
     """ Gets ids for each image within a folder.
+
     :param sequence_folder: Folder name containing images stored as single H5
         files.
     :type sequence_folder: str
@@ -36,6 +37,7 @@ def get_image_id(filename):
     *YYYYMMDDHH-<typhoon id>-<satellite model>.h5*
     We can then parse it to the id, namely
     *<typhoon id>_YYYYMMDDHH*
+
     :param filename: Name of the HDF image file.
     :type filename: str
     :return: Image frame id
@@ -51,6 +53,7 @@ def get_image_id(filename):
 def get_best_ids(best_data, seq_name):
     """ Gets ids for each sample in the best track data. It uses the date of
     the data to generate the id.
+
     :param best_data: Array containing the data from Best Track.
     :type best_data: numpy.array
     :param seq_name: Name of the typhoon sequence
@@ -75,6 +78,7 @@ def get_best_ids(best_data, seq_name):
 
 def get_image_dates(sequence_folder):
     """ Gets the dates from all image H5 files stored in *sequence_folder*.
+
     :param sequence_folder: Folder name containing images stored as single H5
         files.
     :type sequence_folder: str
@@ -88,7 +92,8 @@ def get_image_dates(sequence_folder):
 
 
 def get_image_date(filename):
-    """ Gets the date from
+    """ Extracts the date from a file with a specific filename.
+
     :param filename: Name of the HDF image file.
     :type filename: str
     :return: Date the image with a given *filename* was taken.
@@ -108,7 +113,8 @@ def get_image_date(filename):
 ############################
 
 def get_best_dates(best_data):
-    """ Gets the dates of samples in a best data array
+    """ Gets the dates of samples in a best data array.
+
     :param best_data: Array containing the data from Best Track.
     :type best_data: numpy.array
     :return: List of datetime.datetime elements.
@@ -124,7 +130,8 @@ def get_best_dates(best_data):
 
 
 def id2date(identifier):
-    """ Gets the date of the frame at position idx
+    """ Gets the date of the frame at position idx.
+
     :param identifier: Identifier of an image or best track frame
     :type identifier: str
     :return: Date of the frame
@@ -144,6 +151,7 @@ def id2date(identifier):
 def date2id(date, name):
     """ Generates the id of a sample given its date and the id of the typhoon
     sequence it belongs to.
+
     :param date: Date of the sample
     :type date: datetime.datetime
     :param name: Name of the typhoon sequence, e.g. "199607".
@@ -157,6 +165,7 @@ def date2id(date, name):
 def h5file_2_name(path_h5file):
     """ Given a path to an HDF file, obtains the file name (without format
     extension).
+
     :param path_h5file: Path to an HDF file.
     :type path_h5file: str
     :return: Name of file
@@ -173,6 +182,7 @@ def h5file_2_name(path_h5file):
 def folder_2_name(path_folder):
     """ Given a path to a folder, obtains the file name (without format
     extension).
+
     :param path_folder: Path to a folder.
     :type path_folder: str
     :return: Name of file
