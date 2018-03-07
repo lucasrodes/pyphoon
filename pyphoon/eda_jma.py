@@ -43,8 +43,8 @@ def update_feature_names(names):
     feature_names = names
 
 
-def plot_hist(data, feature_index, bins=100, show_fig=False,
-              title="untitled", save_fig=False,
+def plot_hist(data, feature_index, bins=100, centre=False, normed=False,
+              show_fig=False, title="", xlabel="", save_fig=False,
               fig_name="untitled"):
     """ Generates a histogram of a certain feature from the samples in data.
     This image may be stored or just displayed.
@@ -58,10 +58,16 @@ def plot_hist(data, feature_index, bins=100, show_fig=False,
                     feature. Set to -1 if there should be as many bins as
                     values takes the feature.
     :type bins: int, default 100
+    :param centre: Set to True if xticks should be centred.
+    :type centre: bool
+    :param normed: Set to true if histogram values should add up to one.
+    :type normed: bool
     :param show_fig: Flag to plot the histogram.
     :type show_fig: bool, default False
     :param title: Title of the plot
     :type title: str
+    :param xlabel: label for x-axis
+    :type xlabel: str
     :param save_fig: Set to true if image should be saved.
     :type save_fig: bool, default False
     :param fig_name: Filename of stored imaged.
@@ -93,12 +99,17 @@ def plot_hist(data, feature_index, bins=100, show_fig=False,
     if bins == -1:
         # bins = np.sort(list(set(raw_data[:, index])))
         bins = len(set(data[:, feature_index]))
-    plt.hist(data[:, feature_index], bins=bins)
+    plt.hist(data[:, feature_index], bins=bins, color='k', normed=normed)
+    plt.xlabel(xlabel)
     plt.title(title)
+    if centre:
+        _bins = [bin+0.5 for bin in bins[:-1]]
+        plt.xticks(_bins, bins[:-1])
+
     if show_fig:
         plt.show()
     if save_fig:
-        plt.savefig(fig_name)
+        plt.savefig(fig_name, format='eps')
 
 
 def plot_2feature_heatmap(data, index1, index2=4, annotation=True,
