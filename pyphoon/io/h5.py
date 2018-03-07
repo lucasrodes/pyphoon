@@ -118,6 +118,17 @@ def read_source_image(path_to_file):
     return image
 
 
+def write_image(path_to_file, image, compression='gzip'):
+    """
+    Writes image in the original format
+    :param compression: Compression
+    :param path_to_file: Path to the HDF file storing the image.
+    :param image: Image information
+    :return:
+    """
+    with h5py.File(path_to_file, 'w') as h5f:
+        h5f.create_dataset(name='infrared', data=image, compression=compression)
+
 ################################################################################
 # DEPRECATED
 ################################################################################
