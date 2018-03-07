@@ -11,7 +11,7 @@ standard notation is ``detect_corrupted_pixels_<method index>``.
 def detect_corrupted_pixels_1(image_frame, params):
     """ Detects pixel positions that are corrupted using a rather simple
     approach. It forces all pixels to be within the range defined by
-    [min_th, max_th]
+    [min_th, max_th].
 
     :param image_frame: Image frame
     :type image_frame: numpy.array
