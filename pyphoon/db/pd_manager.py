@@ -1,6 +1,7 @@
+import os
 from os import path, listdir
 import pandas as pd
-from os.path import isdir, join
+from os.path import isdir, join, exists
 
 import time
 
@@ -8,9 +9,9 @@ from pyphoon.clean.correction import correct_corrupted_pixels_1
 from pyphoon.clean.detection import detect_corrupted_pixels_1
 from pyphoon.clean.fix import TyphoonListImageFixAlgorithm
 from pyphoon.clean.fillgaps import generate_new_frames_1
-from pyphoon.io.typhoonlist import read_typhoonlist_h5, create_typhoonlist_from_source
-from pyphoon.io.h5 import get_h5_filenames
+from pyphoon.io.typhoonlist import create_typhoonlist_from_source
 from pyphoon.io.utils import id2date, id2seqno
+from pyphoon.io.h5 import write_image
 
 feature_names = ["year", "month", "day", "hour", "class", "latitude",
                  "longitude", "pressure", "wind", "gust", "storm_direc",
@@ -112,9 +113,15 @@ class PDManager:
         """
         self.images = pd.read_pickle(filename, self._compression)
 
-    def add_corrupted(self, images_dir, save_corrected_to = None):
+    def add_corrupted(self, images_dir, save_corrected_to=None):
+        if save_corrected_to:
+            if os.path.isabs(save_corrected_to) is False:
+                save_corrected_to = path.join(os.getcwd(), save_corrected_to)
+            if not exists(save_corrected_to):
+                os.mkdir(save_corrected_to)
+
         folders = sorted([f for f in listdir(images_dir) if isdir(join(images_dir, f))])
-        appended_data=[]
+        appended_data = []
         for folder in folders:
             # Create TyphoonList
             seq = create_typhoonlist_from_source(
@@ -141,8 +148,18 @@ class PDManager:
             corrected = fix_algorithm.fixed_ids['corrected']
             seq = []
             for img in corrected:
-                data = {'obs_time': id2date(img), 'seq_no': id2seqno(img), 'corrupted': img}
+                seqno = id2seqno(img)
+                obstime = id2date(img)
+                data = {'obs_time': obstime, 'seq_no': seqno, 'corrupted': img}
                 seq.append(data)
+                if save_corrected_to is not None:
+                    key = (seqno, obstime)
+                    filename, directory = self.images.loc[key, ['filename', 'directory']]
+                    full_path = join(save_corrected_to, directory)
+                    if not exists(full_path):
+                        os.mkdir(full_path)
+                    full_path = join(full_path, filename)
+                    write_image(path_to_file=full_path, image=seq_new.get_data(key='images', id=img))
             frame = pd.DataFrame(seq)
             appended_data.append(frame)
 

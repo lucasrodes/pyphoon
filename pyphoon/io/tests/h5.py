@@ -6,7 +6,8 @@ from os import remove
 class TestH5Methods(unittest.TestCase):
 
     def test_write_image(self):
-        image = read_source_image('../../../sampledata/datasets/image/200717/2007100300-200717-MTS1-1.h5')
+        src_image = '../../../sampledata/datasets/image/200717/2007100300-200717-MTS1-1.h5'
+        image = read_source_image(src_image)
         filename = 'temp_image.h5'
         if exists(filename):
             remove(filename)

@@ -1,4 +1,7 @@
 import unittest
+
+from os.path import join, exists
+
 from pyphoon.db.db_manager import DBManager, BestTrack, Images
 from pyphoon.db.pd_manager import PDManager
 import os
@@ -105,6 +108,24 @@ class TestPdManagerMethods(unittest.TestCase):
         manager.add_orig_images(images_dir)
         union = manager.images.join(manager.corrupted, how='inner')
         self.assertTrue(len(union) == 1)
+
+    def test_add_corrupted2(self):
+        import shutil
+        from pyphoon.io.h5 import read_source_image
+        images_dir = '../../sampledata/datasets/image'
+        manager = PDManager()
+        corrupted_dir = join(os.getcwd(), 'corrected')
+        if exists(corrupted_dir):
+            shutil.rmtree(corrupted_dir)
+        manager.add_orig_images(images_dir)
+        manager.add_corrupted(images_dir, corrupted_dir)
+        self.assertTrue(exists(corrupted_dir))
+        for root, dirs, files in os.walk(corrupted_dir):
+            for f in files:
+                read_img = read_source_image(join(root, f))
+                self.assertEqual(read_img.shape, (512, 512))
+        shutil.rmtree(corrupted_dir)
+
 
 if __name__ == '__main__':
     unittest.main()
