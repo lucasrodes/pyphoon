@@ -239,7 +239,7 @@ class TyphoonList(object):
 #        READ/WRITE TYPHOONLIST       #
 #######################################
 # TODO: Generalize input paths (for new features)
-def create_typhoonlist_from_source(name, **kwargs):
+def create_typhoonlist_from_source(name, alignment=False, **kwargs):
     """ Groups the images and best track data from a certain typhoon and
     generates a `TyphoonList` instance. As input it requires an HDF
     file containing the images from a certain typhoon sequence an,
@@ -256,7 +256,12 @@ def create_typhoonlist_from_source(name, **kwargs):
 
         * images: Path to image dataset.
         * best: Path to best track data.
-    :return: Object containing images and bes track data of a typhoon sequence.
+    :param alignment: Set to True if all fields should contain same data (id
+        based).
+    :type alignment: bool
+    :return: Object containing images and bes track data
+    of a
+    typhoon sequence.
     :rtype: TyphoonList
     .. seealso:: :class:`TyphoonList`
     """
@@ -276,9 +281,20 @@ def create_typhoonlist_from_source(name, **kwargs):
             # corresponding IDs. Also, detect samples in best data belonging
             # to existing image frames in the sequence
             Y = np.array(read_tsv(value))
+            ids = get_best_ids(Y, name)
+
+            # Alignment
+            if alignment and data['images']:
+                indices = []
+                for i in range(len(ids)):
+                    if ids[i] in data['images']['ids']:
+                        indices.append(i)
+                Y = Y[indices]
+                ids = np.array(ids)[indices].tolist()
+
             data['best'] = {
                 'data': Y,
-                'ids': dict(zip(get_best_ids(Y, name), range(len(Y))))
+                'ids': dict(zip(ids, range(len(Y))))
             }
 
     return TyphoonList(data, name=name)
@@ -288,6 +304,7 @@ def create_typhoonlist_from_source(name, **kwargs):
 def load_typhoonlist_h5(path_to_file, alignment=False):
     """ Loads a typhoon sequence stored as an H5 file as an instance of
     TyphoonList.
+
     :param path_to_file: Path to the HDF file to load.
     :type path_to_file: str
     :param alignment: Set to True if frames and best data are to be
@@ -308,6 +325,7 @@ def load_typhoonlist_h5(path_to_file, alignment=False):
     data = dict(data)
 
     # Align data
+    # TODO: Extend to other features
     if alignment:
         pass
 
@@ -335,8 +353,8 @@ def read_typhoonlist_h5(path_to_file, path_images=None, overwrite_ids=False,
     :param path_to_file: Path to the HDF file to load.
     :type path_to_file: str
     :param path_images: Path to the original image folder (i.e. folder
-    containing image H5 files). This path is relevant if the IDs or dates of
-    any of the data (images or best data) are to be set. Otherwise ignore.
+        containing image H5 files). This path is relevant if the IDs or dates of
+        any of the data (images or best data) are to be set. Otherwise ignore.
     :type path_images: str, optional
     :param overwrite_ids: Set to True if the loaded typhoon sequence does
     have IDs already but you want to overwrite them.
@@ -349,7 +367,7 @@ def read_typhoonlist_h5(path_to_file, path_images=None, overwrite_ids=False,
     :return: Object containing images and bes track data of a typhoon sequence.
     :rtype: TyphoonList instance
 
-    .. seealso:: :class:`TyphoonList`
+    .. seealso:: Depracated for :func:`load_typhoonlist_h5`
     """
     warnings.warn("deprecated, use write_h5groupfile() instead",
                   DeprecationWarning)

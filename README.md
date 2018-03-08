@@ -31,8 +31,8 @@ from pyphoon.visualize import DisplaySequence
 # Load a sequence
 sequence = create_typhoonlist_from_source(
     name='201725',
-    images='sampledata/201725.h5',
-    best=''
+    images='sampledata/datasets/image/200717',
+    best='sampledata/datasets/jma/200717.tsv'
 )
 
 # Visualize sequence
