@@ -2,16 +2,14 @@ import os
 from os import path, listdir
 import pandas as pd
 from os.path import isdir, join, exists
-
-import time
-
+import numpy as np
 from pyphoon.clean.correction import correct_corrupted_pixels_1
 from pyphoon.clean.detection import detect_corrupted_pixels_1
 from pyphoon.clean.fix import TyphoonListImageFixAlgorithm
 from pyphoon.clean.fillgaps import generate_new_frames_1
 from pyphoon.io.typhoonlist import create_typhoonlist_from_source
 from pyphoon.io.utils import id2date, id2seqno
-from pyphoon.io.h5 import write_image
+from pyphoon.io.h5 import write_image, read_source_image
 
 feature_names = ["year", "month", "day", "hour", "class", "latitude",
                  "longitude", "pressure", "wind", "gust", "storm_direc",
@@ -119,7 +117,6 @@ class PDManager:
                 save_corrected_to = path.join(os.getcwd(), save_corrected_to)
             if not exists(save_corrected_to):
                 os.mkdir(save_corrected_to)
-
         folders = sorted([f for f in listdir(images_dir) if isdir(join(images_dir, f))])
         appended_data = []
         for folder in folders:
@@ -135,7 +132,6 @@ class PDManager:
             # Generation
             fillgaps_fct = generate_new_frames_1  # Fill gap method
             n_frames_th = 2  # Maximum number of frames to generate
-
             fix_algorithm = TyphoonListImageFixAlgorithm(
                 detect_fct=detect_fct,
                 correct_fct=correct_fct,
@@ -143,7 +139,6 @@ class PDManager:
                 detect_params=detect_params,
                 n_frames_th=n_frames_th
             )
-
             seq_new = fix_algorithm.apply(seq)
             corrected = fix_algorithm.fixed_ids['corrected']
             seq = []
@@ -162,10 +157,36 @@ class PDManager:
                     write_image(path_to_file=full_path, image=seq_new.get_data(key='images', id=img))
             frame = pd.DataFrame(seq)
             appended_data.append(frame)
-
         self.corrupted = pd.concat(appended_data)
         self.corrupted.set_index(['seq_no', 'obs_time'], inplace=True, drop=True, verify_integrity=True)
         self.corrupted.index.name = 'seq_no_obs_time'
+
+    def add_corrected_info(self, orig_images_dir, corrected_dir):
+        """
+        Adds information about corrected images to the corrupted dataset
+        :param orig_images_dir: original images folder
+        :param corrected_dir: corrected images folder
+        :return:
+        """
+        joined = self.images.join(self.corrupted, how='inner')
+        if len(joined) == 0:
+            raise Exception('Both corrupted and original tables should be loaded first')
+        if not exists(orig_images_dir) or not exists(corrected_dir):
+            raise Exception('Original or Corrected images folder does not exist')
+        for key in joined.index:
+            subdir, filename = joined.loc[key, ['directory', 'filename']]
+            corrected_filename = join(corrected_dir, subdir, filename)
+            if exists(corrected_filename):
+                try:
+                    src_data = read_source_image(join(orig_images_dir, subdir, filename))
+                    corrected = read_source_image(corrected_filename)
+                    diff = src_data - corrected
+                    diff = np.abs(diff)
+                    # discard small corrections
+                    diff[diff < 1] = 0
+                    self.corrupted.loc[key, 'corruption'] = np.count_nonzero(diff) / (diff.shape[0] * diff.shape[1])
+                except IOError as detail:
+                    print('Error occured while reading files: ', detail)
 
     def save_corrupted(self, filename):
         self.corrupted.to_pickle(filename, compression=self._compression)
