@@ -147,6 +147,7 @@ def id2date(identifier):
     date = dt(year, month, day, hour)
     return date
 
+
 def id2seqno(identifier):
     """
     Gets sequence number from id
