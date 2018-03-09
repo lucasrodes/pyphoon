@@ -124,6 +124,8 @@ class TyphoonListImageFixAlgorithm(object):
                                                          typhoon_sequence,
                                                          index, n_frames_cum)
                 new_ids.extend(_new_ids)
+
+        typhoon_sequence.insert_ids('images', new_ids)
         return new_ids
 
     def _fill_gaps(self, typhoon_sequence_raw, typhoon_sequence, index,
@@ -175,8 +177,7 @@ class TyphoonListImageFixAlgorithm(object):
             # Insert new image frames and ids
             # TODO: This takes a lot of time!
             typhoon_sequence.insert_samples('images', new_frames,
-                                            new_frames_ids, index +
-                                            n_frames_cum)
+                                            index + n_frames_cum)
             n_frames_cum += frame_dist
         elif frame_dist >= self.n_frames_th:
             pass

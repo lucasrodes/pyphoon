@@ -166,15 +166,14 @@ class TyphoonList(object):
         # Get time distance between identifiers
         return int((date_frame_1 - date_frame_0).total_seconds() // 3600)
 
-    def insert_samples(self, key, new_samples, new_ids, idx):
-        """ Insert a batch of new samples (and the corresponding ids) at a
-        certain position from a certain data field (specified by ``key``).
+    def insert_samples(self, key, new_samples, idx):
+        """ Insert a batch of new samples  at a certain position from a
+        certain data field (specified by ``key``).
 
         :param key: Key of the field to introduce the new data in.
+        :type key: str
         :param new_samples: List of new samples to be inserted.
         :type new_samples: list
-        :param new_ids: List of new ids corresponding to the new samples.
-        :type new_ids: list
         :param idx: Position at which samples are to be inserted.
         :type idx: int
         """
@@ -186,14 +185,28 @@ class TyphoonList(object):
         #self.data[key]['data'] = np.append(self.data[key]['data'],
         #                                   new_samples, axis=0)
         # Insert ids
-        keys = list(self.data[key]['ids'].keys())
-        values = list(self.data[key]['ids'].values())
-        original_length = len(keys)
+        #keys = list(self.data[key]['ids'].keys())
+        #values = list(self.data[key]['ids'].values())
+        #original_length = len(keys)
 
-        keys[idx:idx] = new_ids
-        values[idx:] = range(values[idx-1], len(new_ids) + original_length)
+        #keys[idx:idx] = new_ids
+        #values[idx:] = range(values[idx-1], len(new_ids) + original_length)
 
-        self.data[key]['ids'] = dict(zip(keys, values))
+        #self.data[key]['ids'] = dict(zip(keys, values))
+
+    def insert_ids(self, key, new_ids):
+        """ Insert new ids. Exploits the fact that they can easily be sorted,
+        since they follow a numerical order (date based).
+
+        :param key: Key of the field to introduce the new data in.
+        :type key: str
+        :param new_ids: List of new ids corresponding to the new samples.
+        :type new_ids: list
+        :return:
+        """
+        keys = sorted(list(self.data[key]['ids'].keys()) + new_ids)
+        self.data[key]['ids'] = dict(zip(keys, range(len(keys))))
+
 
     ############################################################################
     #  STORING
