@@ -50,23 +50,8 @@ dataset. Before installing the library make sure you have the data.
 Installation
 ------------
 
-Clone the repository
-
-.. code-block:: bash
-
-   # Create project folder
-   mkdir ~/projects
-   # Clone pyphoon
-   git clone https://github.com/lucasrodes/pyphoon.git
-
-Pull the project's docker image
-
-.. code-block:: bash
-
-   docker pull lucasrodesg/deepo
-
-
-To re-create the optimal working environment, refer to `Environment <environment>`_.
+For now only development kit is available. Refer to `Environment <environment.html>`_
+for more details.
 
 -----
 

@@ -56,15 +56,19 @@ Known Issues
 
 ..  toctree::
     :hidden:
+    :maxdepth: 4
 
     Home <home>
 
 ..  toctree::
     :hidden:
+    :maxdepth: 4
+    :includehidden:
     :caption: Getting started
 
-    Environment <env_setup.md>
+    Development environment <environment>
     Examples <examples>
+    FAQs <faqs>
 
 
 ..  toctree::

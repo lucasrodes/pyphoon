@@ -48,7 +48,7 @@ work, some symbolic links are created
     You might want to add `original_data` and `data` to your .gitignore.
     
     
-## Pre-requisites
+## Docker
 
 *   **GPU support**
 
