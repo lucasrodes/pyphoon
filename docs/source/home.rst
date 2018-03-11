@@ -7,16 +7,16 @@ pyphoon: Python interface for Digital Typhoon
 You just found pyphoon
 ----------------------
 
-`pyphoon`_ is a python library developed
-since 2017 by interns at `Kitamoto Lab`_ to provide simple, easy and, more
-importantly, a pythonic interaction with the `Digital Typhoon`_ dataset. It
-contains a wide set of tools to assist in the exploration and management of 
-the building components of the dataset. More details on the
-`GitHub repository`_.
+`pyphoon`_ is a python library developed since 2017 by interns at `Kitamoto Lab`_
+to provide a simple, easy and, more importantly, pythonic interaction with
+the `Digital Typhoon`_ dataset. It contains a wide set of tools to assist in
+the exploration and management of the building components of the dataset.
+More details on the `GitHub repository`_.
 
 .. _pyphoon: http://github.com/lucasrodes/pyphoon
 .. _Kitamoto Lab: http://agora.ex.nii.ac.jp/~kitamoto/index.html.en
 .. _GitHub repository: http://github.com/lucasrodes/pyphoon
+
 
 -----
 

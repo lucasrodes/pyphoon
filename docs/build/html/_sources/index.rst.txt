@@ -73,9 +73,17 @@ Known Issues
 
 ..  toctree::
     :hidden:
+    :caption: Projects
+
+    tcxtc <projects/tcxtc>
+
+
+..  toctree::
+    :hidden:
     :caption: Modules Documentation
 
     pyphoon.io <pyphoon.io>
     pyphoon.clean <pyphoon.clean>
+    pyphoon.db <pyphoon.db>
     pyphoon.visualize <pyphoon.visualize>
     pyphoon.eda_jma <pyphoon.eda_jma>
