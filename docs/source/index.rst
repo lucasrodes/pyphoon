@@ -80,7 +80,7 @@ Known Issues
 
 ..  toctree::
     :hidden:
-    :caption: Modules Documentation
+    :caption: Modules
 
     pyphoon.io <pyphoon.io>
     pyphoon.clean <pyphoon.clean>

@@ -22,7 +22,7 @@ pyphoon\.db\.pd_manager
     :members:
     :show-inheritance:
 
-pyphoon\.db\.fillgaps
+pyphoon\.db\.test_dbmanager
 --------------------------------------------
 .. automodule:: pyphoon.db.test_dbmanager
     :members:
