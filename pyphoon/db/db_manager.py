@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from pyphoon.db.db_tables import BestTrack, Images, Base
 
+
 class DBManager:
     def __init__(self, db_file):
         self.db_file = db_file
