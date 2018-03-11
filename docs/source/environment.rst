@@ -195,3 +195,48 @@ Let us explain below the different folders made accessible above with option
 -   ``~/projects:/root/projects``: The folder containing all the projects
     needs to be accessible from inside the Docker, since we will basically be
     developing code there.
+
+Finally, you can easily instantiate the docker container
+
+..  code-block:: bash
+
+    docker start dlnii
+
+
+Once started, to execute the instance just type
+
+..  code-block:: bash
+
+    docker exec -it dlnii bash
+
+
+To exit the container just type
+
+..  code-block:: bash
+
+    exit
+
+Other Docker commands
+*********************
+
+To visualize which docker containers are currently running use
+
+..  code-block:: bash
+
+    docker ps -a
+
+This should give you a list of the docker containers with their
+respective names, which image they are using, ports etc.
+
+To remove the container
+
+..  code-block:: bash
+
+    docker rm <container name>
+
+Make sure that the container is not running. If that is the case, stop
+it using
+
+..  code-block:: bash
+
+    docker stop <container name>

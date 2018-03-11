@@ -24,8 +24,8 @@ What is Digital Typhoon?
 ------------------------
 
 The `Digital Typhoon`_ project is an open project started by `Prof. Kitamoto`_,
-which integrates different typhoon data sources. It provides more than 200,
-000 typhoon satellite images since 1979 and typhoon best tracks since 1951. 
+which integrates different typhoon data sources. It provides more than 200,000
+typhoon satellite images since 1979 and typhoon best tracks since 1951.
 By doing so, the Digital Typhoon project project attempts to assist the 
 scientific community in its  attempts to use data-driven and data-mining 
 techniques on typhoon data.
@@ -50,23 +50,15 @@ dataset. Before installing the library make sure you have the data.
 Installation
 ------------
 
-Clone the repository
+At your own risk you can try
 
-.. code-block:: bash
+..  code-block:: bash
 
-   # Create project folder
-   mkdir ~/projects
-   # Clone pyphoon
-   git clone https://github.com/lucasrodes/pyphoon.git
-
-Pull the project's docker image
-
-.. code-block:: bash
-
-   docker pull lucasrodesg/deepo
+    pip install pyphoon
 
 
-To re-create the optimal working environment, refer to `Environment <environment.html>`_.
+However, for now only development kit is available. Refer to
+`Development environment <environment.html>`_ for more details.
 
 -----
 

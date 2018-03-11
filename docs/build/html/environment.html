@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Environment &mdash; pyphoon documentation</title>
+  <title>Development environment &mdash; pyphoon documentation</title>
   
 
   
@@ -93,7 +93,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Getting started</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Environment</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development environment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#download-library">Download library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#docker-setup">Docker Setup</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#install-with-gpu-support">Install with GPU support</a><ul>
@@ -108,6 +108,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#pull-docker-image">Pull Docker image</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#creating-your-docker-container">Creating your Docker Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-docker-commands">Other Docker commands</a></li>
 </ul>
 </li>
 </ul>
@@ -165,7 +166,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Environment</li>
+      <li>Development environment</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -183,8 +184,8 @@
            <div itemprop="articleBody">
             
     
-        <div class="section" id="environment">
-<h1>Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h1>
+        <div class="section" id="development-environment">
+<h1>Development environment<a class="headerlink" href="#development-environment" title="Permalink to this headline">¶</a></h1>
 <p>First of all, create a directory for your projects. This is where we will
 place all the projects, including the <strong>pyphoon</strong> files.</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>mkdir ~/projects
@@ -347,6 +348,36 @@ Directory where we will store large files. Make sure that you have space.</li>
 needs to be accessible from inside the Docker, since we will basically be
 developing code there.</li>
 </ul>
+<p>Finally, you can easily instantiate the docker container</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>docker start dlnii
+</pre></div>
+</div>
+<p>Once started, to execute the instance just type</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>docker <span class="nb">exec</span> -it dlnii bash
+</pre></div>
+</div>
+<p>To exit the container just type</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">exit</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="other-docker-commands">
+<h3>Other Docker commands<a class="headerlink" href="#other-docker-commands" title="Permalink to this headline">¶</a></h3>
+<p>To visualize which docker containers are currently running use</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>docker ps -a
+</pre></div>
+</div>
+<p>This should give you a list of the docker containers with their
+respective names, which image they are using, ports etc.</p>
+<p>To remove the container</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>docker rm &lt;container name&gt;
+</pre></div>
+</div>
+<p>Make sure that the container is not running. If that is the case, stop
+it using</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>docker stop &lt;container name&gt;
+</pre></div>
+</div>
 </div>
 </div>
 </div>
