@@ -1,51 +1,176 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Setting up the environment &#8212; pyphoon 2018a documentation</title>
-    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '2018a',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/javascript" src="_static/sidebar.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
-  </head>
-  <body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pyphoon 2018a documentation</a> &#187;</li> 
-      </ul>
-    </div>  
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Setting up the environment &mdash; pyphoon documentation</title>
+  
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pyphoon documentation" href="index.html"/>
+        <link rel="next" title="Examples" href="examples.html"/>
+        <link rel="prev" title="pyphoon: Python interface for Digital Typhoon" href="home.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html">
+          
+
+          
             
-  <div class="section" id="setting-up-the-environment">
+            <img src="_static/pyphoon_logo_large.png" class="logo" />
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="home.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#get-the-project-in-your-working-directory">Get the project in your working directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-requisites">Pre-requisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-our-docker-container">Creating our Docker Container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-jupyter-notebook-in-your-localhost-from-docker">Run Jupyter Notebook in your localhost from Docker!</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.clean.html">pyphoon.clean</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.visualize.html">pyphoon.visualize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyphoon</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Setting up the environment</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+        <div class="section" id="setting-up-the-environment">
 <span id="setting-up-the-environment"></span><h1>Setting up the environment<a class="headerlink" href="#setting-up-the-environment" title="Permalink to this headline">¶</a></h1>
 <p>For this project and others that are based on this, a docker container has been
 used. In particular, we used a modified version of the docker <a class="reference external" href="https://github.com/ufoym/deepo">deepo</a>,
@@ -60,9 +185,9 @@ Machine. It is built a Docker image, which you can either create on your own
 or download. You can find tons of Docker images at the official Docker
 repository, <a class="reference external" href="https://hub.docker.com/">Docker Hub</a>. A Docker container is
 fresh and new every time you run it.</p>
-<p><strong>Note:</strong> Be aware that some of the commands might requite sudo permission</p>
+<p><strong>Note:</strong> Be aware that some of the commands might require sudo permission</p>
 <div class="section" id="get-the-project-in-your-working-directory">
-<span id="get-the-project-in-your-working-directory"></span><h2>1. Get the project in your working directory<a class="headerlink" href="#get-the-project-in-your-working-directory" title="Permalink to this headline">¶</a></h2>
+<span id="get-the-project-in-your-working-directory"></span><h2>Get the project in your working directory<a class="headerlink" href="#get-the-project-in-your-working-directory" title="Permalink to this headline">¶</a></h2>
 <p>First of all, the project from GitHub should be retrieved. To accelerate the
 work, some symbolic links are created</p>
 <ul>
@@ -90,7 +215,7 @@ work, some symbolic links are created</p>
 </ul>
 </div>
 <div class="section" id="pre-requisites">
-<span id="pre-requisites"></span><h2>2. Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">¶</a></h2>
+<span id="pre-requisites"></span><h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first"><strong>GPU support</strong></p>
 <p>First, make sure you have installed the <a class="reference external" href="https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#how-do-i-install-the-nvidia-driver">NVIDIA driver</a>.
@@ -136,7 +261,7 @@ details check their <a class="reference external" href="https://docs.docker.com/
 </ul>
 </div>
 <div class="section" id="creating-our-docker-container">
-<span id="creating-our-docker-container"></span><h2>3. Creating our Docker Container<a class="headerlink" href="#creating-our-docker-container" title="Permalink to this headline">¶</a></h2>
+<span id="creating-our-docker-container"></span><h2>Creating our Docker Container<a class="headerlink" href="#creating-our-docker-container" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first"><strong>Obtain the all-in-one image from <a class="reference external" href="https://hub.docker.com/r/ufoym/deepo">Docker Hub</a></strong></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="n">lucasrodesg</span><span class="o">/</span><span class="n">deepo</span>
@@ -217,7 +342,7 @@ it using</p>
 </ul>
 </div>
 <div class="section" id="run-jupyter-notebook-in-your-localhost-from-docker">
-<span id="run-jupyter-notebook-in-your-localhost-from-docker"></span><h2>4. Run Jupyter Notebook in your localhost from Docker!<a class="headerlink" href="#run-jupyter-notebook-in-your-localhost-from-docker" title="Permalink to this headline">¶</a></h2>
+<span id="run-jupyter-notebook-in-your-localhost-from-docker"></span><h2>Run Jupyter Notebook in your localhost from Docker!<a class="headerlink" href="#run-jupyter-notebook-in-your-localhost-from-docker" title="Permalink to this headline">¶</a></h2>
 <p>The main idea is to port forward from your host machine until the docker
 virtual environment.</p>
 <p>You basically need to use</p>
@@ -236,52 +361,78 @@ machine and use the token as the password.</p>
 </div>
 </div>
 
+    
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Setting up the environment</a><ul>
-<li><a class="reference internal" href="#get-the-project-in-your-working-directory">1. Get the project in your working directory</a></li>
-<li><a class="reference internal" href="#pre-requisites">2. Pre-requisites</a></li>
-<li><a class="reference internal" href="#creating-our-docker-container">3. Creating our Docker Container</a></li>
-<li><a class="reference internal" href="#run-jupyter-notebook-in-your-localhost-from-docker">4. Run Jupyter Notebook in your localhost from Docker!</a></li>
-</ul>
-</li>
-</ul>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="home.html" class="btn btn-neutral" title="pyphoon: Python interface for Digital Typhoon" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kitamoto Lab interns.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">pyphoon 2018a documentation</a> &#187;</li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2018, Lucas Rodes-Guirao.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
-    </div>
-  </body>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2018a',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

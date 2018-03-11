@@ -15,10 +15,10 @@ But, basically, what you need to know is that a Docker container is a Virtual
   repository, [Docker Hub](https://hub.docker.com/). A Docker container is 
   fresh and new every time you run it.
  
-**Note:** Be aware that some of the commands might requite sudo permission
+**Note:** Be aware that some of the commands might require sudo permission
 
 
-## 1. Get the project in your working directory
+## Get the project in your working directory
     
 First of all, the project from GitHub should be retrieved. To accelerate the 
 work, some symbolic links are created 
@@ -48,7 +48,7 @@ work, some symbolic links are created
     You might want to add `original_data` and `data` to your .gitignore.
     
     
-## 2. Pre-requisites
+## Pre-requisites
 
 *   **GPU support**
 
@@ -97,7 +97,7 @@ work, some symbolic links are created
     ```
 
 
-## 3. Creating our Docker Container
+## Creating our Docker Container
 
 *  **Obtain the all-in-one image from [Docker Hub](https://hub.docker.com/r/ufoym/deepo)**
     
@@ -192,7 +192,7 @@ work, some symbolic links are created
     docker stop <container name>
     ```
 
-## 4. Run Jupyter Notebook in your localhost from Docker!
+## Run Jupyter Notebook in your localhost from Docker!
 
 The main idea is to port forward from your host machine until the docker 
 virtual environment.

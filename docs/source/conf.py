@@ -20,6 +20,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('_ext'))
 
 
 # -- General configuration ------------------------------------------------
@@ -31,11 +32,13 @@ sys.path.insert(0, os.path.abspath('../..'))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc',
+extensions = [
+    'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
-    'sphinx.ext.githubpages']
+    'sphinx.ext.githubpages',
+]
 
 autodoc_member_order = 'bysource'
 
@@ -57,15 +60,15 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'pyphoon'
-copyright = '2018, Lucas Rodes-Guirao'
-author = 'Lucas Rodes-Guirao'
+author = 'Kitamoto Lab interns'
+copyright = '2018, ' + author
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '0.0.1'
+#version = 'latest'
 # The full version, including alpha/beta/rc tags.
 release = '2018a'
 
@@ -74,7 +77,7 @@ release = '2018a'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -93,10 +96,31 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "classic"
+html_theme = "sphinx_rtd_theme"
 html_theme_options = {
-    "collapsiblesidebar": "true",
+    'logo_only': True,
+    'display_version': False,
 }
+
+# The name for this set of Sphinx documents.
+# "<project> v<release> documentation" by default.
+#
+html_title = "pyphoon documentation"
+
+# A shorter title for the navigation bar.  Default is the same as html_title.
+#
+html_short_title = "pyphoon documentation"
+
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar.
+#
+html_logo = "_static/pyphoon_logo_large.png"
+
+# The name of an image file (relative to this directory) to use as a favicon of
+# the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
+# pixels large.
+#
+html_favicon = "_static/favicon.png"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -114,13 +138,13 @@ html_static_path = ['_static']
 #
 # This is required for the alabaster theme
 # refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
-html_show_sourcelink = True
+html_show_sourcelink = False
 html_copy_source = True
 html_sidebars = {
     '**': [
         #'about.html',
-        #'navigation.html',
-        #'relations.html',  # needs 'show_related': True theme option to display
+        'navigation.html',
+        'relations.html',  # needs 'show_related': True theme option to display
         'localtoc.html',
         'searchbox.html'
         #'donate.html',
@@ -132,6 +156,13 @@ html_sidebars = {
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'pyphoondoc'
+
+
+html_context = {
+    "display_github": False,
+    "last_updated": False,
+    "commit": False,
+}
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -159,7 +190,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'pyphoon.tex', 'pyphoon Documentation',
-     'Lucas Rodes-Guirao', 'manual'),
+     author, 'manual'),
 ]
 
 
