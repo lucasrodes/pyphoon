@@ -93,6 +93,7 @@
 <p class="caption"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a></li>
 </ul>
@@ -100,7 +101,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="projects/tcxtc.html">tcxtc</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Modules Documentation</span></p>
+<p class="caption"><span class="caption-text">Modules</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.clean.html">pyphoon.clean</a></li>
@@ -174,42 +175,17 @@
 <p>Get to know the stats behind your best track data. This module focuses on
 the, JMA provided data. Therefore we encourage your to read on the details of
 the data format at <a class="reference external" href="http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html">JMA RSMC Tokyo-Typhoon Center</a>.</p>
-<p>Methods are summarized below.</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="29%" />
-<col width="71%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">method name</th>
-<th class="head">Description</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td><a class="reference internal" href="#pyphoon.eda_jma.update_feature_names" title="pyphoon.eda_jma.update_feature_names"><code class="xref py py-func docutils literal"><span class="pre">update_feature_names()</span></code></a></td>
-<td>Update default JMA list of feature names.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pyphoon.eda_jma.plot_hist" title="pyphoon.eda_jma.plot_hist"><code class="xref py py-func docutils literal"><span class="pre">plot_hist()</span></code></a></td>
-<td>Histogram of a certain feature from the samples in data</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pyphoon.eda_jma.plot_2feature_heatmap" title="pyphoon.eda_jma.plot_2feature_heatmap"><code class="xref py py-func docutils literal"><span class="pre">plot_2feature_heatmap()</span></code></a></td>
-<td>Heatmap of the data based on the values they take on two given features.</td>
-</tr>
-</tbody>
-</table>
 <dl class="function">
 <dt id="pyphoon.eda_jma.update_feature_names">
 <code class="descclassname">pyphoon.eda_jma.</code><code class="descname">update_feature_names</code><span class="sig-paren">(</span><em>names</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.eda_jma.update_feature_names" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use this method to update the default feature names. Feature names
-refer to each column in JMA provided TSV files.</p>
+<dd><p>You can pdate the default feature names. Feature names refer to each
+column in JMA provided TSV files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>names</strong> – List with feature names. Length of the list must coincide
 with length of TSV files.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list</td>
 </tr>
 </tbody>
 </table>
@@ -225,46 +201,21 @@ This image may be stored or just displayed.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> (<em>pandas.DataFrame</em>) – Dataframe with best track data. Details on all features can
+<li><strong>data</strong> (<em>numpy.array</em>) – Array with best track data. Details on all features can
 be found at the <a class="reference external" href="http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html">JMA RSMC Tokyo-Typhoon Center</a> website.</li>
-<li><strong>feature_index</strong> (<em>int</em>) – Index of the feature from data to analyze.</li>
-<li><strong>bins</strong> (<em>int</em><em>, </em><em>default 100</em>) – Number of bins to use to plot the histogram of a certain
-feature. Set to -1 if there should be as many bins as
-values takes the feature.</li>
-<li><strong>centre</strong> (<em>bool</em>) – Set to True if xticks should be centred.</li>
-<li><strong>normed</strong> (<em>bool</em>) – Set to true if histogram values should add up to one.</li>
-<li><strong>show_fig</strong> (<em>bool</em><em>, </em><em>default False</em>) – Flag to plot the histogram.</li>
-<li><strong>title</strong> (<em>str</em>) – Title of the plot</li>
-<li><strong>xlabel</strong> (<em>str</em>) – label for x-axis</li>
-<li><strong>save_fig</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to true if image should be saved.</li>
-<li><strong>fig_name</strong> (<em>bool</em><em>, </em><em>default &quot;untitled&quot;</em>) – Filename of stored imaged.</li>
+<li><strong>feature_index</strong> (<em>int</em>) – Index of the feature to be analyze.</li>
+<li><strong>bins</strong> (<em>int</em><em> or </em><em>list</em><em>, </em><em>default 100</em>) – It can be the number of bins to use to plot the
+histogram or an array defining the bin intervals. You may set it to
+-1 if you want as many bins as different values has the data.</li>
+<li><strong>centre</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True if xticks should be centred.</li>
+<li><strong>normed</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to true if histogram values should add up to one.</li>
+<li><strong>show_fig</strong> (<em>bool</em><em>, </em><em>default False figure</em>) – Set to True to show the histogram plot.</li>
+<li><strong>title</strong> (<em>str</em><em>, </em><em>default &quot;&quot;</em>) – Title of the plot.</li>
+<li><strong>xlabel</strong> (<em>str</em><em>, </em><em>default &quot;&quot;</em>) – Label for x-axis.</li>
+<li><strong>save_fig</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True if you want to save the plot figure. See
+argument <em>fig_name</em>.</li>
+<li><strong>fig_name</strong> (<em>str</em><em>, </em><em>default &quot;untitled&quot;</em>) – Filename for the stored plot figure.</li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"><p class="first">In the following example we load the best track data. Note that we
-only consider data starting from 1978. We take the forth
-feature, which is the class index. Hence, we want to visualize
-the distribution of samples depending on the class they belong
-to.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.tsv</span> <span class="k">import</span> <span class="n">read_tsvs</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.eda_jma</span> <span class="k">import</span> <span class="n">plot_hist</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load data and convert to np.array</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">read_tsvs</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s2">&quot;original_data/jma&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Only consider data since 1978</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1977</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_hist</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">show_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Class distribution&quot;</span><span class="p">,</span> <span class="n">feature_index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bins</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="last figure">
-<a class="reference internal image-reference" href="_images/pyphoon_utils_eda_jma_2.png"><img alt="map to buried treasure" src="_images/pyphoon_utils_eda_jma_2.png" style="width: 391.0px; height: 264.0px;" /></a>
-</div>
 </td>
 </tr>
 </tbody>

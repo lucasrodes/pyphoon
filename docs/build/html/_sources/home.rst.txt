@@ -50,15 +50,17 @@ dataset. Before installing the library make sure you have the data.
 Installation
 ------------
 
-At your own risk you can try
+Currently only the development kit is available. Refer to
+`Development environment <environment.html>`_ for more details.
+
+
+At your own risk you can try using `pip`, but we don't recommend this.
 
 ..  code-block:: bash
 
     pip install pyphoon
 
 
-However, for now only development kit is available. Refer to
-`Development environment <environment.html>`_ for more details.
 
 -----
 

@@ -10,6 +10,8 @@ pyphoon\.io\.typhoonlist
     :members:
     :show-inheritance:
 
+-----
+
 pyphoon\.io\.h5
 --------------------------------------------
 
@@ -17,12 +19,16 @@ pyphoon\.io\.h5
     :members:
     :show-inheritance:
 
+-----
+
 pyphoon\.io\.tsv
 --------------------------------------------
 
 .. automodule:: pyphoon.io.tsv
     :members:
     :show-inheritance:
+
+-----
 
 pyphoon\.io\.utils
 --------------------------------------------

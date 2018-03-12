@@ -5,11 +5,15 @@ pyphoon\.clean
     :members:
     :show-inheritance:
 
+-----
+
 pyphoon\.clean\.fix
 --------------------------------------------
 .. automodule:: pyphoon.clean.fix
     :members:
     :show-inheritance:
+
+-----
 
 pyphoon\.clean\.detection
 --------------------------------------------
@@ -17,11 +21,15 @@ pyphoon\.clean\.detection
     :members:
     :show-inheritance:
 
+-----
+
 pyphoon\.clean\.correction
 --------------------------------------------
 .. automodule:: pyphoon.clean.correction
     :members:
     :show-inheritance:
+
+-----
 
 pyphoon\.clean\.fillgaps
 --------------------------------------------

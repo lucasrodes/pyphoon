@@ -100,6 +100,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#how-can-i-cite-this-project">How can I cite this project?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#can-i-run-jupyter-from-inside-the-docker-container">Can I run Jupyter from inside the docker container?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#where-do-i-get-the-digital-typhoon-data">Where do I get the Digital Typhoon data?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i-cannot-import-the-library">I cannot import the library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulenotfounderror-no-module-named-pyphoon"><code class="docutils literal"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'pyphoon'</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#importerror-no-module-named-tkinter-please-install-the-python3-tk-package"><code class="docutils literal"><span class="pre">ImportError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'_tkinter',</span> <span class="pre">please</span> <span class="pre">install</span> <span class="pre">the</span> <span class="pre">python3-tk</span> <span class="pre">package</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -206,6 +211,45 @@
 <h2>Where do I get the Digital Typhoon data?<a class="headerlink" href="#where-do-i-get-the-digital-typhoon-data" title="Permalink to this headline">¶</a></h2>
 <p>The dataset has not been openly released, but we may make it accessible upon
 request. Try contacting the current <a class="reference external" href="home.html#support">project responsible</a>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="i-cannot-import-the-library">
+<h2>I cannot import the library<a class="headerlink" href="#i-cannot-import-the-library" title="Permalink to this headline">¶</a></h2>
+<p>This might occur due to several reasons. Below we list some of the known errors.</p>
+<div class="section" id="modulenotfounderror-no-module-named-pyphoon">
+<h3><code class="docutils literal"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'pyphoon'</span></code><a class="headerlink" href="#modulenotfounderror-no-module-named-pyphoon" title="Permalink to this headline">¶</a></h3>
+<p>Make sure that the folder with all the modules, i.e. <strong>pyphoon</strong>, is at the
+same level as the code you are trying to execute. If that is not possible,
+you can let python know where this folder is by using <cite>sys.path.insert</cite> and
+passing the directory path containing the library folder.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">path_to_pyphoon</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="importerror-no-module-named-tkinter-please-install-the-python3-tk-package">
+<h3><code class="docutils literal"><span class="pre">ImportError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'_tkinter',</span> <span class="pre">please</span> <span class="pre">install</span> <span class="pre">the</span> <span class="pre">python3-tk</span> <span class="pre">package</span></code><a class="headerlink" href="#importerror-no-module-named-tkinter-please-install-the-python3-tk-package" title="Permalink to this headline">¶</a></h3>
+<p>This may occur when trying to generate plots in the server without a graphical
+interface. This leads to an error when trying to import the module
+<cite>matplotlib.pyplot</cite>. To avoid this, make sure to use a non-interactive
+backend such as <cite>agg</cite>. In short, add the following lines to your script
+before importing pyphoon.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;agg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p>Create a pyphoon method that does this internally, e.g.</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyphoon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pyphoon</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;agg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p>I get an tkinter error when importing the library
+-</p>
+</div>
 </div>
 </div>
 

@@ -94,6 +94,7 @@
 <p class="caption"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a></li>
 </ul>
@@ -101,15 +102,11 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="projects/tcxtc.html">tcxtc</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Modules Documentation</span></p>
+<p class="caption"><span class="caption-text">Modules</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pyphoon.io</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.io.typhoonlist">pyphoon.io.typhoonlist</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#getting-started">Getting Started</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#contents">Contents</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#methods-and-classes">Methods and classes</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#modules">Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.io.typhoonlist">pyphoon.io.typhoonlist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.io.h5">pyphoon.io.h5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.io.tsv">pyphoon.io.tsv</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.io.utils">pyphoon.io.utils</a></li>
@@ -183,17 +180,8 @@
     
         <div class="section" id="module-pyphoon.io.__init__">
 <span id="pyphoon-io"></span><h1>pyphoon.io<a class="headerlink" href="#module-pyphoon.io.__init__" title="Permalink to this headline">¶</a></h1>
-<p>Digital Typhoon data comes, at the moment, from two sources:</p>
-<ul class="simple">
-<li><strong>Satellite images</strong>: 512x512 infrared images, with the typhoon eye at the
-image centre. Each typhoon sequence’s images come as folders with their
-respective images as H5 files.</li>
-<li><strong>Best Track data</strong>: Provided by <a class="reference external" href="http://www.jma.go.jp/jma/indexe.html">JMA</a>, it contains data characterizing
-the state of a certain typhoon. There is data since 1951. Each typhoon
-sequence’s data comes in a TSV file.</li>
-</ul>
-<p>To this end, this module provides a set of tools to integrate the different
-sources and ease the interaction with those.</p>
+<div class="section" id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="docutils">
 <colgroup>
 <col width="35%" />
@@ -219,73 +207,9 @@ sources and ease the interaction with those.</p>
 </tr>
 </tbody>
 </table>
+</div>
 <div class="section" id="module-pyphoon.io.typhoonlist">
 <span id="pyphoon-io-typhoonlist"></span><h2>pyphoon.io.typhoonlist<a class="headerlink" href="#module-pyphoon.io.typhoonlist" title="Permalink to this headline">¶</a></h2>
-<p>This module contains one of the most important and essential components of the
-library, namely the class <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a>,
-which enables easy analysis and integration of data (e.g. HDF and TSV files)
-related to a specific typhoon sequence.</p>
-<div class="section" id="getting-started">
-<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h3>
-<p>Creating a TyphoonList object is very easy. It can be generated using only
-the image data.
-&gt;&gt;&gt; from pyphoon.io.typhoonlist import create_typhoonlist_from_source
-&gt;&gt;&gt; typhoon_sequence = create_typhoonlist_from_source(</p>
-<blockquote>
-<div>images=’../original_data/image/199607/’
-)</div></blockquote>
-<p>Additionally, if best data is available, the object can be created using it.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">create_typhoonlist_from_source</span><span class="p">(</span>
-<span class="go">    images=&#39;../original_data/image/199607/&#39;,</span>
-<span class="go">    best=&#39;../original_data/jma/199607/&#39;</span>
-<span class="go">    )</span>
-</pre></div>
-</div>
-<p>A TyphoonList object can be easily exported as a H5 file.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="s2">&quot;../data/199607.h5&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Such new generated H5 file can be loaded again as a <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">load_typhoonlist_h5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">typhoon_sequence</span> <span class="o">=</span> <span class="n">load_typhoonlist_h5</span><span class="p">(</span><span class="n">path_to_file</span><span class="o">=</span><span class="s2">&quot;../data/199607.h5&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Once a sequence is loaded, you may want to plot a specific frame. it is very
-simple. Only need to set a start and end frames and an interval (time between
-frames) value.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">typhoon_sequence</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="contents">
-<h3>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h3>
-<table border="1" class="docutils">
-<colgroup>
-<col width="30%" />
-<col width="70%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">method/class name</th>
-<th class="head">Description</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td><a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a></td>
-<td>Class encapsulating images and best track data of a certain typhoon sequence</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#pyphoon.io.typhoonlist.create_typhoonlist_from_source" title="pyphoon.io.typhoonlist.create_typhoonlist_from_source"><code class="xref py py-func docutils literal"><span class="pre">create_typhoonlist_from_source()</span></code></a></td>
-<td>Creation of a <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a> instance using best track and satellite image data sources</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#pyphoon.io.typhoonlist.read_typhoonlist_h5" title="pyphoon.io.typhoonlist.read_typhoonlist_h5"><code class="xref py py-func docutils literal"><span class="pre">read_typhoonlist_h5()</span></code></a></td>
-<td>Load previously stored (as H5) typhoon sequence data as a <a class="reference internal" href="#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a> instance</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="methods-and-classes">
-<h3>Methods and classes<a class="headerlink" href="#methods-and-classes" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="pyphoon.io.typhoonlist.TyphoonList">
 <em class="property">class </em><code class="descclassname">pyphoon.io.typhoonlist.</code><code class="descname">TyphoonList</code><span class="sig-paren">(</span><em>data</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.typhoonlist.TyphoonList" title="Permalink to this definition">¶</a></dt>
@@ -610,7 +534,7 @@ aligned.
 </dd></dl>
 
 </div>
-</div>
+<hr class="docutils" />
 <div class="section" id="module-pyphoon.io.h5">
 <span id="pyphoon-io-h5"></span><h2>pyphoon.io.h5<a class="headerlink" href="#module-pyphoon.io.h5" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -783,6 +707,7 @@ the <a class="reference external" href="http://docs.h5py.org/en/latest/high/data
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="module-pyphoon.io.tsv">
 <span id="pyphoon-io-tsv"></span><h2>pyphoon.io.tsv<a class="headerlink" href="#module-pyphoon.io.tsv" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -843,6 +768,7 @@ Element n:th in the list refers to the n:th typhoon sequence.</p>
 </dd></dl>
 
 </div>
+<hr class="docutils" />
 <div class="section" id="module-pyphoon.io.utils">
 <span id="pyphoon-io-utils"></span><h2>pyphoon.io.utils<a class="headerlink" href="#module-pyphoon.io.utils" title="Permalink to this headline">¶</a></h2>
 <p>Some tools ot assist in reading source data.</p>

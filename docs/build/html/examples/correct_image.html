@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Visualise a typhoon sequence &mdash; pyphoon documentation</title>
+  <title>Correcting image data &mdash; pyphoon documentation</title>
   
 
   
@@ -95,10 +95,14 @@
 <p class="caption"><span class="caption-text">Getting started</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../environment.html">Development environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data.html">Data</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="best_eda.html">Best Track EDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="typhoon_sequence.html">Working with a typhoon sequence</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Correcting image data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Correcting image data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#define-and-apply-fixing-algorithm">Define and apply fixing algorithm</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="create_db.html">Create database</a></li>
 </ul>
 </li>
@@ -108,7 +112,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../projects/tcxtc.html">tcxtc</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Modules Documentation</span></p>
+<p class="caption"><span class="caption-text">Modules</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.io.html">pyphoon.io</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.clean.html">pyphoon.clean</a></li>
@@ -161,7 +165,7 @@
         
           <li><a href="../examples.html">Examples</a> &raquo;</li>
         
-      <li>Visualise a typhoon sequence</li>
+      <li>Correcting image data</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -179,14 +183,57 @@
            <div itemprop="articleBody">
             
     
-        <div class="section" id="visualise-a-typhoon-sequence">
-<h1>Visualise a typhoon sequence<a class="headerlink" href="#visualise-a-typhoon-sequence" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>Compare non-corrected sequence with (i) corrected and (ii) corrected +
-filled</li>
+        <div class="section" id="correcting-image-data">
+<h1>Correcting image data<a class="headerlink" href="#correcting-image-data" title="Permalink to this headline">¶</a></h1>
+<p>Image data may come with some corrupted pixel values, probably due to some
+technical failure in the data sources (i.e. the satellites). Such data can
+contaminate later applied statistical methods and thus should either be
+removed or corrected. To this end, this library attempts to provide a set of
+tools to fix such problems.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the future we plan to add methods to correct other sorts of data types.</p>
+</div>
+<p>In this example we assume we have a sequence loaded. To learn how to, check
+this <a class="reference external" href="typhoon_sequence.html#load-a-typhoon-sequence-data">example</a>.</p>
+<div class="section" id="define-and-apply-fixing-algorithm">
+<h2>Define and apply fixing algorithm<a class="headerlink" href="#define-and-apply-fixing-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>There can be up to three main steps when fixing a sequence:</p>
+<ul class="simple">
+<li><strong>detection</strong>: Detect image frames with corrupted pixel values.</li>
+<li><strong>correction</strong>: Correct the corrupted pixel values in detected image frames.</li>
+<li><strong>fillgaps</strong>: Generate synthetic images to fill temporal gaps. For
+instance, if two images are 3 hour apart, it means that there are two frames
+missing in between, since the observation frequency is supposed to be of 1h.
+Hence, with some methods, we can artificially generate the images that
+should occupy this temporal space.</li>
 </ul>
+<p>Each of the above techniques may be implemented using different algorithms.
+These can be found in the modules <a class="reference internal" href="../pyphoon.clean.html#module-pyphoon.clean.detection" title="pyphoon.clean.detection"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.detection</span></code></a>,
+<a class="reference internal" href="../pyphoon.clean.html#module-pyphoon.clean.correction" title="pyphoon.clean.correction"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.correction</span></code></a> and <a class="reference internal" href="../pyphoon.clean.html#module-pyphoon.clean.fillgaps" title="pyphoon.clean.fillgaps"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.fillgaps</span></code></a>,
+respectively. A fixing algorithm is defined using the class
+<a class="reference internal" href="../pyphoon.clean.html#pyphoon.clean.fix.TyphoonListImageFixAlgorithm" title="pyphoon.clean.fix.TyphoonListImageFixAlgorithm"><code class="xref py py-class docutils literal"><span class="pre">TyphoonListImageFixAlgorithm</span></code></a>. This class, accepts
+as arguments methods for <strong>detection</strong>, <strong>correction</strong> and <strong>fillgap</strong>. There
+is no need to use all of them, so one might decide to only perform, for
+instance, detection and correction.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.fix</span> <span class="k">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.detection</span> <span class="k">import</span> <span class="n">detect_corrupted_pixels_1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.correction</span> <span class="k">import</span> <span class="n">correct_corrupted_pixels_1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.fillgaps</span> <span class="k">import</span> <span class="n">generate_new_frames_1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define algorithm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fix_algorithm</span> <span class="o">=</span> <span class="n">TyphoonListImageFixAlgorithm</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">detect_fct</span><span class="o">=</span><span class="n">detect_corrupted_pixels_1</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">correct_fct</span><span class="o">=</span><span class="n">correct_corrupted_pixels_1</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">fillgaps_fct</span><span class="o">=</span><span class="n">generate_new_frames_1</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">detect_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;min_th&#39;</span><span class="p">:</span> <span class="mi">160</span><span class="p">,</span> <span class="s1">&#39;max_th&#39;</span><span class="p">:</span> <span class="mi">310</span><span class="p">},</span>
+<span class="gp">... </span>   <span class="n">n_frames_th</span><span class="o">=</span><span class="mi">2</span>
+<span class="go">...)</span>
+</pre></div>
+</div>
+<p>To apply the algorithm simply use method <a class="reference internal" href="../pyphoon.clean.html#pyphoon.clean.fix.TyphoonListImageFixAlgorithm.apply" title="pyphoon.clean.fix.TyphoonListImageFixAlgorithm.apply"><code class="xref py py-func docutils literal"><span class="pre">apply()</span></code></a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence_corrected</span> <span class="o">=</span> <span class="n">fix_algorithm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 
