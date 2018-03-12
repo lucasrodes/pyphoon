@@ -1,56 +1,5 @@
 """
-This module contains one of the most important and essential components of the
-library, namely the class :class:`~pyphoon.io.typhoonlist.TyphoonList`,
-which enables easy analysis and integration of data (e.g. HDF and TSV files)
-related to a specific typhoon sequence.
 
-Getting Started
-^^^^^
-Creating a TyphoonList object is very easy. It can be generated using only
-the image data.
->>> from pyphoon.io.typhoonlist import create_typhoonlist_from_source
->>> typhoon_sequence = create_typhoonlist_from_source(
-    images='../original_data/image/199607/'
-    )
-
-Additionally, if best data is available, the object can be created using it.
-
->>> typhoon_sequence = create_typhoonlist_from_source(
-    images='../original_data/image/199607/',
-    best='../original_data/jma/199607/'
-    )
-
-A TyphoonList object can be easily exported as a H5 file.
-
->>> typhoon_sequence.save_as_h5("../data/199607.h5")
-
-Such new generated H5 file can be loaded again as a :class:`TyphoonList`.
-
->>> from pyphoon.io.typhoonlist import load_typhoonlist_h5
->>> typhoon_sequence = load_typhoonlist_h5(path_to_file="../data/199607.h5")
-
-Once a sequence is loaded, you may want to plot a specific frame. it is very
-simple. Only need to set a start and end frames and an interval (time between
-frames) value.
-
->>> import matplotlib.pyplot as plt
->>> plt.imshow(typhoon_sequence.images[10])
->>> plt.show()
-
-Contents
-^^^^^
-+-------------------------------------------+---------------------------------------------------------------------------------------------------+
-| method/class name                         | Description                                                                                       |
-+===========================================+===================================================================================================+
-| :class:`TyphoonList`                      | Class encapsulating images and best track data of a certain typhoon sequence                      |
-+-------------------------------------------+---------------------------------------------------------------------------------------------------+
-| :func:`create_typhoonlist_from_source`    | Creation of a :class:`TyphoonList` instance using best track and satellite image data sources     |
-+-------------------------------------------+---------------------------------------------------------------------------------------------------+
-| :func:`read_typhoonlist_h5`               | Load previously stored (as H5) typhoon sequence data as a :class:`TyphoonList` instance           |
-+-------------------------------------------+---------------------------------------------------------------------------------------------------+
-
-Methods and classes
-^^^^^
 """
 
 from pyphoon.io.h5 import write_h5groupfile, read_h5groupfile, \
