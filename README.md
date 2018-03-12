@@ -1,6 +1,6 @@
 # [pyphoon](http://lcsrg.me/pyphoon)
 
-<img src="docs/source/_static/banner.png" alt="Drawing" style="width: 200px;"/>
+<img src="docs/source/_static/banner.png" alt="Drawing" style="width: 100px;"/>
 
 
 Developed as part of the [Digital Typhoon](http://digital-typhoon.org) project from [Kitamoto-sensei](http://www.nii.ac.jp/en/faculty/digital_content/kitamoto_asanobu/). 
