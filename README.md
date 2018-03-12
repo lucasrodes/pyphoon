@@ -1,6 +1,7 @@
 # [pyphoon](http://lcsrg.me/pyphoon)
 
-![](docs/source/_static/banner.png =100x20)
+<img src="docs/source/_static/banner.png" alt="Drawing" style="width: 200px;"/>
+
 
 Developed as part of the [Digital Typhoon](http://digital-typhoon.org) project from [Kitamoto-sensei](http://www.nii.ac.jp/en/faculty/digital_content/kitamoto_asanobu/). 
 Provides a set of tools to enable easy and pythonic interaction the Digital Typhoon dataset.
