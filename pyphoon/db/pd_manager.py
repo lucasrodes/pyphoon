@@ -3,10 +3,7 @@ from os import path, listdir
 import pandas as pd
 from os.path import isdir, join, exists
 import numpy as np
-from pyphoon.clean.correction import correct_corrupted_pixels_1
-from pyphoon.clean.detection import detect_corrupted_pixels_1
 from pyphoon.clean.fix import TyphoonListImageFixAlgorithm
-from pyphoon.clean.fillgaps import generate_new_frames_1
 from pyphoon.io.typhoonlist import create_typhoonlist_from_source
 from pyphoon.io.utils import id2date, id2seqno
 from pyphoon.io.h5 import write_image, read_source_image
@@ -111,7 +108,17 @@ class PDManager:
         """
         self.images = pd.read_pickle(filename, self._compression)
 
-    def add_corrupted(self, images_dir, save_corrected_to=None):
+    def add_corrupted(self, images_dir, fix_algorithm, save_corrected_to=None):
+        """
+        Adds corrupted images dataset
+        :param images_dir: path to original images
+        :param fix_algorithm: an instance of TyphoonListImageFixAlgorithm class with parameters of detecting
+            and fixing errors
+        :param save_corrected_to: path to save corrected images
+        :return:
+        """
+        if not isinstance(fix_algorithm, TyphoonListImageFixAlgorithm):
+            raise Exception('fix_algorithm should be an instance of TyphoonListImageFixAlgorithm class')
         if save_corrected_to:
             if os.path.isabs(save_corrected_to) is False:
                 save_corrected_to = path.join(os.getcwd(), save_corrected_to)
@@ -124,20 +131,6 @@ class PDManager:
             seq = create_typhoonlist_from_source(
                 name=folder,
                 images=join(images_dir, folder)
-            )
-            # Fix TyphoonList
-            detect_fct = detect_corrupted_pixels_1  # Detection method
-            correct_fct = correct_corrupted_pixels_1  # Correction method
-            detect_params = {'min_th': 160, 'max_th': 310}  # Parameters for detection meth
-            # Generation
-            fillgaps_fct = generate_new_frames_1  # Fill gap method
-            n_frames_th = 2  # Maximum number of frames to generate
-            fix_algorithm = TyphoonListImageFixAlgorithm(
-                detect_fct=detect_fct,
-                correct_fct=correct_fct,
-                fillgaps_fct=fillgaps_fct,
-                detect_params=detect_params,
-                n_frames_th=n_frames_th
             )
             seq_new = fix_algorithm.apply(seq)
             corrected = fix_algorithm.fixed_ids['corrected']
