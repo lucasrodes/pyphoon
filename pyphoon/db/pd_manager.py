@@ -16,6 +16,9 @@ feature_names = ["year", "month", "day", "hour", "class", "latitude",
 
 
 class PDManager:
+    """
+
+    """
     def __init__(self, compression='gzip'):
         self.besttrack = pd.DataFrame()
         self.images = pd.DataFrame()
@@ -52,8 +55,8 @@ class PDManager:
         self.besttrack.to_pickle(filename, compression=self._compression)
 
     def load_besttrack(self, filename):
-        """
-        Loads BestTrack DataFrame from a file
+        """ Loads BestTrack DataFrame from a file
+
         :param filename:
         :return:
         """
@@ -182,6 +185,11 @@ class PDManager:
                     print('Error occured while reading files: ', detail)
 
     def save_corrupted(self, filename):
+        """
+
+        :param filename:
+        :return:
+        """
         self.corrupted.to_pickle(filename, compression=self._compression)
 
     def load_corrupted(self, filename):
@@ -193,6 +201,10 @@ class PDManager:
         self.corrupted = pd.read_pickle(filename, self._compression)
 
     def add_missing_frames(self):
+        """
+
+        :return:
+        """
         # from pandas import groupby
         joined = pd.concat([self.images, self.besttrack], axis=1, join='inner')
         seqs = joined.groupby('seq_no')
@@ -248,6 +260,12 @@ class PDManager:
         return self.missing.get_value(index=seq_no, col='start_time') + time_shift
 
     def get_image_from_seq_no_and_frame_num(self, seq_no, frame_num):
+        """
+
+        :param seq_no:
+        :param frame_num:
+        :return:
+        """
         dt = self.get_obs_time_from_frame_num(seq_no, frame_num)
         key = (seq_no, dt)
         dir = self.images.get_value(key, 'directory')

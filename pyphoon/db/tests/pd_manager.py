@@ -1,3 +1,10 @@
+"""
+..  todo::
+
+    Not sure this belongs here. Maybe we should consider placing tests in a
+    folder? say module/folder
+"""
+
 import unittest
 
 from os.path import join, exists

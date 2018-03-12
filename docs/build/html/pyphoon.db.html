@@ -94,6 +94,7 @@
 <p class="caption"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Development environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a></li>
 </ul>
@@ -106,10 +107,10 @@
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.clean.html">pyphoon.clean</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pyphoon.db</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.db.db_manager">pyphoon.db.db_manager</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.db.db_tables">pyphoon.db.db_tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyphoon-db-db-manager">pyphoon.db.db_manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyphoon-db-db-tables">pyphoon.db.db_tables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.db.pd_manager">pyphoon.db.pd_manager</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.db.test_dbmanager">pyphoon.db.test_dbmanager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pyphoon-db-test-dbmanager">pyphoon.db.test_dbmanager</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.visualize.html">pyphoon.visualize</a></li>
@@ -178,59 +179,11 @@
     
         <div class="section" id="module-pyphoon.db.__init__">
 <span id="pyphoon-db"></span><h1>pyphoon.db<a class="headerlink" href="#module-pyphoon.db.__init__" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="module-pyphoon.db.db_manager">
-<span id="pyphoon-db-db-manager"></span><h2>pyphoon.db.db_manager<a class="headerlink" href="#module-pyphoon.db.db_manager" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="pyphoon.db.db_manager.DBManager">
-<em class="property">class </em><code class="descclassname">pyphoon.db.db_manager.</code><code class="descname">DBManager</code><span class="sig-paren">(</span><em>db_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.db_manager.DBManager" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<dl class="method">
-<dt id="pyphoon.db.db_manager.DBManager.add_besttrack">
-<code class="descname">add_besttrack</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.db_manager.DBManager.add_besttrack" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyphoon.db.db_manager.DBManager.add_images">
-<code class="descname">add_images</code><span class="sig-paren">(</span><em>img_path</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.db_manager.DBManager.add_images" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>img_path</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="pyphoon-db-db-manager">
+<h2>pyphoon.db.db_manager<a class="headerlink" href="#pyphoon-db-db-manager" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-pyphoon.db.db_tables">
-<span id="pyphoon-db-db-tables"></span><h2>pyphoon.db.db_tables<a class="headerlink" href="#module-pyphoon.db.db_tables" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="pyphoon.db.db_tables.BestTrack">
-<em class="property">class </em><code class="descclassname">pyphoon.db.db_tables.</code><code class="descname">BestTrack</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.db_tables.BestTrack" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="pyphoon.db.db_tables.Images">
-<em class="property">class </em><code class="descclassname">pyphoon.db.db_tables.</code><code class="descname">Images</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.db_tables.Images" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">sqlalchemy.ext.declarative.api.Base</span></code></p>
-</dd></dl>
-
+<div class="section" id="pyphoon-db-db-tables">
+<h2>pyphoon.db.db_tables<a class="headerlink" href="#pyphoon-db-db-tables" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-pyphoon.db.pd_manager">
 <span id="pyphoon-db-pd-manager"></span><h2>pyphoon.db.pd_manager<a class="headerlink" href="#module-pyphoon.db.pd_manager" title="Permalink to this headline">¶</a></h2>
@@ -297,19 +250,19 @@
 
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.add_corrupted">
-<code class="descname">add_corrupted</code><span class="sig-paren">(</span><em>images_dir</em>, <em>save_corrected_to=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_corrupted" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<code class="descname">add_corrupted</code><span class="sig-paren">(</span><em>images_dir</em>, <em>fix_algorithm</em>, <em>save_corrected_to=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_corrupted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds corrupted images dataset
+:param images_dir: path to original images
+:param fix_algorithm: an instance of TyphoonListImageFixAlgorithm class with parameters of detecting</p>
+<blockquote>
+<div>and fixing errors</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>images_dir</strong> – </li>
-<li><strong>save_corrected_to</strong> – </li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>save_corrected_to</strong> – path to save corrected images</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
-</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
 </tbody>
 </table>
@@ -408,13 +361,8 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-pyphoon.db.test_dbmanager">
-<span id="pyphoon-db-test-dbmanager"></span><h2>pyphoon.db.test_dbmanager<a class="headerlink" href="#module-pyphoon.db.test_dbmanager" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">Not sure this belongs here. Maybe we should consider placing tests in a
-folder? say module/folder</p>
-</div>
+<div class="section" id="pyphoon-db-test-dbmanager">
+<h2>pyphoon.db.test_dbmanager<a class="headerlink" href="#pyphoon-db-test-dbmanager" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
