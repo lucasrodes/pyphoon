@@ -1,3 +1,10 @@
+"""
+..  todo::
+
+    Not sure this belongs here. Maybe we should consider placing tests in a
+    folder? say module/folder
+"""
+
 import unittest
 
 from os.path import join, exists
@@ -6,6 +13,7 @@ from pyphoon.db.db_manager import DBManager, BestTrack, Images
 from pyphoon.db.pd_manager import PDManager
 import os
 from sqlalchemy import create_engine, select
+
 
 class TestDbManagerMethods(unittest.TestCase):
 

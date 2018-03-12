@@ -5,7 +5,11 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class BestTrack(Base):
+    """
+
+    """
     __tablename__ = 'besttrack'
     typ_id = Column(Integer, primary_key=True)
     obs_time = Column(DateTime, primary_key=True, default=datetime.datetime.min)
@@ -28,6 +32,9 @@ class BestTrack(Base):
 
 
 class Images(Base):
+    """
+
+    """
     __tablename__ = 'images'
     typ_id = Column(Integer, primary_key=True)
     obs_time = Column(DateTime, primary_key=True, default=datetime.datetime.min)

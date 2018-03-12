@@ -8,7 +8,14 @@ from pyphoon.db.db_tables import BestTrack, Images, Base
 
 
 class DBManager:
+    """
+
+    """
     def __init__(self, db_file):
+        """
+
+        :param db_file:
+        """
         self.db_file = db_file
         if not path.exists(db_file):
             try:
@@ -22,6 +29,11 @@ class DBManager:
         self.session = session()
 
     def add_besttrack(self, directory):
+        """
+
+        :param directory:
+        :return:
+        """
         files = listdir(directory)
         if self.engine.has_table('besttrack'):
             self.session.query(BestTrack).delete()
@@ -57,6 +69,11 @@ class DBManager:
         self.session.commit()
 
     def add_images(self, img_path):
+        """
+
+        :param img_path:
+        :return:
+        """
         base = declarative_base()
         base.metadata.create_all(self.engine, tables=[Images.__table__])
         session = sessionmaker(bind=self.engine)
