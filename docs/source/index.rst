@@ -3,8 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-pyphoon
+pyphoon: the python interface for Digital Typhoon
 =======
+
+.. image:: _static/banner.png
 
 `pyphoon <http://github.com/lucasrodes/pyphoon>`_ is a python library developed since 2018 by interns at `Kitamoto Lab
 <http://agora.ex.nii.ac.jp/~kitamoto/index.html.en>`_ to
@@ -25,20 +27,6 @@ provided examples.
 
     -   `Tropical Cyclone vs. Extra-Tropical Cyclone classifier
         <http://github.com/lucasrodes/tcxtc-deep-classifier>`_
-
-Documentation
--------------
-
-For further details on any of the modules of this library check the
-corresponding link below.
-
-..  toctree::
-    :maxdepth: 2
-
-    pyphoon.io <pyphoon.io>
-    pyphoon.clean <pyphoon.clean>
-    pyphoon.visualize <pyphoon.visualize>
-    pyphoon.eda_jma <pyphoon.eda_jma>
 
 
 
@@ -64,3 +52,38 @@ Known Issues
     >>> import matplotlib
     >>> matplotlib.use('agg')
 
+
+
+..  toctree::
+    :hidden:
+    :maxdepth: 4
+
+    Home <home>
+
+..  toctree::
+    :hidden:
+    :maxdepth: 4
+    :includehidden:
+    :caption: Getting started
+
+    Development environment <environment>
+    Examples <examples>
+    FAQs <faqs>
+
+
+..  toctree::
+    :hidden:
+    :caption: Projects
+
+    tcxtc <projects/tcxtc>
+
+
+..  toctree::
+    :hidden:
+    :caption: Modules
+
+    pyphoon.io <pyphoon.io>
+    pyphoon.clean <pyphoon.clean>
+    pyphoon.db <pyphoon.db>
+    pyphoon.visualize <pyphoon.visualize>
+    pyphoon.eda_jma <pyphoon.eda_jma>

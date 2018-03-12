@@ -129,6 +129,7 @@ def write_image(path_to_file, image, compression='gzip'):
     with h5py.File(path_to_file, 'w') as h5f:
         h5f.create_dataset(name='infrared', data=image, compression=compression)
 
+
 ################################################################################
 # DEPRECATED
 ################################################################################
