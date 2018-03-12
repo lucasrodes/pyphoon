@@ -1,10 +1,10 @@
 pyphoon\.io
-==============================
+------------
 
 .. automodule:: pyphoon.io.__init__
 
 pyphoon\.io\.typhoonlist
---------------------------------------------
+************************
 
 .. automodule:: pyphoon.io.typhoonlist
     :members:
@@ -13,7 +13,7 @@ pyphoon\.io\.typhoonlist
 -----
 
 pyphoon\.io\.h5
---------------------------------------------
+************************
 
 .. automodule:: pyphoon.io.h5
     :members:
@@ -22,7 +22,7 @@ pyphoon\.io\.h5
 -----
 
 pyphoon\.io\.tsv
---------------------------------------------
+************************
 
 .. automodule:: pyphoon.io.tsv
     :members:
@@ -31,7 +31,7 @@ pyphoon\.io\.tsv
 -----
 
 pyphoon\.io\.utils
---------------------------------------------
+************************
 
 .. automodule:: pyphoon.io.utils
     :members:

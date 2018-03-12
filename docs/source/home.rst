@@ -20,6 +20,16 @@ More details on the `GitHub repository`_.
 
 -----
 
+What can I find in here?
+------------------------
+
+In this website you will find how to set up the environment to further
+develop this project, information about the data we are using, some library
+usage examples, the documentation of the library modules and much more. Use
+the sidebar to navigate all the content.
+
+-----
+
 What is Digital Typhoon?
 ------------------------
 

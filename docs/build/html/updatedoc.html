@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Modifying existing docker image &mdash; pyphoon documentation</title>
+  <title>Update Documentation &mdash; pyphoon documentation</title>
   
 
   
@@ -37,7 +37,8 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="pyphoon documentation" href="index.html"/> 
+    <link rel="top" title="pyphoon documentation" href="index.html"/>
+        <link rel="prev" title="pyphoon.eda_jma" href="pyphoon.eda_jma.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -102,8 +103,9 @@
 <li class="toctree-l1"><a class="reference internal" href="projects/tcxtc.html">tcxtc</a></li>
 </ul>
 <p class="caption"><span class="caption-text">For the developer</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Update documentation</a></li>
 </ul>
 
             
@@ -148,7 +150,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Modifying existing docker image</li>
+      <li>Update Documentation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -166,46 +168,9 @@
            <div itemprop="articleBody">
             
     
-        <div class="section" id="modifying-existing-docker-image">
-<span id="modifying-existing-docker-image"></span><h1>Modifying existing docker image<a class="headerlink" href="#modifying-existing-docker-image" title="Permalink to this headline">¶</a></h1>
-<p>Sometimes, an existing docker image might be close to what we want but might be
-lacking on some libraries. To overcome this, you can easily modify an existing
-docker image.</p>
-<ul>
-<li><p class="first"><strong>Pull base image</strong></p>
-<p>To modify an existing image first pull the base image you want to modify</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">pull</span> <span class="o">&lt;</span><span class="n">base</span> <span class="n">image</span> <span class="n">name</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first"><strong>Modify image</strong></p>
-<p>Next, create a Dockerfile</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Create docker images folder</span>
-<span class="n">mkdir</span> <span class="o">~/.</span><span class="n">docker_images</span>
-<span class="c1"># Create folder for new docker image</span>
-<span class="n">mkdir</span> <span class="o">~/.</span><span class="n">docker_images</span><span class="o">/&lt;</span><span class="n">docker</span> <span class="n">image</span> <span class="n">folder</span> <span class="n">name</span><span class="o">&gt;</span>
-<span class="c1"># Create docker file</span>
-<span class="n">vim</span> <span class="o">~/.</span><span class="n">docker_images</span><span class="o">/&lt;</span><span class="n">docker</span> <span class="n">image</span> <span class="n">folder</span> <span class="n">name</span><span class="o">&gt;/</span><span class="n">Dockerfile</span>
-</pre></div>
-</div>
-<p>and add the libraries that you want to install. Say you want to
-install <code class="docutils literal"><span class="pre">plotly</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">FROM</span> <span class="o">&lt;</span><span class="n">base</span> <span class="n">image</span> <span class="n">name</span><span class="o">&gt;</span>
-<span class="n">RUN</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">plotly</span>
-</pre></div>
-</div>
-<p>Save the file and build the docker image.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~/.</span><span class="n">docker_images</span><span class="o">/&lt;</span><span class="n">docker</span> <span class="n">image</span> <span class="n">folder</span> <span class="n">name</span><span class="o">&gt;/</span>
-<span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="n">modified</span> <span class="n">image</span> <span class="n">name</span><span class="o">&gt;</span> <span class="o">.</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first"><strong>Upload image to Docker hub</strong></p>
-<p>First make sure that you have an account in <a class="reference external" href="https://hub.docker.com/">Docker Hub</a>.
-Next, follow the steps <a class="reference external" href="https://docs.docker.com/docker-cloud/builds/push-images/">here</a> to
-push your image.</p>
-</li>
-</ul>
+        <div class="section" id="update-documentation">
+<h1>Update Documentation<a class="headerlink" href="#update-documentation" title="Permalink to this headline">¶</a></h1>
+<p>TODO</p>
 </div>
 
     
@@ -216,6 +181,13 @@ push your image.</p>
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="pyphoon.eda_jma.html" class="btn btn-neutral" title="pyphoon.eda_jma" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
