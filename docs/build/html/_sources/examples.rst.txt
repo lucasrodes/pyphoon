@@ -1,11 +1,14 @@
 Examples
 ========
 
-Here we present some examples using the tools from the library. You can find
-these examples `here`_.
+Best way to get hands on with pyphoon is have a look at some code examples.
+In this section we present what we believe are the most important tools and
+features from the library.
+
+In addition, we released some notebooks that you may access `here`_.
 
 .. _here:
-    https://github.com/lucasrodes/pyphoon/tree/master/scripts
+    https://github.com/lucasrodes/pyphoon/tree/master/notebooks
 
 
 ..  toctree::

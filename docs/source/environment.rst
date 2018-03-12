@@ -23,6 +23,8 @@ Clone the repository and place it in the ``projects`` folder
 
 .. _deepo: https://github.com/ufoym/deepo
 
+-----
+
 Docker Setup
 ------------
 

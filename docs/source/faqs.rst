@@ -20,11 +20,15 @@ Please cite pyphoon in your publications if it helped you out. BibTeX entry:
       howpublished={\url{https://github.com/lucasrodes/pyphoon}},
     }
 
+-----
+
 Can I run Jupyter from inside the docker container?
 ---------------------------------------------------
 
 The short answer is yes. The long answer can be found `here <https://medium
 .com/@lucasrg/using-jupyter-notebook-running-on-a-remote-docker-container-via-ssh-ea2c3ebb9055>`_.
+
+-----
 
 Where do I get the Digital Typhoon data?
 ----------------------------------------

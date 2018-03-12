@@ -67,6 +67,7 @@ Known Issues
     :caption: Getting started
 
     Development environment <environment>
+    Data <data>
     Examples <examples>
     FAQs <faqs>
 
