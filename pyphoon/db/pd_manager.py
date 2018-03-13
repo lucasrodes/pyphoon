@@ -1,15 +1,8 @@
-"""
-hello
-"""
-import os
 from os import path, listdir
 import pandas as pd
 from os.path import isdir, join, exists
 import numpy as np
-from pyphoon.clean_satellite.fix import TyphoonListImageFixAlgorithm
-#from pyphoon.io.typhoonlist import create_typhoonlist_from_source
-from pyphoon.io.utils import id2date, id2seqno
-from pyphoon.io.h5 import write_image, read_source_image
+from pyphoon.io.h5 import read_source_image
 
 feature_names = ["year", "month", "day", "hour", "class", "latitude",
                  "longitude", "pressure", "wind", "gust", "storm_direc",
@@ -19,22 +12,66 @@ feature_names = ["year", "month", "day", "hour", "class", "latitude",
 
 
 class PDManager:
-    """
-    
+    """ Class to manage and help in the analysis of the dataset. It stores
+    references to the image files, dates of the data, corrected images etc.
+    in pandas.DataFrame objects.
+
     """
     def __init__(self, compression='gzip'):
-        """ something
+        self.besttrack = pd.DataFrame()  #: DataFrame for best track data.
+        self.images = pd.DataFrame()  #: DataFrame for original image data.
+        self.missing = pd.DataFrame()  #: DataFrame for missing image data.
+        self.corrupted = pd.DataFrame()  #: DataFrame for corrected image data.
+        self._compression = compression  #: Compression, default 'gzip'.
 
-        :param compression:
+    ############################################################################
+    # Original images
+    ############################################################################
+    # TODO: add_original_images
+    def add_orig_images(self, images_dir, file_refs_only=True):
+        """ Adds information about original images to the class attribute
+        ``images``.
+
+        :param images_dir: Path to image dataset
+        :type images_dir: str
+        :param file_refs_only: Set to True to only store links to the files (
+            recommended. Otherwise it reads and stores the image files as well.
+        :type file_refs_only: bool, default True
         """
-        self.besttrack = pd.DataFrame()
-        self.images = pd.DataFrame()
-        self.missing = pd.DataFrame()
-        self.corrupted = pd.DataFrame()
-        self._compression = compression
+        # Get information
+        image_data = self.get_info_image_dataset(images_dir, file_refs_only)
 
+        # Create DataFrame
+        self.images = pd.concat(image_data)
+        self.images.set_index(['seq_no', 'obs_time'], inplace=True,
+                              drop=True, verify_integrity=True)
+        self.images.index.name = 'seq_no_obs_time'
+
+    # TODO: pkl_save_original_images
+    def save_images(self, filename):
+        """ Saves the class attribute ``images`` as a pickle file.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
+        """
+        self.images.to_pickle(filename, compression=self._compression)
+
+    # TODO: pkl_load_original_images
+    def load_orig_images(self, filename):
+        """ Loads the image data from a pickle file as DataFrame storing
+        it as the class attribute ``images``.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
+        """
+        self.images = pd.read_pickle(filename, self._compression)
+
+    ############################################################################
+    # Best data
+    ############################################################################
     def add_besttrack(self, directory):
-        """ Add besttrack information to the database
+        """ Adds information from the best data to the class attribute
+        ``besttrack``.
 
         :param directory: Path where source files are stored
         :return:
@@ -44,184 +81,138 @@ class PDManager:
         for f in files:
             _id = int(path.splitext(f)[0])
             f = path.join(directory, f)
-            frame = pd.read_csv(filepath_or_buffer=f, sep='\t', names=feature_names)
+            frame = pd.read_csv(filepath_or_buffer=f, sep='\t',
+                                names=feature_names)
             frame['seq_no'] = _id
             appended_data.append(frame)
         self.besttrack = pd.concat(appended_data)
-        self.besttrack['obs_time'] = pd.to_datetime(self.besttrack.loc[:, 'year':'hour'])
-        self.besttrack.drop(self.besttrack.loc[:, 'year':'hour'], axis=1, inplace=True)
-        self.besttrack.set_index(['seq_no', 'obs_time'], inplace=True, drop=True, verify_integrity=True)
+        self.besttrack['obs_time'] = pd.to_datetime(self.besttrack.loc[:,
+                                                    'year':'hour'])
+        self.besttrack.drop(self.besttrack.loc[:, 'year':'hour'], axis=1,
+                            inplace=True)
+        self.besttrack.set_index(['seq_no', 'obs_time'], inplace=True,
+                                 drop=True, verify_integrity=True)
         self.besttrack.index.name = 'seq_no_obs_time'
 
+    # TODO: pkl_save_besttrack
     def save_besttrack(self, filename):
-        """ Saves Besttrack DataFrame to a file
+        """ Saves the class attribute ``besttrack`` as a pickle file.
 
-        :param filename:
-        :return:
+        :param filename: Path to the pickle file.
+        :type filename: str
         """
         self.besttrack.to_pickle(filename, compression=self._compression)
 
+    # TODO: pkl_load_besttrack
     def load_besttrack(self, filename):
-        """ Loads BestTrack DataFrame from a file
+        """ Loads the best data from a pickle file as DataFrame storing
+        it as the class attribute ``besttrack``.
 
-        :param filename:
-        :return:
+        :param filename: Path to the pickle file.
+        :type filename: str
         """
         self.besttrack = pd.read_pickle(filename, self._compression)
 
-    def add_orig_images(self, directory, file_refs_only=True):
-        """
-        Add information about original images to the DataFrame
-        :param directory:
-        :param file_refs_only: if set True, only links to the files will be stored
-        :return:
-        """
-        from os import stat
-        from pyphoon.io.h5 import get_h5_filenames
-        from pyphoon.io.h5 import read_source_image
-        from pyphoon.io.utils import folder_2_name, get_image_date
-        folders = sorted([f for f in listdir(directory) if isdir(join(directory, f))])
-        appended_data = []
-        for folder in folders:
-            path_images = join(directory, folder)
-            seq_name = int(folder_2_name(path_images))
-            # frame = pd.DataFrame(columns=['obs_time', 'seq_no', 'directory', 'filename', 'size'])
-            image_data = []
-            for f in get_h5_filenames(path_images):
-                date = get_image_date(f)
-                fullname = join(directory, folder, f)
-                data = {'obs_time': date, 'seq_no': seq_name, 'directory': folder,
-                        'filename': f, 'size': stat(fullname).st_size}
-                if file_refs_only is False:
-                    img = read_source_image(fullname)
-                    data['image_data'] = img
-                image_data.append(data)
-            frame = pd.DataFrame(image_data)
-            appended_data.append(frame)
-        self.images = pd.concat(appended_data)
-        self.images.set_index(['seq_no', 'obs_time'], inplace=True, drop=True, verify_integrity=True)
-        self.images.index.name = 'seq_no_obs_time'
+    ############################################################################
+    # Corrupted images
+    ############################################################################
 
-    def save_images(self, filename):
-        """
-        Saves Images DataFrame to a file
-        :param filename:
-        :return:
-        """
-        self.images.to_pickle(filename, compression=self._compression)
+    # TODO: add_corrupted_images
+    def add_corrupted(self, images_dir, file_refs_only=True):
+        """Adds information about the corrected images to the class attribute
+        ``corrupted``.
 
-    def load_images(self, filename):
+        :param images_dir: Path to image dataset.
+        :type images_dir: str
+        :param file_refs_only: Set to True to only store links to the files (
+            recommended. Otherwise it reads and stores the image files as well.
+        :type file_refs_only: bool, default True
         """
-        Loads Images DataFrame from a file
-        :param filename:
-        :return:
-        """
-        self.images = pd.read_pickle(filename, self._compression)
 
-    def add_corrupted(self, images_dir, fix_algorithm, save_corrected_to=None):
-        """
-        Adds corrupted images dataset
-        :param images_dir: path to original images
-        :param fix_algorithm: an instance of TyphoonListImageFixAlgorithm class with parameters of detecting
-            and fixing errors
-        :param save_corrected_to: path to save corrected images
-        :return:
-        """
-        if not isinstance(fix_algorithm, TyphoonListImageFixAlgorithm):
-            raise Exception('fix_algorithm should be an instance of TyphoonListImageFixAlgorithm class')
-        if save_corrected_to:
-            if os.path.isabs(save_corrected_to) is False:
-                save_corrected_to = path.join(os.getcwd(), save_corrected_to)
-            if not exists(save_corrected_to):
-                os.mkdir(save_corrected_to)
-        folders = sorted([f for f in listdir(images_dir) if isdir(join(images_dir, f))])
-        appended_data = []
-        for folder in folders:
-            # Create TyphoonList
-            seq = create_typhoonlist_from_source(
-                name=folder,
-                images=join(images_dir, folder)
-            )
-            seq_new = fix_algorithm.apply(seq)
-            corrected = fix_algorithm.fixed_ids['corrected']
-            seq = []
-            for img in corrected:
-                seqno = id2seqno(img)
-                obstime = id2date(img)
-                data = {'obs_time': obstime, 'seq_no': seqno, 'corrupted': img}
-                seq.append(data)
-                if save_corrected_to is not None:
-                    key = (seqno, obstime)
-                    filename, directory = self.images.loc[key, ['filename', 'directory']]
-                    full_path = join(save_corrected_to, directory)
-                    if not exists(full_path):
-                        os.mkdir(full_path)
-                    full_path = join(full_path, filename)
-                    write_image(path_to_file=full_path, image=seq_new.get_data(key='images', id=img))
-            frame = pd.DataFrame(seq)
-            appended_data.append(frame)
-        self.corrupted = pd.concat(appended_data)
-        self.corrupted.set_index(['seq_no', 'obs_time'], inplace=True, drop=True, verify_integrity=True)
+        # Get information
+        image_data = self.get_info_image_dataset(images_dir, file_refs_only)
+
+        self.corrupted = pd.concat(image_data)
+        self.corrupted.set_index(['seq_no', 'obs_time'], inplace=True,
+                                 drop=True, verify_integrity=True)
         self.corrupted.index.name = 'seq_no_obs_time'
 
-    def add_corrected_info(self, orig_images_dir, corrected_dir):
+    # TODO: pkl_save_corrupted_images
+    def save_corrupted(self, filename):
+        """Saves the class attribute ``corrupted`` as a pickle file.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
         """
-        Adds information about corrected images to the corrupted dataset
+        self.corrupted.to_pickle(filename, compression=self._compression)
+
+    # TODO: pkl_load_corrupted_images
+    def load_corrupted(self, filename):
+        """Loads the corrupted data from a pickle file as DataFrame storing
+        it as the class attribute ``corrupted``.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
+        """
+        self.corrupted = pd.read_pickle(filename, self._compression)
+
+    def add_corrected_info(self, orig_images_dir, corrected_dir):
+        """ Adds information about corrected images to the corrupted dataset
+
         :param orig_images_dir: original images folder
+        :type orig_images_dir: str
         :param corrected_dir: corrected images folder
-        :return:
+        :type corrected_dir: str
+
+        :raises: Exception
         """
         joined = self.images.join(self.corrupted, how='inner')
         if len(joined) == 0:
-            raise Exception('Both corrupted and original tables should be loaded first')
+            raise Exception('Both corrupted and original tables should be '
+                            'loaded first')
         if not exists(orig_images_dir) or not exists(corrected_dir):
-            raise Exception('Original or Corrected images folder does not exist')
+            raise Exception('Original or Corrected images folder does not '
+                            'exist')
         for key in joined.index:
             subdir, filename = joined.loc[key, ['directory', 'filename']]
             corrected_filename = join(corrected_dir, subdir, filename)
             if exists(corrected_filename):
                 try:
-                    src_data = read_source_image(join(orig_images_dir, subdir, filename))
+                    src_data = read_source_image(join(orig_images_dir,
+                                                      subdir, filename))
                     corrected = read_source_image(corrected_filename)
                     diff = src_data - corrected
                     diff = np.abs(diff)
                     # discard small corrections
                     diff[diff < 1] = 0
-                    self.corrupted.loc[key, 'corruption'] = np.count_nonzero(diff) / (diff.shape[0] * diff.shape[1])
+                    self.corrupted.loc[key, 'corruption'] = np.count_nonzero(
+                        diff) / (diff.shape[0] * diff.shape[1])
                 except IOError as detail:
                     print('Error occured while reading files: ', detail)
 
-    def save_corrupted(self, filename):
-        """
-        Saves Corrupted DataFrame to a file
-        :param filename:
-        :return:
-        """
-        self.corrupted.to_pickle(filename, compression=self._compression)
-
-    def load_corrupted(self, filename):
-        """
-        Loads Corrupted DataFrame from a file
-        :param filename:
-        :return:
-        """
-        self.corrupted = pd.read_pickle(filename, self._compression)
-
+    ############################################################################
+    # Missing images
+    ############################################################################
+    # TODO: add_missing_images
     def add_missing_frames(self):
         """
         Creates a dataset with missing frames information
-        :return:
+
+        :raises: Exception
         """
         joined = pd.concat([self.images, self.besttrack], axis=1, join='inner')
         if len(joined) == 0:
-            raise Exception('Both corrupted and original tables should be loaded first')
+            raise Exception('Both corrupted and original tables should be '
+                            'loaded first')
         seqs = joined.groupby('seq_no')
         frame_deltas = pd.DataFrame(
-            columns=['start_time', 'time_step', 'frames_num', 'missing_num', 'completeness', 'missing_frames',
+            columns=['start_time', 'time_step', 'frames_num', 'missing_num',
+                     'completeness', 'missing_frames',
                      'have_good_neighbours'])
         frame_deltas.index.name = 'seq_no'
         for name, group in seqs:
-            diffs = pd.Series([(group.index[i + 1][1] - group.index[i][1]) for i in range(0, len(group.index) - 1)])
+            diffs = pd.Series([(group.index[i + 1][1] - group.index[i][1])
+                               for i in range(0, len(group.index) - 1)])
             min_diff = diffs.mode()[0]
             missing = []
             for i in range(0, len(diffs)):
@@ -235,40 +226,98 @@ class PDManager:
                                       min_diff,
                                       len(diffs) + 1 + len(missing),
                                       len(missing),
-                                      (len(diffs) + 1) / (len(diffs) + 1 + len(missing)),
+                                      (len(diffs) + 1) / (len(diffs) + 1 +
+                                                          len(missing)),
                                       missing,
                                       have_good_neighbours]
         # frame_deltas = frame_deltas[frame_deltas.missing_num > 0]
         self.missing = frame_deltas
 
+    # TODO: pkl_missing_images
     def save_missing(self, filename):
-        """
-        Saves Missing DataFrame to a file
-        :param filename:
-        :return:
+        """Saves the class attribute ``missing`` as a pickle file.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
         """
         self.missing.to_pickle(filename, compression=self._compression)
 
+    # TODO: pkl_load_missing_images
     def load_missing(self, filename):
-        """
-        Loads Missing DataFrame from a file
-        :param filename:
-        :return:
+        """Loads the missing data from a pickle file as DataFrame storing
+        it as the class attribute ``missing``.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
         """
         self.missing = pd.read_pickle(filename, self._compression)
 
-    def get_obs_time_from_frame_num(self, seq_no, frame_num):
+    ############################################################################
+    # Others
+    ############################################################################
+    @staticmethod
+    def get_info_image_dataset(directory, file_refs_only):
+        """ Explores the image dataset in ``directory`` (assuming format
+        described in section `Data <data.html>`_) and related information.
+
+        :param directory: Directory of the dataset.
+        :type directory: str
+        :param file_refs_only: Set to True to only store links to the files.
+            Otherwise it reads and stores the image files as well (not
+            recommended).
+        :type file_refs_only: bool
+        :return: List containing information of each image sample as a
+            DataFrame.
+        :rtype: list
         """
-        Returns Timestamp object related to a missing frame (numeration starts from 0)
+        from os import stat
+        from pyphoon.io.h5 import get_h5_filenames
+        from pyphoon.io.h5 import read_source_image
+        from pyphoon.io.utils import imagefilename2date
+
+        # Get folder names within directory
+        folders = sorted([f for f in listdir(directory) if isdir(join(
+            directory, f))])
+
+        # Iterate over all image files and create a DataFrame with their
+        # information
+        image_data = []
+        # For all sequences
+        for folder in folders:
+            path_images = join(directory, folder)
+
+            sequence_data = []
+            # For all files within the sequence
+            for filename in get_h5_filenames(path_images):
+                date = imagefilename2date(filename)
+                fullname = join(directory, folder, filename)
+                sample_data = {'obs_time': date, 'seq_no': folder,
+                               'directory': folder, 'filename': filename,
+                               'size': stat(fullname).st_size}
+                if file_refs_only is False:
+                    img = read_source_image(fullname)
+                    sample_data['image_data'] = img
+                sequence_data.append(sample_data)
+            # Add sequence data to main list
+            image_data.append(pd.DataFrame(sequence_data))
+        return image_data
+
+    def get_obs_time_from_frame_num(self, seq_no, frame_num):
+        """ Returns Timestamp object related to a missing frame (numeration
+        starts from 0).
+
         :param seq_no: number of sequence
+        :type seq_no: int
         :param frame_num: number of image in sequence
         :return:
         """
-        time_shift = self.missing.get_value(index=seq_no, col='time_step') * frame_num
-        return self.missing.get_value(index=seq_no, col='start_time') + time_shift
+        time_shift = self.missing.get_value(index=seq_no, col='time_step') * \
+                     frame_num
+        return self.missing.get_value(index=seq_no, col='start_time') + \
+               time_shift
 
     def get_image_from_seq_no_and_frame_num(self, seq_no, frame_num):
-        """
+        """ Does something
 
         :param seq_no:
         :param frame_num:
