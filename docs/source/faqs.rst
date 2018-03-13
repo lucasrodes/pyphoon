@@ -44,7 +44,7 @@ I cannot import the library
 This might occur due to several reasons. Below we list some of the known errors.
 
 ``ModuleNotFoundError: No module named 'pyphoon'``
-**********************************************
+*************************************************
 
 Make sure that the folder with all the modules, i.e. **pyphoon**, is at the
 same level as the code you are trying to execute. If that is not possible,

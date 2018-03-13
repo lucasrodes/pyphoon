@@ -113,10 +113,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../projects/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projects/tcxtc.html">tcxtc</a></li>
 </ul>
-<p class="caption"><span class="caption-text">For the developer</span></p>
+<p class="caption"><span class="caption-text">Modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../updatedoc.html">Update documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.io.html">pyphoon.io</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.db.html">pyphoon.db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.visualise.html">pyphoon.visualise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
 </ul>
 
             
@@ -200,35 +203,35 @@ this <a class="reference external" href="typhoon_sequence.html#load-a-typhoon-se
 <ul class="simple">
 <li><strong>detection</strong>: Detect image frames with corrupted pixel values.</li>
 <li><strong>correction</strong>: Correct the corrupted pixel values in detected image frames.</li>
-<li><strong>fillgaps</strong>: Generate synthetic images to fill temporal gaps. For
+<li><strong>generation</strong>: Generate synthetic images to fill temporal gaps. For
 instance, if two images are 3 hour apart, it means that there are two frames
 missing in between, since the observation frequency is supposed to be of 1h.
 Hence, with some methods, we can artificially generate the images that
 should occupy this temporal space.</li>
 </ul>
 <p>Each of the above techniques may be implemented using different algorithms.
-These can be found in the modules <a class="reference internal" href="../pyphoon.clean.html#module-pyphoon.clean.detection" title="pyphoon.clean.detection"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.detection</span></code></a>,
-<a class="reference internal" href="../pyphoon.clean.html#module-pyphoon.clean.correction" title="pyphoon.clean.correction"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.correction</span></code></a> and <a class="reference internal" href="../pyphoon.clean.html#module-pyphoon.clean.fillgaps" title="pyphoon.clean.fillgaps"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.fillgaps</span></code></a>,
+These can be found in the modules <a class="reference internal" href="../pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.detection" title="pyphoon.clean_satellite.detection"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean_satellite.detection</span></code></a>,
+<a class="reference internal" href="../pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.correction" title="pyphoon.clean_satellite.correction"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean_satellite.correction</span></code></a> and <a class="reference internal" href="../pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.generation" title="pyphoon.clean_satellite.generation"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean_satellite.generation</span></code></a>,
 respectively. A fixing algorithm is defined using the class
-<a class="reference internal" href="../pyphoon.clean.html#pyphoon.clean.fix.TyphoonListImageFixAlgorithm" title="pyphoon.clean.fix.TyphoonListImageFixAlgorithm"><code class="xref py py-class docutils literal"><span class="pre">TyphoonListImageFixAlgorithm</span></code></a>. This class, accepts
-as arguments methods for <strong>detection</strong>, <strong>correction</strong> and <strong>fillgap</strong>. There
-is no need to use all of them, so one might decide to only perform, for
-instance, detection and correction.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.fix</span> <span class="k">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.detection</span> <span class="k">import</span> <span class="n">detect_corrupted_pixels_1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.correction</span> <span class="k">import</span> <span class="n">correct_corrupted_pixels_1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean.fillgaps</span> <span class="k">import</span> <span class="n">generate_new_frames_1</span>
+<a class="reference internal" href="../pyphoon.clean_satellite.html#pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm" title="pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm"><code class="xref py py-class docutils literal"><span class="pre">TyphoonListImageFixAlgorithm</span></code></a>. This
+class, accepts as arguments methods for <strong>detection</strong>, <strong>correction</strong> and
+<strong>generation</strong>. There is no need to use all of them, so one might decide to
+only perform, for instance, detection and correction.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.fix</span> <span class="k">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.detection</span> <span class="k">import</span> <span class="n">detect_corrupted_pixels_1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.correction</span> <span class="k">import</span> <span class="n">correct_corrupted_pixels_1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.generation</span> <span class="k">import</span> <span class="n">generate_new_frames_1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define algorithm</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fix_algorithm</span> <span class="o">=</span> <span class="n">TyphoonListImageFixAlgorithm</span><span class="p">(</span>
 <span class="gp">... </span>   <span class="n">detect_fct</span><span class="o">=</span><span class="n">detect_corrupted_pixels_1</span><span class="p">,</span>
 <span class="gp">... </span>   <span class="n">correct_fct</span><span class="o">=</span><span class="n">correct_corrupted_pixels_1</span><span class="p">,</span>
-<span class="gp">... </span>   <span class="n">fillgaps_fct</span><span class="o">=</span><span class="n">generate_new_frames_1</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">generate_fct</span><span class="o">=</span><span class="n">generate_new_frames_1</span><span class="p">,</span>
 <span class="gp">... </span>   <span class="n">detect_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;min_th&#39;</span><span class="p">:</span> <span class="mi">160</span><span class="p">,</span> <span class="s1">&#39;max_th&#39;</span><span class="p">:</span> <span class="mi">310</span><span class="p">},</span>
 <span class="gp">... </span>   <span class="n">n_frames_th</span><span class="o">=</span><span class="mi">2</span>
 <span class="go">...)</span>
 </pre></div>
 </div>
-<p>To apply the algorithm simply use method <a class="reference internal" href="../pyphoon.clean.html#pyphoon.clean.fix.TyphoonListImageFixAlgorithm.apply" title="pyphoon.clean.fix.TyphoonListImageFixAlgorithm.apply"><code class="xref py py-func docutils literal"><span class="pre">apply()</span></code></a>.</p>
+<p>Finally, To apply the algorithm simply use method <code class="xref py py-func docutils literal"><span class="pre">apply()</span></code>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence_corrected</span> <span class="o">=</span> <span class="n">fix_algorithm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
 </pre></div>
 </div>

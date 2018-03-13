@@ -1,6 +1,6 @@
-pyphoon\.visualize
+pyphoon\.visualise
 ------------------
 
-.. automodule:: pyphoon.visualize
+.. automodule:: pyphoon.visualise
     :members:
     :show-inheritance:

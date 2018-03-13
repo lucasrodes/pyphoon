@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pyphoon.visualize &mdash; pyphoon documentation</title>
+  <title>pyphoon.visualise &mdash; pyphoon documentation</title>
   
 
   
@@ -38,7 +38,6 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="pyphoon documentation" href="index.html"/>
-        <link rel="up" title="Modules" href="modules.html"/>
         <link rel="next" title="pyphoon.eda_jma" href="pyphoon.eda_jma.html"/>
         <link rel="prev" title="pyphoon.db" href="pyphoon.db.html"/> 
 
@@ -104,17 +103,13 @@
 <li class="toctree-l1"><a class="reference internal" href="projects/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="projects/tcxtc.html">tcxtc</a></li>
 </ul>
-<p class="caption"><span class="caption-text">For the developer</span></p>
+<p class="caption"><span class="caption-text">Modules</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyphoon.clean.html">pyphoon.clean</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pyphoon.visualize</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="updatedoc.html">Update documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pyphoon.visualize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
 </ul>
 
             
@@ -159,9 +154,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="modules.html">Modules</a> &raquo;</li>
-        
-      <li>pyphoon.visualize</li>
+      <li>pyphoon.visualise</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -179,11 +172,11 @@
            <div itemprop="articleBody">
             
     
-        <div class="section" id="module-pyphoon.visualize">
-<span id="pyphoon-visualize"></span><h1>pyphoon.visualize<a class="headerlink" href="#module-pyphoon.visualize" title="Permalink to this headline">¶</a></h1>
+        <div class="section" id="module-pyphoon.visualise">
+<span id="pyphoon-visualise"></span><h1>pyphoon.visualise<a class="headerlink" href="#module-pyphoon.visualise" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="pyphoon.visualize.DisplaySequence">
-<em class="property">class </em><code class="descclassname">pyphoon.visualize.</code><code class="descname">DisplaySequence</code><span class="sig-paren">(</span><em>images</em>, <em>images_ids</em>, <em>name</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em>, <em>show_title=True</em>, <em>alt_title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualize.DisplaySequence" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.visualise.DisplaySequence">
+<em class="property">class </em><code class="descclassname">pyphoon.visualise.</code><code class="descname">DisplaySequence</code><span class="sig-paren">(</span><em>images</em>, <em>images_ids</em>, <em>name</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em>, <em>show_title=True</em>, <em>alt_title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.DisplaySequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Used to animate a batch of images.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -205,14 +198,14 @@ array of 2 dimensions.</li>
 </tbody>
 </table>
 <dl class="method">
-<dt id="pyphoon.visualize.DisplaySequence.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>save=False</em>, <em>filename='untitled'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualize.DisplaySequence.run" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.visualise.DisplaySequence.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>save=False</em>, <em>filename='untitled'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.DisplaySequence.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the animation</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyphoon.visualize.DisplaySequence.run_html">
-<code class="descname">run_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualize.DisplaySequence.run_html" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.visualise.DisplaySequence.run_html">
+<code class="descname">run_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.DisplaySequence.run_html" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the animation</p>
 </dd></dl>
 

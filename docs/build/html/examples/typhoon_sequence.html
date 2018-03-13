@@ -99,9 +99,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="best_eda.html">Best Track EDA</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Working with a typhoon sequence</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#load-a-typhoon-sequence-data">Load a typhoon sequence data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-typhoon-sequence-data">Load typhoon sequence data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#visualise-a-typhoon-sequence">Visualise a typhoon sequence</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#export-typhoon-sequence">Export typhoon sequence</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="correct_image.html">Correcting image data</a></li>
@@ -115,10 +114,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../projects/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../projects/tcxtc.html">tcxtc</a></li>
 </ul>
-<p class="caption"><span class="caption-text">For the developer</span></p>
+<p class="caption"><span class="caption-text">Modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../updatedoc.html">Update documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.io.html">pyphoon.io</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.db.html">pyphoon.db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.visualise.html">pyphoon.visualise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
 </ul>
 
             
@@ -185,79 +187,76 @@
     
         <div class="section" id="typhoon-sequence">
 <h1>Typhoon sequence<a class="headerlink" href="#typhoon-sequence" title="Permalink to this headline">¶</a></h1>
-<p>This library provides the class <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a>,
-which makes it really easy to integrate different data sources and generate a
-single object for a given sequence. Make sure to replace <code class="docutils literal"><span class="pre">path_image</span></code> with
-the path of the directory containing all sequence image folders,
-<code class="docutils literal"><span class="pre">typhoon_id</span></code> with the typhoon sequence id (e.g. 201725) and <code class="docutils literal"><span class="pre">path_best</span></code>
-with the directory path containing all sequence’s TSV best data files.</p>
-<div class="section" id="load-a-typhoon-sequence-data">
-<h2>Load a typhoon sequence data<a class="headerlink" href="#load-a-typhoon-sequence-data" title="Permalink to this headline">¶</a></h2>
-<p>Loading typhoon data from a specific sequence is done with the method
-<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.typhoonlist.create_typhoonlist_from_source" title="pyphoon.io.typhoonlist.create_typhoonlist_from_source"><code class="xref py py-func docutils literal"><span class="pre">create_typhoonlist_from_source()</span></code></a>. You
-can read only image data</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">create_typhoonlist_from_source</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">join</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sequence</span> <span class="o">=</span> <span class="n">create_typhoonlist_from_source</span><span class="p">(</span>
-<span class="gp">... </span>   <span class="n">name</span><span class="o">=</span><span class="n">typhoon_id</span><span class="p">,</span>
-<span class="gp">... </span>   <span class="n">images</span><span class="o">=</span><span class="n">join</span><span class="p">(</span><span class="n">path_image</span><span class="p">,</span> <span class="n">typhoon_id</span><span class="p">)</span>
-<span class="go">...)</span>
+<p>Sometimes it may be interesting to visualise a single typhoon sequence.
+Luckily, this can be easily done with the module <a class="reference internal" href="../pyphoon.visualise.html#module-pyphoon.visualise" title="pyphoon.visualise"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.visualise</span></code></a>. In
+this example we will show first how to load the data related to a typhoon
+sequence and next we will show how to animate the list of images!</p>
+<p>Make sure to replace <code class="docutils literal"><span class="pre">path_image</span></code> with the path of the directory containing
+all sequence image folders, <code class="docutils literal"><span class="pre">sequence_no</span></code> with the typhoon sequence
+identifier (e.g. 201725) and <code class="docutils literal"><span class="pre">path_best</span></code> with the directory path containing
+all sequence’s TSV best data files.</p>
+<div class="section" id="load-typhoon-sequence-data">
+<h2>Load typhoon sequence data<a class="headerlink" href="#load-typhoon-sequence-data" title="Permalink to this headline">¶</a></h2>
+<p>In this example we use the library methods to load the data, which assume
+that you follow the same data structure presented in section <a class="reference external" href="data">Data</a>.
+If that is not the case, feel free to implement your own loading functions.
+Note that the data, once loaded, should be of type <code class="docutils literal"><span class="pre">list</span></code>.</p>
+<p>On the one hand, to load the typhoon image data we use methods
+<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.h5.read_source_images" title="pyphoon.io.h5.read_source_images"><code class="xref py py-func docutils literal"><span class="pre">read_source_images()</span></code></a> and <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.utils.get_image_ids" title="pyphoon.io.utils.get_image_ids"><code class="xref py py-func docutils literal"><span class="pre">get_image_ids()</span></code></a>,
+which load the images and get their correspoding sample ids, respectively.
+Each sample is identified by a unique <strong>ids</strong>, which is constructed using the
+sequence identifier of the sequence that frame belongs to and the date the
+sample data was registered.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="k">import</span> <span class="n">read_source_images</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.utils</span> <span class="k">import</span> <span class="n">get_image_ids</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="n">read_source_images</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_image</span><span class="p">,</span> <span class="n">sequence_no</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images_ids</span> <span class="o">=</span> <span class="n">get_image_ids</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_image</span><span class="p">,</span> <span class="n">sequence_no</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>or also include best data</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">create_typhoonlist_from_source</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">join</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sequence</span> <span class="o">=</span> <span class="n">create_typhoonlist_from_source</span><span class="p">(</span>
-<span class="gp">... </span>   <span class="n">name</span><span class="o">=</span><span class="n">typhoon_id</span><span class="p">,</span>
-<span class="gp">... </span>   <span class="n">images</span><span class="o">=</span><span class="n">join</span><span class="p">(</span><span class="n">path_image</span><span class="p">,</span> <span class="n">typhoon_id</span><span class="p">),</span>
-<span class="gp">... </span>   <span class="n">best</span><span class="o">=</span><span class="n">join</span><span class="p">(</span><span class="n">path_best</span><span class="p">,</span> <span class="n">typhoon_id</span><span class="p">,</span> <span class="s1">&#39;.tsv&#39;</span><span class="p">)</span>
-<span class="go">...)</span>
+<p>Above, <code class="docutils literal"><span class="pre">images</span></code> is a list containing the images of the sequence as arrays and
+<code class="docutils literal"><span class="pre">image_ids</span></code> is a list with the corresponding image sample ids.</p>
+<p>On the other hand, we load best data is done similarly, using methods
+<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.tsv.read_tsv" title="pyphoon.io.tsv.read_tsv"><code class="xref py py-func docutils literal"><span class="pre">read_tsv()</span></code></a> and <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.utils.get_best_ids" title="pyphoon.io.utils.get_best_ids"><code class="xref py py-func docutils literal"><span class="pre">get_best_ids()</span></code></a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.tsv</span> <span class="k">import</span> <span class="n">read_tsv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.utils</span> <span class="k">import</span> <span class="n">get_best_ids</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best</span> <span class="o">=</span> <span class="n">read_tsv</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_best</span><span class="p">,</span> <span class="n">sequence_no</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best_ids</span> <span class="o">=</span> <span class="n">get_best_ids</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Above, <code class="docutils literal"><span class="pre">best</span></code> is a list containing the best data of each sample in the
+typhoon sequence. Likewise, <code class="docutils literal"><span class="pre">best_ids</span></code> contains the corresponding sample ids.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="visualise-a-typhoon-sequence">
 <h2>Visualise a typhoon sequence<a class="headerlink" href="#visualise-a-typhoon-sequence" title="Permalink to this headline">¶</a></h2>
-<p>Plotting one specific image frame from the sequence is rather easy. Just use
-the method <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList.get_data" title="pyphoon.io.typhoonlist.TyphoonList.get_data"><code class="xref py py-func docutils literal"><span class="pre">get_data()</span></code></a> from
-<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a>.</p>
+<p>Plotting one specific image frame from the sequence is rather easy.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">sequence</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">)[</span><span class="mi">10</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">images_ids</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>You can easily display all the image frames in a typhoon sequence using the
-class <a class="reference internal" href="../pyphoon.visualize.html#pyphoon.visualize.DisplaySequence" title="pyphoon.visualize.DisplaySequence"><code class="xref py py-class docutils literal"><span class="pre">DisplaySequence</span></code></a>.</p>
+class <code class="xref py py-class docutils literal"><span class="pre">DisplaySequence</span></code>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualize</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DisplaySequence</span><span class="p">(</span>
-<span class="gp">... </span>   <span class="n">typhoon_sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">images_ids</span><span class="o">=</span><span class="n">images_ids</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">name</span><span class="o">=</span><span class="n">sequence_no</span><span class="p">,</span>
 <span class="gp">... </span>   <span class="n">interval</span><span class="o">=</span><span class="mi">100</span>
 <span class="go">...).run</span>
 </pre></div>
 </div>
 <p>If you want to display the sequence in a Jupyter notebook use the method
-<a class="reference internal" href="../pyphoon.visualize.html#pyphoon.visualize.DisplaySequence.run_html" title="pyphoon.visualize.DisplaySequence.run_html"><code class="xref py py-func docutils literal"><span class="pre">run_html()</span></code></a> instead as</p>
+<code class="xref py py-func docutils literal"><span class="pre">run_html()</span></code> instead as</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualize</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">DisplaySequence</span><span class="p">(</span>
-<span class="gp">... </span>   <span class="n">typhoon_sequence</span><span class="o">=</span><span class="n">sequence</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">images_ids</span><span class="o">=</span><span class="n">images_ids</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">name</span><span class="o">=</span><span class="n">sequence_no</span><span class="p">,</span>
 <span class="gp">... </span>   <span class="n">interval</span><span class="o">=</span><span class="mi">100</span>
 <span class="go">...).run_html())</span>
-</pre></div>
-</div>
-</div>
-<hr class="docutils" />
-<div class="section" id="export-typhoon-sequence">
-<h2>Export typhoon sequence<a class="headerlink" href="#export-typhoon-sequence" title="Permalink to this headline">¶</a></h2>
-<p>A <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a> instance can be stored as a
-single HDF file using its method <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList.save_as_h5" title="pyphoon.io.typhoonlist.TyphoonList.save_as_h5"><code class="xref py py-func docutils literal"><span class="pre">save_as_h5()</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequence</span><span class="o">.</span><span class="n">save_as_h5</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_new_data</span><span class="p">,</span> <span class="n">typhoon_id</span><span class="p">,</span> <span class="s1">&#39;.h5&#39;</span><span class="p">),</span> <span class="n">compression</span><span class="o">=</span><span class="s1">&#39;gzip&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Likewise, we can load the stored h5 file using the method
-<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.typhoonlist.load_typhoonlist_h5" title="pyphoon.io.typhoonlist.load_typhoonlist_h5"><code class="xref py py-func docutils literal"><span class="pre">load_typhoonlist_h5()</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="k">import</span> <span class="n">load_typhoonlist_h5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sequence</span> <span class="o">=</span> <span class="n">load_typhoonlist_h5</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_new_data</span><span class="p">,</span> <span class="n">typhoon_id</span><span class="p">,</span> <span class="s1">&#39;.h5&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>

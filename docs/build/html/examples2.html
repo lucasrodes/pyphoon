@@ -101,10 +101,13 @@
 <li class="toctree-l1"><a class="reference internal" href="projects/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="projects/tcxtc.html">tcxtc</a></li>
 </ul>
-<p class="caption"><span class="caption-text">For the developer</span></p>
+<p class="caption"><span class="caption-text">Modules</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="updatedoc.html">Update documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.visualise.html">pyphoon.visualize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
 </ul>
 
             
@@ -307,10 +310,10 @@ Placed at <code class="docutils literal"><span class="pre">../data/sequences/gap
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">isdir</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="kn">import</span> <span class="n">create_typhoonlist_from_source</span>
-<span class="kn">from</span> <span class="nn">pyphoon.clean.fix</span> <span class="kn">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
-<span class="kn">from</span> <span class="nn">pyphoon.clean.detection</span> <span class="kn">import</span> <span class="n">detect_corrupted_pixels_1</span>
-<span class="kn">from</span> <span class="nn">pyphoon.clean.correction</span> <span class="kn">import</span> <span class="n">correct_corrupted_pixels_1</span>
-<span class="kn">from</span> <span class="nn">pyphoon.clean.fillgaps</span> <span class="kn">import</span> <span class="n">generate_new_frames_1</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.fix</span> <span class="kn">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.detection</span> <span class="kn">import</span> <span class="n">detect_corrupted_pixels_1</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.correction</span> <span class="kn">import</span> <span class="n">correct_corrupted_pixels_1</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.generation</span> <span class="kn">import</span> <span class="n">generate_new_frames_1</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 
@@ -609,7 +612,7 @@ store the images considered as <em>corrupted</em> at <code class="docutils liter
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="kn">import</span> <span class="n">load_typhoonlist_h5</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="kn">import</span> <span class="n">get_h5_filenames</span>
-<span class="kn">from</span> <span class="nn">pyphoon.clean</span> <span class="kn">import</span> <span class="n">find_corrupted_frames_1</span>
+<span class="kn">from</span> <span class="nn">pyphoon.clean_satellite</span> <span class="kn">import</span> <span class="n">find_corrupted_frames_1</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 
 <span class="c1"># Directories</span>
