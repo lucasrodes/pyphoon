@@ -36,7 +36,9 @@ class TyphoonListImageFixAlgorithm(object):
         self.generate_fct = generate_fct
         self.detect_params = detect_params
         self.n_frames_th = n_frames_th
-        self.fixed_ids = {'corrected': None, 'generated': None}
+        self.fixed_indices = {'corrected': None, 'generated': None}
+        self.correction = False
+        self.generation = False
 
     def apply(self, images, images_ids):
         """ Applies the defined fix algorithm to ``images``.
@@ -56,18 +58,20 @@ class TyphoonListImageFixAlgorithm(object):
         # Detect and correct corrupted frames
         if self.detect_fct is not None and self.correct_fct is not None:
             ids = self.detect_and_correct(images_new, images_ids_new)
-            self.fixed_ids['corrected'] = ids
+            self.fixed_indices['corrected'] = ids
+            self.correction = True
         # Generate synthetic images
         if self.generate_fct is not None:
             ids = self.generate(images_new, images_ids_new)
-            self.fixed_ids['generated'] = ids
+            self.fixed_indices['generated'] = ids
+            self.generation = True
 
         return images_new, images_ids_new
 
     def clear(self):
         """ Resets the list of corrected/generated frame ids.
         """
-        self.fixed_ids = {'corrected': None, 'generated': None}
+        self.fixed_indices = {'corrected': None, 'generated': None}
 
     ############################################################################
     # Detect/Correct
@@ -101,9 +105,9 @@ class TyphoonListImageFixAlgorithm(object):
             if True in pos:
                 # Correct frame
                 images[index][pos] = \
-                    self.correct_fct(images, index, pos,
+                    self.correct_fct(images, index, pos, images_ids,
                                      self.detect_fct, params=self.detect_params)
-                new_ids.append(images_ids[index])
+                new_ids.append(index)
         return new_ids
 
     ############################################################################
@@ -189,3 +193,90 @@ class TyphoonListImageFixAlgorithm(object):
             pass
             # print(index, frame_dist)
         return n_frames_cum, new_frames_ids
+
+
+################################################################################
+# Other stuff
+################################################################################
+
+def generate_new_image_dataset(images_orig_dir, fix_algorithm,
+                               images_corrected_dir=None,
+                               images_generated_dir=None,
+                               display=False):
+    """ Inspects the original image data (assuming architecture explained in
+    section `Data <data.html>`_ and corrects the detected corrupted images
+    and/or generates the missing image data according to the algorithm
+    defined by **fix_algorithm**. Note that only the new corrected/generated
+    images are stored.
+
+    :param images_orig_dir: Directory of the original image data.
+    :type images_orig_dir: str
+    :param fix_algorithm: Algorithm used to correct/generate the images.
+    :type fix_algorithm:
+        :class:`~pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm`
+    :param images_corrected_dir: Directory for the corrected image data. If
+        not used, corrected images are not
+    :type images_corrected_dir: str, default None
+    :param images_generated_dir: Directory for the generated image data.
+    :type images_generated_dir: str, default None
+    :param display: Set to True to get information as the method is executed.
+    :type display: bool
+
+    :raises: Exception
+    """
+    if not isinstance(fix_algorithm, TyphoonListImageFixAlgorithm):
+        raise Exception('fix_algorithm should be an instance of '
+                        'TyphoonListImageFixAlgorithm class')
+
+    if images_corrected_dir and not fix_algorithm.correction:
+        raise Exception('Path for corrected images is given but fix algorithm '
+                        'does not implement a correction method.')
+
+    if images_generated_dir and not fix_algorithm.generation:
+        raise Exception('Path for generated images is given but fix algorithm '
+                        'does not implement a generation method.')
+
+    from os import listdir, makedirs
+    from os.path import isdir, join, exists
+    from pyphoon.io.h5 import read_source_images, write_image
+    from pyphoon.io.utils import get_image_ids, get_h5_filenames
+
+    # Get folders
+    folders = sorted([f for f in listdir(images_orig_dir) if isdir(join(
+        images_orig_dir, f))])
+    # Iterate over all folders
+    for folder in folders:
+        print(folder) if display else 0
+        # Load images
+        images = read_source_images(join(images_orig_dir, folder))
+        images_ids = get_image_ids(join(images_orig_dir, folder, '.tsv'))
+        image_filenames = get_h5_filenames(join(images_orig_dir, folder))
+
+        # Correct images using algorithm
+        images_corrected, images_ids_corrected = fix_algorithm.apply(images,
+                                                                     images_ids)
+        # 1) Get indices of corrected images
+        if images_corrected_dir:
+            corrected_indices = fix_algorithm.fixed_indices['corrected']
+
+            # Store corrected images in a original-data-like-wise folder
+            # hierarchy
+            for i in corrected_indices:
+                full_path = join(images_corrected_dir, folder)
+                if not exists(full_path):
+                    makedirs(full_path)
+                write_image(path_to_file=join(full_path, image_filenames[i]),
+                            image=images_corrected[i])
+
+        # 2) Get indices of generated images
+        if images_generated_dir:
+            corrected_indices = fix_algorithm.fixed_indices['generated']
+
+            # Store generated images in a original-data-like-wise folder
+            # hierarchy
+            for i in corrected_indices:
+                full_path = join(images_generated_dir, folder)
+                if not exists(full_path):
+                    makedirs(full_path)
+                write_image(path_to_file=join(full_path, image_filenames[i]),
+                            image=images_corrected[i])

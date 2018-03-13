@@ -10,7 +10,7 @@ import numpy as np
 ################################################################################
 
 
-def correct_corrupted_pixels_1(images, index, pos,
+def correct_corrupted_pixels_1(images, index, pos, images_ids,
                                detect_fct, params, display=False):
     """Corrects the pixels in region ``pos`` from the image frame at position
     ``index`` of the list ``images``. To this end, it uses interpolation of
@@ -25,6 +25,8 @@ def correct_corrupted_pixels_1(images, index, pos,
         ``image[index]`` with True values in regions containing corrupted
         pixels and False values in the remaining pixel locations.
     :type pos: numpy.array
+    :param images_ids: List of the ids of the elements in the list *images*.
+    :type images_ids: list
     :param detect_fct: Callable function that detects corrupted values from
         an array according to some given rules.
     :type detect_fct: callable
@@ -32,7 +34,8 @@ def correct_corrupted_pixels_1(images, index, pos,
     :type params: dict
     :param display: Set to True if execution information should be printed.
     :type display: True
-    :return:
+    :return: Array with the corrected pixel values.
+    :rtype: numpy.array
     """
     K = len(images)
 
