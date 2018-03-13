@@ -177,19 +177,96 @@
     
         <div class="section" id="module-pyphoon.db.__init__">
 <span id="pyphoon-db"></span><h1>pyphoon.db<a class="headerlink" href="#module-pyphoon.db.__init__" title="Permalink to this headline">¶</a></h1>
-<p>hello</p>
+<p>This class provides various tools to build up and manage a database with
+Digital Typhoon data. To get familiar, you may want to have a look at the
+example <a class="reference external" href="examples/create_db.html">here</a>.</p>
 <div class="section" id="module-pyphoon.db.pd_manager">
 <span id="pyphoon-db-pd-manager"></span><h2>pyphoon.db.pd_manager<a class="headerlink" href="#module-pyphoon.db.pd_manager" title="Permalink to this headline">¶</a></h2>
-<p>hello</p>
 <dl class="class">
 <dt id="pyphoon.db.pd_manager.PDManager">
 <em class="property">class </em><code class="descclassname">pyphoon.db.pd_manager.</code><code class="descname">PDManager</code><span class="sig-paren">(</span><em>compression='gzip'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>aloha</p>
+<p>Class to manage and help in the analysis of the dataset. It stores
+references to the image files, dates of the data, corrected images etc.
+in pandas.DataFrame objects.</p>
+<dl class="attribute">
+<dt id="pyphoon.db.pd_manager.PDManager.besttrack">
+<code class="descname">besttrack</code><em class="property"> = None</em><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.besttrack" title="Permalink to this definition">¶</a></dt>
+<dd><p>DataFrame for best track data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyphoon.db.pd_manager.PDManager.images">
+<code class="descname">images</code><em class="property"> = None</em><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.images" title="Permalink to this definition">¶</a></dt>
+<dd><p>DataFrame for original image data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyphoon.db.pd_manager.PDManager.missing">
+<code class="descname">missing</code><em class="property"> = None</em><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.missing" title="Permalink to this definition">¶</a></dt>
+<dd><p>DataFrame for missing image data.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyphoon.db.pd_manager.PDManager.corrupted">
+<code class="descname">corrupted</code><em class="property"> = None</em><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.corrupted" title="Permalink to this definition">¶</a></dt>
+<dd><p>DataFrame for corrected image data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.add_orig_images">
+<code class="descname">add_orig_images</code><span class="sig-paren">(</span><em>images_dir</em>, <em>file_refs_only=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_orig_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds information about original images to the class attribute
+<code class="docutils literal"><span class="pre">images</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>images_dir</strong> (<em>str</em>) – Path to image dataset</li>
+<li><strong>file_refs_only</strong> (<em>bool</em><em>, </em><em>default True</em>) – Set to True to only store links to the files (
+recommended. Otherwise it reads and stores the image files as well.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.save_images">
+<code class="descname">save_images</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.save_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the class attribute <code class="docutils literal"><span class="pre">images</span></code> as a pickle file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – Path to the pickle file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.load_orig_images">
+<code class="descname">load_orig_images</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_orig_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the image data from a pickle file as DataFrame storing
+it as the class attribute <code class="docutils literal"><span class="pre">images</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – Path to the pickle file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.add_besttrack">
 <code class="descname">add_besttrack</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_besttrack" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add besttrack information to the database</p>
+<dd><p>Adds information from the best data to the class attribute
+<code class="docutils literal"><span class="pre">besttrack</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -205,14 +282,12 @@
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.save_besttrack">
 <code class="descname">save_besttrack</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.save_besttrack" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves Besttrack DataFrame to a file</p>
+<dd><p>Saves the class attribute <code class="docutils literal"><span class="pre">besttrack</span></code> as a pickle file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – Path to the pickle file.</td>
 </tr>
 </tbody>
 </table>
@@ -221,59 +296,62 @@
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.load_besttrack">
 <code class="descname">load_besttrack</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_besttrack" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads BestTrack DataFrame from a file</p>
+<dd><p>Loads the best data from a pickle file as DataFrame storing
+it as the class attribute <code class="docutils literal"><span class="pre">besttrack</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – Path to the pickle file.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyphoon.db.pd_manager.PDManager.add_orig_images">
-<code class="descname">add_orig_images</code><span class="sig-paren">(</span><em>directory</em>, <em>file_refs_only=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_orig_images" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add information about original images to the DataFrame
-:param directory:
-:param file_refs_only: if set True, only links to the files will be stored
-:return:</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyphoon.db.pd_manager.PDManager.save_images">
-<code class="descname">save_images</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.save_images" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves Images DataFrame to a file
-:param filename:
-:return:</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyphoon.db.pd_manager.PDManager.load_images">
-<code class="descname">load_images</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_images" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads Images DataFrame from a file
-:param filename:
-:return:</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.add_corrupted">
-<code class="descname">add_corrupted</code><span class="sig-paren">(</span><em>images_dir</em>, <em>fix_algorithm</em>, <em>save_corrected_to=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_corrupted" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds corrupted images dataset
-:param images_dir: path to original images
-:param fix_algorithm: an instance of TyphoonListImageFixAlgorithm class with parameters of detecting</p>
-<blockquote>
-<div>and fixing errors</div></blockquote>
+<code class="descname">add_corrupted</code><span class="sig-paren">(</span><em>images_dir</em>, <em>file_refs_only=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_corrupted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds information about the corrected images to the class attribute
+<code class="docutils literal"><span class="pre">corrupted</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>save_corrected_to</strong> – path to save corrected images</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>images_dir</strong> (<em>str</em>) – Path to image dataset.</li>
+<li><strong>file_refs_only</strong> (<em>bool</em><em>, </em><em>default True</em>) – Set to True to only store links to the files (
+recommended. Otherwise it reads and stores the image files as well.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.save_corrupted">
+<code class="descname">save_corrupted</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.save_corrupted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the class attribute <code class="docutils literal"><span class="pre">corrupted</span></code> as a pickle file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – Path to the pickle file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.load_corrupted">
+<code class="descname">load_corrupted</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_corrupted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the corrupted data from a pickle file as DataFrame storing
+it as the class attribute <code class="docutils literal"><span class="pre">corrupted</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – Path to the pickle file.</td>
 </tr>
 </tbody>
 </table>
@@ -284,62 +362,109 @@
 <code class="descname">add_corrected_info</code><span class="sig-paren">(</span><em>orig_images_dir</em>, <em>corrected_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_corrected_info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds information about corrected images to the corrupted dataset
 :param orig_images_dir: original images folder
-:param corrected_dir: corrected images folder
-:return:</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyphoon.db.pd_manager.PDManager.save_corrupted">
-<code class="descname">save_corrupted</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.save_corrupted" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves Corrupted DataFrame to a file
-:param filename:
-:return:</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pyphoon.db.pd_manager.PDManager.load_corrupted">
-<code class="descname">load_corrupted</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_corrupted" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads Corrupted DataFrame from a file
-:param filename:
-:return:</p>
+:param corrected_dir: corrected images folder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">Exception</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.add_missing_frames">
 <code class="descname">add_missing_frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_missing_frames" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a dataset with missing frames information
-:return:</p>
+:return:
+:raises: Exception</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.save_missing">
 <code class="descname">save_missing</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.save_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves Missing DataFrame to a file
-:param filename:
-:return:</p>
+<dd><p>Saves the class attribute <code class="docutils literal"><span class="pre">missing</span></code> as a pickle file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – Path to the pickle file.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.load_missing">
 <code class="descname">load_missing</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_missing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads Missing DataFrame from a file
-:param filename:
-:return:</p>
+<dd><p>Loads the missing data from a pickle file as DataFrame storing
+it as the class attribute <code class="docutils literal"><span class="pre">missing</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>str</em>) – Path to the pickle file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pyphoon.db.pd_manager.PDManager.get_info_image_dataset">
+<em class="property">static </em><code class="descname">get_info_image_dataset</code><span class="sig-paren">(</span><em>directory</em>, <em>file_refs_only</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.get_info_image_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Explores the image dataset in <code class="docutils literal"><span class="pre">directory</span></code> (assuming format
+described in section <a class="reference external" href="data.html">Data</a>) and related information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>directory</strong> (<em>str</em>) – Directory of the dataset.</li>
+<li><strong>file_refs_only</strong> (<em>bool</em>) – Set to True to only store links to the files.
+Otherwise it reads and stores the image files as well (not
+recommended).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List containing information of each image sample as a
+DataFrame.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.get_obs_time_from_frame_num">
 <code class="descname">get_obs_time_from_frame_num</code><span class="sig-paren">(</span><em>seq_no</em>, <em>frame_num</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.get_obs_time_from_frame_num" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns Timestamp object related to a missing frame (numeration starts from 0)
-:param seq_no: number of sequence
-:param frame_num: number of image in sequence
-:return:</p>
+<dd><p>Returns Timestamp object related to a missing frame (numeration
+starts from 0).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>seq_no</strong> (<em>int</em>) – number of sequence</li>
+<li><strong>frame_num</strong> – number of image in sequence</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.get_image_from_seq_no_and_frame_num">
 <code class="descname">get_image_from_seq_no_and_frame_num</code><span class="sig-paren">(</span><em>seq_no</em>, <em>frame_num</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.get_image_from_seq_no_and_frame_num" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Does something</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

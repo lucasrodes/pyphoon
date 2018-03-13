@@ -100,7 +100,17 @@
 <li class="toctree-l2"><a class="reference internal" href="best_eda.html">Best Track EDA</a></li>
 <li class="toctree-l2"><a class="reference internal" href="typhoon_sequence.html">Working with a typhoon sequence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="correct_image.html">Correcting image data</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Create database</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Create database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#original-image-data">Original image data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#best-track-data">Best track data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#corrected-image-data">Corrected image data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#define-fix-algorithm">Define Fix Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generate-new-dataset">Generate new dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-new-dataset-info-to-pdmanager">Add new dataset info to PDManager</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../faqs.html">FAQs</a></li>
@@ -115,7 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.io.html">pyphoon.io</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.db.html">pyphoon.db</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../pyphoon.visualise.html">pyphoon.visualize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.visualise.html">pyphoon.visualise</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
 </ul>
 
@@ -183,12 +193,113 @@
     
         <div class="section" id="create-database">
 <h1>Create database<a class="headerlink" href="#create-database" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<ul class="last simple">
-<li>Refactor pyphoon.db</li>
-<li>Alex, need your help here.</li>
-</ul>
+<p>For our needs, we created a batch of tools to generate an easy interaction
+with the Digital Typhoon data. In particular, we exploited the functionality
+of pandas.DataFrame objects to track which images have been corrected and
+other relevant image features. The core interface here is <a class="reference internal" href="../pyphoon.db.html#pyphoon.db.pd_manager.PDManager" title="pyphoon.db.pd_manager.PDManager"><code class="xref py py-class docutils literal"><span class="pre">PDManager</span></code></a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.db</span> <span class="k">import</span> <span class="n">pd_manager</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span> <span class="o">=</span> <span class="n">pd_manager</span><span class="o">.</span><span class="n">PDManager</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="original-image-data">
+<h2>Original image data<a class="headerlink" href="#original-image-data" title="Permalink to this headline">¶</a></h2>
+<p>Assuming that <code class="docutils literal"><span class="pre">orig_images_dir</span></code> is a string containing the path to the
+original source images (as explained in section <a class="reference external" href="data.html">Data</a>), you can
+load them using the method <a class="reference internal" href="../pyphoon.db.html#pyphoon.db.pd_manager.PDManager.add_orig_images" title="pyphoon.db.pd_manager.PDManager.add_orig_images"><code class="xref py py-func docutils literal"><span class="pre">add_orig_images()</span></code></a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">add_original_images</span><span class="p">(</span><span class="n">orig_images_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method creates an internal DataFrame representation of the original
+image data. You may have a look at as</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">original_images</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Furthermore, you may want to save this table as a pickle file in
+<code class="docutils literal"><span class="pre">images_pkl_path</span></code> using</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">pkl_save_original_images</span><span class="p">(</span><span class="n">images_pkl_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In subsequent executions, you can load this table by using</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">pkl_load_original_images</span><span class="p">(</span><span class="n">images_pkl_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="best-track-data">
+<h2>Best track data<a class="headerlink" href="#best-track-data" title="Permalink to this headline">¶</a></h2>
+<p>Assuming that <code class="docutils literal"><span class="pre">besttrack_dir</span></code> is a string containing the path to the
+best track data (as explained in section <a class="reference external" href="data.html">Data</a>), you can
+load this data using the method <a class="reference internal" href="../pyphoon.db.html#pyphoon.db.pd_manager.PDManager.add_besttrack" title="pyphoon.db.pd_manager.PDManager.add_besttrack"><code class="xref py py-func docutils literal"><span class="pre">add_besttrack()</span></code></a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">add_besttrack</span><span class="p">(</span><span class="n">besttrack_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method creates an internal DataFrame representation of the best track
+data. You may have a look at as</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">besttrack</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Furthermore, you may want to save this table as a pickle file in
+<code class="docutils literal"><span class="pre">besttrack_pkl_path</span></code> using</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">pkl_save_besttrack</span><span class="p">(</span><span class="n">besttrack_pkl_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In subsequent executions, you can load this table by using</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">pkl_load_besttrack</span><span class="p">(</span><span class="n">besttrack_pkl_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="corrected-image-data">
+<h2>Corrected image data<a class="headerlink" href="#corrected-image-data" title="Permalink to this headline">¶</a></h2>
+<p>To include corrupted image data in <a class="reference internal" href="../pyphoon.db.html#pyphoon.db.pd_manager.PDManager" title="pyphoon.db.pd_manager.PDManager"><code class="xref py py-class docutils literal"><span class="pre">PDManager</span></code></a>
+you need to first generate the dataset of the corrected versions of the
+originally corrupted images. To do so, you need to refer to method
+<code class="xref py py-func docutils literal"><span class="pre">generate_new_image_dataset()</span></code>.</p>
+<div class="section" id="define-fix-algorithm">
+<h3>Define Fix Algorithm<a class="headerlink" href="#define-fix-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>As pointed out in <a class="reference external" href="data.html">Data</a>, we first need to define the fixing
+algorithm</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.correction</span> <span class="k">import</span> <span class="n">correct_corrupted_pixels_1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.detection</span> <span class="k">import</span> <span class="n">detect_corrupted_pixels_1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.generation</span> <span class="k">import</span> <span class="n">generate_new_frames_1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.fix</span> <span class="k">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define Fixing algorithm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fix_algorithm</span> <span class="o">=</span> <span class="n">TyphoonListImageFixAlgorithm</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">detect_fct</span><span class="o">=</span><span class="n">detect_corrupted_pixels_1</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">correct_fct</span><span class="o">=</span><span class="n">correct_corrupted_pixels_1</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">detect_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;min_th&#39;</span><span class="p">:</span> <span class="mi">160</span><span class="p">,</span> <span class="s1">&#39;max_th&#39;</span><span class="p">:</span> <span class="mi">310</span><span class="p">},</span>
+<span class="gp">... </span>   <span class="n">n_frames_th</span><span class="o">=</span><span class="mi">2</span>
+<span class="go">...)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-new-dataset">
+<h3>Generate new dataset<a class="headerlink" href="#generate-new-dataset" title="Permalink to this headline">¶</a></h3>
+<p>Once the algorithm is defined, let us apply generate the new dataset using
+method <a class="reference internal" href="../pyphoon.clean_satellite.html#pyphoon.clean_satellite.fix.generate_new_image_dataset" title="pyphoon.clean_satellite.fix.generate_new_image_dataset"><code class="xref py py-func docutils literal"><span class="pre">generate_new_image_dataset()</span></code></a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.fix</span> <span class="k">import</span> <span class="n">generate_corrected_image_dataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_new_image_dataset</span><span class="p">(</span><span class="n">images_orig_dir</span><span class="o">=</span><span class="s2">&quot;../original_data/image/&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                           <span class="n">fix_algorithm</span><span class="o">=</span><span class="n">fix_algorithm</span><span class="p">,</span>
+<span class="gp">... </span>                           <span class="n">images_corrected_dir</span><span class="o">=</span><span class="s2">&quot;/data/database/corrected&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                           <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
+<span class="gp">... </span>                           <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-new-dataset-info-to-pdmanager">
+<h3>Add new dataset info to PDManager<a class="headerlink" href="#add-new-dataset-info-to-pdmanager" title="Permalink to this headline">¶</a></h3>
+<p>Once the dataset is created, its information can be easily imported to
+<code class="docutils literal"><span class="pre">pd_man</span></code> as</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">add_corrupted_images</span><span class="p">(</span><span class="n">images_dir</span><span class="o">=</span><span class="n">corrected_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Like other table fields, you can save the table using</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pkl_save_corrupted_images</span><span class="p">(</span><span class="n">corrupted_pkl_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and load</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pkl_load_corrupted_images</span><span class="p">(</span><span class="n">corrupted_pkl_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 

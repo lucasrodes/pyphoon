@@ -116,7 +116,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pyphoon.visualise.html">pyphoon.visualize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.visualise.html">pyphoon.visualise</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
 </ul>
 
@@ -337,6 +337,43 @@ specified by attribute <code class="docutils literal"><span class="pre">generate
 
 </dd></dl>
 
+<dl class="function">
+<dt id="pyphoon.clean_satellite.fix.generate_new_image_dataset">
+<code class="descclassname">pyphoon.clean_satellite.fix.</code><code class="descname">generate_new_image_dataset</code><span class="sig-paren">(</span><em>images_orig_dir</em>, <em>fix_algorithm</em>, <em>images_corrected_dir=None</em>, <em>images_generated_dir=None</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean_satellite.fix.generate_new_image_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inspects the original image data (assuming architecture explained in
+section <a class="reference external" href="data.html">Data</a> and corrects the detected corrupted images
+and/or generates the missing image data according to the algorithm
+defined by <strong>fix_algorithm</strong>. Note that only the new corrected/generated
+images are stored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>images_orig_dir</strong> (<em>str</em>) – Directory of the original image data.</li>
+<li><strong>fix_algorithm</strong> (<a class="reference internal" href="#pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm" title="pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm"><code class="xref py py-class docutils literal"><span class="pre">TyphoonListImageFixAlgorithm</span></code></a>) – Algorithm used to correct/generate the images.</li>
+<li><strong>images_corrected_dir</strong> – Directory for the corrected image data. If</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>not used, corrected images are not
+:type images_corrected_dir: str, default None
+:param images_generated_dir: Directory for the generated image data.
+:type images_generated_dir: str, default None
+:param display: Set to True to get information as the method is executed.
+:type display: bool</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">Exception</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <hr class="docutils" />
 <div class="section" id="pyphoon-clean-satellite-detection">
@@ -364,7 +401,12 @@ approach. It forces all pixels to be within the range defined by
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Matrix of the same size as <code class="docutils literal"><span class="pre">image_frame</span></code>. Elements with value
+True indicate that pixel values in the original image at that position
+are corrupted.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.array</p>
 </td>
 </tr>
 </tbody>
@@ -379,7 +421,7 @@ approach. It forces all pixels to be within the range defined by
 standard notation is <code class="docutils literal"><span class="pre">correct_corrupted_pixels_&lt;method</span> <span class="pre">index&gt;</span></code>.</p>
 <dl class="function">
 <dt id="pyphoon.clean_satellite.correction.correct_corrupted_pixels_1">
-<code class="descclassname">pyphoon.clean_satellite.correction.</code><code class="descname">correct_corrupted_pixels_1</code><span class="sig-paren">(</span><em>images</em>, <em>index</em>, <em>pos</em>, <em>detect_fct</em>, <em>params</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean_satellite.correction.correct_corrupted_pixels_1" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pyphoon.clean_satellite.correction.</code><code class="descname">correct_corrupted_pixels_1</code><span class="sig-paren">(</span><em>images</em>, <em>index</em>, <em>pos</em>, <em>images_ids</em>, <em>detect_fct</em>, <em>params</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean_satellite.correction.correct_corrupted_pixels_1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Corrects the pixels in region <code class="docutils literal"><span class="pre">pos</span></code> from the image frame at position
 <code class="docutils literal"><span class="pre">index</span></code> of the list <code class="docutils literal"><span class="pre">images</span></code>. To this end, it uses interpolation of
 the pixel values in this region from temporally nearby image frames.</p>
@@ -394,6 +436,7 @@ array of 2 dimensions.</li>
 <li><strong>pos</strong> (<em>numpy.array</em>) – Numpy array of same dimensionality than
 <code class="docutils literal"><span class="pre">image[index]</span></code> with True values in regions containing corrupted
 pixels and False values in the remaining pixel locations.</li>
+<li><strong>images_ids</strong> (<em>list</em>) – List of the ids of the elements in the list <em>images</em>.</li>
 <li><strong>detect_fct</strong> (<em>callable</em>) – Callable function that detects corrupted values from
 an array according to some given rules.</li>
 <li><strong>params</strong> (<em>dict</em>) – Parameters for detection function</li>
@@ -401,7 +444,10 @@ an array according to some given rules.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Array with the corrected pixel values.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.array</p>
 </td>
 </tr>
 </tbody>
