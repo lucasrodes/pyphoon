@@ -1,6 +1,6 @@
-import h5py
 from os import listdir
 from os.path import isfile, join, isdir
+import h5py
 import numpy as np
 import warnings
 import collections
@@ -119,8 +119,8 @@ def read_source_image(path_to_file):
 
 
 def write_image(path_to_file, image, compression='gzip'):
-    """
-    Writes image in the original format
+    """  Writes image in the original format.
+
     :param compression: Compression
     :param path_to_file: Path to the HDF file storing the image.
     :param image: Image information
