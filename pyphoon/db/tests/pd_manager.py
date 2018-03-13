@@ -27,6 +27,10 @@ class TestPdManagerMethods(unittest.TestCase):
             detect_params={'min_th': 160, 'max_th': 310},
             n_frames_th=2
         )
+        self.images_dir = '../../../sampledata/datasets/image'
+        self.corrected_dir = '../../../sampledata/corrected'
+        self.best_dir = '../../../sampledata/datasets/jma'
+
 
     def test_add_besttrack(self):
         temp_db = 'temp.pkl'
@@ -35,7 +39,7 @@ class TestPdManagerMethods(unittest.TestCase):
         self.assertFalse(os.path.exists(temp_db), 'file should not exist before execution of the method')
         manager = PDManager()
         self.assertTrue(manager.besttrack.empty)
-        manager.add_besttrack('../../../sampledata/datasets/jma')
+        manager.add_besttrack(self.best_dir)
         self.assertFalse(manager.besttrack.empty)
         self.assertEqual(manager.besttrack.index.name, 'seq_no_obs_time')
 
@@ -45,25 +49,25 @@ class TestPdManagerMethods(unittest.TestCase):
             os.remove(temp_db)
         self.assertFalse(os.path.exists(temp_db), 'file should not exist before execution of the method')
         manager = PDManager()
-        manager.add_besttrack('../../../sampledata/datasets/jma')
+        manager.add_besttrack(self.best_dir)
         manager.save_besttrack(temp_db)
         self.assertTrue(os.path.exists(temp_db))
         os.remove(temp_db)
 
     def test_add_orig_images(self):
-        images_dir = '../../../sampledata/datasets/image'
+        images_dir = self.images_dir
         manager = PDManager()
         self.assertTrue(manager.images.empty)
         manager.add_orig_images(images_dir)
         self.assertFalse(manager.images.empty)
         self.assertEqual(manager.images.index.name, 'seq_no_obs_time')
         self.assertEqual(manager.images.shape[0], len(manager.images.index))
-        self.assertEqual(manager.images.shape, (260, 3))
+        self.assertEqual(manager.images.shape, (416, 3))
         manager.add_orig_images(images_dir, file_refs_only=False)
         self.assertFalse(manager.images.image_data.empty)
 
     def test_save_images(self):
-        images_dir = '../../../sampledata/datasets/image'
+        images_dir = self.images_dir
         manager = PDManager()
         manager.add_orig_images(images_dir)
         temp_db = 'temp.pkl'
@@ -74,7 +78,7 @@ class TestPdManagerMethods(unittest.TestCase):
         os.remove(temp_db)
 
     def test_load_images(self):
-        images_dir = '../../../sampledata/datasets/image'
+        images_dir = self.images_dir
         manager = PDManager()
         temp_db = 'temp.pkl'
         manager.add_orig_images(images_dir, file_refs_only=True)
@@ -88,8 +92,8 @@ class TestPdManagerMethods(unittest.TestCase):
         os.remove(temp_db)
 
     def test_get_image_from_seq_no_and_frame_num(self, ):
-        images_dir = '../../../sampledata/datasets/image'
-        jma_dir = '../../../sampledata/datasets/jma'
+        images_dir = self.images_dir
+        jma_dir = self.best_dir
         manager = PDManager()
         manager.add_orig_images(images_dir, file_refs_only=True)
         manager.add_besttrack(jma_dir)
@@ -100,18 +104,18 @@ class TestPdManagerMethods(unittest.TestCase):
         self.assertEqual(f_name, '200718/2007101512-200718-MTS1-1.h5')
 
     def test_add_corrupted(self):
-        images_dir = '../../../sampledata/datasets/image'
+        images_dir = self.images_dir
         manager = PDManager()
         self.assertTrue(manager.corrupted.empty)
         manager.add_corrupted(images_dir, fix_algorithm=self.fix_algorithm)
         self.assertFalse(manager.corrupted.empty)
         manager.add_orig_images(images_dir)
         union = manager.images.join(manager.corrupted, how='inner')
-        self.assertTrue(len(union) == 1)
+        self.assertFalse(len(union) == 0)
 
     def test_add_corrupted2(self):
         from pyphoon.io.h5 import read_source_image
-        images_dir = '../../../sampledata/datasets/image'
+        images_dir = self.images_dir
         manager = PDManager()
         corrupted_dir = join(os.getcwd(), 'corrected')
         if exists(corrupted_dir):
@@ -126,8 +130,8 @@ class TestPdManagerMethods(unittest.TestCase):
         shutil.rmtree(corrupted_dir)
 
     def test_add_corrupted_info(self):
-        images_dir = '../../../sampledata/datasets/image'
-        corrected_dir = '../../../sampledata/corrected'
+        images_dir = self.images_dir
+        corrected_dir = self.corrected_dir
         pd_man = PDManager()
         with self.assertRaises(Exception) as context:
             pd_man.add_corrected_info(images_dir, corrected_dir)
@@ -143,6 +147,23 @@ class TestPdManagerMethods(unittest.TestCase):
         self.assertEqual(pd_man.corrupted.loc[:, 'corruption'].isnull().sum(), 0)
         shutil.rmtree(corrected_dir)
 
+    def test_add_missing_frames(self):
+        pd_man = PDManager()
+        pd_man.add_orig_images(self.images_dir)
+        pd_man.add_besttrack(self.best_dir)
+        self.assertTrue(pd_man.missing.empty)
+        pd_man.add_missing_frames()
+        self.assertFalse(pd_man.missing.empty)
+
+    def test_add_missing_frames2(self):
+        pd_man = PDManager()
+        pd_man.add_orig_images(self.images_dir)
+        pd_man.add_besttrack(self.best_dir)
+        pd_man.add_missing_frames()
+        missing = pd_man.missing.loc[198702, :]
+        self.assertEqual(missing.frames_num, 160)
+        self.assertEqual(missing.missing_num, 4)
+        self.assertAlmostEqual(missing.completeness, 0.975)
 
 if __name__ == '__main__':
     unittest.main()

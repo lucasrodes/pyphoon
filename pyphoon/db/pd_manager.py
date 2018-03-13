@@ -186,7 +186,7 @@ class PDManager:
 
     def save_corrupted(self, filename):
         """
-
+        Saves Corrupted DataFrame to a file
         :param filename:
         :return:
         """
@@ -202,11 +202,12 @@ class PDManager:
 
     def add_missing_frames(self):
         """
-
+        Creates a dataset with missing frames information
         :return:
         """
-        # from pandas import groupby
         joined = pd.concat([self.images, self.besttrack], axis=1, join='inner')
+        if len(joined) == 0:
+            raise Exception('Both corrupted and original tables should be loaded first')
         seqs = joined.groupby('seq_no')
         frame_deltas = pd.DataFrame(
             columns=['start_time', 'time_step', 'frames_num', 'missing_num', 'completeness', 'missing_frames',
@@ -214,7 +215,7 @@ class PDManager:
         frame_deltas.index.name = 'seq_no'
         for name, group in seqs:
             diffs = pd.Series([(group.index[i + 1][1] - group.index[i][1]) for i in range(0, len(group.index) - 1)])
-            min_diff = diffs.min()
+            min_diff = diffs.mode()[0]
             missing = []
             for i in range(0, len(diffs)):
                 if not min_diff == diffs[i]:
@@ -225,9 +226,9 @@ class PDManager:
                     have_good_neighbours.append(i)
             frame_deltas.loc[name] = [group.index[0][1],
                                       min_diff,
-                                      len(diffs) + 1,
+                                      len(diffs) + 1 + len(missing),
                                       len(missing),
-                                      (len(diffs) + 1 - len(missing)) / (len(diffs) + 1),
+                                      (len(diffs) + 1) / (len(diffs) + 1 + len(missing)),
                                       missing,
                                       have_good_neighbours]
         # frame_deltas = frame_deltas[frame_deltas.missing_num > 0]
