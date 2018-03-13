@@ -57,7 +57,7 @@ class PDManager:
         self.images.to_pickle(filename, compression=self._compression)
 
     # TODO: pkl_load_original_images
-    def load_orig_images(self, filename):
+    def load_images(self, filename):
         """ Loads the image data from a pickle file as DataFrame storing
         it as the class attribute ``images``.
 
@@ -193,7 +193,27 @@ class PDManager:
     ############################################################################
     # Missing images
     ############################################################################
-    # TODO: add_missing_images
+    # TODO: Make it work
+    def add_missing_images(self, images_dir, file_refs_only=True):
+        """Adds information about the corrected images to the class attribute
+        ``corrupted``.
+
+        :param images_dir: Path to image dataset.
+        :type images_dir: str
+        :param file_refs_only: Set to True to only store links to the files (
+            recommended. Otherwise it reads and stores the image files as well.
+        :type file_refs_only: bool, default True
+        """
+
+        # Get information
+        image_data = self.get_info_image_dataset(images_dir, file_refs_only)
+
+        self.missing = pd.concat(image_data)
+        self.missing.set_index(['seq_no', 'obs_time'], inplace=True,
+                               drop=True, verify_integrity=True)
+        self.missing.index.name = 'seq_no_obs_time'
+
+    # TODO: depracate for add_missing_images
     def add_missing_frames(self):
         """
         Creates a dataset with missing frames information
