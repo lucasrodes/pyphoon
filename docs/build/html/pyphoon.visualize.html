@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyphoon.visualize &mdash; pyphoon documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pyphoon documentation" href="index.html"/>
+        <link rel="up" title="Modules" href="modules.html"/>
+        <link rel="next" title="pyphoon.eda_jma" href="pyphoon.eda_jma.html"/>
+        <link rel="prev" title="pyphoon.db" href="pyphoon.db.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/pyphoon_logo_large.png" class="logo" />
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="home.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Projects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projects/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects/tcxtc.html">tcxtc</a></li>
+</ul>
+<p class="caption"><span class="caption-text">For the developer</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.clean.html">pyphoon.clean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyphoon.visualize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="updatedoc.html">Update documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyphoon</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">Modules</a> &raquo;</li>
+        
+      <li>pyphoon.visualize</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+        <div class="section" id="module-pyphoon.visualize">
+<span id="pyphoon-visualize"></span><h1>pyphoon.visualize<a class="headerlink" href="#module-pyphoon.visualize" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pyphoon.visualize.DisplaySequence">
+<em class="property">class </em><code class="descclassname">pyphoon.visualize.</code><code class="descname">DisplaySequence</code><span class="sig-paren">(</span><em>images</em>, <em>images_ids</em>, <em>name</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em>, <em>show_title=True</em>, <em>alt_title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualize.DisplaySequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Used to animate a batch of images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>images</strong> (<em>list</em>) – List with image arrays. Each element of the list must be an
+array of 2 dimensions.</li>
+<li><strong>images_ids</strong> (<em>list</em>) – List of the ids of the elements in the list <em>images</em>.</li>
+<li><strong>name</strong> (<em>str</em>) – Name</li>
+<li><strong>interval</strong> (<em>int</em>) – Interval between frames while visualizing the animation.</li>
+<li><strong>start_frame</strong> (<em>int</em>) – First image frame of the list to visualize.</li>
+<li><strong>end_frame</strong> (<em>int</em>) – Last image frame of the list to visualize.</li>
+<li><strong>show_title</strong> (<em>bool</em>) – Set to false if no title should be shown in the figure.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyphoon.visualize.DisplaySequence.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>save=False</em>, <em>filename='untitled'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualize.DisplaySequence.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the animation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.visualize.DisplaySequence.run_html">
+<code class="descname">run_html</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualize.DisplaySequence.run_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the animation</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+    
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pyphoon.eda_jma.html" class="btn btn-neutral float-right" title="pyphoon.eda_jma" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pyphoon.db.html" class="btn btn-neutral" title="pyphoon.db" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kitamoto Lab interns.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2018a',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

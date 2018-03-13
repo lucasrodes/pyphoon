@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyphoon.db &mdash; pyphoon documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pyphoon documentation" href="index.html"/>
+        <link rel="up" title="Modules" href="modules.html"/>
+        <link rel="next" title="pyphoon.visualize" href="pyphoon.visualize.html"/>
+        <link rel="prev" title="pyphoon.clean" href="pyphoon.clean.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/pyphoon_logo_large.png" class="logo" />
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="home.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Projects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projects/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects/tcxtc.html">tcxtc</a></li>
+</ul>
+<p class="caption"><span class="caption-text">For the developer</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.clean.html">pyphoon.clean</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyphoon.db</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyphoon.db.pd_manager">pyphoon.db.pd_manager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.visualize.html">pyphoon.visualize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="updatedoc.html">Update documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyphoon</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">Modules</a> &raquo;</li>
+        
+      <li>pyphoon.db</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+        <div class="section" id="module-pyphoon.db.__init__">
+<span id="pyphoon-db"></span><h1>pyphoon.db<a class="headerlink" href="#module-pyphoon.db.__init__" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-pyphoon.db.pd_manager">
+<span id="pyphoon-db-pd-manager"></span><h2>pyphoon.db.pd_manager<a class="headerlink" href="#module-pyphoon.db.pd_manager" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyphoon.db.pd_manager.PDManager">
+<em class="property">class </em><code class="descclassname">pyphoon.db.pd_manager.</code><code class="descname">PDManager</code><span class="sig-paren">(</span><em>compression='gzip'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.add_besttrack">
+<code class="descname">add_besttrack</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_besttrack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add besttrack information to the database
+:param directory: Path where source files are stored
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.save_besttrack">
+<code class="descname">save_besttrack</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.save_besttrack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves Besttrack DataFrame to a file
+:param filename:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.load_besttrack">
+<code class="descname">load_besttrack</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_besttrack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads BestTrack DataFrame from a file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.add_orig_images">
+<code class="descname">add_orig_images</code><span class="sig-paren">(</span><em>directory</em>, <em>file_refs_only=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_orig_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add information about original images to the DataFrame
+:param directory:
+:param file_refs_only: if set True, only links to the files will be stored
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.save_images">
+<code class="descname">save_images</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.save_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves Images DataFrame to a file
+:param filename:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.load_images">
+<code class="descname">load_images</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads Images DataFrame from a file
+:param filename:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.add_corrupted">
+<code class="descname">add_corrupted</code><span class="sig-paren">(</span><em>images_dir</em>, <em>fix_algorithm</em>, <em>save_corrected_to=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_corrupted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds corrupted images dataset
+:param images_dir: path to original images
+:param fix_algorithm: an instance of TyphoonListImageFixAlgorithm class with parameters of detecting</p>
+<blockquote>
+<div>and fixing errors</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>save_corrected_to</strong> – path to save corrected images</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.add_corrected_info">
+<code class="descname">add_corrected_info</code><span class="sig-paren">(</span><em>orig_images_dir</em>, <em>corrected_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_corrected_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds information about corrected images to the corrupted dataset
+:param orig_images_dir: original images folder
+:param corrected_dir: corrected images folder
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.save_corrupted">
+<code class="descname">save_corrupted</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.save_corrupted" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.load_corrupted">
+<code class="descname">load_corrupted</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_corrupted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads Corrupted DataFrame from a file
+:param filename:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.add_missing_frames">
+<code class="descname">add_missing_frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_missing_frames" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.save_missing">
+<code class="descname">save_missing</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.save_missing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves Missing DataFrame to a file
+:param filename:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.load_missing">
+<code class="descname">load_missing</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_missing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads Missing DataFrame from a file
+:param filename:
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.get_obs_time_from_frame_num">
+<code class="descname">get_obs_time_from_frame_num</code><span class="sig-paren">(</span><em>seq_no</em>, <em>frame_num</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.get_obs_time_from_frame_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns Timestamp object related to a missing frame (numeration starts from 0)
+:param seq_no: number of sequence
+:param frame_num: number of image in sequence
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.get_image_from_seq_no_and_frame_num">
+<code class="descname">get_image_from_seq_no_and_frame_num</code><span class="sig-paren">(</span><em>seq_no</em>, <em>frame_num</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.get_image_from_seq_no_and_frame_num" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>seq_no</strong> – </li>
+<li><strong>frame_num</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+    
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pyphoon.visualize.html" class="btn btn-neutral float-right" title="pyphoon.visualize" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pyphoon.clean.html" class="btn btn-neutral" title="pyphoon.clean" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kitamoto Lab interns.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2018a',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

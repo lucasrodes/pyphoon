@@ -1,0 +1,546 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pyphoon.clean &mdash; pyphoon documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pyphoon documentation" href="index.html"/>
+        <link rel="up" title="Modules" href="modules.html"/>
+        <link rel="next" title="pyphoon.db" href="pyphoon.db.html"/>
+        <link rel="prev" title="pyphoon.io" href="pyphoon.io.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/pyphoon_logo_large.png" class="logo" />
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="home.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Development environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faqs.html">FAQs</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Projects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projects/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projects/tcxtc.html">tcxtc</a></li>
+</ul>
+<p class="caption"><span class="caption-text">For the developer</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pyphoon.clean</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modules">Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyphoon.clean.fix">pyphoon.clean.fix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyphoon-clean-detection">pyphoon.clean.detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pyphoon-clean-correction">pyphoon.clean.correction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyphoon.clean.fillgaps">pyphoon.clean.fillgaps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.visualize.html">pyphoon.visualize</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="updatedoc.html">Update documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyphoon</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">Modules</a> &raquo;</li>
+        
+      <li>pyphoon.clean</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+        <div class="section" id="module-pyphoon.clean.__init__">
+<span id="pyphoon-clean"></span><h1>pyphoon.clean<a class="headerlink" href="#module-pyphoon.clean.__init__" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">module</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#module-pyphoon.clean.fix" title="pyphoon.clean.fix"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.fix</span></code></a></td>
+<td>Used to define the Fixing algorithm</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#module-pyphoon.clean.detection" title="pyphoon.clean.detection"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.detection</span></code></a></td>
+<td>Provides set of algorithms to detect corrupted frames</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-pyphoon.clean.correction" title="pyphoon.clean.correction"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.correction</span></code></a></td>
+<td>Provides set of algorithms to correct corrupted frames</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#module-pyphoon.clean.fillgaps" title="pyphoon.clean.fillgaps"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.fillgaps</span></code></a></td>
+<td>Provides set of algorithms to fill the temporal gaps</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<div class="section" id="module-pyphoon.clean.fix">
+<span id="pyphoon-clean-fix"></span><h2>pyphoon.clean.fix<a class="headerlink" href="#module-pyphoon.clean.fix" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyphoon.clean.fix.TyphoonListImageFixAlgorithm">
+<em class="property">class </em><code class="descclassname">pyphoon.clean.fix.</code><code class="descname">TyphoonListImageFixAlgorithm</code><span class="sig-paren">(</span><em>detect_fct=None</em>, <em>correct_fct=None</em>, <em>fillgaps_fct=None</em>, <em>detect_params=None</em>, <em>n_frames_th=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.fix.TyphoonListImageFixAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Encapsulates an algorithm to correct and clean (“fix”) a typhoon sequence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>detect_fct</strong> – Method used to detect corrupted frames (more details in
+<a class="reference internal" href="#module-pyphoon.clean.detection" title="pyphoon.clean.detection"><code class="xref py py-mod docutils literal"><span class="pre">detection</span></code></a>)</li>
+<li><strong>correct_fct</strong> – Method used to correct corrupted frames (more details in
+<a class="reference internal" href="#module-pyphoon.clean.correction" title="pyphoon.clean.correction"><code class="xref py py-mod docutils literal"><span class="pre">correction</span></code></a>)</li>
+<li><strong>fillgaps_fct</strong> – Method used to fill gaps in a sequence (more details in
+<a class="reference internal" href="#module-pyphoon.clean.fillgaps" title="pyphoon.clean.fillgaps"><code class="xref py py-mod docutils literal"><span class="pre">fillgaps</span></code></a>)</li>
+<li><strong>detect_params</strong> – Parameters required to assist the detection method.
+More details can be found in the specific detection method (see from
+<a class="reference internal" href="#module-pyphoon.clean.detection" title="pyphoon.clean.detection"><code class="xref py py-mod docutils literal"><span class="pre">detection</span></code></a>)</li>
+<li><strong>n_frames_th</strong> – Largest temporal gap to fill with newly generated image
+frames (measured in slots of 1h). In other words, if there is a
+temporal gap of more than <code class="docutils literal"><span class="pre">n_frames_th</span></code> hours no new image frames
+are generated.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyphoon.clean.fix.TyphoonListImageFixAlgorithm.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.fix.TyphoonListImageFixAlgorithm.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the defined fix algorithm to a given typhoon
+sequence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a>) – Input typhoon sequence to be fixed.</li>
+<li><strong>display</strong> (<em>bool</em>) – Set to True to print execution information.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">New typhoon sequence with cleaned data.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.clean.fix.TyphoonListImageFixAlgorithm.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.fix.TyphoonListImageFixAlgorithm.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the list of corrected/generated frame ids.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.clean.fix.TyphoonListImageFixAlgorithm.detect_and_correct">
+<code class="descname">detect_and_correct</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>display</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.fix.TyphoonListImageFixAlgorithm.detect_and_correct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects and corrects irregularities in image frames from
+<code class="docutils literal"><span class="pre">typhoon_sequence</span></code>  using the methods specified by attributes
+<code class="docutils literal"><span class="pre">detect_fct</span></code> and <code class="docutils literal"><span class="pre">correct_fct</span></code>, respectively.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a>) – Input typhoon sequence to be fixed.</li>
+<li><strong>display</strong> (<em>bool</em>) – Set to True to print execution information.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Ids of the corrected images</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#module-pyphoon.clean.detection" title="pyphoon.clean.detection"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.detection</span></code></a>,
+<a class="reference internal" href="#module-pyphoon.clean.correction" title="pyphoon.clean.correction"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.correction</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.clean.fix.TyphoonListImageFixAlgorithm.fill_gaps">
+<code class="descname">fill_gaps</code><span class="sig-paren">(</span><em>typhoon_sequence</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.fix.TyphoonListImageFixAlgorithm.fill_gaps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fills the gaps in the given typhoon sequence using the method
+specified by attribute <code class="docutils literal"><span class="pre">fillgaps_fct</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><code class="xref py py-class docutils literal"><span class="pre">TyphoonList</span></code></a>) – Input typhoon sequence to be fixed.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List with the ids of the new generated frames</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#module-pyphoon.clean.fillgaps" title="pyphoon.clean.fillgaps"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean.fillgaps</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.clean.fix.generate_image_frames_ids">
+<code class="descclassname">pyphoon.clean.fix.</code><code class="descname">generate_image_frames_ids</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>frame_idx_0</em>, <em>frame_idx_1</em>, <em>n_frames=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.fix.generate_image_frames_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates ids of n_frames in between positions <code class="docutils literal"><span class="pre">frame_idx_0</span></code> and
+<code class="docutils literal"><span class="pre">frame_idx_1</span></code>. This is useful when new image frames have been generated
+through interpolation and require an id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon</li>
+<li><strong>frame_idx_0</strong> (<em>int</em>) – Index of first frame</li>
+<li><strong>frame_idx_1</strong> (<em>int</em>) – Index of second frame</li>
+<li><strong>n_frames</strong> – Number of frames for which an id has to be generated.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of newly generated ids.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="pyphoon-clean-detection">
+<h2>pyphoon.clean.detection<a class="headerlink" href="#pyphoon-clean-detection" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-pyphoon.clean.detection"></span><p>This submodule contains different methods to detect corrupted images. The
+standard notation is <code class="docutils literal"><span class="pre">detect_corrupted_pixels_&lt;method</span> <span class="pre">index&gt;</span></code>.</p>
+<dl class="function">
+<dt id="pyphoon.clean.detection.detect_corrupted_pixels_1">
+<code class="descclassname">pyphoon.clean.detection.</code><code class="descname">detect_corrupted_pixels_1</code><span class="sig-paren">(</span><em>image_frame</em>, <em>params</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.detection.detect_corrupted_pixels_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects pixel positions that are corrupted using a rather simple
+approach. It forces all pixels to be within the range defined by
+[min_th, max_th].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>image_frame</strong> (<em>numpy.array</em>) – Image frame</li>
+<li><strong>params</strong> (<em>dict</em>) – <p>Should contain two keys:</p>
+<ul>
+<li><code class="docutils literal"><span class="pre">min_th</span></code>: Minimum tolerated pixel intensity (temperature) value.</li>
+<li><code class="docutils literal"><span class="pre">max_th</span></code>: Maximum tolerated pixel intensity (temperature) value.</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="pyphoon-clean-correction">
+<h2>pyphoon.clean.correction<a class="headerlink" href="#pyphoon-clean-correction" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-pyphoon.clean.correction"></span><p>This submodule contains different methods to correct corrupted images. The
+standard notation is <code class="docutils literal"><span class="pre">correct_corrupted_pixels_&lt;method</span> <span class="pre">index&gt;</span></code>.</p>
+<dl class="function">
+<dt id="pyphoon.clean.correction.correct_corrupted_pixels_1">
+<code class="descclassname">pyphoon.clean.correction.</code><code class="descname">correct_corrupted_pixels_1</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>index</em>, <em>pos</em>, <em>detect_fct</em>, <em>display</em>, <em>params</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.correction.correct_corrupted_pixels_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Corrects the pixels in region pos from image frame at position index
+of typhoon_sequence. To this end, it uses interpolation of this
+region in nearby frames.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><em>TyphoonList</em></a>) – List of typhoon frames</li>
+<li><strong>index</strong> (<em>int</em>) – Frame index from typhoon_sequence</li>
+<li><strong>pos</strong> (<em>numpy.array</em>) – Numpy array of same dimensionality than
+<em>typhoon_sequence.image[index]</em> with True values in regions
+containing corrupted pixels. False values refer to regions with no
+corrupted pixels.</li>
+<li><strong>detect_fct</strong> (<em>callable</em>) – Callable function that detects corrupted values from
+an array according to some given rules.</li>
+<li><strong>display</strong> (<em>True</em>) – Set to True if execution information should be printed.</li>
+<li><strong>params</strong> (<em>dict</em>) – Parameters for detection function</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="module-pyphoon.clean.fillgaps">
+<span id="pyphoon-clean-fillgaps"></span><h2>pyphoon.clean.fillgaps<a class="headerlink" href="#module-pyphoon.clean.fillgaps" title="Permalink to this headline">¶</a></h2>
+<p>This submodule contains different methods to fill the temporal gaps with new
+synthetic images. The standard notation is <code class="docutils literal"><span class="pre">generate_new_frames_&lt;method</span>
+<span class="pre">index&gt;</span></code>.</p>
+<dl class="function">
+<dt id="pyphoon.clean.fillgaps.generate_new_frames_1">
+<code class="descclassname">pyphoon.clean.fillgaps.</code><code class="descname">generate_new_frames_1</code><span class="sig-paren">(</span><em>typhoon_sequence</em>, <em>frame_idx_0</em>, <em>frame_idx_1</em>, <em>n_frames=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean.fillgaps.generate_new_frames_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linearly interpolates two frames from a typhoon sequence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>typhoon_sequence</strong> (<a class="reference internal" href="pyphoon.io.html#pyphoon.io.typhoonlist.TyphoonList" title="pyphoon.io.typhoonlist.TyphoonList"><em>TyphoonList</em></a>) – Sequence of typhoon data</li>
+<li><strong>frame_idx_0</strong> (<em>int</em>) – First frame index</li>
+<li><strong>frame_idx_1</strong> (<em>int</em>) – Second frame index</li>
+<li><strong>n_frames</strong> (<em>int</em>) – Number of frames to generate using interpolation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List with the new generated frames</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+    
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pyphoon.db.html" class="btn btn-neutral float-right" title="pyphoon.db" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pyphoon.io.html" class="btn btn-neutral" title="pyphoon.io" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kitamoto Lab interns.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2018a',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

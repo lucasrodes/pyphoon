@@ -37,40 +37,6 @@ as arguments methods for **detection**, **correction** and **fillgap**. There
 is no need to use all of them, so one might decide to only perform, for
 instance, detection and correction.
 
->>> from pyphoon.clean_satellite.fix import TyphoonListImageFixAlgorithm
->>> from pyphoon.clean.detection import detect_corrupted_pixels_1
->>> from pyphoon.clean.correction import correct_corrupted_pixels_1
->>> from pyphoon.clean.fillgaps import generate_new_frames_1
->>> # Define algorithm
->>> fix_algorithm = TyphoonListImageFixAlgorithm(
-...    detect_fct=detect_corrupted_pixels_1,
-...    correct_fct=correct_corrupted_pixels_1,
-...    fillgaps_fct=generate_new_frames_1,
-...    detect_params={'min_th': 160, 'max_th': 310},
-...    n_frames_th=2
-...)
-
-To apply the algorithm simply use method
-is no need to use all of them, so one might decide to only perform, for
-instance, detection and correction.
-
->>> from pyphoon.clean_satellite.fix import TyphoonListImageFixAlgorithm
->>> from pyphoon.clean.detection import detect_corrupted_pixels_1
->>> from pyphoon.clean.correction import correct_corrupted_pixels_1
->>> from pyphoon.clean.fillgaps import generate_new_frames_1
->>> # Define algorithm
->>> fix_algorithm = TyphoonListImageFixAlgorithm(
-...    detect_fct=detect_corrupted_pixels_1,
-...    correct_fct=correct_corrupted_pixels_1,
-...    fillgaps_fct=generate_new_frames_1,
-...    detect_params={'min_th': 160, 'max_th': 310},
-...    n_frames_th=2
-...)
-
-To apply the algorithm simply use method
-is no need to use all of them, so one might decide to only perform, for
-instance, detection and correction.
-
 >>> from pyphoon.clean.fix import TyphoonListImageFixAlgorithm
 >>> from pyphoon.clean.detection import detect_corrupted_pixels_1
 >>> from pyphoon.clean.correction import correct_corrupted_pixels_1
