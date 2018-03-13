@@ -1,10 +1,13 @@
+"""
+hello
+"""
 import os
 from os import path, listdir
 import pandas as pd
 from os.path import isdir, join, exists
 import numpy as np
 from pyphoon.clean_satellite.fix import TyphoonListImageFixAlgorithm
-from pyphoon.io.typhoonlist import create_typhoonlist_from_source
+#from pyphoon.io.typhoonlist import create_typhoonlist_from_source
 from pyphoon.io.utils import id2date, id2seqno
 from pyphoon.io.h5 import write_image, read_source_image
 
@@ -17,9 +20,13 @@ feature_names = ["year", "month", "day", "hour", "class", "latitude",
 
 class PDManager:
     """
-
+    
     """
     def __init__(self, compression='gzip'):
+        """ something
+
+        :param compression:
+        """
         self.besttrack = pd.DataFrame()
         self.images = pd.DataFrame()
         self.missing = pd.DataFrame()
@@ -27,8 +34,8 @@ class PDManager:
         self._compression = compression
 
     def add_besttrack(self, directory):
-        """
-        Add besttrack information to the database
+        """ Add besttrack information to the database
+
         :param directory: Path where source files are stored
         :return:
         """
@@ -47,8 +54,8 @@ class PDManager:
         self.besttrack.index.name = 'seq_no_obs_time'
 
     def save_besttrack(self, filename):
-        """
-        Saves Besttrack DataFrame to a file
+        """ Saves Besttrack DataFrame to a file
+
         :param filename:
         :return:
         """
