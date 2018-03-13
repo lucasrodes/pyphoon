@@ -3,7 +3,7 @@ from os import path, listdir
 import pandas as pd
 from os.path import isdir, join, exists
 import numpy as np
-from pyphoon.clean.fix import TyphoonListImageFixAlgorithm
+from pyphoon.clean_satellite.fix import TyphoonListImageFixAlgorithm
 from pyphoon.io.typhoonlist import create_typhoonlist_from_source
 from pyphoon.io.utils import id2date, id2seqno
 from pyphoon.io.h5 import write_image, read_source_image

@@ -11,10 +11,10 @@ from os.path import join, exists
 import shutil
 from pyphoon.db.pd_manager import PDManager
 import os
-from pyphoon.clean.correction import correct_corrupted_pixels_1
-from pyphoon.clean.detection import detect_corrupted_pixels_1
-from pyphoon.clean.fillgaps import generate_new_frames_1
-from pyphoon.clean.fix import TyphoonListImageFixAlgorithm
+from pyphoon.clean_satellite.correction import correct_corrupted_pixels_1
+from pyphoon.clean_satellite.detection import detect_corrupted_pixels_1
+from pyphoon.clean_satellite.generation import generate_new_frames_1
+from pyphoon.clean_satellite.fix import TyphoonListImageFixAlgorithm
 
 
 class TestPdManagerMethods(unittest.TestCase):
