@@ -6,18 +6,6 @@ the data format at `JMA RSMC Tokyo-Typhoon Center`_.
 
 .. _JMA RSMC Tokyo-Typhoon Center:
         http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html
-
-Methods are summarized below.
-
-+-------------------------------+---------------------------------------------------------------------------+
-| method name                   | Description                                                               |
-+===============================+===========================================================================+
-| :func:`update_feature_names`  | Update default JMA list of feature names.                                 |
-+-------------------------------+---------------------------------------------------------------------------+
-| :func:`plot_hist`             | Histogram of a certain feature from the samples in data                   |
-+-------------------------------+---------------------------------------------------------------------------+
-| :func:`plot_2feature_heatmap` | Heatmap of the data based on the values they take on two given features.  |
-+-------------------------------+---------------------------------------------------------------------------+
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,12 +21,11 @@ feature_names = ["year", "month", "day", "hour", "class", "latitude",
 
 
 def update_feature_names(names):
-    """ Use this method to update the default feature names. Feature names
-    refer to each column in JMA provided TSV files.
+    """ You can pdate the default feature names. Feature names refer to each
+    column in JMA provided TSV files.
 
     :param names: List with feature names. Length of the list must coincide
         with length of TSV files.
-    :return: list
     """
     feature_names = names
 
@@ -49,51 +36,33 @@ def plot_hist(data, feature_index, bins=100, centre=False, normed=False,
     """ Generates a histogram of a certain feature from the samples in data.
     This image may be stored or just displayed.
 
-    :param data: Dataframe with best track data. Details on all features can
+    :param data: Array with best track data. Details on all features can
                     be found at the `JMA RSMC Tokyo-Typhoon Center`_ website.
-    :type data: pandas.DataFrame
-    :param feature_index: Index of the feature from data to analyze.
+    :type data: numpy.array
+    :param feature_index: Index of the feature to be analyze.
     :type feature_index: int
-    :param bins: Number of bins to use to plot the histogram of a certain
-                    feature. Set to -1 if there should be as many bins as
-                    values takes the feature.
-    :type bins: int, default 100
+    :param bins: It can be the number of bins to use to plot the
+        histogram or an array defining the bin intervals. You may set it to
+        -1 if you want as many bins as different values has the data.
+    :type bins: int or list, default 100
     :param centre: Set to True if xticks should be centred.
-    :type centre: bool
+    :type centre: bool, default False
     :param normed: Set to true if histogram values should add up to one.
-    :type normed: bool
-    :param show_fig: Flag to plot the histogram.
-    :type show_fig: bool, default False
-    :param title: Title of the plot
-    :type title: str
-    :param xlabel: label for x-axis
-    :type xlabel: str
-    :param save_fig: Set to true if image should be saved.
+    :type normed: bool, default False
+    :param show_fig: Set to True to show the histogram plot.
+    :type show_fig: bool, default False figure
+    :param title: Title of the plot.
+    :type title: str, default ""
+    :param xlabel: Label for x-axis.
+    :type xlabel: str, default ""
+    :param save_fig: Set to True if you want to save the plot figure. See
+        argument *fig_name*.
     :type save_fig: bool, default False
-    :param fig_name: Filename of stored imaged.
-    :type fig_name: bool, default "untitled"
+    :param fig_name: Filename for the stored plot figure.
+    :type fig_name: str, default "untitled"
 
     .. _JMA RSMC Tokyo-Typhoon Center:
         http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html
-
-    :Example: In the following example we load the best track data. Note that we
-        only consider data starting from 1978. We take the forth
-        feature, which is the class index. Hence, we want to visualize
-        the distribution of samples depending on the class they belong
-        to.
-
-        >>> from pyphoon.io.tsv import read_tsvs
-        >>> from pyphoon.eda_jma import plot_hist
-        >>> import numpy as np
-        >>> # Load data and convert to np.array
-        >>> data = np.array(read_tsvs(directory="original_data/jma"))
-        >>> # Only consider data since 1978
-        >>> data = data[data[:, 0] > 1977]
-        >>> plot_hist(data, show_fig=True, title="Class distribution", feature_index=4, bins=-1)
-
-        .. figure:: ../../docs/source/_static/pyphoon_utils_eda_jma_2.png
-               :scale: 100 %
-               :alt: map to buried treasure
     """
     data = np.array(data)
     if bins == -1:

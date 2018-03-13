@@ -28,7 +28,8 @@ Clone the repository and place it in the ``projects`` folder
 Docker Setup
 ------------
 
-For this project a docker container has been used. In particular, we used a
+For this project a docker container has been used. In particular, we
+used a
 modified version of the docker `deepo`_, which provides a version with GPU
 support to most DL/ML frameworks.
 

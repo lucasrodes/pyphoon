@@ -20,6 +20,16 @@ More details on the `GitHub repository`_.
 
 -----
 
+What can I find in here?
+------------------------
+
+In this website you will find how to set up the environment to further
+develop this project, information about the data we are using, some library
+usage examples, the documentation of the library modules and much more. Use
+the sidebar to navigate all the content.
+
+-----
+
 What is Digital Typhoon?
 ------------------------
 
@@ -50,15 +60,17 @@ dataset. Before installing the library make sure you have the data.
 Installation
 ------------
 
-At your own risk you can try
+Currently only the development kit is available. Refer to
+`Development environment <environment.html>`_ for more details.
+
+
+At your own risk you can try using `pip`, but we don't recommend this.
 
 ..  code-block:: bash
 
     pip install pyphoon
 
 
-However, for now only development kit is available. Refer to
-`Development environment <environment.html>`_ for more details.
 
 -----
 

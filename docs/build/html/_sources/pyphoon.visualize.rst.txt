@@ -1,5 +1,5 @@
 pyphoon\.visualize
-======================
+------------------
 
 .. automodule:: pyphoon.visualize
     :members:

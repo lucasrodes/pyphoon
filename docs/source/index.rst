@@ -76,15 +76,13 @@ Known Issues
     :hidden:
     :caption: Projects
 
+    Overview <projects/overview>
     tcxtc <projects/tcxtc>
 
 
 ..  toctree::
     :hidden:
-    :caption: Modules
+    :caption: For the developer
 
-    pyphoon.io <pyphoon.io>
-    pyphoon.clean <pyphoon.clean>
-    pyphoon.db <pyphoon.db>
-    pyphoon.visualize <pyphoon.visualize>
-    pyphoon.eda_jma <pyphoon.eda_jma>
+    Modules <modules>
+    Update documentation <updatedoc>
