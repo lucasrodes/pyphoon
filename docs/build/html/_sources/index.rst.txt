@@ -87,5 +87,6 @@ Known Issues
     pyphoon.io <pyphoon.io>
     pyphoon.clean_satellite <pyphoon.clean_satellite>
     pyphoon.db <pyphoon.db>
+    pyphoon.app <pyphoon.app>
     pyphoon.visualise <pyphoon.visualise>
     pyphoon.eda_jma <pyphoon.eda_jma>

@@ -107,6 +107,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.app.html">pyphoon.app</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.visualise.html">pyphoon.visualise</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
 </ul>
@@ -201,14 +202,22 @@
 </li>
       <li><a href="pyphoon.db.html#pyphoon.db.pd_manager.PDManager.add_corrupted">add_corrupted() (pyphoon.db.pd_manager.PDManager method)</a>
 </li>
+      <li><a href="pyphoon.db.html#pyphoon.db.pd_manager.PDManager.add_missing_frames">add_missing_frames() (pyphoon.db.pd_manager.PDManager method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyphoon.db.html#pyphoon.db.pd_manager.PDManager.add_missing_frames">add_missing_frames() (pyphoon.db.pd_manager.PDManager method)</a>
+      <li><a href="pyphoon.db.html#pyphoon.db.pd_manager.PDManager.add_missing_images">add_missing_images() (pyphoon.db.pd_manager.PDManager method)</a>
 </li>
       <li><a href="pyphoon.db.html#pyphoon.db.pd_manager.PDManager.add_orig_images">add_orig_images() (pyphoon.db.pd_manager.PDManager method)</a>
 </li>
-      <li><a href="pyphoon.clean_satellite.html#pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm.apply">apply() (pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm method)</a>
+      <li><a href="pyphoon.app.html#pyphoon.app.preprocess.DefaultImagePreprocessor.apply">apply() (pyphoon.app.preprocess.DefaultImagePreprocessor method)</a>
+
+      <ul>
+        <li><a href="pyphoon.app.html#pyphoon.app.preprocess.ImagePreprocessor.apply">(pyphoon.app.preprocess.ImagePreprocessor method)</a>
 </li>
+        <li><a href="pyphoon.clean_satellite.html#pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm.apply">(pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -241,10 +250,12 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pyphoon.io.html#pyphoon.io.utils.date2id">date2id() (in module pyphoon.io.utils)</a>
 </li>
-      <li><a href="pyphoon.clean_satellite.html#pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm.detect_and_correct">detect_and_correct() (pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm method)</a>
+      <li><a href="pyphoon.app.html#pyphoon.app.preprocess.DefaultImagePreprocessor">DefaultImagePreprocessor (class in pyphoon.app.preprocess)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyphoon.clean_satellite.html#pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm.detect_and_correct">detect_and_correct() (pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm method)</a>
+</li>
       <li><a href="pyphoon.clean_satellite.html#pyphoon.clean_satellite.detection.detect_corrupted_pixels_1">detect_corrupted_pixels_1() (in module pyphoon.clean_satellite.detection)</a>
 </li>
       <li><a href="pyphoon.visualise.html#pyphoon.visualise.DisplaySequence">DisplaySequence (class in pyphoon.visualise)</a>
@@ -309,11 +320,13 @@
 </li>
       <li><a href="pyphoon.io.html#pyphoon.io.utils.id2seqno">id2seqno() (in module pyphoon.io.utils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pyphoon.io.html#pyphoon.io.utils.imagefilename2date">imagefilename2date() (in module pyphoon.io.utils)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pyphoon.io.html#pyphoon.io.utils.imagefilename2id">imagefilename2id() (in module pyphoon.io.utils)</a>
+</li>
+      <li><a href="pyphoon.app.html#pyphoon.app.preprocess.ImagePreprocessor">ImagePreprocessor (class in pyphoon.app.preprocess)</a>
 </li>
       <li><a href="pyphoon.db.html#pyphoon.db.pd_manager.PDManager.images">images (pyphoon.db.pd_manager.PDManager attribute)</a>
 </li>
@@ -329,9 +342,9 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyphoon.db.html#pyphoon.db.pd_manager.PDManager.load_missing">load_missing() (pyphoon.db.pd_manager.PDManager method)</a>
+      <li><a href="pyphoon.db.html#pyphoon.db.pd_manager.PDManager.load_images">load_images() (pyphoon.db.pd_manager.PDManager method)</a>
 </li>
-      <li><a href="pyphoon.db.html#pyphoon.db.pd_manager.PDManager.load_orig_images">load_orig_images() (pyphoon.db.pd_manager.PDManager method)</a>
+      <li><a href="pyphoon.db.html#pyphoon.db.pd_manager.PDManager.load_missing">load_missing() (pyphoon.db.pd_manager.PDManager method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -353,6 +366,12 @@
 </li>
       <li><a href="pyphoon.eda_jma.html#pyphoon.eda_jma.plot_hist">plot_hist() (in module pyphoon.eda_jma)</a>
 </li>
+      <li><a href="pyphoon.app.html#module-pyphoon.app.__init__">pyphoon.app.__init__ (module)</a>
+</li>
+      <li><a href="pyphoon.app.html#module-pyphoon.app.preprocess">pyphoon.app.preprocess (module)</a>
+</li>
+      <li><a href="pyphoon.app.html#module-pyphoon.app.utils">pyphoon.app.utils (module)</a>
+</li>
       <li><a href="pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.__init__">pyphoon.clean_satellite.__init__ (module)</a>
 </li>
       <li><a href="pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.correction">pyphoon.clean_satellite.correction (module)</a>
@@ -361,10 +380,10 @@
 </li>
       <li><a href="pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.fix">pyphoon.clean_satellite.fix (module)</a>
 </li>
-      <li><a href="pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.generation">pyphoon.clean_satellite.generation (module)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.generation">pyphoon.clean_satellite.generation (module)</a>
+</li>
       <li><a href="pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.utils">pyphoon.clean_satellite.utils (module)</a>
 </li>
       <li><a href="pyphoon.db.html#module-pyphoon.db.__init__">pyphoon.db.__init__ (module)</a>
@@ -389,16 +408,18 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyphoon.io.html#pyphoon.io.h5.read_h5file">read_h5file() (in module pyphoon.io.h5)</a>
+      <li><a href="pyphoon.io.html#pyphoon.io.h5.read_h5_dataset_file">read_h5_dataset_file() (in module pyphoon.io.h5)</a>
+</li>
+      <li><a href="pyphoon.app.html#pyphoon.app.utils.read_h5datachunk">read_h5datachunk() (in module pyphoon.app.utils)</a>
 </li>
       <li><a href="pyphoon.io.html#pyphoon.io.h5.read_h5groupfile">read_h5groupfile() (in module pyphoon.io.h5)</a>
 </li>
       <li><a href="pyphoon.io.html#pyphoon.io.h5.read_source_image">read_source_image() (in module pyphoon.io.h5)</a>
 </li>
-      <li><a href="pyphoon.io.html#pyphoon.io.h5.read_source_images">read_source_images() (in module pyphoon.io.h5)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pyphoon.io.html#pyphoon.io.h5.read_source_images">read_source_images() (in module pyphoon.io.h5)</a>
+</li>
       <li><a href="pyphoon.io.html#pyphoon.io.tsv.read_tsv">read_tsv() (in module pyphoon.io.tsv)</a>
 </li>
       <li><a href="pyphoon.io.html#pyphoon.io.tsv.read_tsvs">read_tsvs() (in module pyphoon.io.tsv)</a>
@@ -445,7 +466,7 @@
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pyphoon.io.html#pyphoon.io.h5.write_h5file">write_h5file() (in module pyphoon.io.h5)</a>
+      <li><a href="pyphoon.io.html#pyphoon.io.h5.write_h5_dataset_file">write_h5_dataset_file() (in module pyphoon.io.h5)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>

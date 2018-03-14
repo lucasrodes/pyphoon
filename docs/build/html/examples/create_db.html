@@ -125,6 +125,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.io.html">pyphoon.io</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.db.html">pyphoon.db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.app.html">pyphoon.app</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.visualise.html">pyphoon.visualise</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
 </ul>
@@ -274,11 +275,13 @@ algorithm</p>
 <div class="section" id="generate-new-dataset">
 <h3>Generate new dataset<a class="headerlink" href="#generate-new-dataset" title="Permalink to this headline">¶</a></h3>
 <p>Once the algorithm is defined, let us apply generate the new dataset using
-method <a class="reference internal" href="../pyphoon.clean_satellite.html#pyphoon.clean_satellite.fix.generate_new_image_dataset" title="pyphoon.clean_satellite.fix.generate_new_image_dataset"><code class="xref py py-func docutils literal"><span class="pre">generate_new_image_dataset()</span></code></a>.</p>
+method <a class="reference internal" href="../pyphoon.clean_satellite.html#pyphoon.clean_satellite.fix.generate_new_image_dataset" title="pyphoon.clean_satellite.fix.generate_new_image_dataset"><code class="xref py py-func docutils literal"><span class="pre">generate_new_image_dataset()</span></code></a>. Replace
+<code class="docutils literal"><span class="pre">images_orig_dir</span></code> with the directory of original images and
+<code class="docutils literal"><span class="pre">images_corrected_dir</span></code> with the directory for the new corrected data.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.fix</span> <span class="k">import</span> <span class="n">generate_corrected_image_dataset</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_new_image_dataset</span><span class="p">(</span><span class="n">images_orig_dir</span><span class="o">=</span><span class="s2">&quot;../original_data/image/&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generate_new_image_dataset</span><span class="p">(</span><span class="n">images_orig_dir</span><span class="o">=</span><span class="n">images_orig_dir</span><span class="p">,</span>
 <span class="gp">... </span>                           <span class="n">fix_algorithm</span><span class="o">=</span><span class="n">fix_algorithm</span><span class="p">,</span>
-<span class="gp">... </span>                           <span class="n">images_corrected_dir</span><span class="o">=</span><span class="s2">&quot;/data/database/corrected&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                           <span class="n">images_corrected_dir</span><span class="o">=</span><span class="n">images_corrected_dir</span><span class="p">,</span>
 <span class="gp">... </span>                           <span class="n">display</span><span class="o">=</span><span class="kc">True</span>
 <span class="gp">... </span>                           <span class="p">)</span>
 </pre></div>

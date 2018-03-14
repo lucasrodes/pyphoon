@@ -86,12 +86,14 @@ Generate new dataset
 ********************
 
 Once the algorithm is defined, let us apply generate the new dataset using
-method :func:`~pyphoon.clean_satellite.fix.generate_new_image_dataset`.
+method :func:`~pyphoon.clean_satellite.fix.generate_new_image_dataset`. Replace
+``images_orig_dir`` with the directory of original images and
+``images_corrected_dir`` with the directory for the new corrected data.
 
 >>> from pyphoon.clean_satellite.fix import generate_corrected_image_dataset
->>> generate_new_image_dataset(images_orig_dir="../original_data/image/",
+>>> generate_new_image_dataset(images_orig_dir=images_orig_dir,
 ...                            fix_algorithm=fix_algorithm,
-...                            images_corrected_dir="/data/database/corrected",
+...                            images_corrected_dir=images_corrected_dir,
 ...                            display=True
 ...                            )
 

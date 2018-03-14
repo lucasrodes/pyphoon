@@ -114,7 +114,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pyphoon.visualise.html">pyphoon.visualize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.app.html">pyphoon.app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.visualise.html">pyphoon.visualise</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
 </ul>
 
@@ -233,55 +234,6 @@ specified directory. List is empty if no file was found).</td>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyphoon.io.h5.read_h5groupfile">
-<code class="descclassname">pyphoon.io.h5.</code><code class="descname">read_h5groupfile</code><span class="sig-paren">(</span><em>path_to_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.read_h5groupfile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads an H5 file and returns its content in a dictionary-fashion.
-Note that the H5 file is assumed to have a set of groups with two
-datasets (‘data’ and ‘ids’). The groups refer to the different data
-fields used as source data for Digital Typhoon.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_file</strong> (<em>str</em>) – Path to an H5 file.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Content of the H5 file as a dictionary. Keys stand for data
-field names, the corresponding value is a dictionary with two fields:
-‘data’, which contains the data itself and ‘ids’ which contains the
-ids associated to the samples from ‘data’. Hence, the format of the
-returned file is a 2-nested dictionary.</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="pyphoon.io.h5.write_h5groupfile">
-<code class="descclassname">pyphoon.io.h5.</code><code class="descname">write_h5groupfile</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em>, <em>compression</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.write_h5groupfile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Constructs and stores an H5 file containing the given data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>data</strong> (<em>dict</em>) – Dictionary containing the data to be stored. Keys stand for
-data field names, the corresponding value is a dictionary with two
-fields: ‘data’, which contains the data itself and ‘ids’ which
-contains the ids associated to the samples from ‘data’. Hence,
-<code class="docutils literal"><span class="pre">data</span></code> is a 2-nested dictionary.</li>
-<li><strong>path_to_file</strong> (<em>str</em>) – Path where the new H5 file will be created.</li>
-<li><strong>compression</strong> – Use to compress H5 file. Find more details at
-the <a class="reference external" href="http://docs.h5py.org/en/latest/high/dataset.html">h5py documentation</a></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="pyphoon.io.h5.read_source_images">
 <code class="descclassname">pyphoon.io.h5.</code><code class="descname">read_source_images</code><span class="sig-paren">(</span><em>path_to_folder</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.read_source_images" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads all image files within a given folder. Note that all images are
@@ -345,8 +297,57 @@ as a dataset with name ‘infrared’.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyphoon.io.h5.read_h5file">
-<code class="descclassname">pyphoon.io.h5.</code><code class="descname">read_h5file</code><span class="sig-paren">(</span><em>path_to_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.read_h5file" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.io.h5.read_h5groupfile">
+<code class="descclassname">pyphoon.io.h5.</code><code class="descname">read_h5groupfile</code><span class="sig-paren">(</span><em>path_to_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.read_h5groupfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads an H5 file and returns its content in a dictionary-fashion.
+Note that the H5 file is assumed to have a set of groups with two
+datasets (‘data’ and ‘ids’). The groups refer to the different data
+fields used as source data for Digital Typhoon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path_to_file</strong> (<em>str</em>) – Path to an H5 file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Content of the H5 file as a dictionary. Keys stand for data
+field names, the corresponding value is a dictionary with two fields:
+‘data’, which contains the data itself and ‘ids’ which contains the
+ids associated to the samples from ‘data’. Hence, the format of the
+returned file is a 2-nested dictionary.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.io.h5.write_h5groupfile">
+<code class="descclassname">pyphoon.io.h5.</code><code class="descname">write_h5groupfile</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em>, <em>compression</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.write_h5groupfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs and stores an H5 file containing the given data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>dict</em>) – Dictionary containing the data to be stored. Keys stand for
+data field names, the corresponding value is a dictionary with two
+fields: ‘data’, which contains the data itself and ‘ids’ which
+contains the ids associated to the samples from ‘data’. Hence,
+<code class="docutils literal"><span class="pre">data</span></code> is a 2-nested dictionary.</li>
+<li><strong>path_to_file</strong> (<em>str</em>) – Path where the new H5 file will be created.</li>
+<li><strong>compression</strong> – Use to compress H5 file. Find more details at
+the <a class="reference external" href="http://docs.h5py.org/en/latest/high/dataset.html">h5py documentation</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.io.h5.read_h5_dataset_file">
+<code class="descclassname">pyphoon.io.h5.</code><code class="descname">read_h5_dataset_file</code><span class="sig-paren">(</span><em>path_to_file</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.read_h5_dataset_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads an HDF file and returns its content in a dictionary-fashion.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -361,15 +362,11 @@ field names, values are the corresponding data.</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last">Deprecated for <a class="reference internal" href="#pyphoon.io.h5.read_h5groupfile" title="pyphoon.io.h5.read_h5groupfile"><code class="xref py py-func docutils literal"><span class="pre">read_h5groupfile()</span></code></a></p>
-</div>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyphoon.io.h5.write_h5file">
-<code class="descclassname">pyphoon.io.h5.</code><code class="descname">write_h5file</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em>, <em>compression</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.write_h5file" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.io.h5.write_h5_dataset_file">
+<code class="descclassname">pyphoon.io.h5.</code><code class="descname">write_h5_dataset_file</code><span class="sig-paren">(</span><em>data</em>, <em>path_to_file</em>, <em>compression</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.io.h5.write_h5_dataset_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constructs and stores an H5 file containing the given data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -386,10 +383,6 @@ the <a class="reference external" href="http://docs.h5py.org/en/latest/high/data
 </tr>
 </tbody>
 </table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last">Deprecated for <a class="reference internal" href="#pyphoon.io.h5.write_h5groupfile" title="pyphoon.io.h5.write_h5groupfile"><code class="xref py py-func docutils literal"><span class="pre">write_h5groupfile()</span></code></a></p>
-</div>
 </dd></dl>
 
 </div>

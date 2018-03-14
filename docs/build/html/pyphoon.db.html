@@ -38,7 +38,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="pyphoon documentation" href="index.html"/>
-        <link rel="next" title="pyphoon.visualise" href="pyphoon.visualise.html"/>
+        <link rel="next" title="pyphoon.app" href="pyphoon.app.html"/>
         <link rel="prev" title="pyphoon.clean_satellite" href="pyphoon.clean_satellite.html"/> 
 
   
@@ -111,6 +111,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.db.pd_manager">pyphoon.db.pd_manager</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="pyphoon.app.html">pyphoon.app</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.visualise.html">pyphoon.visualise</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
 </ul>
@@ -248,8 +249,8 @@ recommended. Otherwise it reads and stores the image files as well.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyphoon.db.pd_manager.PDManager.load_orig_images">
-<code class="descname">load_orig_images</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_orig_images" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.db.pd_manager.PDManager.load_images">
+<code class="descname">load_images</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.load_images" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads the image data from a pickle file as DataFrame storing
 it as the class attribute <code class="docutils literal"><span class="pre">images</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -360,14 +361,39 @@ it as the class attribute <code class="docutils literal"><span class="pre">corru
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.add_corrected_info">
 <code class="descname">add_corrected_info</code><span class="sig-paren">(</span><em>orig_images_dir</em>, <em>corrected_dir</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_corrected_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds information about corrected images to the corrupted dataset
-:param orig_images_dir: original images folder
-:param corrected_dir: corrected images folder</p>
+<dd><p>Adds information about corrected images to the corrupted dataset</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">Exception</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>orig_images_dir</strong> (<em>str</em>) – original images folder</li>
+<li><strong>corrected_dir</strong> (<em>str</em>) – corrected images folder</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">Exception</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.db.pd_manager.PDManager.add_missing_images">
+<code class="descname">add_missing_images</code><span class="sig-paren">(</span><em>images_dir</em>, <em>file_refs_only=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_missing_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds information about the corrected images to the class attribute
+<code class="docutils literal"><span class="pre">corrupted</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>images_dir</strong> (<em>str</em>) – Path to image dataset.</li>
+<li><strong>file_refs_only</strong> (<em>bool</em><em>, </em><em>default True</em>) – Set to True to only store links to the files (
+recommended. Otherwise it reads and stores the image files as well.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -376,9 +402,15 @@ it as the class attribute <code class="docutils literal"><span class="pre">corru
 <dl class="method">
 <dt id="pyphoon.db.pd_manager.PDManager.add_missing_frames">
 <code class="descname">add_missing_frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.db.pd_manager.PDManager.add_missing_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates a dataset with missing frames information
-:return:
-:raises: Exception</p>
+<dd><p>Creates a dataset with missing frames information</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">Exception</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -497,7 +529,7 @@ starts from 0).</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pyphoon.visualise.html" class="btn btn-neutral float-right" title="pyphoon.visualise" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="pyphoon.app.html" class="btn btn-neutral float-right" title="pyphoon.app" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="pyphoon.clean_satellite.html" class="btn btn-neutral" title="pyphoon.clean_satellite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
