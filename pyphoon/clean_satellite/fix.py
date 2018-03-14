@@ -296,8 +296,10 @@ def generate_new_image_dataset(images_orig_dir, fix_algorithm,
         folders = sorted([f for f in listdir(images_orig_dir) if isdir(join(
             images_orig_dir, f))])
     # Iterate over all folders
-    for folder in folders:
-        print(folder) if display else 0
+    count = 0
+    for folder in folders[185:]:
+        print(folder, count) if display else 0
+        count += 1
         # Load images
         images = read_source_images(join(images_orig_dir, folder))
         images_ids = get_image_ids(join(images_orig_dir, folder))
