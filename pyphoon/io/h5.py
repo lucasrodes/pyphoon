@@ -30,56 +30,6 @@ def get_h5_filenames(directory):
     return files
 
 
-def read_h5groupfile(path_to_file):
-    """ Reads an H5 file and returns its content in a dictionary-fashion.
-    Note that the H5 file is assumed to have a set of groups with two
-    datasets ('data' and 'ids'). The groups refer to the different data
-    fields used as source data for Digital Typhoon.
-
-    :param path_to_file: Path to an H5 file.
-    :type path_to_file: str
-    :return: Content of the H5 file as a dictionary. Keys stand for data
-        field names, the corresponding value is a dictionary with two fields:
-        'data', which contains the data itself and 'ids' which contains the
-        ids associated to the samples from 'data'. Hence, the format of the
-        returned file is a 2-nested dictionary.
-    :rtype: dict
-    """
-    data = collections.defaultdict(dict)
-
-    with h5py.File(path_to_file, 'r') as hf:
-        for key, value in hf.items():
-            data[key]['data'] = value.get('data').value
-            data[key]['ids'] = ast.literal_eval(value.get('ids').value)
-
-    return dict(data)
-
-
-def write_h5groupfile(data, path_to_file, compression):
-    """ Constructs and stores an H5 file containing the given data.
-
-    :param data: Dictionary containing the data to be stored. Keys stand for
-        data field names, the corresponding value is a dictionary with two
-        fields: 'data', which contains the data itself and 'ids' which
-        contains the ids associated to the samples from 'data'. Hence,
-        ``data`` is a 2-nested dictionary.
-    :type data: dict
-    :param path_to_file: Path where the new H5 file will be created.
-    :type path_to_file: str
-    :param compression: Use to compress H5 file. Find more details at
-            the `h5py documentation`_
-
-    .. _h5py documentation:
-            http://docs.h5py.org/en/latest/high/dataset.html
-    """
-    with h5py.File(path_to_file, 'w') as hf:
-        for key, value in data.items():
-            g1 = hf.create_group(key)
-            g1.create_dataset('data', data=value['data'],
-                              compression=compression)
-            g1.create_dataset('ids', data=str(value['ids']))
-
-
 ################################################################################
 #  IMAGES RELATED FUNCTIONS
 ################################################################################
@@ -131,9 +81,59 @@ def write_image(path_to_file, image, compression='gzip'):
 
 
 ################################################################################
-# DEPRECATED
+# H5 RAW FILE data
 ################################################################################
-def read_h5file(path_to_file):
+def read_h5groupfile(path_to_file):
+    """ Reads an H5 file and returns its content in a dictionary-fashion.
+    Note that the H5 file is assumed to have a set of groups with two
+    datasets ('data' and 'ids'). The groups refer to the different data
+    fields used as source data for Digital Typhoon.
+
+    :param path_to_file: Path to an H5 file.
+    :type path_to_file: str
+    :return: Content of the H5 file as a dictionary. Keys stand for data
+        field names, the corresponding value is a dictionary with two fields:
+        'data', which contains the data itself and 'ids' which contains the
+        ids associated to the samples from 'data'. Hence, the format of the
+        returned file is a 2-nested dictionary.
+    :rtype: dict
+    """
+    data = collections.defaultdict(dict)
+
+    with h5py.File(path_to_file, 'r') as hf:
+        for key, value in hf.items():
+            data[key]['data'] = value.get('data').value
+            data[key]['ids'] = ast.literal_eval(value.get('ids').value)
+
+    return dict(data)
+
+
+def write_h5groupfile(data, path_to_file, compression):
+    """ Constructs and stores an H5 file containing the given data.
+
+    :param data: Dictionary containing the data to be stored. Keys stand for
+        data field names, the corresponding value is a dictionary with two
+        fields: 'data', which contains the data itself and 'ids' which
+        contains the ids associated to the samples from 'data'. Hence,
+        ``data`` is a 2-nested dictionary.
+    :type data: dict
+    :param path_to_file: Path where the new H5 file will be created.
+    :type path_to_file: str
+    :param compression: Use to compress H5 file. Find more details at
+            the `h5py documentation`_
+
+    .. _h5py documentation:
+            http://docs.h5py.org/en/latest/high/dataset.html
+    """
+    with h5py.File(path_to_file, 'w') as hf:
+        for key, value in data.items():
+            g1 = hf.create_group(key)
+            g1.create_dataset('data', data=value['data'],
+                              compression=compression)
+            g1.create_dataset('ids', data=str(value['ids']))
+
+
+def read_h5_dataset_file(path_to_file):
     """ Reads an HDF file and returns its content in a dictionary-fashion.
 
     :param path_to_file: Path to an H5 file.
@@ -141,11 +141,24 @@ def read_h5file(path_to_file):
     :return: Content of the H5 file as a dictionary. Keys stand for data
         field names, values are the corresponding data.
     :rtype: dict
-
-    .. seealso:: Deprecated for :func:`read_h5groupfile`
-
     """
-    warnings.warn("deprecated, use read_h5groupfile() instead",
+    with h5py.File(path_to_file, 'r') as h5f:
+        keys = list(h5f.keys())
+        data = {}
+        for key in keys:
+            if key != "name":
+                # Decode list of byte-strings
+                value = h5f[key][:]
+                if (isinstance(value, np.ndarray)) and isinstance(value[0],
+                                                                  bytes):
+                    _value = value
+                    value = [n.decode("utf-8") for n in _value]
+                data[key] = value
+    return data
+
+
+def read_h5file(path_to_file):
+    warnings.warn("deprecated, use read_h5_dataset_file() instead",
                   DeprecationWarning)
     with h5py.File(path_to_file, 'r') as h5f:
         keys = list(h5f.keys())
@@ -162,7 +175,7 @@ def read_h5file(path_to_file):
     return data
 
 
-def write_h5file(data, path_to_file, compression):
+def write_h5_dataset_file(data, path_to_file, compression):
     """ Constructs and stores an H5 file containing the given data.
 
     :param data: Dictionary containing the data to be stored. Keys stand for
@@ -173,12 +186,25 @@ def write_h5file(data, path_to_file, compression):
     :param compression: Use to compress H5 file. Find more details at
             the `h5py documentation`_
 
-    .. seealso:: Deprecated for :func:`write_h5groupfile`
-
     .. _h5py documentation:
             http://docs.h5py.org/en/latest/high/dataset.html
     """
-    warnings.warn("deprecated, use write_h5groupfile() instead",
+    # warnings.warn("deprecated, use write_h5groupfile() instead",
+    #              DeprecationWarning)
+    with h5py.File(path_to_file, 'w') as h5f:
+        for key, value in data.items():
+            if isinstance(value, list):
+                if not value:
+                    continue
+                # Encode byte-string lists
+                elif isinstance(value[0], str):
+                    _value = value
+                    value = [n.encode("ascii", "ignore") for n in _value]
+            h5f.create_dataset(key, data=value, compression=compression)
+
+
+def write_h5file(data, path_to_file, compression):
+    warnings.warn("deprecated, use write_h5_dataset_file() instead",
                   DeprecationWarning)
     with h5py.File(path_to_file, 'w') as h5f:
         for key, value in data.items():
