@@ -58,13 +58,13 @@ class DataExtractor:
                 data = read_source_image(join(self.corrected_images_dir, corrected_entry.directory, corrected_entry.filename))
                 if preprocess_algorithm:
                     data = preprocess_algorithm(data.reshape(1, data.shape[0],
-                                                             data.shape[1]))
+                                                             data.shape[1]))[0]
             else:
                 size += frame['size']
                 data = read_source_image(join(self.original_images_dir, frame.directory, frame.filename))
                 if preprocess_algorithm:
                     data = preprocess_algorithm(data.reshape(1, data.shape[0],
-                                                             data.shape[1]))
+                                                             data.shape[1]))[0]
             read_data.append([seq_no, obs_time, data])
         pd_read_data = pd.DataFrame(data=read_data, columns=['seq_no', 'obs_time', 'data'])
         pd_read_data.set_index(['seq_no', 'obs_time'], drop=True, inplace=True)

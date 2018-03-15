@@ -8,6 +8,7 @@ from pyphoon.app.preprocess import DefaultImagePreprocessor
 # H5 CHUNKs (for training)
 ################################################################################
 # TODO: Only return two elements - (i) images, (ii) best
+# NOTE: Only works with tcxtc chunks, need to create new one for generic data.
 def read_h5datachunk(path_to_file, shuffle=False, preprocessor=None):
     """ Reads a chunk of data stored as h5.
 
