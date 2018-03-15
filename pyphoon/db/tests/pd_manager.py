@@ -16,7 +16,7 @@ class TestPdManagerMethods(unittest.TestCase):
         self.fix_algorithm = TyphoonListImageFixAlgorithm(
             detect_fct=detect_corrupted_pixels_1,
             correct_fct=correct_corrupted_pixels_1,
-            fillgaps_fct=generate_new_frames_1,
+            generate_fct=generate_new_frames_1,
             detect_params={'min_th': 160, 'max_th': 310},
             n_frames_th=2
         )
@@ -51,7 +51,7 @@ class TestPdManagerMethods(unittest.TestCase):
         images_dir = self.images_dir
         manager = PDManager()
         self.assertTrue(manager.images.empty)
-        manager.add_orig_images(images_dir)
+        manager.add_original_images(images_dir)
         self.assertFalse(manager.images.empty)
         self.assertEqual(manager.images.index.name, 'seq_no_obs_time')
         self.assertEqual(manager.images.shape[0], len(manager.images.index))
@@ -60,11 +60,11 @@ class TestPdManagerMethods(unittest.TestCase):
     def test_save_images(self):
         images_dir = self.images_dir
         manager = PDManager()
-        manager.add_orig_images(images_dir)
+        manager.add_original_images(images_dir)
         temp_db = 'temp.pkl'
         if os.path.exists(temp_db):
             os.remove(temp_db)
-        manager.save_images(temp_db)
+        manager.save_original_images(temp_db)
         self.assertTrue(os.path.exists(temp_db))
         os.remove(temp_db)
 
@@ -72,13 +72,13 @@ class TestPdManagerMethods(unittest.TestCase):
         images_dir = self.images_dir
         manager = PDManager()
         temp_db = 'temp.pkl'
-        manager.add_orig_images(images_dir)
-        manager.save_images(temp_db)
+        manager.add_original_images(images_dir)
+        manager.save_original_images(temp_db)
         images_copy = manager.images.copy()
         manager.images = manager.images.iloc[0:0]
         self.assertTrue(manager.images.empty)
         self.assertFalse(manager.images.equals(images_copy))
-        manager.load_images(temp_db)
+        manager.load_original_images(temp_db)
         self.assertTrue(manager.images.equals(images_copy))
         os.remove(temp_db)
 
@@ -86,9 +86,9 @@ class TestPdManagerMethods(unittest.TestCase):
         images_dir = self.images_dir
         jma_dir = self.best_dir
         manager = PDManager()
-        manager.add_orig_images(images_dir)
+        manager.add_original_images(images_dir)
         manager.add_besttrack(jma_dir)
-        manager.add_missing_frames()
+        manager.add_missing_images_info()
         f_name = manager.get_image_from_seq_no_and_frame_num(200717, 0)
         self.assertEqual(f_name, '200717/2007100300-200717-MTS1-1.h5')
         f_name = manager.get_image_from_seq_no_and_frame_num(200718, 120)
@@ -98,9 +98,9 @@ class TestPdManagerMethods(unittest.TestCase):
         images_dir = self.corrected_dir
         manager = PDManager()
         self.assertTrue(manager.corrected.empty)
-        manager.add_corrected(images_dir)
+        manager.add_corrected_images(images_dir)
         self.assertFalse(manager.corrected.empty)
-        manager.add_orig_images(images_dir)
+        manager.add_original_images(images_dir)
         self.assertFalse(len(set(manager.corrected.keys()).intersection(set(manager.images.keys()))) == 0)
 
 
@@ -108,8 +108,8 @@ class TestPdManagerMethods(unittest.TestCase):
         images_dir = self.images_dir
         corrected_dir = self.corrected_dir
         pd_man = PDManager()
-        pd_man.add_orig_images(images_dir)
-        pd_man.add_corrected(corrected_dir)
+        pd_man.add_original_images(images_dir)
+        pd_man.add_corrected_images(corrected_dir)
         self.assertFalse('corruption' in pd_man.corrected.columns)
         pd_man.add_corrected_info(images_dir, corrected_dir)
         self.assertTrue('corruption' in pd_man.corrected.columns)
@@ -117,17 +117,17 @@ class TestPdManagerMethods(unittest.TestCase):
 
     def test_add_missing_frames(self):
         pd_man = PDManager()
-        pd_man.add_orig_images(self.images_dir)
+        pd_man.add_original_images(self.images_dir)
         pd_man.add_besttrack(self.best_dir)
         self.assertTrue(pd_man.missing.empty)
-        pd_man.add_missing_frames()
+        pd_man.add_missing_images_info()
         self.assertFalse(pd_man.missing.empty)
 
     def test_add_missing_frames2(self):
         pd_man = PDManager()
-        pd_man.add_orig_images(self.images_dir)
+        pd_man.add_original_images(self.images_dir)
         pd_man.add_besttrack(self.best_dir)
-        pd_man.add_missing_frames()
+        pd_man.add_missing_images_info()
         missing = pd_man.missing.loc[198702, :]
         self.assertEqual(missing.frames_num, 160)
         self.assertEqual(missing.missing_num, 4)
@@ -135,10 +135,10 @@ class TestPdManagerMethods(unittest.TestCase):
 
     def test_add_missing_frames3(self):
         pd_man = PDManager()
-        pd_man.add_orig_images(self.images_dir)
+        pd_man.add_original_images(self.images_dir)
         pd_man.add_besttrack(self.best_dir)
         self.assertFalse(pd_man.images.columns.contains('frame'))
-        pd_man.add_missing_frames()
+        pd_man.add_missing_images_info()
         self.assertTrue(pd_man.images.columns.contains('frame'))
         self.assertTrue(pd_man.images.loc[198702, 'frame'].is_monotonic_increasing)
         self.assertTrue(len(set(pd_man.images.loc[198702, 'frame']).intersection([19, 21, 40, 149])) == 0)

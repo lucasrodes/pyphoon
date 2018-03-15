@@ -1,8 +1,7 @@
 import pandas as pd
 from os.path import exists, isdir, join
 import os
-
-from pyphoon.io.h5 import read_source_image, write_h5file, write_h5groupfile
+from pyphoon.io.h5 import read_source_image, write_h5_dataset_file
 from pyphoon.db.pd_manager import PDManager
 
 
@@ -14,6 +13,7 @@ class DataExtractor:
     def __init__(self, original_images_dir, corrected_images_dir, pd_manager):
         """
         Constructor
+
         :param original_images_dir: Original images directory
         :param corrected_images_dir: Corrected images directory
         :param pd_manager: PDManager object
@@ -23,14 +23,15 @@ class DataExtractor:
         self.corrected_images_dir = corrected_images_dir
         self.pd_man = pd_manager
 
-    def get_good_triplets(self, seq_no, allow_corrected=None):
+    def get_good_triplets(self, pd_manager, seq_no, allow_corrected=True):
         """
         Gets triplets of frames (3 subsequent frames) from a given sequence, where non of frames is missing
+
         :param seq_no: Number of sequence (ID)
         :param corrected_dir: Corrected images directory
         :param allow_corrected: Allow including corrected images into triplets
-        :return:
         """
+
 
     def _read_seq(self, seq_no):
         images = self.pd_man.images
@@ -56,17 +57,16 @@ class DataExtractor:
         pd_read_data = pd_read_data.join(besttrack)
         return pd_read_data, size
 
-    def generate_images_besttrack_chunks(self, pd_manager, original_images_dir, sequence_list, chunk_size, output_dir,
-                                         corrected_dir=None, preprocess_algorithm=None):
+    def generate_images_besttrack_chunks(self, pd_manager, sequence_list, chunk_size, output_dir,
+                                         preprocess_algorithm=None):
         """
         Generates chunks of hdf5 files, containing images and besttrack data
+
         :param pd_manager: PDManager object
-        :param original_images_dir: Original images directory
         :param sequence_list: List of tuples [(seq_no, prefix), ...]
         :type sequence_list: list
         :param chunk_size: Size of chunks in bytes
         :param output_dir: Output dir
-        :param corrected_dir: Corrected images directory
         :param preprocess_algorithm: Algorithm for data preprocessing, which returns data of the same shape as an input
         :return:
         """
@@ -80,13 +80,13 @@ class DataExtractor:
 
         if images.empty:
             raise Exception('Images DataFrame should be created')
-        if not isdir(original_images_dir):
-            raise NotADirectoryError(original_images_dir + ' is not a directory')
+        if not isdir(self.original_images_dir):
+            raise NotADirectoryError(self.original_images_dir + ' is not a directory')
         if not exists(output_dir):
             os.mkdir(output_dir)
-        if corrected_dir is not None:
-            if not isdir(corrected_dir):
-                raise NotADirectoryError(corrected_dir + ' is not a directory')
+        if self.corrected_images_dir is not None:
+            if not isdir(self.corrected_images_dir):
+                raise NotADirectoryError(self.corrected_images_dir + ' is not a directory')
             if corrupted.empty:
                 raise Exception('Corrupted DataFrame should be created when corrected_dir is not None')
         # group by prefix
@@ -116,8 +116,18 @@ class DataExtractor:
                 self._write_chunk(filename=_filename, chunk=chunk)
 
     def _write_chunk(self, filename, chunk):
+        """
+        Writing chunk of data to hdf5 file routine.
+
+        :param filename: Output filename.
+        :type filename: str
+        :param chunk: Input chunk of data.
+        :type chunk: list of pd.DataFrame
+        """
+
         united = pd.concat(chunk, axis=0)
         united.reset_index(inplace=True)
+        # write_h5_dataset_file(united.to_dict(), filename)
         store = pd.HDFStore(filename, mode='w')
         for col in united.columns:
             store.put(col, united[col])

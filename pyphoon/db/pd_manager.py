@@ -14,21 +14,58 @@ feature_names = ["year", "month", "day", "hour", "class", "latitude",
 
 class PDManager:
     """
-    Data manager. Reads source data and generates corresponding Pandas DataFrames.
+    Class to manage and help in the analysis of the dataset. It stores
+    references to the image files, dates of the data, corrected images etc.
+    in pandas.DataFrame objects.
     """
 
     def __init__(self, compression='gzip'):
-        self.besttrack = pd.DataFrame()
-        self.images = pd.DataFrame()
-        self.missing = pd.DataFrame()
-        self.corrected = pd.DataFrame()
-        self._compression = compression
+        self.besttrack = pd.DataFrame()  #: DataFrame for best track data.
+        self.images = pd.DataFrame()  #: DataFrame for original image data.
+        self.missing = pd.DataFrame()  #: DataFrame for information about missing images.
+        self.corrected = pd.DataFrame()  #: DataFrame for corrected image data.
+        self._compression = compression  #: Compression, default 'gzip'.
 
-    def add_besttrack(self, directory):
+    ############################################################################
+    # Original images
+    ############################################################################
+    def add_original_images(self, directory):
+        """Adds information about original images to the class attribute
+        ``images``.
+
+        :param directory: Path to image dataset.
+        :type directory: str
         """
-        Add besttrack information to the database
+        appended_data = self._read_image_files_structure(directory)
+        self.images = pd.concat(appended_data)
+        self.images.set_index(['seq_no', 'obs_time'], inplace=True, drop=True, verify_integrity=True)
+        self.images.index.name = 'seq_no_obs_time'
+
+    def save_original_images(self, filename):
+        """ Saves the class attribute ``images`` as a pickle file.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
+        """
+        self.images.to_pickle(filename, compression=self._compression)
+
+    def load_original_images(self, filename):
+        """ Loads the image data from a pickle file as DataFrame storing
+        it as the class attribute ``images``.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
+        """
+        self.images = pd.read_pickle(filename, self._compression)
+
+    ############################################################################
+    # Best data
+    ############################################################################
+    def add_besttrack(self, directory):
+        """ Adds information from the best data to the class attribute
+        ``besttrack``.
+
         :param directory: Path where source files are stored
-        :return:
         """
         files = listdir(directory)
         appended_data = []
@@ -45,88 +82,69 @@ class PDManager:
         self.besttrack.index.name = 'seq_no_obs_time'
 
     def save_besttrack(self, filename):
-        """
-        Saves Besttrack DataFrame to a file
-        :param filename:
-        :return:
+        """ Saves the class attribute ``besttrack`` as a pickle file.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
         """
         self.besttrack.to_pickle(filename, compression=self._compression)
 
     def load_besttrack(self, filename):
-        """ Loads BestTrack DataFrame from a file
+        """ Loads the best data from a pickle file as DataFrame storing
+        it as the class attribute ``besttrack``.
 
-        :param filename:
-        :return:
+        :param filename: Path to the pickle file.
+        :type filename: str
         """
         self.besttrack = pd.read_pickle(filename, self._compression)
 
-    def add_orig_images(self, directory):
-        """
-        Add information about original images to the DataFrame
-        :param directory:
-        :param file_refs_only: if set True, only links to the files will be stored
-        :return:
-        """
-        appended_data = self._read_image_files_structure(directory)
-        self.images = pd.concat(appended_data)
-        self.images.set_index(['seq_no', 'obs_time'], inplace=True, drop=True, verify_integrity=True)
-        self.images.index.name = 'seq_no_obs_time'
+    ############################################################################
+    # Corrected
+    ############################################################################
+    def add_corrected_images(self, directory):
+        """Adds information about the corrected images to the class attribute
+        ``corrected``.
 
-    def _read_image_files_structure(self, directory):
-        folders = sorted([f for f in listdir(directory) if isdir(join(directory, f))])
-        appended_data = []
-        for folder in folders:
-            path_images = join(directory, folder)
-            seq_name = int(folder2name(path_images))
-            # frame = pd.DataFrame(columns=['obs_time', 'seq_no', 'directory', 'filename', 'size'])
-            image_data = []
-            for f in get_h5_filenames(path_images):
-                date = imagefilename2date(f)
-                fullname = join(directory, folder, f)
-                data = {'obs_time': date, 'seq_no': seq_name, 'directory': folder,
-                        'filename': f, 'size': stat(fullname).st_size}
-                image_data.append(data)
-            frame = pd.DataFrame(image_data)
-            appended_data.append(frame)
-        return appended_data
+        :param directory: Path to image dataset.
+        :type directory: str
+        """
 
-    def save_images(self, filename):
-        """
-        Saves Images DataFrame to a file
-        :param filename:
-        :return:
-        """
-        self.images.to_pickle(filename, compression=self._compression)
-
-    def load_images(self, filename):
-        """
-        Loads Images DataFrame from a file
-        :param filename:
-        :return:
-        """
-        self.images = pd.read_pickle(filename, self._compression)
-
-    def add_corrected(self, directory):
-        """
-        Adds corrected images dataset
-        :param directory: path to corrected images
-        :return:
-        """
         appended_data = self._read_image_files_structure(directory)
         self.corrected = pd.concat(appended_data)
         self.corrected.set_index(['seq_no', 'obs_time'], inplace=True, drop=True, verify_integrity=True)
         self.corrected.index.name = 'seq_no_obs_time'
 
+    def save_corrected_images(self, filename):
+        """Saves the class attribute ``corrected`` as a pickle file.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
+        """
+
+        self.corrected.to_pickle(filename, compression=self._compression)
+
+    def load_corrected_images(self, filename):
+        """Loads the corrupted data from a pickle file as DataFrame storing
+        it as the class attribute ``corrected``.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
+        """
+
+        self.corrected = pd.read_pickle(filename, self._compression)
+
     def add_corrected_info(self, orig_images_dir, corrected_dir):
         """
-        Adds information about corrected images to the corrected dataset
-        :param orig_images_dir: original images folder
-        :param corrected_dir: corrected images folder
-        :return:
+        Adds information about corrected images to the corrected dataset.
+
+        :param orig_images_dir: original images folder.
+        :type orig_images_dir: str
+        :param corrected_dir: corrected images folder.
+        :type corrected_dir: str
+
+        :raises: Exception
         """
-        # joined = self.images.join(self.corrected, how='inner')
-        # if len(joined) == 0:
-        #     raise Exception('Both corrected and original tables should be loaded first')
+
         if not exists(orig_images_dir) or not exists(corrected_dir):
             raise Exception('Original or Corrected images folder does not exist')
         for key in self.corrected.index:
@@ -143,26 +161,14 @@ class PDManager:
             except IOError as detail:
                 print('Error occured while reading files: ', detail)
 
-    def save_corrected(self, filename):
+    ############################################################################
+    # Missing frames
+    ############################################################################
+    def add_missing_images_info(self):
         """
-        Saves Corrupted DataFrame to a file
-        :param filename:
-        :return:
-        """
-        self.corrected.to_pickle(filename, compression=self._compression)
+        Creates a dataset with information about missing images.
 
-    def load_corrected(self, filename):
-        """
-        Loads Corrupted DataFrame from a file
-        :param filename:
-        :return:
-        """
-        self.corrected = pd.read_pickle(filename, self._compression)
-
-    def add_missing_frames(self):
-        """
-        Creates a dataset with missing frames information
-        :return:
+        :raises: Exception
         """
         joined = pd.concat([self.images, self.besttrack], axis=1, join='inner')
         if len(joined) == 0:
@@ -197,25 +203,49 @@ class PDManager:
         # frame_deltas = frame_deltas[frame_deltas.missing_num > 0]
         self.missing = frame_deltas
 
-    def save_missing(self, filename):
+    def save_missing_images(self, filename):
         """
-        Saves Missing DataFrame to a file
-        :param filename:
-        :return:
+        Saves Missing DataFrame to a file.
+
+        :param filename: Path to the pickle file.
+        :type filename: str
         """
         self.missing.to_pickle(filename, compression=self._compression)
 
-    def load_missing(self, filename):
+    def load_missing_images_info(self, filename):
         """
         Loads Missing DataFrame from a file
-        :param filename:
-        :return:
+
+        :param filename: Path to the pickle file.
+        :type filename: str
         """
         self.missing = pd.read_pickle(filename, self._compression)
+
+    ############################################################################
+    # Others
+    ############################################################################
+    def _read_image_files_structure(self, directory):
+        folders = sorted([f for f in listdir(directory) if isdir(join(directory, f))])
+        appended_data = []
+        for folder in folders:
+            path_images = join(directory, folder)
+            seq_name = int(folder2name(path_images))
+            # frame = pd.DataFrame(columns=['obs_time', 'seq_no', 'directory', 'filename', 'size'])
+            image_data = []
+            for f in get_h5_filenames(path_images):
+                date = imagefilename2date(f)
+                fullname = join(directory, folder, f)
+                data = {'obs_time': date, 'seq_no': seq_name, 'directory': folder,
+                        'filename': f, 'size': stat(fullname).st_size}
+                image_data.append(data)
+            frame = pd.DataFrame(image_data)
+            appended_data.append(frame)
+        return appended_data
 
     def get_obs_time_from_frame_num(self, seq_no, frame_num):
         """
         Returns Timestamp object related to a missing frame (numeration starts from 0)
+
         :param seq_no: number of sequence
         :param frame_num: number of image in sequence
         :return:
