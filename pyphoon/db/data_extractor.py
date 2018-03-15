@@ -162,6 +162,7 @@ class DataExtractor:
         data['data'] = united['data'].tolist()
         data['seq_no'] = united['seq_no']
         data['idx'] = united['idx'].tolist()
+        data['class'] = united['class'].tolist()
         # for column in united.columns:
         #     dict[column] = united[column]
         # dict['seq_no'] = united['seq_no']
