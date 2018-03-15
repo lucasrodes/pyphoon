@@ -1,12 +1,9 @@
-import os
 from os import path, listdir, stat
 import pandas as pd
 from os.path import isdir, join, exists
 import numpy as np
-from pyphoon.clean.fix import TyphoonListImageFixAlgorithm
-from pyphoon.io.typhoonlist import create_typhoonlist_from_source
-from pyphoon.io.utils import id2date, id2seqno, folder_2_name, get_image_date
-from pyphoon.io.h5 import write_image, read_source_image, get_h5_filenames
+from pyphoon.io.utils import folder2name, imagefilename2date
+from pyphoon.io.h5 import read_source_image, get_h5_filenames
 
 feature_names = ["year", "month", "day", "hour", "class", "latitude",
                  "longitude", "pressure", "wind", "gust", "storm_direc",
@@ -80,11 +77,11 @@ class PDManager:
         appended_data = []
         for folder in folders:
             path_images = join(directory, folder)
-            seq_name = int(folder_2_name(path_images))
+            seq_name = int(folder2name(path_images))
             # frame = pd.DataFrame(columns=['obs_time', 'seq_no', 'directory', 'filename', 'size'])
             image_data = []
             for f in get_h5_filenames(path_images):
-                date = get_image_date(f)
+                date = imagefilename2date(f)
                 fullname = join(directory, folder, f)
                 data = {'obs_time': date, 'seq_no': seq_name, 'directory': folder,
                         'filename': f, 'size': stat(fullname).st_size}
