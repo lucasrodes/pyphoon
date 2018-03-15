@@ -43,7 +43,7 @@ sequence = create_typhoonlist_from_source(
 
 # Visualize sequence
 DisplaySequence(
-    typhoon_sequence=sequence,
+    images=images,
     interval=100,
 ).run()
 ```
@@ -60,4 +60,3 @@ once matured, might be added to the main library. For now, they are available
 * [**tcxtc-deep-classifier**](http://github.com/lucasrodes/tcxtc-deep-classifier): Deep Learning for classification of 
 typhoon satellite imagery in two categories: Tropical Cyclone and 
 Extra-Tropical Cyclone 
-
