@@ -3,7 +3,6 @@
 Get to know the stats behind your best track data. This module focuses on
 the, JMA provided data. Therefore we encourage your to read on the details of
 the data format at `JMA RSMC Tokyo-Typhoon Center`_.
-
 .. _JMA RSMC Tokyo-Typhoon Center:
         http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html
 """
@@ -129,7 +128,6 @@ def plot_2feature_heatmap(data, index1, index2=4, annotation=True,
         .. figure:: ../../docs/source/_static/pyphoon_utils_eda_jma_1.png
            :scale: 100 %
            :alt: map to buried treasure
-
     """
     feature1 = np.sort(list(set(data[:, index1])))
     feature2 = np.sort(list(set(data[:, index2])))

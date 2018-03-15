@@ -1,30 +1,4 @@
 """
-This module provides tools to visualise Digital Typhoon related data.
-This can be extremely helpful when you want to visualize a particular typhoon
-sequence or generate a GIF from it.
-
-Overall, this package is the perfect bridge between your stored data and your
-thoughts. Just bring data to life with it and start exploring!
-
-Getting Started
-^^^^^
-
-Let us visualize the sequence ``201626``, stored at "../data/201626.h5". We
-load it, as usual, using
-:func:`~pyphoon.utils.io.typhoonlist.load_typhoonlist_h5`.
-
->>> from pyphoon.io.typhoonlist import load_typhoonlist_h5
->>> from pyphoon.visualize import DisplaySequence
->>> # Load sequence from HDF file
->>> path = "data/201626.h5"
->>> typhoon_sequence = load_typhoonlist_h5(path_to_file=path)
->>> DisplaySequence(
-    typhoon_sequence=typhoon_sequence,
-    interval=100,
-).run()
-
-Methods and classes
-^^^^^
 """
 
 import matplotlib.pyplot as plt
@@ -33,23 +7,33 @@ from matplotlib import animation
 
 class DisplaySequence(object):
     """ Used to animate a batch of images.
-
-    :var typhoon_sequence: :class:`~pyphoon.utils.io.typhoonlist.TyphoonList`
-        instance. Contains the data to bec displayed.
-    :var interval: Interval between frames while visualizing the animation.
-    :var start_frame: First frame of the sequence to visualize.
-    :var end_frame: Last frame of the sequence to visualize.
-    :var show_title: Set to false if no title should be shown in the figure.
+    :param images: List with image arrays. Each element of the list must be an
+        array of 2 dimensions.
+    :type images: list
+    :param images_ids: List of the ids of the elements in the list *images*.
+    :type images_ids: list
+    :param name: Name
+    :type name: str
+    :param interval: Interval between frames while visualizing the animation.
+    :type interval: int
+    :param start_frame: First image frame of the list to visualize.
+    :type start_frame: int
+    :param end_frame: Last image frame of the list to visualize.
+    :type end_frame: int
+    :param show_title: Set to false if no title should be shown in the figure.
+    :type show_title: bool
     """
-    def __init__(self, typhoon_sequence=None, interval=100, start_frame=0,
+    def __init__(self, images, images_ids, name, interval=100, start_frame=0,
                  end_frame=None, show_title=True, alt_title=None):
 
+        # TODO: check len(images) == len(images_ids)
+
         # Load images
-        self.images = typhoon_sequence.get_data('images')
-        self.ids = typhoon_sequence.get_id('images')
+        self.images = images
+        self.ids = images_ids
 
         # Load name
-        self.name = typhoon_sequence.name
+        self.name = name
 
         # Define display window
         self.start_frame = start_frame
@@ -69,14 +53,6 @@ class DisplaySequence(object):
         plt.axis('off')
         self.im = self.ax.imshow(self.images[0], cmap="Greys")
 
-        """
-        # Other stuff idk
-        match_best_image = [
-            flag == 1 for flag in typhoon_sequence.data['Y'][:, -2]
-        ]
-        self.flag_fix = typhoon_sequence.data['Y'][match_best_image, -1]
-        """
-
     def _init(self):
         """ Resets initial image value
         """
@@ -84,7 +60,6 @@ class DisplaySequence(object):
 
     def _animate(self, i):
         """ Updates the image frame.
-
         :param i: Index of the frame
         :type i: int
         """
