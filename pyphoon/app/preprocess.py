@@ -87,6 +87,9 @@ class DefaultImagePreprocessor(ImagePreprocessor):
             ]
         )
 
+        X -= self.mean
+        X /= self.std
+
         # Normalise
         X = self.reshape(X)
 
