@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 from os.path import exists, isdir, join
 import os
-from pyphoon.io.h5 import read_source_image, write_h5file, write_h5groupfile
-
+from pyphoon.io.h5 import read_source_image, write_h5_dataset_file
 from pyphoon.db.pd_manager import PDManager
 
 class DataExtractor:
@@ -14,6 +13,7 @@ class DataExtractor:
     def __init__(self, original_images_dir, corrected_images_dir, pd_manager):
         """
         Constructor
+
         :param original_images_dir: Original images directory
         :param corrected_images_dir: Corrected images directory
         :param pd_manager: PDManager object
@@ -26,10 +26,10 @@ class DataExtractor:
     def get_good_triplets(self, pd_manager, seq_no, allow_corrected=True):
         """
         Gets triplets of frames (3 subsequent frames) from a given sequence, where non of frames is missing
+
         :param seq_no: Number of sequence (ID)
         :param corrected_dir: Corrected images directory
         :param allow_corrected: Allow including corrected images into triplets
-        :return:
         """
 
 
@@ -61,6 +61,7 @@ class DataExtractor:
                                          preprocess_algorithm=None):
         """
         Generates chunks of hdf5 files, containing images and besttrack data
+
         :param pd_manager: PDManager object
         :param sequence_list: List of tuples [(seq_no, prefix), ...]
         :type sequence_list: list
@@ -115,8 +116,18 @@ class DataExtractor:
                 self._write_chunk(filename=_filename, chunk=chunk)
 
     def _write_chunk(self, filename, chunk):
+        """
+        Writing chunk of data to hdf5 file routine.
+
+        :param filename: Output filename.
+        :type filename: str
+        :param chunk: Input chunk of data.
+        :type chunk: list of pd.DataFrame
+        """
+
         united = pd.concat(chunk, axis=0)
         united.reset_index(inplace=True)
+        # write_h5_dataset_file(united.to_dict(), filename)
         store = pd.HDFStore(filename, mode='w')
         for col in united.columns:
             store.put(col, united[col])
