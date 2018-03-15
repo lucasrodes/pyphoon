@@ -3,13 +3,6 @@ pyphoon\.io
 
 .. automodule:: pyphoon.io.__init__
 
-pyphoon\.io\.typhoonlist
-************************
-
-.. automodule:: pyphoon.io.typhoonlist
-    :members:
-    :show-inheritance:
-
 -----
 
 pyphoon\.io\.h5
@@ -36,4 +29,3 @@ pyphoon\.io\.utils
 .. automodule:: pyphoon.io.utils
     :members:
     :show-inheritance:
-

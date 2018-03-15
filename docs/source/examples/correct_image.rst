@@ -22,34 +22,34 @@ There can be up to three main steps when fixing a sequence:
 
 *   **detection**: Detect image frames with corrupted pixel values.
 *   **correction**: Correct the corrupted pixel values in detected image frames.
-*   **fillgaps**: Generate synthetic images to fill temporal gaps. For
+*   **generation**: Generate synthetic images to fill temporal gaps. For
     instance, if two images are 3 hour apart, it means that there are two frames
     missing in between, since the observation frequency is supposed to be of 1h.
     Hence, with some methods, we can artificially generate the images that
     should occupy this temporal space.
 
 Each of the above techniques may be implemented using different algorithms.
-These can be found in the modules :mod:`pyphoon.clean.detection`,
-:mod:`pyphoon.clean.correction` and :mod:`pyphoon.clean.fillgaps`,
+These can be found in the modules :mod:`pyphoon.clean_satellite.detection`,
+:mod:`pyphoon.clean_satellite.correction` and :mod:`pyphoon.clean_satellite.generation`,
 respectively. A fixing algorithm is defined using the class
-:class:`~pyphoon.clean.fix.TyphoonListImageFixAlgorithm`. This class, accepts
-as arguments methods for **detection**, **correction** and **fillgap**. There
-is no need to use all of them, so one might decide to only perform, for
-instance, detection and correction.
+:class:`~pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm`. This
+class, accepts as arguments methods for **detection**, **correction** and
+**generation**. There is no need to use all of them, so one might decide to
+only perform, for instance, detection and correction.
 
->>> from pyphoon.clean.fix import TyphoonListImageFixAlgorithm
->>> from pyphoon.clean.detection import detect_corrupted_pixels_1
->>> from pyphoon.clean.correction import correct_corrupted_pixels_1
->>> from pyphoon.clean.fillgaps import generate_new_frames_1
+>>> from pyphoon.clean_satellite.fix import TyphoonListImageFixAlgorithm
+>>> from pyphoon.clean_satellite.detection import detect_corrupted_pixels_1
+>>> from pyphoon.clean_satellite.correction import correct_corrupted_pixels_1
+>>> from pyphoon.clean_satellite.generation import generate_new_frames_1
 >>> # Define algorithm
 >>> fix_algorithm = TyphoonListImageFixAlgorithm(
 ...    detect_fct=detect_corrupted_pixels_1,
 ...    correct_fct=correct_corrupted_pixels_1,
-...    fillgaps_fct=generate_new_frames_1,
+...    generate_fct=generate_new_frames_1,
 ...    detect_params={'min_th': 160, 'max_th': 310},
 ...    n_frames_th=2
 ...)
 
-To apply the algorithm simply use method :func:`~pyphoon.clean.fix.TyphoonListImageFixAlgorithm.apply`.
+Finally, To apply the algorithm simply use method :func:`~pyphoon.clean.fix.TyphoonListImageFixAlgorithm.apply`.
 
->>> sequence_corrected = fix_algorithm.apply(sequence)
+>>> iamges_fixed, images_ids_fixed = fix_algorithm.apply(images, images_ids)

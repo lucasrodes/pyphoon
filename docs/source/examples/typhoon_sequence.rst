@@ -1,49 +1,64 @@
 Typhoon sequence
 ================
 
-This library provides the class :class:`~pyphoon.io.typhoonlist.TyphoonList`,
-which makes it really easy to integrate different data sources and generate a
-single object for a given sequence. Make sure to replace ``path_image`` with
-the path of the directory containing all sequence image folders,
-``typhoon_id`` with the typhoon sequence id (e.g. 201725) and ``path_best``
-with the directory path containing all sequence's TSV best data files.
+Sometimes it may be interesting to visualise a single typhoon sequence.
+Luckily, this can be easily done with the module :mod:`pyphoon.visualise`. In
+this example we will show first how to load the data related to a typhoon
+sequence and next we will show how to animate the list of images!
+
+Make sure to replace ``path_image`` with the path of the directory containing
+all sequence image folders, ``sequence_no`` with the typhoon sequence
+identifier (e.g. 201725) and ``path_best`` with the directory path containing
+all sequence's TSV best data files.
 
 
-Load a typhoon sequence data
+Load typhoon sequence data
 ----------------------------
 
-Loading typhoon data from a specific sequence is done with the method
-:func:`~pyphoon.io.typhoonlist.create_typhoonlist_from_source`. You
-can read only image data
+In this example we use the library methods to load the data, which assume
+that you follow the same data structure presented in section `Data <data>`_.
+If that is not the case, feel free to implement your own loading functions.
+Note that the data, once loaded, should be of type ``list``.
 
->>> from pyphoon.io.typhoonlist import create_typhoonlist_from_source
->>> from os.path import join
->>> sequence = create_typhoonlist_from_source(
-...    name=typhoon_id,
-...    images=join(path_image, typhoon_id)
-...)
 
-or also include best data
+On the one hand, to load the typhoon image data we use methods
+:func:`~pyphoon.io.h5.read_source_images` and :func:`~pyphoon.io.utils.get_image_ids`,
+which load the images and get their correspoding sample ids, respectively.
+Each sample is identified by a unique **ids**, which is constructed using the
+sequence identifier of the sequence that frame belongs to and the date the
+sample data was registered.
 
->>> from pyphoon.io.typhoonlist import create_typhoonlist_from_source
->>> from os.path import join
->>> sequence = create_typhoonlist_from_source(
-...    name=typhoon_id,
-...    images=join(path_image, typhoon_id),
-...    best=join(path_best, typhoon_id, '.tsv')
-...)
+
+>>> from pyphoon.io.h5 import read_source_images
+>>> from pyphoon.io.utils import get_image_ids
+>>> images = read_source_images(join(path_image, sequence_no))
+>>> images_ids = get_image_ids(join(path_image, sequence_no))
+
+Above, ``images`` is a list containing the images of the sequence as arrays and
+``image_ids`` is a list with the corresponding image sample ids.
+
+On the other hand, we load best data is done similarly, using methods
+:func:`~pyphoon.io.tsv.read_tsv` and :func:`~pyphoon.io.utils.get_best_ids`.
+
+>>> from pyphoon.io.tsv import read_tsv
+>>> from pyphoon.io.utils import get_best_ids
+>>> best = read_tsv(join(path_best, sequence_no))
+>>> best_ids = get_best_ids(image)
+
+Above, ``best`` is a list containing the best data of each sample in the
+typhoon sequence. Likewise, ``best_ids`` contains the corresponding sample ids.
+
 
 -----
 
 Visualise a typhoon sequence
 ----------------------------
 
-Plotting one specific image frame from the sequence is rather easy. Just use
-the method :func:`~pyphoon.io.typhoonlist.TyphoonList.get_data` from
-:class:`~pyphoon.io.typhoonlist.TyphoonList`.
+Plotting one specific image frame from the sequence is rather easy.
 
 >>> import matplotlib.pyplot as plt
->>> plt.imshow(sequence.get_data('images')[10], cmap="Greys")
+>>> plt.imshow(images[10], cmap="Greys")
+>>> plt.title(images_ids[10])
 >>> plt.show()
 
 You can easily display all the image frames in a typhoon sequence using the
@@ -51,7 +66,9 @@ class :class:`~pyphoon.visualize.DisplaySequence`.
 
 >>> from pyphoon.visualize import DisplaySequence
 >>> DisplaySequence(
-...    typhoon_sequence=sequence,
+...    images=images,
+...    images_ids=images_ids,
+...    name=sequence_no,
 ...    interval=100
 ...).run
 
@@ -61,23 +78,8 @@ If you want to display the sequence in a Jupyter notebook use the method
 >>> from pyphoon.visualize import DisplaySequence
 >>> from IPython.display import HTML
 >>> HTML(DisplaySequence(
-...    typhoon_sequence=sequence,
+...    images=images,
+...    images_ids=images_ids,
+...    name=sequence_no,
 ...    interval=100
 ...).run_html())
-
------
-
-Export typhoon sequence
------------------------
-
-A :class:`~pyphoon.io.typhoonlist.TyphoonList` instance can be stored as a
-single HDF file using its method :func:`~pyphoon.io.typhoonlist.TyphoonList.save_as_h5`.
-
->>> sequence.save_as_h5(join(path_new_data, typhoon_id, '.h5'), compression='gzip')
-
-Likewise, we can load the stored h5 file using the method
-:func:`~pyphoon.io.typhoonlist.load_typhoonlist_h5`.
-
->>> from pyphoon.io.typhoonlist import load_typhoonlist_h5
->>> sequence = load_typhoonlist_h5(join(path_new_data, typhoon_id, '.h5'))
-
