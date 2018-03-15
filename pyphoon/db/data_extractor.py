@@ -33,8 +33,6 @@ class DataExtractor:
         :type allow_corrected: bool
         """
 
-
-
     def _read_seq(self, seq_no):
         images = self.pd_man.images
         besttrack = self.pd_man.besttrack

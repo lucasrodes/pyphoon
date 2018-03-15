@@ -7,6 +7,7 @@ from pyphoon.app.preprocess import DefaultImagePreprocessor
 ################################################################################
 # H5 CHUNKs (for training)
 ################################################################################
+# TODO: Only return two elements - (i) images, (ii) best
 def read_h5datachunk(path_to_file, shuffle=False, preprocessor=None):
     """ Reads a chunk of data stored as h5.
 
@@ -76,13 +77,16 @@ def data_generator(X, Y, batch_sz, shuffle=True):
             # Shuffle data
             pos = np.arange(X.shape[0])
             np.random.shuffle(pos)
-            X = X[pos]
-            Y = Y[pos]
+            _X = X[pos]
+            _Y = Y[pos]
+        else:
+            _X = X
+            _Y = Y
 
         # Generate batches
         imax = int(X.shape[0] / batch_sz)
         for i in range(imax):
             # Find list of IDs
-            x = X[i * batch_sz:(i + 1) * batch_sz]
-            y = Y[i * batch_sz:(i + 1) * batch_sz]
+            x = _X[i * batch_sz:(i + 1) * batch_sz]
+            y = _Y[i * batch_sz:(i + 1) * batch_sz]
             yield x, y
