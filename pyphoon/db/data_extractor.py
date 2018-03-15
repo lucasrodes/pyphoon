@@ -3,6 +3,7 @@ from os.path import exists, isdir, join
 import os
 from pyphoon.io.h5 import read_source_image, write_h5_dataset_file
 from pyphoon.db.pd_manager import PDManager
+import time
 
 
 class DataExtractor:
@@ -33,7 +34,14 @@ class DataExtractor:
         :type allow_corrected: bool
         """
 
-    def _read_seq(self, seq_no):
+    def _read_seq(self, seq_no, preprocess_algorithm):
+        """
+        Disclaimer: Dont read this code
+
+        :param seq_no:
+        :param preprocess_algorithm:
+        :return:
+        """
         images = self.pd_man.images
         besttrack = self.pd_man.besttrack
         corrected = self.pd_man.corrected
@@ -48,9 +56,15 @@ class DataExtractor:
                 corrected_entry = corrected.loc[index]
                 size += corrected_entry['size']
                 data = read_source_image(join(self.corrected_images_dir, corrected_entry.directory, corrected_entry.filename))
+                if preprocess_algorithm:
+                    data = preprocess_algorithm(data.reshape(1, data.shape[0],
+                                                             data.shape[1]))
             else:
                 size += frame['size']
                 data = read_source_image(join(self.original_images_dir, frame.directory, frame.filename))
+                if preprocess_algorithm:
+                    data = preprocess_algorithm(data.reshape(1, data.shape[0],
+                                                             data.shape[1]))
             read_data.append([seq_no, obs_time, data])
         pd_read_data = pd.DataFrame(data=read_data, columns=['seq_no', 'obs_time', 'data'])
         pd_read_data.set_index(['seq_no', 'obs_time'], drop=True, inplace=True)
@@ -58,7 +72,8 @@ class DataExtractor:
         return pd_read_data, size
 
     def generate_images_besttrack_chunks(self, sequence_list, chunk_size, output_dir,
-                                         preprocess_algorithm=None):
+                                         preprocess_algorithm=None,
+                                         display=False):
         """
         Generates chunks of hdf5 files, containing images and besttrack data
 
@@ -90,31 +105,39 @@ class DataExtractor:
                 raise NotADirectoryError(self.corrected_images_dir + ' is not a directory')
             if corrupted.empty:
                 raise Exception('Corrupted DataFrame should be created when corrected_dir is not None')
+
         # group by prefix
         sequences = pd.DataFrame(sequence_list, columns=['seq_no', 'prefix'])
         chunk = []
         size = 0
         _filename = ''
         for prefix, data in sequences.groupby('prefix'):
+            print(prefix)
             serial_num = 0
             for entry in data.iterrows():
                 _seq_no = entry[1].seq_no
-                data, seq_size = self._read_seq(seq_no=_seq_no)
-                if preprocess_algorithm:
-                    data = preprocess_algorithm(data)
+                print("",_seq_no) if display else 0
+                data, seq_size = self._read_seq(seq_no=_seq_no,
+                                                preprocess_algorithm=preprocess_algorithm)
                 chunk.append(data)
                 size += seq_size
                 if size >= chunk_size:
                     # write chunk to disk
                     _filename = join(output_dir, '{0}_{1}.h5'.format(prefix, serial_num))
+                    print(" --> storing", _filename) if display else 0
+                    t0 = time.time()
                     self._write_chunk(filename=_filename, chunk=chunk)
+                    print(" --> done in", time.time()-t0) if display else 0
                     serial_num += 1
                     size = 0
                     chunk = []
             if not len(chunk) == 0:
                 # write leftovers
                 _filename = join(output_dir, '{0}_{1}.h5'.format(prefix, serial_num))
+                print(" --> storing", _filename) if display else 0
+                t0 = time.time()
                 self._write_chunk(filename=_filename, chunk=chunk)
+                print(" --> done in", time.time() - t0) if display else 0
 
     def _write_chunk(self, filename, chunk):
         """
@@ -134,17 +157,17 @@ class DataExtractor:
 
         united['idx'] = united.apply(lambda x: get_id(x['obs_time'], x['seq_no']), axis=1)
         # united.drop(['obs_time', 'seq_no'], inplace=True, axis=1)
-        dict = {}
-        dict['pressure'] = united['pressure'].tolist()
-        dict['data'] = united['data'].tolist()
-        dict['seq_no'] = united['seq_no']
-        dict['idx'] = united['idx'].tolist()
+        data = {}
+        data['pressure'] = united['pressure'].tolist()
+        data['data'] = united['data'].tolist()
+        data['seq_no'] = united['seq_no']
+        data['idx'] = united['idx'].tolist()
         # for column in united.columns:
         #     dict[column] = united[column]
         # dict['seq_no'] = united['seq_no']
         # dict['data'] = united['data']
 
-        write_h5_dataset_file(dict, filename, compression='gzip')
+        write_h5_dataset_file(data, filename, compression='gzip')
         # store = pd.HDFStore(filename, mode='w')
         # for col in united.columns:
         #     store.put(col, united[col])
