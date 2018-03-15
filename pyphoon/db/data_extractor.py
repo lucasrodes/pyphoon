@@ -1,9 +1,9 @@
 import pandas as pd
-import numpy as np
 from os.path import exists, isdir, join
 import os
 from pyphoon.io.h5 import read_source_image, write_h5_dataset_file
 from pyphoon.db.pd_manager import PDManager
+
 
 class DataExtractor:
     """
