@@ -130,11 +130,27 @@ class DataExtractor:
 
         united = pd.concat(chunk, axis=0)
         united.reset_index(inplace=True)
-        # write_h5_dataset_file(united.to_dict(), filename)
-        store = pd.HDFStore(filename, mode='w')
-        for col in united.columns:
-            store.put(col, united[col])
-        store.close()
+
+        def get_id(dt, seq):
+            return str(seq) + '_' + dt.strftime("%Y%m%d%H")
+
+        united['idx'] = united.apply(lambda x: get_id(x['obs_time'], x['seq_no']), axis=1)
+        # united.drop(['obs_time', 'seq_no'], inplace=True, axis=1)
+        dict = {}
+        dict['pressure'] = united['pressure'].tolist()
+        dict['data'] = united['data'].tolist()
+        dict['seq_no'] = united['seq_no']
+        dict['idx'] = united['idx'].tolist()
+        # for column in united.columns:
+        #     dict[column] = united[column]
+        # dict['seq_no'] = united['seq_no']
+        # dict['data'] = united['data']
+
+        write_h5_dataset_file(dict, filename, compression='gzip')
+        # store = pd.HDFStore(filename, mode='w')
+        # for col in united.columns:
+        #     store.put(col, united[col])
+        # store.close()
         # don't know if i need to call flush() here or not
 
 
