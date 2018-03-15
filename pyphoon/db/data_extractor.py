@@ -23,14 +23,16 @@ class DataExtractor:
         self.corrected_images_dir = corrected_images_dir
         self.pd_man = pd_manager
 
-    def get_good_triplets(self, pd_manager, seq_no, allow_corrected=True):
+    def get_good_triplets(self, seq_no, allow_corrected=True):
         """
         Gets triplets of frames (3 subsequent frames) from a given sequence, where non of frames is missing
 
         :param seq_no: Number of sequence (ID)
-        :param corrected_dir: Corrected images directory
+        :type seq_no: int
         :param allow_corrected: Allow including corrected images into triplets
+        :type allow_corrected: bool
         """
+
 
 
     def _read_seq(self, seq_no):
@@ -57,20 +59,21 @@ class DataExtractor:
         pd_read_data = pd_read_data.join(besttrack)
         return pd_read_data, size
 
-    def generate_images_besttrack_chunks(self, pd_manager, sequence_list, chunk_size, output_dir,
+    def generate_images_besttrack_chunks(self, sequence_list, chunk_size, output_dir,
                                          preprocess_algorithm=None):
         """
         Generates chunks of hdf5 files, containing images and besttrack data
 
-        :param pd_manager: PDManager object
         :param sequence_list: List of tuples [(seq_no, prefix), ...]
         :type sequence_list: list
         :param chunk_size: Size of chunks in bytes
+        :type chunk_size: int
         :param output_dir: Output dir
+        :type output_dir: str
         :param preprocess_algorithm: Algorithm for data preprocessing, which returns data of the same shape as an input
-        :return:
         """
         # Parameters checking
+        pd_manager = self.pd_man
         assert isinstance(pd_manager, PDManager)
         assert isinstance(sequence_list, list)
         assert isinstance(chunk_size, int)
