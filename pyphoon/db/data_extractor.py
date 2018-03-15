@@ -132,6 +132,7 @@ class DataExtractor:
         store = pd.HDFStore(filename, mode='w')
         for col in united.columns:
             store.put(col, united[col])
+        store.close()
         # don't know if i need to call flush() here or not
 
 
