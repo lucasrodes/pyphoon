@@ -31,20 +31,20 @@ Refer to the instructions [here](http://lcsrg.me/pyphoon/build/html/env_setup.ht
 ### Load and visualize sequence
 
 ```python
-from pyphoon.io.typhoonlist import create_typhoonlist_from_source
-from pyphoon.visualize import DisplaySequence
 
 # Load a sequence
-sequence = create_typhoonlist_from_source(
-    name='201725',
-    images='sampledata/datasets/image/200717',
-    best='sampledata/datasets/jma/200717.tsv'
-)
+from pyphoon.io.h5 import read_source_images
+from pyphoon.io.utils import get_image_ids
+images = read_source_images('sampledata/datasets/image/200717')
+images_ids = get_image_ids('sampledata/datasets/image/200717')
 
-# Visualize sequence
+# Display sequence
+from pyphoon.visualise import DisplaySequence
 DisplaySequence(
     images=images,
-    interval=100,
+    images_ids=images_ids,
+    name='200717',
+    interval=100
 ).run()
 ```
 
