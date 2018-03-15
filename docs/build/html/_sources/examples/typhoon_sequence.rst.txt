@@ -62,9 +62,9 @@ Plotting one specific image frame from the sequence is rather easy.
 >>> plt.show()
 
 You can easily display all the image frames in a typhoon sequence using the
-class :class:`~pyphoon.visualise.DisplaySequence`.
+class :class:`~pyphoon.visualize.DisplaySequence`.
 
->>> from pyphoon.visualise import DisplaySequence
+>>> from pyphoon.visualize import DisplaySequence
 >>> DisplaySequence(
 ...    images=images,
 ...    images_ids=images_ids,
@@ -73,9 +73,9 @@ class :class:`~pyphoon.visualise.DisplaySequence`.
 ...).run
 
 If you want to display the sequence in a Jupyter notebook use the method
-:func:`~pyphoon.visualise.DisplaySequence.run_html` instead as
+:func:`~pyphoon.visualize.DisplaySequence.run_html` instead as
 
->>> from pyphoon.visualise import DisplaySequence
+>>> from pyphoon.visualize import DisplaySequence
 >>> from IPython.display import HTML
 >>> HTML(DisplaySequence(
 ...    images=images,

@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Typhoon sequence &mdash; pyphoon documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="pyphoon documentation" href="../index.html"/>
+        <link rel="up" title="Examples" href="../examples.html"/>
+        <link rel="next" title="Correcting image data" href="correct_image.html"/>
+        <link rel="prev" title="Best Track data Exploratory Data Analysis" href="best_eda.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/pyphoon_logo_large.png" class="logo" />
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../home.html">Home</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Getting started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../environment.html">Development environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data.html">Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="best_eda.html">Best Track EDA</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Working with a typhoon sequence</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#load-typhoon-sequence-data">Load typhoon sequence data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visualise-a-typhoon-sequence">Visualise a typhoon sequence</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="correct_image.html">Correcting image data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_db.html">Create database</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faqs.html">FAQs</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Projects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../projects/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../projects/tcxtc.html">tcxtc</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.io.html">pyphoon.io</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.db.html">pyphoon.db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.app.html">pyphoon.app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.visualise.html">pyphoon.visualise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pyphoon.eda_jma.html">pyphoon.eda_jma</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyphoon</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../examples.html">Examples</a> &raquo;</li>
+        
+      <li>Typhoon sequence</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+    
+        <div class="section" id="typhoon-sequence">
+<h1>Typhoon sequence<a class="headerlink" href="#typhoon-sequence" title="Permalink to this headline">¶</a></h1>
+<p>Sometimes it may be interesting to visualise a single typhoon sequence.
+Luckily, this can be easily done with the module <a class="reference internal" href="../pyphoon.visualise.html#module-pyphoon.visualise" title="pyphoon.visualise"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.visualise</span></code></a>. In
+this example we will show first how to load the data related to a typhoon
+sequence and next we will show how to animate the list of images!</p>
+<p>Make sure to replace <code class="docutils literal"><span class="pre">path_image</span></code> with the path of the directory containing
+all sequence image folders, <code class="docutils literal"><span class="pre">sequence_no</span></code> with the typhoon sequence
+identifier (e.g. 201725) and <code class="docutils literal"><span class="pre">path_best</span></code> with the directory path containing
+all sequence’s TSV best data files.</p>
+<div class="section" id="load-typhoon-sequence-data">
+<h2>Load typhoon sequence data<a class="headerlink" href="#load-typhoon-sequence-data" title="Permalink to this headline">¶</a></h2>
+<p>In this example we use the library methods to load the data, which assume
+that you follow the same data structure presented in section <a class="reference external" href="data">Data</a>.
+If that is not the case, feel free to implement your own loading functions.
+Note that the data, once loaded, should be of type <code class="docutils literal"><span class="pre">list</span></code>.</p>
+<p>On the one hand, to load the typhoon image data we use methods
+<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.h5.read_source_images" title="pyphoon.io.h5.read_source_images"><code class="xref py py-func docutils literal"><span class="pre">read_source_images()</span></code></a> and <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.utils.get_image_ids" title="pyphoon.io.utils.get_image_ids"><code class="xref py py-func docutils literal"><span class="pre">get_image_ids()</span></code></a>,
+which load the images and get their correspoding sample ids, respectively.
+Each sample is identified by a unique <strong>ids</strong>, which is constructed using the
+sequence identifier of the sequence that frame belongs to and the date the
+sample data was registered.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="k">import</span> <span class="n">read_source_images</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.utils</span> <span class="k">import</span> <span class="n">get_image_ids</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="n">read_source_images</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_image</span><span class="p">,</span> <span class="n">sequence_no</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images_ids</span> <span class="o">=</span> <span class="n">get_image_ids</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_image</span><span class="p">,</span> <span class="n">sequence_no</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Above, <code class="docutils literal"><span class="pre">images</span></code> is a list containing the images of the sequence as arrays and
+<code class="docutils literal"><span class="pre">image_ids</span></code> is a list with the corresponding image sample ids.</p>
+<p>On the other hand, we load best data is done similarly, using methods
+<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.tsv.read_tsv" title="pyphoon.io.tsv.read_tsv"><code class="xref py py-func docutils literal"><span class="pre">read_tsv()</span></code></a> and <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.utils.get_best_ids" title="pyphoon.io.utils.get_best_ids"><code class="xref py py-func docutils literal"><span class="pre">get_best_ids()</span></code></a>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.tsv</span> <span class="k">import</span> <span class="n">read_tsv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.utils</span> <span class="k">import</span> <span class="n">get_best_ids</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best</span> <span class="o">=</span> <span class="n">read_tsv</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_best</span><span class="p">,</span> <span class="n">sequence_no</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best_ids</span> <span class="o">=</span> <span class="n">get_best_ids</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Above, <code class="docutils literal"><span class="pre">best</span></code> is a list containing the best data of each sample in the
+typhoon sequence. Likewise, <code class="docutils literal"><span class="pre">best_ids</span></code> contains the corresponding sample ids.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="visualise-a-typhoon-sequence">
+<h2>Visualise a typhoon sequence<a class="headerlink" href="#visualise-a-typhoon-sequence" title="Permalink to this headline">¶</a></h2>
+<p>Plotting one specific image frame from the sequence is rather easy.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">images_ids</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can easily display all the image frames in a typhoon sequence using the
+class <code class="xref py py-class docutils literal"><span class="pre">DisplaySequence</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualize</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DisplaySequence</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">images_ids</span><span class="o">=</span><span class="n">images_ids</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">name</span><span class="o">=</span><span class="n">sequence_no</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">interval</span><span class="o">=</span><span class="mi">100</span>
+<span class="go">...).run</span>
+</pre></div>
+</div>
+<p>If you want to display the sequence in a Jupyter notebook use the method
+<code class="xref py py-func docutils literal"><span class="pre">run_html()</span></code> instead as</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualize</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">DisplaySequence</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">images_ids</span><span class="o">=</span><span class="n">images_ids</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">name</span><span class="o">=</span><span class="n">sequence_no</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">interval</span><span class="o">=</span><span class="mi">100</span>
+<span class="go">...).run_html())</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+    
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="correct_image.html" class="btn btn-neutral float-right" title="Correcting image data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="best_eda.html" class="btn btn-neutral" title="Best Track data Exploratory Data Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kitamoto Lab interns.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'2018a',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
