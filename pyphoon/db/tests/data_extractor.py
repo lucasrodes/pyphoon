@@ -36,7 +36,7 @@ class TestDataExtractorMethods(unittest.TestCase):
         de = DataExtractor(self.images_dir, self.corrected_dir, pd_man)
         output_dir = 'output'
         seq_list = [(198702, 'train'), (200717, 'train'), (200718, 'test')]
-        de.generate_images_besttrack_chunks(pd_man, self.images_dir, seq_list, chunk_size=1024 ** 2,
+        de.generate_images_besttrack_chunks(pd_man, seq_list, chunk_size=1024 ** 2,
                                             output_dir=output_dir)
         f = h5py.File(join(output_dir, 'test_0.h5'), 'r')
         keys = f.keys()
