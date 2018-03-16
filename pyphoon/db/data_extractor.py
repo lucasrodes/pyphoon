@@ -35,7 +35,7 @@ class DataExtractor:
         """
 
     # TODO: read corrected/generated as optional
-    def read_seq(self, seq_no, preprocess_algorithm):
+    def _read_seq(self, seq_no, preprocess_algorithm):
         """
         Disclaimer: Dont read this code
 
@@ -176,4 +176,17 @@ class DataExtractor:
         # store.close()
         # don't know if i need to call flush() here or not
 
+    def read_seq(self, seq_no, preprocess_algorithm, features):
+        from pyphoon.io.utils import date2id
 
+        if isinstance(seq_no, str):
+            seq_no = int(seq_no)
+        data, _ = self._read_seq(seq_no, preprocess_algorithm)
+        images = data['data'].tolist()
+        images_ids = [date2id(o[1], str(o[0])) for o in data.index.tolist()]
+
+        features_data = {}
+        for feature in features:
+            features_data[feature] = data[feature].tolist()
+
+        return images, images_ids, features_data
