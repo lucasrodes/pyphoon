@@ -91,3 +91,41 @@ def data_generator(X, Y, batch_sz, shuffle=True):
             x = _X[i * batch_sz:(i + 1) * batch_sz]
             y = _Y[i * batch_sz:(i + 1) * batch_sz]
             yield x, y
+
+
+# TODO: not implemented
+def _data_generator_from_file(file, Y, batch_sz, shuffle=True):
+    """ Generates batches of data from samples **X** and labels **Y**.
+
+    :param X: Sample data.
+    :type X: numpy.array
+    :param Y: Label data.
+    :type Y: numpy.array
+    :param batch_sz: Batch size.
+    :type batch_sz: int
+    :param shuffle: Set to True to shuffle the batch data (recommended)
+    :type shuffle: bool, default True
+    :return:
+    """
+    count = 0
+    while True:
+        # Read
+
+        # Shuffle
+        if shuffle:
+            # Shuffle data
+            pos = np.arange(X.shape[0])
+            np.random.shuffle(pos)
+            _X = X[pos]
+            _Y = Y[pos]
+        else:
+            _X = X
+            _Y = Y
+
+        # Generate batches
+        imax = int(X.shape[0] / batch_sz)
+        for i in range(imax):
+            # Find list of IDs
+            x = _X[i * batch_sz:(i + 1) * batch_sz]
+            y = _Y[i * batch_sz:(i + 1) * batch_sz]
+            yield x, y
