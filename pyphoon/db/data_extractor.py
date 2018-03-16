@@ -34,7 +34,8 @@ class DataExtractor:
         :type allow_corrected: bool
         """
 
-    def _read_seq(self, seq_no, preprocess_algorithm):
+    # TODO: read corrected/generated as optional
+    def read_seq(self, seq_no, preprocess_algorithm):
         """
         Disclaimer: Dont read this code
 
