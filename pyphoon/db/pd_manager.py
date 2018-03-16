@@ -172,7 +172,7 @@ class PDManager:
         """
         joined = pd.concat([self.images, self.besttrack], axis=1, join='inner')
         if len(joined) == 0:
-            raise Exception('Both corrected and original tables should be loaded first')
+            raise Exception('Both besttrack and original tables should be loaded first')
         seqs = joined.groupby('seq_no')
         frame_deltas = pd.DataFrame(
             columns=['start_time', 'time_step', 'frames_num', 'missing_num', 'completeness', 'missing_frames',
@@ -197,9 +197,9 @@ class PDManager:
                                       missing,
                                       have_good_neighbours]
             # store information about frames in images dataframe
-            frames = list(range(0, frame_deltas.loc[name, 'frames_num']))
-            frames = [frame for frame in frames if frame not in frame_deltas.loc[name, 'missing_frames']]
-            self.images.loc[name, 'frame'] = frames
+            # frames = list(range(0, frame_deltas.loc[name, 'frames_num']))
+            # frames = [frame for frame in frames if frame not in frame_deltas.loc[name, 'missing_frames']]
+            # self.images.loc[name, 'frame'] = frames
         # frame_deltas = frame_deltas[frame_deltas.missing_num > 0]
         self.missing = frame_deltas
 
@@ -220,6 +220,26 @@ class PDManager:
         :type filename: str
         """
         self.missing = pd.read_pickle(filename, self._compression)
+
+    def add_frames(self):
+        """
+        Adds frames numbers to the original images dataframe. Both original images and missing dataframes
+        should be loaded.
+
+        :raises: Exception
+        """
+        union = set(self.missing.index).union(self.images.index.get_level_values(0).unique())
+        if len(union) == 0 or len(union) != len(self.images.index.get_level_values(0).unique()):
+            raise Exception('Both original and missing dataframes should be loaded first')
+        for seq_no in self.missing.index:
+            missing_frames = self.missing.loc[seq_no, 'missing_frames']
+            frame_nums = len(self.images.loc[seq_no]) + len(missing_frames)
+            frames = list(range(0, frame_nums))
+            frames = [frame for frame in frames if frame not in missing_frames]
+            self.images.loc[seq_no, 'frame'] = frames
+
+
+
 
     ############################################################################
     # Others

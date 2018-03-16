@@ -24,7 +24,6 @@ class TestPdManagerMethods(unittest.TestCase):
         self.corrected_dir = '../../../sampledata/datasets/corrected'
         self.best_dir = '../../../sampledata/datasets/jma'
 
-
     def test_add_besttrack(self):
         temp_db = 'temp.pkl'
         if os.path.exists(temp_db):
@@ -143,6 +142,15 @@ class TestPdManagerMethods(unittest.TestCase):
         self.assertTrue(pd_man.images.loc[198702, 'frame'].is_monotonic_increasing)
         self.assertTrue(len(set(pd_man.images.loc[198702, 'frame']).intersection([19, 21, 40, 149])) == 0)
 
+    def test_add_frames(self):
+        pd_man = PDManager()
+        pd_man.add_original_images(self.images_dir)
+        pd_man.add_besttrack(self.best_dir)
+        pd_man.add_missing_images_info()
+        self.assertFalse(pd_man.images.columns.contains('frame'))
+        pd_man.add_frames()
+        self.assertTrue(pd_man.images.columns.contains('frame'))
+        self.assertEqual(pd_man.images['frame'].isnull().sum(), 0)
 
 if __name__ == '__main__':
     unittest.main()
