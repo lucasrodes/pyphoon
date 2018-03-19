@@ -35,7 +35,7 @@ class DataExtractor:
         """
 
     # TODO: read corrected/generated as optional
-    def _read_seq(self, seq_no, preprocess_algorithm):
+    def _read_seq(self, seq_no, preprocess_algorithm=None):
         """
         Disclaimer: Dont read this code
 
@@ -223,7 +223,7 @@ class DataExtractor:
         # store.close()
         # don't know if i need to call flush() here or not
 
-    def read_seq(self, seq_no, preprocess_algorithm, features):
+    def read_seq(self, seq_no, features, preprocess_algorithm=None):
         from pyphoon.io.utils import date2id
 
         if isinstance(seq_no, str):
