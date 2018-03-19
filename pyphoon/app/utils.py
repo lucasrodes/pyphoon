@@ -93,6 +93,46 @@ def data_generator(X, Y, batch_sz, shuffle=True):
             yield x, y
 
 
+def data_generator_chunklist(X, Y, batch_sz, shuffle=True):
+    """ Generates batches of data from samples **X** and labels **Y**.
+
+    :param X: Sample data.
+    :type X: list
+    :param Y: Label data.
+    :type Y: list
+    :param batch_sz: Batch size.
+    :type batch_sz: int
+    :param shuffle: Set to True to shuffle the batch data (recommended)
+    :type shuffle: bool, default True
+    :return:
+    """
+    n_chunks = len(X)
+    indices = list(range(n_chunks))
+    np.random.shuffle(indices)
+    while True:
+        if shuffle:
+            np.random.shuffle(indices)
+        for idx in indices:
+            _X = X[idx]
+            _Y = Y[idx]
+            if shuffle:
+                # Shuffle data
+                pos = np.arange(_X.shape[0])
+                np.random.shuffle(pos)
+                _X = _X[pos]
+                _Y = _Y[pos]
+            else:
+                pass
+
+            # Generate batches
+            imax = int(_X.shape[0] / batch_sz)
+            for i in range(imax):
+                # Find list of IDs
+                x = _X[i * batch_sz:(i + 1) * batch_sz]
+                y = _Y[i * batch_sz:(i + 1) * batch_sz]
+                yield x, y
+
+
 # TODO: not implemented
 def _data_generator_from_file(file, Y, batch_sz, shuffle=True):
     """ Generates batches of data from samples **X** and labels **Y**.
