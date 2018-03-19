@@ -72,6 +72,51 @@ class DataExtractor:
         pd_read_data = pd_read_data.join(besttrack)
         return pd_read_data, size
 
+    def generate_images_shuffled_chunks(self, images_per_chunk, output_dir, seed = 0, preprocess_algorithm=None,
+                                        display=False):
+        """
+        Generates chunks of hdf5 files, containing shuffled images from different sequences and besttrack data
+
+        :param images_per_chunk: number inages per chunk
+        :param output_dir: Output dir
+        :param seed: seed for random shuffle
+        :param preprocess_algorithm: Algorithm for data preprocessing, which returns data of the same shape as an input
+        :param display: flag for displaying output
+        """
+        pd_manager = self.pd_man
+        images = pd_manager.images
+        corrected = pd_manager.corrected
+        besttrack = pd_manager.besttrack
+        self._parameter_checking(corrected, images, output_dir)
+        filenames = self.get_full_filenames_prefer_corrected()
+        united_data = besttrack.join(filenames, how='inner')
+        i = 0
+        while len(united_data.index) > 0:
+            shuffled = united_data.sample(n=min(images_per_chunk, len(united_data.index)), random_state=seed)
+            shuffled['data'] = pd.Series()
+            for index, row in shuffled.iterrows():
+                data = read_source_image(row.full_filename)
+                row['data'] = data
+            self._write_chunk(join(output_dir, '{0}_chunk.h5'.format(i)), [shuffled])
+            i += 1
+            united_data.drop(shuffled.index, inplace=True)
+
+    def get_full_filenames_prefer_corrected(self):
+        """
+        Get full_path series, preferring entries from the corrected df
+
+        """
+        original = self.pd_man.images
+        corrected = self.pd_man.corrected
+
+        original_full_paths = original.apply(lambda row: join(self.original_images_dir,
+                                                                row['directory'], row['filename']), axis=1)
+        corrected_full_paths = corrected.apply(lambda row: join(self.corrected_images_dir, row['directory'],
+                                                                  row['filename']), axis=1)
+        corrected_full_paths = corrected_full_paths.combine_first(original_full_paths)
+        corrected_full_paths.name = 'full_filename'
+        return corrected_full_paths
+
     def generate_images_besttrack_chunks(self, sequence_list, chunk_size, output_dir,
                                          preprocess_algorithm=None,
                                          display=False):
@@ -93,19 +138,8 @@ class DataExtractor:
         assert isinstance(chunk_size, int)
 
         images = pd_manager.images
-        corrupted = pd_manager.corrected
-
-        if images.empty:
-            raise Exception('Images DataFrame should be created')
-        if not isdir(self.original_images_dir):
-            raise NotADirectoryError(self.original_images_dir + ' is not a directory')
-        if not exists(output_dir):
-            os.mkdir(output_dir)
-        if self.corrected_images_dir is not None:
-            if not isdir(self.corrected_images_dir):
-                raise NotADirectoryError(self.corrected_images_dir + ' is not a directory')
-            if corrupted.empty:
-                raise Exception('Corrupted DataFrame should be created when corrected_dir is not None')
+        corrected = pd_manager.corrected
+        self._parameter_checking(corrected, images, output_dir)
 
         # group by prefix
         sequences = pd.DataFrame(sequence_list, columns=['seq_no', 'prefix'])
@@ -139,6 +173,19 @@ class DataExtractor:
                 t0 = time.time()
                 self._write_chunk(filename=_filename, chunk=chunk)
                 print(" --> done in", time.time() - t0) if display else 0
+
+    def _parameter_checking(self, corrupted, images, output_dir):
+        if images.empty:
+            raise Exception('Images DataFrame should be created')
+        if not isdir(self.original_images_dir):
+            raise NotADirectoryError(self.original_images_dir + ' is not a directory')
+        if not exists(output_dir):
+            os.mkdir(output_dir)
+        if self.corrected_images_dir is not None:
+            if not isdir(self.corrected_images_dir):
+                raise NotADirectoryError(self.corrected_images_dir + ' is not a directory')
+            if corrupted.empty:
+                raise Exception('Corrupted DataFrame should be created when corrected_dir is not None')
 
     def _write_chunk(self, filename, chunk):
         """

@@ -1,7 +1,7 @@
 import unittest
 from os.path import join, exists, isdir
 import shutil
-from os import rmdir
+from os import rmdir, mkdir, listdir
 from pyphoon.db.data_extractor import DataExtractor
 from pyphoon.db.pd_manager import PDManager
 import numpy as np
@@ -46,3 +46,37 @@ class TestDataExtractorMethods(unittest.TestCase):
         self.assertEqual(len(f.get('seq_no')), len(f.get('pressure')))
         if exists(output_dir):
             shutil.rmtree(output_dir, ignore_errors=True)
+
+    def test_get_full_pathes_prefer_corrected(self):
+        pd_man = PDManager()
+        pd_man.load_original_images(join(self.db_dir, 'images.pkl'))
+        pd_man.load_besttrack(join(self.db_dir, 'besttrack.pkl'))
+        pd_man.load_corrected_images(join(self.db_dir, 'corrected.pkl'))
+        de = DataExtractor(self.images_dir, self.corrected_dir, pd_man)
+        full_paths = de.get_full_filenames_prefer_corrected()
+        self.assertTrue(len(full_paths.loc[full_paths.str.contains(self.images_dir)]) > 0)
+        self.assertTrue(len(full_paths.loc[full_paths.str.contains(self.corrected_dir)]) > 0)
+
+    def test_generate_images_shuffled_chunks(self):
+        pd_man = PDManager()
+        pd_man.add_original_images(self.images_dir)
+        pd_man.load_besttrack(join(self.db_dir, 'besttrack.pkl'))
+        pd_man.add_corrected_images(self.corrected_dir)
+        de = DataExtractor(self.images_dir, self.corrected_dir, pd_man)
+        output_dir = 'output'
+        if not exists(output_dir):
+            mkdir(output_dir)
+        else:
+            shutil.rmtree(output_dir, ignore_errors=True)
+            mkdir(output_dir)
+        self.assertFalse(listdir(output_dir))
+        de.generate_images_shuffled_chunks(100, output_dir)
+        generated_files = listdir(output_dir)
+        self.assertTrue(generated_files)
+        data_samples = 0
+        for f in generated_files:
+            read = h5py.File(join(output_dir, f), 'r')
+            print(len(read.get('data')))
+            data_samples += len(read.get('data'))
+        self.assertEqual(len(pd_man.images.index), data_samples)
+        shutil.rmtree(output_dir, ignore_errors=True)
