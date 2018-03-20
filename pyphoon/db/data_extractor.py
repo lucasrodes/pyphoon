@@ -72,8 +72,8 @@ class DataExtractor:
         pd_read_data = pd_read_data.join(besttrack)
         return pd_read_data, size
 
-    def generate_images_shuffled_chunks(self, images_per_chunk, output_dir, seed=0, use_corrected=True,
-                                        preprocess_algorithm=None,
+    def generate_images_shuffled_chunks(self, images_per_chunk, output_dir, seed=0,
+                                        use_corrected=True, preprocess_algorithm=None,
                                         display=False):
         """
         Generates chunks of hdf5 files, containing shuffled images from different sequences and besttrack data
@@ -222,6 +222,7 @@ class DataExtractor:
         :type chunk: list of pd.DataFrame
         """
 
+        print(chunk)
         united = pd.concat(chunk, axis=0)
         united.reset_index(inplace=True)
 
