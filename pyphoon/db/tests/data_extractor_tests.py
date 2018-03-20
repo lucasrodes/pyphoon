@@ -70,13 +70,15 @@ class TestDataExtractorMethods(unittest.TestCase):
             shutil.rmtree(output_dir, ignore_errors=True)
             mkdir(output_dir)
         self.assertFalse(listdir(output_dir))
-        de.generate_images_shuffled_chunks(100, output_dir)
+        de.generate_images_shuffled_chunks(200, output_dir)
         generated_files = listdir(output_dir)
         self.assertTrue(generated_files)
         data_samples = 0
         for f in generated_files:
             read = h5py.File(join(output_dir, f), 'r')
-            print(len(read.get('data')))
-            data_samples += len(read.get('data'))
+            data = read.get('data')
+            np_data = np.array(data)
+            self.assertFalse(np.isnan(np_data).any())
+            data_samples += len(data)
         self.assertEqual(len(pd_man.images.index), data_samples)
         shutil.rmtree(output_dir, ignore_errors=True)
