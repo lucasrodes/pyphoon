@@ -72,7 +72,8 @@ class DataExtractor:
         pd_read_data = pd_read_data.join(besttrack)
         return pd_read_data, size
 
-    def generate_images_shuffled_chunks(self, images_per_chunk, output_dir, seed = 0, preprocess_algorithm=None,
+    def generate_images_shuffled_chunks(self, images_per_chunk, output_dir,
+                                        seed=0, preprocess_algorithm=None,
                                         display=False):
         """
         Generates chunks of hdf5 files, containing shuffled images from different sequences and besttrack data
@@ -96,7 +97,11 @@ class DataExtractor:
             shuffled['data'] = pd.Series()
             for index, row in shuffled.iterrows():
                 data = read_source_image(row.full_filename)
+                if preprocess_algorithm:
+                    data = preprocess_algorithm(data.reshape(1, data.shape[0],
+                                                             data.shape[1]))[0]
                 row['data'] = data
+            print("writing chunk {0}".format(i)) if display else 0
             self._write_chunk(join(output_dir, '{0}_chunk.h5'.format(i)), [shuffled])
             i += 1
             united_data.drop(shuffled.index, inplace=True)
@@ -197,6 +202,7 @@ class DataExtractor:
         :type chunk: list of pd.DataFrame
         """
 
+        print(chunk)
         united = pd.concat(chunk, axis=0)
         united.reset_index(inplace=True)
 
