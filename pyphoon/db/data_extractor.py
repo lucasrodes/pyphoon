@@ -94,14 +94,20 @@ class DataExtractor:
         i = 0
         while len(united_data.index) > 0:
             shuffled = united_data.sample(n=min(images_per_chunk, len(united_data.index)), random_state=seed)
-            shuffled['data'] = pd.Series()
-            for index, row in shuffled.iterrows():
-                data = read_source_image(row.full_filename)
-                if preprocess_algorithm:
-                    data = preprocess_algorithm(data.reshape(1, data.shape[0],
-                                                             data.shape[1]))[0]
-                row['data'] = data
-            print("writing chunk {0}".format(i)) if display else 0
+            # shuffled['data'] = pd.Series()
+            read_data = []
+            for j in range(len(shuffled.index)):
+                data = read_source_image(shuffled.loc[shuffled.index[j], 'full_filename'])
+                read_data.append(data)
+            # data_df = pd.DataFrame(read_data, columns=['index', 'data'])
+            # data_df.set_index('index')
+            # data_df = data_df.combine(shuffled)
+            data_series = pd.Series(read_data, name='data')
+            data_series.index = shuffled.index
+            shuffled['data'] = data_series
+            # for index, row in shuffled.iterrows():
+            #     data = read_source_image(row.full_filename)
+            #     shuffled.loc[index, 'data'] = data
             self._write_chunk(join(output_dir, '{0}_chunk.h5'.format(i)), [shuffled])
             i += 1
             united_data.drop(shuffled.index, inplace=True)
