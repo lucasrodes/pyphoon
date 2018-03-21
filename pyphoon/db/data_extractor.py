@@ -98,6 +98,9 @@ class DataExtractor:
             read_data = []
             for j in range(len(shuffled.index)):
                 data = read_source_image(shuffled.loc[shuffled.index[j], 'full_filename'])
+                if preprocess_algorithm:
+                    data = preprocess_algorithm(data.reshape(1, data.shape[0],
+                                                             data.shape[1]))[0]
                 read_data.append(data)
             # data_df = pd.DataFrame(read_data, columns=['index', 'data'])
             # data_df.set_index('index')
@@ -108,7 +111,10 @@ class DataExtractor:
             # for index, row in shuffled.iterrows():
             #     data = read_source_image(row.full_filename)
             #     shuffled.loc[index, 'data'] = data
+            print("writing chunk", i)
+            t0 = time.time()
             self._write_chunk(join(output_dir, '{0}_chunk.h5'.format(i)), [shuffled])
+            print(" done in ", str(t0-time.time()))
             i += 1
             united_data.drop(shuffled.index, inplace=True)
 
@@ -208,7 +214,6 @@ class DataExtractor:
         :type chunk: list of pd.DataFrame
         """
 
-        print(chunk)
         united = pd.concat(chunk, axis=0)
         united.reset_index(inplace=True)
 
@@ -229,6 +234,7 @@ class DataExtractor:
         # dict['data'] = united['data']
 
         write_h5_dataset_file(data, filename, compression='gzip')
+        del data
         # store = pd.HDFStore(filename, mode='w')
         # for col in united.columns:
         #     store.put(col, united[col])
