@@ -194,11 +194,11 @@
 <p>In this notebook we attempt to have a first glance at the best data, to help
 us better understand the nature of Digital Typhoon data. We will only
 consider the data starting from 1978, which is the year that satellite
-imagery started to be collected. Make sure to replace <code class="docutils literal"><span class="pre">path_best</span></code> with
+imagery started to be collected. Make sure to replace <code class="docutils literal notranslate"><span class="pre">path_best</span></code> with
 the path to the directory containing the TSV files with best track data.</p>
 <div class="section" id="load-all-the-best-data">
 <h2>Load all the best data<a class="headerlink" href="#load-all-the-best-data" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Read tsv data and convert to numpy array</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Read tsv data and convert to numpy array</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.tsv</span> <span class="k">import</span> <span class="n">read_tsvs</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">all_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">read_tsvs</span><span class="p">(</span><span class="n">path_best</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Only consider data since 1978</span>
@@ -212,9 +212,9 @@ the path to the directory containing the TSV files with best track data.</p>
 <span class="go">Number of samples: 20</span>
 </pre></div>
 </div>
-<p>To get information about the features in <code class="docutils literal"><span class="pre">all_data</span></code> you can check the
-variable <code class="docutils literal"><span class="pre">feature_names</span></code> from pyphoon.eda_jma.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyphoon.eda_jma</span> <span class="k">as</span> <span class="nn">eda</span>
+<p>To get information about the features in <code class="docutils literal notranslate"><span class="pre">all_data</span></code> you can check the
+variable <code class="docutils literal notranslate"><span class="pre">feature_names</span></code> from pyphoon.eda_jma.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyphoon.eda_jma</span> <span class="k">as</span> <span class="nn">eda</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">eda</span><span class="o">.</span><span class="n">feature_names</span>
 <span class="go">[&#39;year&#39;,</span>
 <span class="go"> &#39;month&#39;,</span>
@@ -243,9 +243,9 @@ variable <code class="docutils literal"><span class="pre">feature_names</span></
 <h2>Consider only real data<a class="headerlink" href="#consider-only-real-data" title="Permalink to this headline">¶</a></h2>
 <p>As aforementioned, only 17% of all best data is real while the rest has been
 generated via interpolation to catch up with the image observation frequency.
-Luckily, the 20th feature in <code class="docutils literal"><span class="pre">all_data</span></code> tells us which data is original (i
+Luckily, the 20th feature in <code class="docutils literal notranslate"><span class="pre">all_data</span></code> tells us which data is original (i
 .e. ‘0’ if original, ‘1’ if synthetic).</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Discard synthetic samples</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Discard synthetic samples</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">index</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">all_data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 </pre></div>
@@ -253,20 +253,20 @@ Luckily, the 20th feature in <code class="docutils literal"><span class="pre">al
 </div>
 <div class="section" id="plot-histogram-of-classes">
 <h2>Plot histogram of classes<a class="headerlink" href="#plot-histogram-of-classes" title="Permalink to this headline">¶</a></h2>
-<p>Method <a class="reference internal" href="../pyphoon.eda_jma.html#pyphoon.eda_jma.plot_hist" title="pyphoon.eda_jma.plot_hist"><code class="xref py py-func docutils literal"><span class="pre">plot_hist()</span></code></a> provides the necessary tools to
-obtain the histogram of any feature. The 4th feature in <code class="docutils literal"><span class="pre">all_data</span></code> tells us
+<p>Method <a class="reference internal" href="../pyphoon.eda_jma.html#pyphoon.eda_jma.plot_hist" title="pyphoon.eda_jma.plot_hist"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_hist()</span></code></a> provides the necessary tools to
+obtain the histogram of any feature. The 4th feature in <code class="docutils literal notranslate"><span class="pre">all_data</span></code> tells us
 the class of the sample.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_hist</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">show_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">feature_index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plot_hist</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">show_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">feature_index</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span>
 <span class="gp">... </span><span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">centre</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Class histogram&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Class&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Use arguments <code class="docutils literal"><span class="pre">save_fig</span></code> and <code class="docutils literal"><span class="pre">fig_name</span></code> to store the generated plot.</p>
+<p>Use arguments <code class="docutils literal notranslate"><span class="pre">save_fig</span></code> and <code class="docutils literal notranslate"><span class="pre">fig_name</span></code> to store the generated plot.</p>
 </div>
 <div class="section" id="plot-histogram-of-pressure">
 <h2>Plot histogram of pressure<a class="headerlink" href="#plot-histogram-of-pressure" title="Permalink to this headline">¶</a></h2>
 <p>The 7th feature conveys the pressure values. Let’s find the minimum and
 maximum values of the pressure.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">minimum</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">all_data</span><span class="p">[:,</span> <span class="mi">7</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">minimum</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">all_data</span><span class="p">[:,</span> <span class="mi">7</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">maximum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">all_data</span><span class="p">[:,</span> <span class="mi">7</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;minimum:&quot;</span><span class="p">,</span> <span class="n">minimum</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">maximum:&quot;</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span>
 <span class="go">minimum: 870.0</span>
@@ -274,7 +274,7 @@ maximum values of the pressure.</p>
 </pre></div>
 </div>
 <p>Now, we want to plot the histogram. We will use bins of resolution of 7 hPa.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span> <span class="mi">1018</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">870</span><span class="p">,</span> <span class="mi">1018</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_hist</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">show_fig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">feature_index</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="gp">... </span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Pressure histogram&quot;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Class&quot;</span><span class="p">)</span>
 </pre></div>
@@ -286,8 +286,8 @@ maximum values of the pressure.</p>
 explore the wind speed values along time. The 8th feature is the responsible
 for the wind-speed data. First, we obtain the wind speeds of all samples per
 year and store them in an array, accessible via its year using the dictionary
-<code class="docutils literal"><span class="pre">wind_sp</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get wind speeds from all samples per year</span>
+<code class="docutils literal notranslate"><span class="pre">wind_sp</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get wind speeds from all samples per year</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">wind_sp</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
@@ -298,14 +298,14 @@ year and store them in an array, accessible via its year using the dictionary
 </div>
 <p>Next, we can easily iterate over all dictionary values and compute the mean.
 This way, we obtain the wind speed mean per year.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get the mean</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get the mean</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mean_wind_sp</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">wind_sp</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">mean_wind_sp</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">wind_sp</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>Finally, we plot the mean wind speed over time.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mean_wind_sp</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="nb">list</span><span class="p">(</span><span class="n">mean_wind_sp</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mean_wind_sp</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="nb">list</span><span class="p">(</span><span class="n">mean_wind_sp</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="s1">&#39;k&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
