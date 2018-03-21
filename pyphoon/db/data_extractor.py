@@ -72,28 +72,34 @@ class DataExtractor:
         pd_read_data = pd_read_data.join(besttrack)
         return pd_read_data, size
 
-    def generate_images_shuffled_chunks(self, images_per_chunk, output_dir,
-                                        seed=0, preprocess_algorithm=None,
+    def generate_images_shuffled_chunks(self, images_per_chunk, output_dir, seed=0,
+                                        use_corrected=True, preprocess_algorithm=None,
                                         display=False):
         """
         Generates chunks of hdf5 files, containing shuffled images from different sequences and besttrack data
 
+        :param use_corrected: Flag for including corrected images into training datasets
+        :type use_corrected: bool
         :param images_per_chunk: number inages per chunk
+        :type images_per_chunk: int
         :param output_dir: Output dir
+        :type output_dir: str
         :param seed: seed for random shuffle
+        :type seed: int
         :param preprocess_algorithm: Algorithm for data preprocessing, which returns data of the same shape as an input
         :param display: flag for displaying output
+        :type display: bool
         """
         pd_manager = self.pd_man
         images = pd_manager.images
         corrected = pd_manager.corrected
         besttrack = pd_manager.besttrack
         self._parameter_checking(corrected, images, output_dir)
-        filenames = self.get_full_filenames_prefer_corrected()
+        filenames = self.get_full_filenames(use_corrected)
         united_data = besttrack.join(filenames, how='inner')
         i = 0
         while len(united_data.index) > 0:
-            shuffled = united_data.sample(n=min(images_per_chunk, len(united_data.index)), random_state=seed)
+            shuffled = united_data.sample(n=min(images_per_chunk, len(united_data.index)), random_state=seed).copy()
             # shuffled['data'] = pd.Series()
             read_data = []
             for j in range(len(shuffled.index)):
@@ -118,9 +124,12 @@ class DataExtractor:
             i += 1
             united_data.drop(shuffled.index, inplace=True)
 
-    def get_full_filenames_prefer_corrected(self):
+    def get_full_filenames(self, use_corrected=True):
         """
         Get full_path series, preferring entries from the corrected df
+
+        :param use_corrected: Flag for including corrected images or not
+        :type use_corrected: bool
 
         """
         original = self.pd_man.images
@@ -130,9 +139,14 @@ class DataExtractor:
                                                                 row['directory'], row['filename']), axis=1)
         corrected_full_paths = corrected.apply(lambda row: join(self.corrected_images_dir, row['directory'],
                                                                   row['filename']), axis=1)
-        corrected_full_paths = corrected_full_paths.combine_first(original_full_paths)
-        corrected_full_paths.name = 'full_filename'
-        return corrected_full_paths
+        if use_corrected:
+            full_paths = corrected_full_paths.combine_first(original_full_paths)
+        else:
+            only_not_corrected = original.loc[~original.filename.isin(corrected.filename), ['directory', 'filename']]
+            full_paths = only_not_corrected.apply(lambda row: join(self.original_images_dir,
+                                                                row['directory'], row['filename']), axis=1)
+        full_paths.name = 'full_filename'
+        return full_paths
 
     def generate_images_besttrack_chunks(self, sequence_list, chunk_size, output_dir,
                                          preprocess_algorithm=None,
