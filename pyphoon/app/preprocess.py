@@ -1,7 +1,79 @@
 import numpy as np
 from skimage.transform import downscale_local_mean
+import cv2
 
 
+################################################################################
+# IMAGE OPERATIONS
+################################################################################
+def get_mean_image(X):
+    """ Computes the mean image from a list of image batches.
+
+    :param X: List containing image batches. That is, an element of the list
+        is of shape (N, W, H), where N: #samples, W: image width, H: image
+        height.
+    :type X: list
+    :return: Mean image.
+    :rtype: numpy.array
+    """
+    mean = None
+    count = 0
+    for x in X:
+        print(count)
+        count += 1
+        if mean is None:
+            mean = np.mean(x, axis=0)
+        else:
+            mean += np.mean(x, axis=0)
+
+    mean /= len(X)
+    return mean
+
+
+def get_max_min(X):
+    """ Gets the maximum and minimum pixel values of a list of image batches.
+
+    :param X: List containing image batches. That is, an element of the list
+        is of shape (N, W, H), where N: #samples, W: image width, H: image
+        height.
+    :type X: list
+    :return: Maximum (first element) and minimum (second element) values.
+    :rtype: tuple
+    """
+    max_value = None
+    min_value = None
+    for x in X:
+        if max_value is None:
+            max_value = np.max(x)
+        else:
+            max_value = np.maximum(max_value, np.max(x))
+
+        if min_value is None:
+            min_value = np.min(x)
+        else:
+            min_value = np.minimum(min_value, np.min(x))
+
+    return max_value, min_value
+
+
+def resize(X, size):
+    """ Resizes the image according to **size**.
+
+    :param X: Image of shape (N, W, H), where N: #samples, W: image width,
+        H: image height.
+    :type X: numpy.array
+    :param size: Size to reshape images.
+    :type size: tuple
+    :return: List containing image batches with resized images.
+    :rtype: numpy.array
+    """
+    im = np.array([cv2.resize(x, size) for x in X]).astype(np.float32)
+    return im  # np.expand_dims(im, axis=3)
+
+
+################################################################################
+# PROCESSORS
+################################################################################
 class ImagePreprocessor(object):
     """
     Parent class for image preprocessing classes. This class does not
@@ -18,8 +90,8 @@ class ImagePreprocessor(object):
     def apply(self, X):
         """ Applies the preprocessing pipeline to **data**.
 
-        :param X: List with images.
-        :type X: list
+        :param X: Array with images.
+        :type X: numpy array
         """
         pass
 
@@ -92,5 +164,55 @@ class DefaultImagePreprocessor(ImagePreprocessor):
 
         # Normalise
         X = self.reshape(X)
+
+        return X
+
+
+class MeanImagePreprocessor(ImagePreprocessor):
+    """ Class of :class:`~pyphoon.app.preprocess.ImagePreprocessor`,
+    implementing an specific preprocessing of images. Assuming an input image
+    :math:`X`, this preprocessor first centres and normalises it as
+
+    .. math::  \\frac{X-\mu}{\sigma}
+
+    where :math:`\mu` and :math:`\sigma` denote the pixel mean and standard
+    deviation, respectively. Next, it resizes the image using the method
+    :func:`skimage.transform.downscale_local_mean`.
+
+
+    :var mean_image: Mean image (2D matrix)
+    :var scale_factor: Used to normalise the data.
+    :var resize: To resize the image. Define the new size of the images.
+    :var reshape_mode: Used to normalise the data. See
+        :class:`~pyphoon.app.preprocess.ImagePreprocessor`
+    """
+    def __init__(self, mean_image, scale_factor, resize, reshape_mode):
+        super().__init__(reshape_mode)
+        self.mean = mean_image
+        self.scale = scale_factor
+        self.resize = resize
+
+    def apply(self, X):
+        """ Processes an array of images, scaling and normalising them
+        as required and, eventually, reshapes the list to be suitable for a
+        specific DL framework.
+
+        :param X: List with image data (images as numpy arrays).
+        :type X: numpy.ndarray
+        :return: Updated, preprocessed list of images.
+        """
+        if not isinstance(X, np.ndarray):
+            raise TypeError("Expected type for X is numpy.ndarray but got " +
+                            X.__class__.__name__)
+
+        if X.ndim != 3:
+            raise Exception("X.ndim must be 3 with X.shape = (N, W, H), "
+                            "where N: #samples, W: image_width, "
+                            "H: # image_height")
+
+        # Scale chunk images
+        X = resize(X, self.resize)
+        # Centre & normalise
+        X = (X - self.mean)/self.scale
 
         return X

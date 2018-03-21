@@ -1,7 +1,7 @@
-from pyphoon.app.preprocess import ImagePreprocessor
 from pyphoon.io.h5 import read_h5_dataset_file
 import numpy as np
-from pyphoon.app.preprocess import DefaultImagePreprocessor
+import h5py
+from os.path import join
 
 
 ################################################################################
@@ -9,16 +9,13 @@ from pyphoon.app.preprocess import DefaultImagePreprocessor
 ################################################################################
 # TODO: Only return two elements - (i) images, (ii) best
 # NOTE: Only works with tcxtc chunks, need to create new one for generic data.
-def read_h5datachunk(path_to_file, shuffle=False, preprocessor=None):
+def read_h5datachunk_old(path_to_file, shuffle=False):
     """ Reads a chunk of data stored as h5.
 
     :param path_to_file: Path name to the H5 file to read
     :type path_to_file: str
     :param shuffle: Set to true if data should be shuffled.
     :type shuffle: bool
-    :param preprocessor: Preprocessor used to preprocess the data.
-    :type preprocessor: :class:`~pyphoon.app.preprocess.ImagePreprocessor` or
-        child classes
     :return: Array of images (X), array of labels (Y)
     :rtype: list
     """
@@ -46,18 +43,85 @@ def read_h5datachunk(path_to_file, shuffle=False, preprocessor=None):
             others = list(np.array(others)[pos])
         else:
             others = None
-    # Preprocess images
-    if isinstance(preprocessor, ImagePreprocessor):
-        X = preprocessor.apply(X)
-
     return X, Y, ids, others
 
 
-# TODO:
-def merge_datachunks():
-    pass
+def load_h5datachunks(dataset_dir, chunk_filenames, features,
+                      ignore_classes=None, display=False):
+    """ Loads a set of h5 files as individual arrays in a list.
+
+    :param dataset_dir: Directory containing the chunk files.
+    :type dataset_dir: str
+    :param chunk_filenames: Filenames of the data chunks.
+    :type chunk_filenames: list
+    :param features: Features to retrieve from the h5 data chunks as string
+        names.
+    :type features: list
+    :param ignore_classes: List of class labels to consider. Labels as ints.
+        By default it considers all classes.
+    :type ignore_classes: list, default None
+    :param display: Set to True to have some informative messages printed out.
+    :type display: bool, default False
+    :return: List with the data chunks as numpy.arrays.
+    :rtype: list
+    """
+    #  Exceptions
+    if features is None:
+        with h5py.File(join(dataset_dir, chunk_filenames[0]), 'r') as f:
+            available_features = list(f.keys())
+        raise Exception("Please specify which features you want to load from "
+                        "the h5 chunk file. Available features are:",
+                        str(available_features))
+
+    # Data
+    data = {}
+    for chunk_filename in chunk_filenames:
+        with h5py.File(join(dataset_dir, chunk_filename), 'r') as f:
+            # Get available features
+            available_features = list(f.keys())
+
+            # Load class labels
+            try:
+                Y_chunk = f.get('class').value
+            except:
+                raise Exception("Weird file. Could not find field with key "
+                                "class. Make sure the datachunk " + join(
+                                 dataset_dir, chunk_filename) + " has a field "
+                                                                "'class'.")
+
+            # Only consider finite class values
+            valid_samples = np.argwhere(np.isfinite(Y_chunk)) >= 0
+            valid_samples = valid_samples[:, 0]
+            # Ignore classes
+            if ignore_classes is not None:
+                for ignore_class in ignore_classes:
+                    consider = Y_chunk != ignore_class
+                    valid_samples = valid_samples == consider
+
+            # Load data
+            for feature in features:
+                if feature not in available_features:
+                    raise Exception("Could not find field with key " + feature +
+                                    "class. Make sure the datachunk " + join(
+                                     dataset_dir, chunk_filename) + " has "
+                                                                    "this "
+                                                                    "field.")
+                else:
+                    if feature not in data:
+                        data[feature] = []
+                    if feature == 'class':
+                        data[feature].append(Y_chunk[valid_samples])
+                    else:
+                        data[feature].append(f.get(feature).value[valid_samples])
+
+        print(" file", chunk_filename, "read") if display else 0
+
+    return data.values()
 
 
+################################################################################
+# Data generators
+################################################################################
 # TODO: Extend for unsupervised models, i.e. Y argument optional
 def data_generator(X, Y, batch_sz, shuffle=True):
     """ Generates batches of data from samples **X** and labels **Y**.
@@ -133,9 +197,11 @@ def data_generator_chunklist(X, Y, batch_sz, shuffle=True):
                 yield x, y
 
 
+
+"""
 # TODO: not implemented
 def _data_generator_from_file(file, Y, batch_sz, shuffle=True):
-    """ Generates batches of data from samples **X** and labels **Y**.
+    Generates batches of data from samples **X** and labels **Y**.
 
     :param X: Sample data.
     :type X: numpy.array
@@ -146,7 +212,7 @@ def _data_generator_from_file(file, Y, batch_sz, shuffle=True):
     :param shuffle: Set to True to shuffle the batch data (recommended)
     :type shuffle: bool, default True
     :return:
-    """
+
     count = 0
     while True:
         # Read
@@ -169,3 +235,4 @@ def _data_generator_from_file(file, Y, batch_sz, shuffle=True):
             x = _X[i * batch_sz:(i + 1) * batch_sz]
             y = _Y[i * batch_sz:(i + 1) * batch_sz]
             yield x, y
+"""
