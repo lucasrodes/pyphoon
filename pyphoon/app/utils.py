@@ -90,8 +90,8 @@ def load_h5datachunks(dataset_dir, chunk_filenames, features,
                                                                 "'class'.")
 
             # Only consider finite class values
-            valid_samples = np.argwhere(np.isfinite(Y_chunk)) >= 0
-            valid_samples = valid_samples[:, 0]
+            valid_samples = np.isfinite(Y_chunk)
+
             # Ignore classes
             if ignore_classes is not None:
                 for ignore_class in ignore_classes:
@@ -109,6 +109,7 @@ def load_h5datachunks(dataset_dir, chunk_filenames, features,
                 else:
                     if feature not in data:
                         data[feature] = []
+
                     if feature == 'class':
                         data[feature].append(Y_chunk[valid_samples])
                     else:

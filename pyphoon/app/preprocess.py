@@ -18,15 +18,18 @@ def get_mean_image(X):
     """
     mean = None
     count = 0
+    n_samples = 0
     for x in X:
         print(count)
         count += 1
         if mean is None:
-            mean = np.mean(x, axis=0)
+            mean = np.sum(x, axis=0)
         else:
-            mean += np.mean(x, axis=0)
+            mean += np.sum(x, axis=0)
 
-    mean /= len(X)
+        n_samples += len(x)
+
+    mean /= n_samples
     return mean
 
 
