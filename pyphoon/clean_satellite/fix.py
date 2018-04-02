@@ -6,26 +6,25 @@ from pyphoon.clean_satellite.utils import generate_image_ids, get_sample_distanc
 
 
 class TyphoonListImageFixAlgorithm(object):
-    """
-    Encapsulates an algorithm to correct and clean the images from a typhoon
+    """ Encapsulates an algorithm to correct and clean the images from a typhoon
     sequence.
 
     :param detect_fct: Method used to detect corrupted frames (more details in
-        :mod:`~pyphoon.clean.detection`)
+        :mod:`~pyphoon.clean_satellite.detection`)
     :type detect_fct: callable
     :param correct_fct: Method used to correct corrupted frames (more details in
-        :mod:`~pyphoon.clean.correction`)
+        :mod:`~pyphoon.clean_satellite.correction`)
     :type correct_fct: callable
     :param generate_fct: Method used to fill gaps in a sequence (more details in
-        :mod:`~pyphoon.clean.fillgaps`)
+        :mod:`~pyphoon.clean_satellite.generation`)
     :type generate_fct: callable
     :param detect_params: Parameters required to assist the detection method.
         More details can be found in the specific detection method (see from
-        :mod:`~pyphoon.clean.detection`)
+        :mod:`~pyphoon.clean_satellite.detection`)
     :type detect_params: dict
     :param n_frames_th: Largest temporal gap to fill with newly generated image
         frames (measured in slots of 1h). In other words, if there is a
-        temporal gap of more than ``n_frames_th`` hours no new image frames
+        temporal gap of more than **n_frames_th** hours no new image frames
         are generated.
     :type n_frames_th: int
     """
@@ -51,14 +50,15 @@ class TyphoonListImageFixAlgorithm(object):
         self.index_offset = {}
 
     def apply(self, images, images_ids):
-        """ Applies the defined fix algorithm to ``images``.
+        """ Applies the defined fix algorithm to all image samples in
+        **images**.
 
         :param images: List of image frames.
         :type images: list
         :param images_ids: List of image ids.
         :type images_ids: list
         :return: Tuple with two elements:
-            *   New list of images
+            *   New list of images.
             *   New list of the corresponding ids.
         :rtype: tuple
         """
@@ -114,13 +114,14 @@ class TyphoonListImageFixAlgorithm(object):
     ############################################################################
     def detect_and_correct(self, images, images_ids):
         """ Detects and tries to correct irregularities found in the image
-        frames from the list ``images`` using the methods specified by attributes
-        ``detect_fct`` and ``correct_fct``, respectively.
+        frames in the list **images** using the methods specified by class
+        attributes **detect_fct** and **correct_fct**, respectively.
 
-        :param images: List with image arrays. Each element of the list must be an
-            array of 2 dimensions.
+        :param images: List with image arrays. Each element of the list must
+            be an array of 2 dimensions.
         :type images: list
-        :param images_ids: List of the ids of the elements in the list *images*.
+        :param images_ids: Image ids.
+        **images**.
         :type images_ids: list
         :return: Ids of the corrected images
         :rtype: list
@@ -151,7 +152,7 @@ class TyphoonListImageFixAlgorithm(object):
     ############################################################################
     def generate(self, images, images_ids):
         """ Fills the gaps in the given typhoon sequence using the method
-        specified by attribute ``generate_fct``.
+        specified by class attribute **generate_fct**.
 
         :param images: List of image frames.
         :type images: list
@@ -162,7 +163,7 @@ class TyphoonListImageFixAlgorithm(object):
             *   *fixed*: Frame position in fixed image list.
         :rtype: dict
 
-        .. seealso:: :mod:`pyphoon.clean_satellite.generation`
+        .. seealso:: :mod:`~pyphoon.clean_satellite.generation`
         """
         images_original = copy.deepcopy(images)
         images_ids_original = copy.deepcopy(images_ids)

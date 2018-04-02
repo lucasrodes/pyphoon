@@ -10,23 +10,21 @@ import numpy as np
 ################################################################################
 
 
-def correct_corrupted_pixels_1(images, index, pos, images_ids,
-                               detect_fct, params, display=False):
-    """Corrects the pixels in region ``pos`` from the image frame at position
-    ``index`` of the list ``images``. To this end, it uses interpolation of
+def correct_corrupted_pixels_1(images, index, pos, detect_fct, params,
+                               display=False):
+    """Corrects the pixels in region **pos** from the image frame at position
+    **index** of the list **images**. To this end, it uses interpolation of
     the pixel values in this region from temporally nearby image frames.
 
     :param images: List with image arrays. Each element of the list must be an
         array of 2 dimensions.
     :type images: list
-    :param index: Frame index from list ``images``
+    :param index: Frame index from list **images**.
     :type index: int
     :param pos: Numpy array of same dimensionality than
-        ``image[index]`` with True values in regions containing corrupted
+        **image[index]** with True values in regions containing corrupted
         pixels and False values in the remaining pixel locations.
     :type pos: numpy.array
-    :param images_ids: List of the ids of the elements in the list *images*.
-    :type images_ids: list
     :param detect_fct: Callable function that detects corrupted values from
         an array according to some given rules.
     :type detect_fct: callable

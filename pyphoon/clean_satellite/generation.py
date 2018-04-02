@@ -17,13 +17,13 @@ def generate_new_frames_1(images, frame_idx_0, frame_idx_1,
     :param images: List with image arrays. Each element of the list must be an
             array of 2 dimensions.
     :type images: list
-    :param frame_idx_0: First frame index
+    :param frame_idx_0: First frame index.
     :type frame_idx_0: int
-    :param frame_idx_1: Second frame index
+    :param frame_idx_1: Second frame index.
     :type frame_idx_1: int
-    :param n_frames: Number of frames to generate using interpolation
+    :param n_frames: Number of frames to generate using interpolation.
     :type n_frames: int
-    :return: List with the new generated frames
+    :return: List with the new generated frames.
     :rtype: list
     """
     frame_0 = images[frame_idx_0]

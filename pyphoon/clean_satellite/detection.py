@@ -17,10 +17,10 @@ def detect_corrupted_pixels_1(image_frame, params):
     :type image_frame: numpy.array
     :param params: Should contain two keys:
 
-        *   ``min_th``: Minimum tolerated pixel intensity (temperature) value.
-        *   ``max_th``: Maximum tolerated pixel intensity (temperature) value.
+        *   *min_th*: Minimum tolerated pixel intensity (temperature) value.
+        *   *max_th*: Maximum tolerated pixel intensity (temperature) value.
     :type params: dict
-    :return: Matrix of the same size as ``image_frame``. Elements with value
+    :return: Matrix of the same size as **image_frame**. Elements with value
         True indicate that pixel values in the original image at that position
         are corrupted.
     :rtype: numpy.array
