@@ -117,7 +117,7 @@ def load_h5datachunks(dataset_dir, chunk_filenames, features,
 
         print(" file", chunk_filename, "read") if display else 0
 
-    return data.values()
+    return list(data.values())
 
 
 ################################################################################
