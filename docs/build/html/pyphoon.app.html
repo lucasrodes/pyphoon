@@ -39,7 +39,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="pyphoon documentation" href="index.html"/>
         <link rel="next" title="pyphoon.visualise" href="pyphoon.visualise.html"/>
-        <link rel="prev" title="pyphoon.clean_satellite" href="pyphoon.db.html"/> 
+        <link rel="prev" title="pyphoon.db" href="pyphoon.db.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -109,6 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pyphoon.app</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#content">Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.app.preprocess">pyphoon.app.preprocess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.app.utils">pyphoon.app.utils</a></li>
 </ul>
@@ -179,6 +180,28 @@
     
         <div class="section" id="module-pyphoon.app.__init__">
 <span id="pyphoon-app"></span><h1>pyphoon.app<a class="headerlink" href="#module-pyphoon.app.__init__" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="content">
+<h2>Content<a class="headerlink" href="#content" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">module</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#module-pyphoon.app.preprocess" title="pyphoon.app.preprocess"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.app.preprocess</span></code></a></td>
+<td>Pre-processing tools for DL/ML applications.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#module-pyphoon.app.utils" title="pyphoon.app.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.app.utils</span></code></a></td>
+<td>General tools.</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr class="docutils" />
 <div class="section" id="module-pyphoon.app.preprocess">
 <span id="pyphoon-app-preprocess"></span><h2>pyphoon.app.preprocess<a class="headerlink" href="#module-pyphoon.app.preprocess" title="Permalink to this headline">¶</a></h2>
@@ -193,15 +216,76 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
 is of shape (N, W, H), where N: #samples, W: image width, H: image
-height.</li>
+height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+If you only have a single batch (e.g. <code class="docutils literal notranslate"><span class="pre">B</span></code>), you just need to
+encapsulate it in a list (i.e. <code class="docutils literal notranslate"><span class="pre">[B]</span></code>).</li>
 <li><strong>display</strong> (<em>bool</em>) – Set to True to display information as function is executed.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Mean image.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Mean image (size W x H).</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.app.preprocess.get_mean_pixel">
+<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">get_mean_pixel</code><span class="sig-paren">(</span><em>X</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.get_mean_pixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the mean pixel from all samples in the list of image batches
+<strong>X</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
+is of shape (N, W, H), where N: #samples, W: image width, H: image
+height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+If you only have a single batch (e.g. <code class="docutils literal notranslate"><span class="pre">B</span></code>), you just need to
+encapsulate it in a list (i.e. <code class="docutils literal notranslate"><span class="pre">[B]</span></code>).</li>
+<li><strong>display</strong> (<em>bool</em>) – Set to True to display information as function is executed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Pixel mean (scalar).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.app.preprocess.get_std_pixel">
+<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">get_std_pixel</code><span class="sig-paren">(</span><em>X</em>, <em>pmean</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.get_std_pixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the pixel standard deviation from all samples in the list of
+image batches <strong>X</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
+is of shape (N, W, H), where N: #samples, W: image width, H: image
+height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+If you only have a single batch (e.g. <code class="docutils literal notranslate"><span class="pre">B</span></code>), you just need to
+encapsulate it in a list (i.e. <code class="docutils literal notranslate"><span class="pre">[B]</span></code>).</li>
+<li><strong>pmean</strong> (<em>float</em>) – Pixel mean of bath list <strong>X</strong> (see <a class="reference internal" href="#pyphoon.app.preprocess.get_mean_pixel" title="pyphoon.app.preprocess.get_mean_pixel"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_mean_pixel()</span></code></a>).</li>
+<li><strong>display</strong> (<em>bool</em>) – Set to True to display information as function is executed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Pixel standard deviation (scalar).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
 </td>
 </tr>
 </tbody>
@@ -219,7 +303,9 @@ height.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
 is of shape (N, W, H), where N: #samples, W: image width, H: image
-height.</li>
+height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+If you only have a single batch (e.g. <code class="docutils literal notranslate"><span class="pre">B</span></code>), you just need to
+encapsulate it in a list (i.e. <code class="docutils literal notranslate"><span class="pre">[B]</span></code>).</li>
 <li><strong>display</strong> (<em>bool</em>) – Set to True to display information as function is executed.</li>
 </ul>
 </td>
@@ -237,7 +323,8 @@ height.</li>
 <dl class="function">
 <dt id="pyphoon.app.preprocess.resize">
 <code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">resize</code><span class="sig-paren">(</span><em>X</em>, <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.resize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resizes the image according to <strong>size</strong>.</p>
+<dd><p>Resizes the image according to <strong>size</strong> using <a href="#id1"><span class="problematic" id="id2">`cv2.resize`_</span></a> with
+bilinear interpolation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -249,7 +336,7 @@ H: image height.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List containing image batches with resized images.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List containing image batches with resized images. E.g. (2,2).</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.array</p>
@@ -273,7 +360,7 @@ implement any method, please refer to its child classes.</p>
 Available modes:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>keras</strong>: Reshape to have an extra axis for Keras.</li>
+<li><em>keras</em>: Reshape to have an extra axis for Keras.</li>
 </ul>
 </div></blockquote>
 </td>
@@ -283,7 +370,7 @@ Available modes:</p>
 <dl class="method">
 <dt id="pyphoon.app.preprocess.ImagePreprocessor.apply">
 <code class="descname">apply</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.ImagePreprocessor.apply" title="Permalink to this definition">¶</a></dt>
-<dd><p>Applies the preprocessing pipeline to <strong>data</strong>.</p>
+<dd><p>Applies the preprocessing pipeline to class attribute <strong>data</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -298,7 +385,7 @@ Available modes:</p>
 <dt id="pyphoon.app.preprocess.ImagePreprocessor.reshape">
 <code class="descname">reshape</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.ImagePreprocessor.reshape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reshapes the dimensions of the list so that it is suitable for
-the specified DL framework.</p>
+the specified DL framework. So far, only ‘keras’ option is available.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -319,14 +406,14 @@ the specified DL framework.</p>
 <dt id="pyphoon.app.preprocess.DefaultImagePreprocessor">
 <em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">DefaultImagePreprocessor</code><span class="sig-paren">(</span><em>mean</em>, <em>std</em>, <em>resize_factor</em>, <em>reshape_mode</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.DefaultImagePreprocessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphoon.app.preprocess.ImagePreprocessor</span></code></a></p>
-<p>Class of <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a>,
-implementing an specific preprocessing of images. Assuming an input image
-<span class="math notranslate">\(X\)</span>, this preprocessor first centres and normalises it as</p>
+<p>Child of of <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a>.
+Assuming an input image <span class="math notranslate">\(X\)</span>, this preprocessor first centres and
+normalises it as</p>
 <div class="math notranslate">
 \[\frac{X-\mu}{\sigma}\]</div>
 <p>where <span class="math notranslate">\(\mu\)</span> and <span class="math notranslate">\(\sigma\)</span> denote the pixel mean and standard
 deviation, respectively. Next, it resizes the image using the method
-<code class="xref py py-func docutils literal notranslate"><span class="pre">skimage.transform.downscale_local_mean()</span></code>.</p>
+<a class="reference internal" href="#pyphoon.app.preprocess.resize" title="pyphoon.app.preprocess.resize"><code class="xref py py-func docutils literal notranslate"><span class="pre">resize()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -365,16 +452,16 @@ specific DL framework.</p>
 
 <dl class="class">
 <dt id="pyphoon.app.preprocess.MeanImagePreprocessor">
-<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">MeanImagePreprocessor</code><span class="sig-paren">(</span><em>mean_image</em>, <em>scale_factor</em>, <em>resize</em>, <em>reshape_mode</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.MeanImagePreprocessor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">MeanImagePreprocessor</code><span class="sig-paren">(</span><em>mean_image</em>, <em>scale_factor</em>, <em>resize_factor</em>, <em>reshape_mode</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.MeanImagePreprocessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphoon.app.preprocess.ImagePreprocessor</span></code></a></p>
-<p>Class of <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a>,
-implementing an specific preprocessing of images. Assuming an input image
-<span class="math notranslate">\(X\)</span>, this preprocessor first centres and normalises it as</p>
+<p>Child of <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a>. Assuming an
+input image <span class="math notranslate">\(X\)</span>, this preprocessor first centres and normalises it as</p>
 <div class="math notranslate">
-\[\frac{X-\mu}{\sigma}\]</div>
-<p>where <span class="math notranslate">\(\mu\)</span> and <span class="math notranslate">\(\sigma\)</span> denote the pixel mean and standard
-deviation, respectively. Next, it resizes the image using the method
-<code class="xref py py-func docutils literal notranslate"><span class="pre">skimage.transform.downscale_local_mean()</span></code>.</p>
+\[\frac{X \ominus \hat{X}}{s}\]</div>
+<p>where <span class="math notranslate">\(\hat{X}\)</span> denotes the image mean (same size as :math: <cite>X</cite>),
+<span class="math notranslate">\(s\)</span> is the scale factor (scalar) and <span class="math notranslate">\(\ominus\)</span> is pixel-wise
+subtraction operations. Next, it resizes the image using the method
+<a class="reference internal" href="#pyphoon.app.preprocess.resize" title="pyphoon.app.preprocess.resize"><code class="xref py py-func docutils literal notranslate"><span class="pre">resize()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -382,7 +469,7 @@ deviation, respectively. Next, it resizes the image using the method
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
 <li><strong>mean_image</strong> – Mean image (2D matrix)</li>
 <li><strong>scale_factor</strong> – Used to normalise the data.</li>
-<li><a class="reference internal" href="#pyphoon.app.preprocess.resize" title="pyphoon.app.preprocess.resize"><strong>resize</strong></a> – To resize the image. Define the new size of the images.</li>
+<li><strong>resize_factor</strong> – To resize the image. Define the new size of the images.</li>
 <li><strong>reshape_mode</strong> – Used to normalise the data. See
 <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a></li>
 </ul>
@@ -530,7 +617,7 @@ By default it considers all classes.</li>
         <a href="pyphoon.visualise.html" class="btn btn-neutral float-right" title="pyphoon.visualise" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pyphoon.db.html" class="btn btn-neutral" title="pyphoon.clean_satellite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pyphoon.db.html" class="btn btn-neutral" title="pyphoon.db" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
