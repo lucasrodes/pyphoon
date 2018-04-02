@@ -12,10 +12,11 @@ def get_h5_filenames(directory):
     specified directory is a H5 file itself, then the name of the file is
     returned.
 
-    :param directory: Path to an H5 file or a folder with a set of H5 files.
+    :param directory: Path to a folder containing HDF5 files or a single HDF5
+        file.
     :type directory: str
     :return: List with the paths to all H5 files available according to the
-        specified directory. List is empty if no file was found).
+        specified directory. List is empty if no file was found.
     :rtype: list
     """
     if isdir(directory):
@@ -37,7 +38,7 @@ def get_h5_filenames(directory):
 def read_source_images(path_to_folder):
     """ Reads all image files within a given folder. Note that all images are
     assumed to have the same dimensionality. In addition, an image should have
-    been stored as a dataset, with name 'infrared', in an HDF file.
+    been stored as a dataset, with name 'infrared', in an HDF5 file.
 
     :param path_to_folder: Complete path to the folder containing HDF image
         files.
@@ -55,13 +56,13 @@ def read_source_images(path_to_folder):
 
 
 def read_source_image(path_to_file):
-    """ Reads an image from an HDF file. It assumes that the image was stored
-    as a dataset with name 'infrared'.
+    """ Reads an image from an HDF5 file. It assumes that the image was stored
+    as a dataset with name 'infrared' in an HDF5 file.
 
     :param path_to_file: Path to the HDF file storing the image.
     :type path_to_file: str
-    :return: Image
-    :rtype: a
+    :return: Image of size *WxH* (*W*: image width, *H*: image height)
+    :rtype: numpy.array
     """
     with h5py.File(path_to_file, 'r') as h5f:
         image = h5f.get('infrared').value
@@ -69,12 +70,14 @@ def read_source_image(path_to_file):
 
 
 def write_image(path_to_file, image, compression='gzip'):
-    """  Writes image in the original format.
+    """ Stores a given image in a dataset in a HDF5 file.
 
-    :param compression: Compression
+    :param compression: Compression type
+    :type compression: str
     :param path_to_file: Path to the HDF file storing the image.
-    :param image: Image information
-    :return:
+    :type path_to_file: str
+    :param image: Image information.
+    :type image: numpy.array
     """
     with h5py.File(path_to_file, 'w') as h5f:
         h5f.create_dataset(name='infrared', data=image, compression=compression)
@@ -91,11 +94,14 @@ def read_h5groupfile(path_to_file):
 
     :param path_to_file: Path to an H5 file.
     :type path_to_file: str
-    :return: Content of the H5 file as a dictionary. Keys stand for data
-        field names, the corresponding value is a dictionary with two fields:
-        'data', which contains the data itself and 'ids' which contains the
-        ids associated to the samples from 'data'. Hence, the format of the
-        returned file is a 2-nested dictionary.
+    :return: Content of the HDF5 file as a dictionary. Keys stand for data
+        field names and corresponding values are dictionaries with two fields:
+
+        -   *data*: Contains the data itself
+        -   *ids*: Contains the ids associated to the samples from *data*.
+
+        As a consequence, the format of the returned file is a 2-nested
+        dictionary.
     :rtype: dict
     """
     data = collections.defaultdict(dict)
@@ -112,15 +118,18 @@ def write_h5groupfile(data, path_to_file, compression):
     """ Constructs and stores an H5 file containing the given data.
 
     :param data: Dictionary containing the data to be stored. Keys stand for
-        data field names, the corresponding value is a dictionary with two
-        fields: 'data', which contains the data itself and 'ids' which
-        contains the ids associated to the samples from 'data'. Hence,
-        ``data`` is a 2-nested dictionary.
+        data field names and corresponding values are dictionaries with two
+        fields:
+
+        -   *data*: Contains the data itself.
+        -   *ids*: Contains the ids associated to the samples from *data*.
+
+        Hence, **data** is a 2-nested dictionary.
     :type data: dict
     :param path_to_file: Path where the new H5 file will be created.
     :type path_to_file: str
     :param compression: Use to compress H5 file. Find more details at
-            the `h5py documentation`_
+            the `h5py documentation`_.
 
     .. _h5py documentation:
             http://docs.h5py.org/en/latest/high/dataset.html
@@ -134,12 +143,12 @@ def write_h5groupfile(data, path_to_file, compression):
 
 
 def read_h5_dataset_file(path_to_file):
-    """ Reads an HDF file and returns its content in a dictionary-fashion.
+    """ Reads an HDF5 file and returns its content in a dictionary-fashion.
 
     :param path_to_file: Path to an H5 file.
     :type path_to_file: str
-    :return: Content of the H5 file as a dictionary. Keys stand for data
-        field names, values are the corresponding data.
+    :return: Content of the HDF5 file as a dictionary. Keys stand for data
+        field names and values are the corresponding data.
     :rtype: dict
     """
     with h5py.File(path_to_file, 'r') as h5f:
@@ -176,7 +185,7 @@ def read_h5file(path_to_file):
 
 
 def write_h5_dataset_file(data, path_to_file, compression):
-    """ Constructs and stores an H5 file containing the given data.
+    """ Constructs and stores an HDF5 file containing the given data.
 
     :param data: Dictionary containing the data to be stored. Keys stand for
         data field names, values are the corresponding data.
