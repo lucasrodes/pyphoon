@@ -189,7 +189,7 @@
         <div class="section" id="typhoon-sequence">
 <h1>Typhoon sequence<a class="headerlink" href="#typhoon-sequence" title="Permalink to this headline">¶</a></h1>
 <p>Sometimes it may be interesting to visualise a single typhoon sequence.
-Luckily, this can be easily done with the module <a class="reference internal" href="../pyphoon.visualise.html#module-pyphoon.visualise" title="pyphoon.visualise"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.visualise</span></code></a>. In
+Luckily, this can be easily done with the module <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.visualise</span></code>. In
 this example we will show first how to load the data related to a typhoon
 sequence and next we will show how to animate the list of images!</p>
 <p>Make sure to replace <code class="docutils literal notranslate"><span class="pre">path_image</span></code> with the path of the directory containing
@@ -238,7 +238,7 @@ typhoon sequence. Likewise, <code class="docutils literal notranslate"><span cla
 </pre></div>
 </div>
 <p>You can easily display all the image frames in a typhoon sequence using the
-class <a class="reference internal" href="../pyphoon.visualise.html#pyphoon.visualise.DisplaySequence" title="pyphoon.visualise.DisplaySequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisplaySequence</span></code></a>.</p>
+class <code class="xref py py-class docutils literal notranslate"><span class="pre">DisplaySequence</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualise</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DisplaySequence</span><span class="p">(</span>
 <span class="gp">... </span>   <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span>
@@ -249,7 +249,7 @@ class <a class="reference internal" href="../pyphoon.visualise.html#pyphoon.visu
 </pre></div>
 </div>
 <p>If you want to display the sequence in a Jupyter notebook use the method
-<a class="reference internal" href="../pyphoon.visualise.html#pyphoon.visualise.DisplaySequence.run_html" title="pyphoon.visualise.DisplaySequence.run_html"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_html()</span></code></a> instead as</p>
+<code class="xref py py-func docutils literal notranslate"><span class="pre">run_html()</span></code> instead as</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualise</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">DisplaySequence</span><span class="p">(</span>

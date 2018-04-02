@@ -177,9 +177,10 @@
 <span id="pyphoon-visualise"></span><h1>pyphoon.visualise<a class="headerlink" href="#module-pyphoon.visualise" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pyphoon.visualise.DisplaySequence">
-<em class="property">class </em><code class="descclassname">pyphoon.visualise.</code><code class="descname">DisplaySequence</code><span class="sig-paren">(</span><em>images</em>, <em>images_ids</em>, <em>name</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em>, <em>show_title=True</em>, <em>alt_title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.DisplaySequence" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pyphoon.visualise.</code><code class="descname">DisplaySequence</code><span class="sig-paren">(</span><em>images</em>, <em>images_ids</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em>, <em>show_title=True</em>, <em>alt_title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.DisplaySequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Used to animate a batch of images.</p>
+<p>Animates a sequence of images. Mainly to be used to display a typhoon
+sequence temporal evolution.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -188,7 +189,6 @@
 <li><strong>images</strong> (<em>list</em>) – List with image arrays. Each element of the list must be an
 array of 2 dimensions.</li>
 <li><strong>images_ids</strong> (<em>list</em>) – List of the ids of the elements in the list <em>images</em>.</li>
-<li><strong>name</strong> (<em>str</em>) – Name</li>
 <li><strong>interval</strong> (<em>int</em>) – Interval between frames while visualizing the animation.</li>
 <li><strong>start_frame</strong> (<em>int</em>) – First image frame of the list to visualize.</li>
 <li><strong>end_frame</strong> (<em>int</em>) – Last image frame of the list to visualize.</li>
@@ -210,6 +210,38 @@ array of 2 dimensions.</li>
 <dd><p>Runs the animation</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="pyphoon.visualise.DisplayPredictedLabeledSequence">
+<em class="property">class </em><code class="descclassname">pyphoon.visualise.</code><code class="descname">DisplayPredictedLabeledSequence</code><span class="sig-paren">(</span><em>images</em>, <em>images_ids</em>, <em>predictions</em>, <em>ground_truth</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em>, <em>show_title=True</em>, <em>alt_title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.DisplayPredictedLabeledSequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyphoon.visualise.DisplaySequence" title="pyphoon.visualise.DisplaySequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphoon.visualise.DisplaySequence</span></code></a></p>
+<p>Animates a sequence of images and provides a visualisation of the
+network prediction. To be used to display a typhoon sequence temporal
+evolution. Currently, only working for binary predictions (0, 1).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>images</strong> (<em>list</em>) – List with image arrays. Each element of the list must
+be an array of 2 dimensions.</li>
+<li><strong>images_ids</strong> (<em>list</em>) – List of the ids of the elements in the list <em>images</em>.</li>
+<li><strong>predictions</strong> (Network predictions for samples in <strong>images</strong>.
+Note that this list should only contain ‘0’ and ‘1’.) – list</li>
+<li><strong>ground_truth</strong> (<em>list</em>) – Ground truth labels for samples in <strong>images</strong>.
+Note that this list should only contain ‘0’ and ‘1’.</li>
+<li><strong>interval</strong> (<em>int</em>) – Interval between frames while visualizing the
+animation.</li>
+<li><strong>start_frame</strong> (<em>int</em>) – First image frame of the list to visualize.</li>
+<li><strong>end_frame</strong> (<em>int</em>) – Last image frame of the list to visualize.</li>
+<li><strong>show_title</strong> (<em>bool</em>) – Set to false if no title should be shown in the
+figure.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

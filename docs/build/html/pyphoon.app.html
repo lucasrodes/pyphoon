@@ -110,7 +110,7 @@
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pyphoon.app</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.app.preprocess">pyphoon.app.preprocess</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyphoon-app-utils">pyphoon.app.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.app.utils">pyphoon.app.utils</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.visualise.html">pyphoon.visualise</a></li>
@@ -182,22 +182,27 @@
 <hr class="docutils" />
 <div class="section" id="module-pyphoon.app.preprocess">
 <span id="pyphoon-app-preprocess"></span><h2>pyphoon.app.preprocess<a class="headerlink" href="#module-pyphoon.app.preprocess" title="Permalink to this headline">¶</a></h2>
-<p>hello</p>
 <dl class="function">
 <dt id="pyphoon.app.preprocess.get_mean_image">
-<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">get_mean_image</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.get_mean_image" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">get_mean_image</code><span class="sig-paren">(</span><em>X</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.get_mean_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the mean image from a list of image batches.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
 is of shape (N, W, H), where N: #samples, W: image width, H: image
-height.</td>
+height.</li>
+<li><strong>display</strong> (<em>bool</em>) – Set to True to display information as function is executed.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Mean image.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Mean image.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">numpy.array</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.array</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -205,19 +210,25 @@ height.</td>
 
 <dl class="function">
 <dt id="pyphoon.app.preprocess.get_max_min">
-<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">get_max_min</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.get_max_min" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">get_max_min</code><span class="sig-paren">(</span><em>X</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.get_max_min" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the maximum and minimum pixel values of a list of image batches.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
 is of shape (N, W, H), where N: #samples, W: image width, H: image
-height.</td>
+height.</li>
+<li><strong>display</strong> (<em>bool</em>) – Set to True to display information as function is executed.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Maximum (first element) and minimum (second element) values.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Maximum (first element) and minimum (second element) values.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -232,9 +243,8 @@ height.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
-is of shape (N, W, H), where N: #samples, W: image width, H: image
-height.</li>
+<li><strong>X</strong> (<em>numpy.array</em>) – Image of shape (N, W, H), where N: #samples, W: image width,
+H: image height.</li>
 <li><strong>size</strong> (<em>tuple</em>) – Size to reshape images.</li>
 </ul>
 </td>
@@ -242,7 +252,7 @@ height.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List containing image batches with resized images.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.array</p>
 </td>
 </tr>
 </tbody>
@@ -278,7 +288,7 @@ Available modes:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>list</em>) – List with images.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>numpy array</em>) – Array with images.</td>
 </tr>
 </tbody>
 </table>
@@ -355,7 +365,7 @@ specific DL framework.</p>
 
 <dl class="class">
 <dt id="pyphoon.app.preprocess.MeanImagePreprocessor">
-<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">MeanImagePreprocessor</code><span class="sig-paren">(</span><em>mean_image</em>, <em>scale_factor</em>, <em>resize_factor</em>, <em>reshape_mode</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.MeanImagePreprocessor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">MeanImagePreprocessor</code><span class="sig-paren">(</span><em>mean_image</em>, <em>scale_factor</em>, <em>resize</em>, <em>reshape_mode</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.MeanImagePreprocessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphoon.app.preprocess.ImagePreprocessor</span></code></a></p>
 <p>Class of <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a>,
 implementing an specific preprocessing of images. Assuming an input image
@@ -370,10 +380,9 @@ deviation, respectively. Next, it resizes the image using the method
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
-<li><strong>resize_factor</strong> – To resize the image. For instance, half the
-dimensions by setting this parameter equal to 2.</li>
-<li><strong>mean</strong> – Used to centre the data.</li>
-<li><strong>std</strong> – Used to normalise the data.</li>
+<li><strong>mean_image</strong> – Mean image (2D matrix)</li>
+<li><strong>scale_factor</strong> – Used to normalise the data.</li>
+<li><a class="reference internal" href="#pyphoon.app.preprocess.resize" title="pyphoon.app.preprocess.resize"><strong>resize</strong></a> – To resize the image. Define the new size of the images.</li>
 <li><strong>reshape_mode</strong> – Used to normalise the data. See
 <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a></li>
 </ul>
@@ -403,8 +412,107 @@ specific DL framework.</p>
 
 </div>
 <hr class="docutils" />
-<div class="section" id="pyphoon-app-utils">
-<h2>pyphoon.app.utils<a class="headerlink" href="#pyphoon-app-utils" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pyphoon.app.utils">
+<span id="pyphoon-app-utils"></span><h2>pyphoon.app.utils<a class="headerlink" href="#module-pyphoon.app.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyphoon.app.utils.read_h5datachunk_old">
+<code class="descclassname">pyphoon.app.utils.</code><code class="descname">read_h5datachunk_old</code><span class="sig-paren">(</span><em>path_to_file</em>, <em>shuffle=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.read_h5datachunk_old" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a chunk of data stored as h5.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path_to_file</strong> (<em>str</em>) – Path name to the H5 file to read</li>
+<li><strong>shuffle</strong> (<em>bool</em>) – Set to true if data should be shuffled.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Array of images (X), array of labels (Y)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.app.utils.load_h5datachunks">
+<code class="descclassname">pyphoon.app.utils.</code><code class="descname">load_h5datachunks</code><span class="sig-paren">(</span><em>dataset_dir</em>, <em>chunk_filenames</em>, <em>features</em>, <em>ignore_classes=None</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.load_h5datachunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a set of h5 files as individual arrays in a list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset_dir</strong> (<em>str</em>) – Directory containing the chunk files.</li>
+<li><strong>chunk_filenames</strong> (<em>list</em>) – Filenames of the data chunks.</li>
+<li><strong>features</strong> (<em>list</em>) – Features to retrieve from the h5 data chunks as string
+names.</li>
+<li><strong>ignore_classes</strong> (<em>list</em><em>, </em><em>default None</em>) – List of class labels to consider. Labels as ints.
+By default it considers all classes.</li>
+<li><strong>display</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True to have some informative messages printed out.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List with the data chunks as numpy.arrays.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.app.utils.data_generator">
+<code class="descclassname">pyphoon.app.utils.</code><code class="descname">data_generator</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>batch_sz</em>, <em>shuffle=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.data_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates batches of data from samples <strong>X</strong> and labels <strong>Y</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>numpy.array</em>) – Sample data.</li>
+<li><strong>Y</strong> (<em>numpy.array</em>) – Label data.</li>
+<li><strong>batch_sz</strong> (<em>int</em>) – Batch size.</li>
+<li><strong>shuffle</strong> (<em>bool</em><em>, </em><em>default True</em>) – Set to True to shuffle the batch data (recommended)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.app.utils.data_generator_chunklist">
+<code class="descclassname">pyphoon.app.utils.</code><code class="descname">data_generator_chunklist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>batch_sz</em>, <em>shuffle=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.data_generator_chunklist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates batches of data from samples <strong>X</strong> and labels <strong>Y</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>list</em>) – Sample data.</li>
+<li><strong>Y</strong> (<em>list</em>) – Label data.</li>
+<li><strong>batch_sz</strong> (<em>int</em>) – Batch size.</li>
+<li><strong>shuffle</strong> (<em>bool</em><em>, </em><em>default True</em>) – Set to True to shuffle the batch data (recommended)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 </div>
 
