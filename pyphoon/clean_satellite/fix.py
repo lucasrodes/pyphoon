@@ -58,6 +58,7 @@ class TyphoonListImageFixAlgorithm(object):
         :param images_ids: List of image ids.
         :type images_ids: list
         :return: Tuple with two elements:
+
             *   New list of images.
             *   New list of the corresponding ids.
         :rtype: tuple
@@ -159,6 +160,7 @@ class TyphoonListImageFixAlgorithm(object):
         :param images_ids: List of image ids.
         :type images_ids: list
         :return: Dictionary with the ids of the new generated frames. Keys:
+
             *   *original*: Frame position in original image list.
             *   *fixed*: Frame position in fixed image list.
         :rtype: dict
