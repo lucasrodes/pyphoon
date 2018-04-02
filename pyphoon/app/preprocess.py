@@ -6,13 +6,17 @@ import cv2
 ################################################################################
 # IMAGE OPERATIONS
 ################################################################################
-def get_mean_image(X):
+def get_mean_image(X, display=False):
     """ Computes the mean image from a list of image batches.
 
     :param X: List containing image batches. That is, an element of the list
         is of shape (N, W, H), where N: #samples, W: image width, H: image
-        height.
+        height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+        If you only have a single batch (e.g. ``B``), you just need to
+        encapsulate it in a list (i.e. ``[B]``).
     :type X: list
+    :param display: Set to True to display information as function is executed.
+    :type display: bool
     :return: Mean image.
     :rtype: numpy.array
     """
@@ -20,7 +24,7 @@ def get_mean_image(X):
     count = 0
     n_samples = 0
     for x in X:
-        print(count)
+        print(count) if display else 0
         count += 1
         if mean is None:
             mean = np.sum(x, axis=0)
@@ -33,19 +37,26 @@ def get_mean_image(X):
     return mean
 
 
-def get_max_min(X):
+def get_max_min(X, display=False):
     """ Gets the maximum and minimum pixel values of a list of image batches.
 
     :param X: List containing image batches. That is, an element of the list
         is of shape (N, W, H), where N: #samples, W: image width, H: image
-        height.
+        height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+        If you only have a single batch (e.g. ``B``), you just need to
+        encapsulate it in a list (i.e. ``[B]``).
     :type X: list
+    :param display: Set to True to display information as function is executed.
+    :type display: bool
     :return: Maximum (first element) and minimum (second element) values.
     :rtype: tuple
     """
     max_value = None
     min_value = None
+    count = 0
     for x in X:
+        print(count) if display else 0
+        count += 1
         if max_value is None:
             max_value = np.max(x)
         else:
@@ -60,14 +71,18 @@ def get_max_min(X):
 
 
 def resize(X, size):
-    """ Resizes the image according to **size**.
+    """ Resizes the image according to **size** using `cv2.resize`_ with
+    bilinear interpolation.
+
+    ..  _cv.resize:
+            https://docs.opencv.org/3.4.0/da/d54/group__imgproc__transform.html#ga47a974309e9102f5f08231edc7e7529d
 
     :param X: Image of shape (N, W, H), where N: #samples, W: image width,
         H: image height.
     :type X: numpy.array
     :param size: Size to reshape images.
     :type size: tuple
-    :return: List containing image batches with resized images.
+    :return: List containing image batches with resized images. E.g. (2,2).
     :rtype: numpy.array
     """
     im = np.array([cv2.resize(x, size) for x in X]).astype(np.float32)
@@ -78,20 +93,20 @@ def resize(X, size):
 # PROCESSORS
 ################################################################################
 class ImagePreprocessor(object):
-    """
-    Parent class for image preprocessing classes. This class does not
+    """ Parent class for image preprocessing classes. This class does not
     implement any method, please refer to its child classes.
 
     :param reshape_mode: Use the mode according to your DL framework.
         Available modes:
-            * **keras**: Reshape to have an extra axis for Keras.
+
+            *   *keras*: Reshape to have an extra axis for Keras.
     """
 
     def __init__(self, reshape_mode):
         self.reshape_mode = reshape_mode
 
     def apply(self, X):
-        """ Applies the preprocessing pipeline to **data**.
+        """ Applies the preprocessing pipeline to class attribute **data**.
 
         :param X: Array with images.
         :type X: numpy array
@@ -100,7 +115,7 @@ class ImagePreprocessor(object):
 
     def reshape(self, X):
         """ Reshapes the dimensions of the list so that it is suitable for
-        the specified DL framework.
+        the specified DL framework. So far, only 'keras' option is available.
 
         :param X: List of images.
         :type X: numpy.ndarray
@@ -112,15 +127,15 @@ class ImagePreprocessor(object):
 
 
 class DefaultImagePreprocessor(ImagePreprocessor):
-    """ Class of :class:`~pyphoon.app.preprocess.ImagePreprocessor`,
-    implementing an specific preprocessing of images. Assuming an input image
-    :math:`X`, this preprocessor first centres and normalises it as
+    """ Child of of :class:`~pyphoon.app.preprocess.ImagePreprocessor`.
+    Assuming an input image :math:`X`, this preprocessor first centres and
+    normalises it as
 
     .. math::  \\frac{X-\mu}{\sigma}
 
     where :math:`\mu` and :math:`\sigma` denote the pixel mean and standard
     deviation, respectively. Next, it resizes the image using the method
-    :func:`skimage.transform.downscale_local_mean`.
+    :func:`resize`.
 
 
     :var resize_factor: To resize the image. For instance, half the
@@ -153,17 +168,10 @@ class DefaultImagePreprocessor(ImagePreprocessor):
                             "where N: #samples, W: image_width, "
                             "H: # image_height")
 
-        # Scale chunk images
-        X = np.array(
-            [
-                downscale_local_mean(x, (self.resize_factor,
-                                         self.resize_factor))
-                for x in X
-            ]
-        )
+        # Resize chunk images
+        X = resize(X, self.resize_factor)
 
-        X -= self.mean
-        X /= self.std
+        X -= (X - self.mean)/self.std
 
         # Normalise
         X = self.reshape(X)
@@ -172,28 +180,27 @@ class DefaultImagePreprocessor(ImagePreprocessor):
 
 
 class MeanImagePreprocessor(ImagePreprocessor):
-    """ Class of :class:`~pyphoon.app.preprocess.ImagePreprocessor`,
-    implementing an specific preprocessing of images. Assuming an input image
-    :math:`X`, this preprocessor first centres and normalises it as
+    """ Child of :class:`~pyphoon.app.preprocess.ImagePreprocessor`. Assuming an
+    input image :math:`X`, this preprocessor first centres and normalises it as
 
-    .. math::  \\frac{X-\mu}{\sigma}
+    .. math::  \\frac{X \ominus \hat{X}}{s}
 
-    where :math:`\mu` and :math:`\sigma` denote the pixel mean and standard
-    deviation, respectively. Next, it resizes the image using the method
-    :func:`skimage.transform.downscale_local_mean`.
-
+    where :math:`\hat{X}` denotes the image mean (same size as :math: `X`),
+    :math:`s` is the scale factor (scalar) and :math:`\ominus` is pixel-wise
+    subtraction operations. Next, it resizes the image using the method
+    :func:`resize`.
 
     :var mean_image: Mean image (2D matrix)
     :var scale_factor: Used to normalise the data.
-    :var resize: To resize the image. Define the new size of the images.
+    :var resize_factor: To resize the image. Define the new size of the images.
     :var reshape_mode: Used to normalise the data. See
         :class:`~pyphoon.app.preprocess.ImagePreprocessor`
     """
-    def __init__(self, mean_image, scale_factor, resize, reshape_mode):
+    def __init__(self, mean_image, scale_factor, resize_factor, reshape_mode):
         super().__init__(reshape_mode)
         self.mean = mean_image
         self.scale = scale_factor
-        self.resize = resize
+        self.resize_factor = resize_factor
 
     def apply(self, X):
         """ Processes an array of images, scaling and normalising them
@@ -213,8 +220,8 @@ class MeanImagePreprocessor(ImagePreprocessor):
                             "where N: #samples, W: image_width, "
                             "H: # image_height")
 
-        # Scale chunk images
-        X = resize(X, self.resize)
+        # Resize chunk images
+        X = resize(X, self.resize_factor)
         # Centre & normalise
         X = (X - self.mean)/self.scale
 
