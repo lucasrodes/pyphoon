@@ -17,7 +17,7 @@ def get_mean_image(X, display=False):
     :type X: list
     :param display: Set to True to display information as function is executed.
     :type display: bool
-    :return: Mean image.
+    :return: Mean image (size W x H).
     :rtype: numpy.array
     """
     mean = None
@@ -35,6 +35,65 @@ def get_mean_image(X, display=False):
 
     mean /= n_samples
     return mean
+
+
+def get_mean_pixel(X, display=False):
+    """ Computes the mean pixel from all samples in the list of image batches
+    **X**.
+
+    :param X: List containing image batches. That is, an element of the list
+        is of shape (N, W, H), where N: #samples, W: image width, H: image
+        height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+        If you only have a single batch (e.g. ``B``), you just need to
+        encapsulate it in a list (i.e. ``[B]``).
+    :type X: list
+    :param display: Set to True to display information as function is executed.
+    :type display: bool
+    :return: Pixel mean (scalar).
+    :rtype: float
+    """
+    pmean = 0
+    n_samples = 0
+    count = 0
+    for x in X:
+        if display:
+            print(count)
+            count += 1
+        pmean += len(x) * x.mean()
+        n_samples += len(x)
+    pmean /= n_samples
+    return pmean
+
+
+def get_std_pixel(X, pmean, display=False):
+    """ Computes the pixel standard deviation from all samples in the list of
+    image batches **X**.
+
+    :param X: List containing image batches. That is, an element of the list
+        is of shape (N, W, H), where N: #samples, W: image width, H: image
+        height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+        If you only have a single batch (e.g. ``B``), you just need to
+        encapsulate it in a list (i.e. ``[B]``).
+    :type X: list
+    :param pmean: Pixel mean of bath list **X** (see :func:`get_mean_pixel`).
+    :type pmean: float
+    :param display: Set to True to display information as function is executed.
+    :type display: bool
+    :return: Pixel standard deviation (scalar).
+    :rtype: float
+    """
+    pstd = 0
+    n_samples = 0
+    count = 0
+    for x in X:
+        if display:
+            print(count)
+            count += 1
+        pstd += len(x) * (x ** 2).mean()
+        n_samples += len(x)
+    pstd /= n_samples
+    pstd = np.sqrt(pstd - pmean ** 2)
+    return pstd
 
 
 def get_max_min(X, display=False):
@@ -70,7 +129,7 @@ def get_max_min(X, display=False):
     return max_value, min_value
 
 
-def resize(X, size):
+def resize(X, size, ignore_last_axis=False):
     """ Resizes the image according to **size** using `cv2.resize`_ with
     bilinear interpolation.
 
@@ -82,10 +141,17 @@ def resize(X, size):
     :type X: numpy.array
     :param size: Size to reshape images.
     :type size: tuple
+    :param ignore_last_axis: Set to True if images have dimensionality
+        (W, H, 1).
+    :type ignore_last_axis: bool
     :return: List containing image batches with resized images. E.g. (2,2).
     :rtype: numpy.array
     """
-    im = np.array([cv2.resize(x, size) for x in X]).astype(np.float32)
+    if ignore_last_axis:
+        im = np.array([cv2.resize(x[:, :, 0], size) for x in X]).astype(
+            np.float32)
+    else:
+        im = np.array([cv2.resize(x, size) for x in X]).astype(np.float32)
     return im  # np.expand_dims(im, axis=3)
 
 

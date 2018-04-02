@@ -158,7 +158,7 @@ def data_generator(X, Y, batch_sz, shuffle=True):
             yield x, y
 
 
-def data_generator_chunklist(X, Y, batch_sz, shuffle=True):
+def data_generator_from_chunklist(X, Y, batch_sz):
     """ Generates batches of data from samples **X** and labels **Y**.
 
     :param X: Sample data.
@@ -167,35 +167,37 @@ def data_generator_chunklist(X, Y, batch_sz, shuffle=True):
     :type Y: list
     :param batch_sz: Batch size.
     :type batch_sz: int
-    :param shuffle: Set to True to shuffle the batch data (recommended)
-    :type shuffle: bool, default True
     :return:
     """
     n_chunks = len(X)
     indices = list(range(n_chunks))
-    np.random.shuffle(indices)
-    while True:
-        if shuffle:
-            np.random.shuffle(indices)
-        for idx in indices:
-            _X = X[idx]
-            _Y = Y[idx]
-            if shuffle:
-                # Shuffle data
-                pos = np.arange(_X.shape[0])
-                np.random.shuffle(pos)
-                _X = _X[pos]
-                _Y = _Y[pos]
-            else:
-                pass
 
-            # Generate batches
-            imax = int(_X.shape[0] / batch_sz)
-            for i in range(imax):
-                # Find list of IDs
-                x = _X[i * batch_sz:(i + 1) * batch_sz]
-                y = _Y[i * batch_sz:(i + 1) * batch_sz]
-                yield x, y
+    chunk_count = 0
+    while True:
+        # Randomise chunk order once all chunks have been seen
+        if chunk_count % n_chunks == 0:
+            np.random.shuffle(indices)
+
+        # Get chunk for batch generation
+        idx = indices[chunk_count % n_chunks]
+        _X = X[idx]
+        _Y = Y[idx]
+        # Shuffle batch data
+        n_samples = len(_Y)
+        pos = np.arange(n_samples)
+        np.random.shuffle(pos)
+        _X = _X[pos]
+        _Y = _Y[pos]
+        #_Y = np_utils.to_categorical(_Y - 2, num_classes=4)
+
+        # Generate batches
+        imax = int(n_samples / batch_sz)
+        for i in range(imax):
+            # Find list of IDs
+            x = _X[i * batch_sz:(i + 1) * batch_sz]
+            y = _Y[i * batch_sz:(i + 1) * batch_sz]
+            yield x, y
+        chunk_count += 1
 
 
 
