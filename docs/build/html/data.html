@@ -180,15 +180,23 @@
     
         <div class="section" id="data">
 <h1>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h1>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">develop information</p>
-</div>
+<p>The original data we are provided with is arranged in a very specific fashion.
+There are two main sources of data: (i) satellite imagery and (ii) best track
+data, which we briefly describe below. Details on the data sources can be
+found in the <a class="reference external" href="http://agora.ex.nii.ac.jp/digital-typhoon/about-data.html.en">official Digital Typhoon website</a>.</p>
 <div class="section" id="satellite-imagery">
 <h2>Satellite imagery<a class="headerlink" href="#satellite-imagery" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p class="first">Folder for each typhoon sequence with images in hdf format:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">image</span><span class="o">/</span><span class="n">data</span>
+<p>Satellite images are stored individually as HDF5 files with the following
+naming convention:</p>
+<blockquote>
+<div></div></blockquote>
+<p>An example of this is <code class="docutils literal notranslate"><span class="pre">1998091906-199808-GMS5-1.h5</span></code>, which is an image
+taken the 19th of September 1998 at 6AM with GMS5 satellite and belonging to
+sequence <a class="reference external" href="http://agora.ex.nii.ac.jp/digital-typhoon/summary/wnp/s/199808.html.en">199808</a>.</p>
+<p>In addition, they are arranged in folders according to the typhoon sequence
+they belong to. Below we illustrate this hierarchy.</p>
+<blockquote>
+<div><div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">image</span><span class="o">/</span><span class="n">data</span>
 <span class="o">|-</span>  <span class="mi">197801</span><span class="o">/</span>
 <span class="o">|</span>   <span class="o">|-</span>  <span class="n">image1</span><span class="o">.</span><span class="n">h5</span>
     <span class="o">|-</span>  <span class="n">image2</span><span class="o">.</span><span class="n">h5</span>
@@ -200,38 +208,40 @@
 <span class="p">:</span>
 </pre></div>
 </div>
-</li>
-<li><p class="first">Usually 1h observation frequency (may change).</p>
-</li>
-<li><p class="first">512x512, pixel intesity = temperature (K).</p>
-</li>
-</ul>
+</div></blockquote>
+<p>Consecutive images in a sequence are usually 1 hour apart, but some
+exceptions may arise. The images are of shape 512x512 and the pixel value
+encodes the temperature (K).</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="best-track-data">
 <h2>Best Track data<a class="headerlink" href="#best-track-data" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p class="first">some: wind speed, centre pressure, geo-location, class…</p>
-</li>
-<li><p class="first">6h observation frequency: interpolation to catch up with images:
-We note that only 16.6% of Best Track data is real data, since the rest
-has been previously artificially generated through spline interpolation
-so that it can be aligned  with satellite imagery frequency observation.</p>
-</li>
-<li><p class="first">come as one tsv file for each typhoon sequence:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">best</span><span class="o">/</span><span class="n">data</span>
+<p>Best Track data contains different parameters from typhoon sequences. A
+direct match between this data and satellite images can be established
+provided that sample dates coincide. Some of the parameters included in this
+dataset are the wind speed, centre pressure, latitude and longitude (full
+list can be found <a class="reference external" href="http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html">here</a>).</p>
+<p><strong>Note</strong>: This data is obtained every 6h, hence there is an observation
+frequency miss-match with satellite imagery data. Therefore, spline
+interpolation has been used <a class="reference external" href="https://pdfs.semanticscholar.org/21c9/707d0a9dd362dacf99c49f7c2e5d92a1fadf.pdf">[1]</a> to align this data with the image
+counterparts. As a consequence, only 16.6% of Best Track data is actual real
+data.</p>
+<p>The data comes in .TSV format per typhoon sequence with name convention
+<code class="docutils literal notranslate"><span class="pre">&lt;typhoon_seq_no&gt;.tsv</span></code>, e.g.</p>
+<blockquote>
+<div><div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">best</span><span class="o">/</span><span class="n">data</span>
 <span class="o">|-</span>  <span class="mf">197801.</span><span class="n">tsv</span>
 <span class="o">|-</span>  <span class="mf">197901.</span><span class="n">tsv</span>
 <span class="o">|-</span>  <span class="mf">197902.</span><span class="n">tsv</span>
 <span class="p">:</span>
 </pre></div>
 </div>
-</li>
-</ul>
+</div></blockquote>
 </div>
+<hr class="docutils" />
 <div class="section" id="how-to-get-the-data">
 <h2>How to get the data<a class="headerlink" href="#how-to-get-the-data" title="Permalink to this headline">¶</a></h2>
-<p>TODO</p>
+<p>Please address to <a class="reference external" href="https://www.nii.ac.jp/en/faculty/digital_content/kitamoto_asanobu/">Kitamoto-sensei</a></p>
 </div>
 </div>
 

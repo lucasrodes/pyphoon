@@ -100,11 +100,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#how-can-i-cite-this-project">How can I cite this project?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#can-i-run-jupyter-from-inside-the-docker-container">Can I run Jupyter from inside the docker container?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#where-do-i-get-the-digital-typhoon-data">Where do I get the Digital Typhoon data?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#i-cannot-import-the-library">I cannot import the library</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#modulenotfounderror-no-module-named-pyphoon"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'pyphoon'</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#importerror-no-module-named-tkinter-please-install-the-python3-tk-package"><code class="docutils literal notranslate"><span class="pre">ImportError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'_tkinter',</span> <span class="pre">please</span> <span class="pre">install</span> <span class="pre">the</span> <span class="pre">python3-tk</span> <span class="pre">package</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#i-cannot-import-the-library">I cannot import the library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-jupyter">What is Jupyter?</a></li>
 </ul>
 </li>
 </ul>
@@ -206,20 +203,22 @@
 <hr class="docutils" />
 <div class="section" id="can-i-run-jupyter-from-inside-the-docker-container">
 <h2>Can I run Jupyter from inside the docker container?<a class="headerlink" href="#can-i-run-jupyter-from-inside-the-docker-container" title="Permalink to this headline">¶</a></h2>
-<p>The short answer is yes. The long answer can be found <a class="reference external" href="https://medium.com/&#64;lucasrg/using-jupyter-notebook-running-on-a-remote-docker-container-via-ssh-ea2c3ebb9055">here</a>.</p>
+<p>The short answer is yes. Longer answer is that you basically need to forward
+a port when creating a docker image instance. The long answer can be found
+<a class="reference external" href="https://medium.com/&#64;lucasrg/using-jupyter-notebook-running-on-a-remote-docker-container-via-ssh-ea2c3ebb9055">here</a>.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="where-do-i-get-the-digital-typhoon-data">
 <h2>Where do I get the Digital Typhoon data?<a class="headerlink" href="#where-do-i-get-the-digital-typhoon-data" title="Permalink to this headline">¶</a></h2>
 <p>The dataset has not been openly released, but we may make it accessible upon
-request. Try contacting the current <a class="reference external" href="home.html#support">project responsible</a>.</p>
+request. Try contacting the current <a class="reference external" href="home.html#support">project responsible</a> or <a class="reference external" href="https://www.nii.ac.jp/en/faculty/digital_content/kitamoto_asanobu/">Kitamoto-sensei</a> directly.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="i-cannot-import-the-library">
 <h2>I cannot import the library<a class="headerlink" href="#i-cannot-import-the-library" title="Permalink to this headline">¶</a></h2>
 <p>This might occur due to several reasons. Below we list some of the known errors.</p>
-<div class="section" id="modulenotfounderror-no-module-named-pyphoon">
-<h3><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'pyphoon'</span></code><a class="headerlink" href="#modulenotfounderror-no-module-named-pyphoon" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'pyphoon'</span></code></p>
 <p>Make sure that the folder with all the modules, i.e. <strong>pyphoon</strong>, is at the
 same level as the code you are trying to execute. If that is not possible,
 you can let python know where this folder is by using <cite>sys.path.insert</cite> and
@@ -228,9 +227,9 @@ passing the directory path containing the library folder.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">path_to_pyphoon</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="importerror-no-module-named-tkinter-please-install-the-python3-tk-package">
-<h3><code class="docutils literal notranslate"><span class="pre">ImportError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'_tkinter',</span> <span class="pre">please</span> <span class="pre">install</span> <span class="pre">the</span> <span class="pre">python3-tk</span> <span class="pre">package</span></code><a class="headerlink" href="#importerror-no-module-named-tkinter-please-install-the-python3-tk-package" title="Permalink to this headline">¶</a></h3>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">ImportError:</span> <span class="pre">No</span> <span class="pre">module</span> <span class="pre">named</span> <span class="pre">'_tkinter',</span> <span class="pre">please</span> <span class="pre">install</span> <span class="pre">the</span> <span class="pre">python3-tk</span>
+<span class="pre">package</span></code></p>
 <p>This may occur when trying to generate plots in the server without a graphical
 interface. This leads to an error when trying to import the module
 <cite>matplotlib.pyplot</cite>. To avoid this, make sure to use a non-interactive
@@ -240,6 +239,8 @@ before importing pyphoon.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;agg&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+</li>
+</ul>
 <div class="admonition-todo admonition" id="index-0">
 <p class="first admonition-title">Todo</p>
 <p>Create a pyphoon method that does this internally, e.g.</p>
@@ -248,10 +249,15 @@ before importing pyphoon.</p>
 </pre></div>
 </div>
 </div>
-<hr class="docutils" />
-<p>I get an tkinter error when importing the library
--</p>
 </div>
+<hr class="docutils" />
+<div class="section" id="what-is-jupyter">
+<h2>What is Jupyter?<a class="headerlink" href="#what-is-jupyter" title="Permalink to this headline">¶</a></h2>
+<p>Jupyter is an web environment that provides an interactive python
+sort-of-terminal. We use it throughout the whole project to provide some
+example usages of the code (found on the <a class="reference external" href="https://github.com/lucasrodes/pyphoon/tree/master/notebooks">project github repo</a>. Info may be
+found
+<a href="#id2"><span class="problematic" id="id3">`here`_</span></a></p>
 </div>
 </div>
 

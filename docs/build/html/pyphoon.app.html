@@ -322,7 +322,7 @@ encapsulate it in a list (i.e. <code class="docutils literal notranslate"><span 
 
 <dl class="function">
 <dt id="pyphoon.app.preprocess.resize">
-<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">resize</code><span class="sig-paren">(</span><em>X</em>, <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.resize" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">resize</code><span class="sig-paren">(</span><em>X</em>, <em>size</em>, <em>ignore_last_axis=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.resize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resizes the image according to <strong>size</strong> using <a href="#id1"><span class="problematic" id="id2">`cv2.resize`_</span></a> with
 bilinear interpolation.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -333,6 +333,8 @@ bilinear interpolation.</p>
 <li><strong>X</strong> (<em>numpy.array</em>) – Image of shape (N, W, H), where N: #samples, W: image width,
 H: image height.</li>
 <li><strong>size</strong> (<em>tuple</em>) – Size to reshape images.</li>
+<li><strong>ignore_last_axis</strong> (<em>bool</em>) – Set to True if images have dimensionality
+(W, H, 1).</li>
 </ul>
 </td>
 </tr>
@@ -578,8 +580,8 @@ By default it considers all classes.</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyphoon.app.utils.data_generator_chunklist">
-<code class="descclassname">pyphoon.app.utils.</code><code class="descname">data_generator_chunklist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>batch_sz</em>, <em>shuffle=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.data_generator_chunklist" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.app.utils.data_generator_from_chunklist">
+<code class="descclassname">pyphoon.app.utils.</code><code class="descname">data_generator_from_chunklist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>batch_sz</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.data_generator_from_chunklist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates batches of data from samples <strong>X</strong> and labels <strong>Y</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -589,7 +591,6 @@ By default it considers all classes.</li>
 <li><strong>X</strong> (<em>list</em>) – Sample data.</li>
 <li><strong>Y</strong> (<em>list</em>) – Label data.</li>
 <li><strong>batch_sz</strong> (<em>int</em>) – Batch size.</li>
-<li><strong>shuffle</strong> (<em>bool</em><em>, </em><em>default True</em>) – Set to True to shuffle the batch data (recommended)</li>
 </ul>
 </td>
 </tr>

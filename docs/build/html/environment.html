@@ -96,18 +96,19 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Development environment</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#download-library">Download library</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#docker-setup">Docker Setup</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#install-with-gpu-support">Install with GPU support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation-with-gpu-support">Installation with GPU support</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#centos-rhel-7-x86-64">CentOS/RHEL 7 x86_64</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#xenial-x86-64">Xenial x86_64</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#install-without-gpu-support">Install without GPU support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation-without-gpu-support">Installation without GPU support</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id1">CentOS/RHEL 7 x86_64</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id2">Xenial x86_64</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#pull-docker-image">Pull Docker image</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#creating-your-docker-container">Creating your Docker Container</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-an-instance-of-the-docker-image">Creating an instance of the Docker image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-docker-instance">Start Docker instance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#other-docker-commands">Other Docker commands</a></li>
 </ul>
 </li>
@@ -194,14 +195,17 @@
     
         <div class="section" id="development-environment">
 <h1>Development environment<a class="headerlink" href="#development-environment" title="Permalink to this headline">¶</a></h1>
+<p>Currently, we only assure that <strong>pyphoon</strong> library will work with the
+environment presented in this page. Hence, make sure to follow all the steps
+provided here.</p>
+<div class="section" id="download-library">
+<h2>Download library<a class="headerlink" href="#download-library" title="Permalink to this headline">¶</a></h2>
 <p>First of all, create a directory for your projects. This is where we will
 place all the projects, including the <strong>pyphoon</strong> files.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir ~/projects
 </pre></div>
 </div>
-<div class="section" id="download-library">
-<h2>Download library<a class="headerlink" href="#download-library" title="Permalink to this headline">¶</a></h2>
-<p>Clone the repository and place it in the <code class="docutils literal notranslate"><span class="pre">projects</span></code> folder</p>
+<p>Next, clone the repository and place it in the <code class="docutils literal notranslate"><span class="pre">projects</span></code> folder</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~/projects
 git clone https://github.com/lucasrodes/pyphoon.git
 </pre></div>
@@ -224,8 +228,8 @@ Machine. It is built a Docker image, which you can either create on your own
 or download. You can find tons of Docker images at the official Docker
 repository, <a class="reference external" href="https://hub.docker.com/">Docker Hub</a>. A Docker container is
 fresh and new every time you run it.</p>
-<div class="section" id="install-with-gpu-support">
-<h3>Install with GPU support<a class="headerlink" href="#install-with-gpu-support" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="installation-with-gpu-support">
+<h3>Installation with GPU support<a class="headerlink" href="#installation-with-gpu-support" title="Permalink to this headline">¶</a></h3>
 <p>First, make sure you have installed the <a class="reference external" href="https://github.com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#how-do-i-install-the-nvidia-driver">NVIDIA driver</a>.
 Next, we need to install <a class="reference external" href="https://docs.docker.com/install/linux/docker-ce/centos/">docker</a> and
 <a class="reference external" href="https://github.com/NVIDIA/nvidia-docker">nvidia-docker</a>. Note that by
@@ -234,11 +238,15 @@ last stable release of docker-ce. Hence, all we need to do is install
 nvidia-docker.</p>
 <div class="section" id="centos-rhel-7-x86-64">
 <h4>CentOS/RHEL 7 x86_64<a class="headerlink" href="#centos-rhel-7-x86-64" title="Permalink to this headline">¶</a></h4>
+<p>Make sure to remove any previous nvidia-docker installations. If you don’t
+have any, the following code will just raise a not-found error.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you have nvidia-docker 1.0 installed: we need to remove it and all existing GPU containers</span>
 docker volume ls -q -f <span class="nv">driver</span><span class="o">=</span>nvidia-docker <span class="p">|</span> xargs -r -I<span class="o">{}</span> -n1 docker ps -q -a -f <span class="nv">volume</span><span class="o">={}</span> <span class="p">|</span> xargs -r docker rm -f
 sudo yum remove nvidia-docker
-
-<span class="c1"># Add the package repositories</span>
+</pre></div>
+</div>
+<p>Next, let installation begin.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add the package repositories</span>
 curl -s -L https://nvidia.github.io/nvidia-docker/centos7/x86_64/nvidia-docker.repo <span class="p">|</span> <span class="se">\</span>
   sudo tee /etc/yum.repos.d/nvidia-docker.repo
 
@@ -253,11 +261,15 @@ docker run --runtime<span class="o">=</span>nvidia --rm nvidia/cuda nvidia-smi
 </div>
 <div class="section" id="xenial-x86-64">
 <h4>Xenial x86_64<a class="headerlink" href="#xenial-x86-64" title="Permalink to this headline">¶</a></h4>
+<p>Make sure to remove any previous nvidia-docker installations. If you don’t
+have any, the following code will just raise a not-found error.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># If you have nvidia-docker 1.0 installed: we need to remove it and all existing GPU containers</span>
 docker volume ls -q -f <span class="nv">driver</span><span class="o">=</span>nvidia-docker <span class="p">|</span> xargs -r -I<span class="o">{}</span> -n1 docker ps -q -a -f <span class="nv">volume</span><span class="o">={}</span> <span class="p">|</span> xargs -r docker rm -f
 sudo apt-get purge -y nvidia-docker
-
-<span class="c1"># Add the package repositories</span>
+</pre></div>
+</div>
+<p>Next, let installation begin.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add the package repositories</span>
 curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey <span class="p">|</span> <span class="se">\</span>
   sudo apt-key add -
 curl -s -L https://nvidia.github.io/nvidia-docker/ubuntu16.04/amd64/nvidia-docker.list <span class="p">|</span> <span class="se">\</span>
@@ -274,16 +286,21 @@ docker run --runtime<span class="o">=</span>nvidia --rm nvidia/cuda nvidia-smi
 </div>
 </div>
 </div>
-<div class="section" id="install-without-gpu-support">
-<h3>Install without GPU support<a class="headerlink" href="#install-without-gpu-support" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="installation-without-gpu-support">
+<h3>Installation without GPU support<a class="headerlink" href="#installation-without-gpu-support" title="Permalink to this headline">¶</a></h3>
 <p>We will be installing docker from the repository for CentOS. For more details
 check their <a class="reference external" href="https://docs.docker.com/install/linux/docker-ce/centos/#install-using-the-repository">website</a>. Make
 sure to uninstall other docker versions.</p>
 <div class="section" id="id1">
 <h4>CentOS/RHEL 7 x86_64<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Make sure to remove any previous nvidia-docker installations. If you don’t
+have any, the following code will just raise a not-found error.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uninstall other versions</span>
 sudo yum remove docker docker-common docker-selinux docker-engine
-<span class="c1"># Install required packages</span>
+</pre></div>
+</div>
+<p>Next, let installation begin.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install required packages</span>
 sudo yum install -y yum-utils device-mapper-persistent-data lvm2
 <span class="c1"># Set up stable repository</span>
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
@@ -296,9 +313,14 @@ sudo yum install docker-ce
 </div>
 <div class="section" id="id2">
 <h4>Xenial x86_64<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>Make sure to remove any previous nvidia-docker installations. If you don’t
+have any, the following code will just raise a not-found error.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Uninstall other versions</span>
 sudo yum remove docker docker-common docker-selinux docker-engine
-<span class="c1"># Update the apt package index</span>
+</pre></div>
+</div>
+<p>Next, let installation begin.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update the apt package index</span>
 sudo apt-get update
 <span class="c1"># Install packages to allow apt to use a repository over HTTPS</span>
 sudo apt-get install apt-transport-https ca-certificates curl
@@ -316,8 +338,8 @@ sudo add-apt-repository <span class="s2">&quot;deb [arch=amd64] https://download
 </pre></div>
 </div>
 </div>
-<div class="section" id="creating-your-docker-container">
-<h3>Creating your Docker Container<a class="headerlink" href="#creating-your-docker-container" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="creating-an-instance-of-the-docker-image">
+<h3>Creating an instance of the Docker image<a class="headerlink" href="#creating-an-instance-of-the-docker-image" title="Permalink to this headline">¶</a></h3>
 <p>Creating an instance of a Docker image is very simple. The code below is for a
 GPU-ready environment, to use it for non-GPU environment simply replace
 <code class="docutils literal notranslate"><span class="pre">nvidia-docker</span></code> by <code class="docutils literal notranslate"><span class="pre">docker</span></code>.</p>
@@ -327,23 +349,22 @@ GPU-ready environment, to use it for non-GPU environment simply replace
 </div>
 <p>However, we want our container to have some features:</p>
 <ul class="simple">
-<li><strong>Port forwarding:</strong> You might want to run some services from within your
-container (e.g. jupyter, tensorboard etc.). Hence, we will make some ports
-available from outside the container by using port-forwarding. This is done
-by using the option <code class="docutils literal notranslate"><span class="pre">-p</span></code> when creating the Docker container.</li>
+<li><strong>Port forwarding:</strong> We might want to run some services from within your
+container (e.g. jupyter, tensorboard etc.). Hence, we will make sure some
+ports are available from outside the container by using port-forwarding.
+This is done by using the option <code class="docutils literal notranslate"><span class="pre">-p</span></code> when creating the Docker instance.</li>
 <li><strong>File access:</strong> By default, a Docker container is completely isolated from
 the outside system. However, Docker provides option <code class="docutils literal notranslate"><span class="pre">-v</span></code> to enable access
 from container to files in the host machine. This is particularly necessary
-in our case since the scripts in the Docker container need to access the
-dataset files. It works as <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">&lt;host</span> <span class="pre">files</span> <span class="pre">path&gt;:&lt;accessible</span> <span class="pre">from</span> <span class="pre">this</span>
-<span class="pre">path</span> <span class="pre">in</span> <span class="pre">container&gt;</span></code>.</li>
+in our case since the scripts running in the Docker container need to
+access the dataset files. It works as <code class="docutils literal notranslate"><span class="pre">-v</span> <span class="pre">&lt;host</span> <span class="pre">files</span> <span class="pre">path&gt;:&lt;accessible</span>
+<span class="pre">from</span> <span class="pre">this</span> <span class="pre">path</span> <span class="pre">in</span> <span class="pre">container&gt;</span></code>.</li>
 </ul>
-<p>All in all, we create the container using</p>
+<p>All in all, we create our docker instance using:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvidia-docker run -it <span class="se">\</span>
 -p &lt;host port&gt;:&lt;container port&gt; <span class="se">\</span>
 -v ~/projects:/root/projects <span class="se">\</span>
--v /path/to/digital/typhoon/dataset/:/path/to/digital/typhoon/dataset/in/docker/ <span class="se">\</span>
--v /path/to/new/data/:/path/to/digital/new/data/in/docker/ <span class="se">\</span>
+-v /path/to/the/data/:/path/to/data/in/docker/ <span class="se">\</span>
 -v /host/config:/config <span class="se">\</span>
 --name dlnii lucasrodesg/deepo  bash
 </pre></div>
@@ -351,14 +372,16 @@ dataset files. It works as <code class="docutils literal notranslate"><span clas
 <p>Let us explain below the different folders made accessible above with option
 <code class="docutils literal notranslate"><span class="pre">-v</span></code>:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">/path/to/digital/typhoon/dataset/:/path/to/digital/typhoon/dataset/in/docker/</span></code>: Digital Typhoon dataset.</li>
-<li><code class="docutils literal notranslate"><span class="pre">/path/to/new/data/:/path/to/digital/new/data/in/docker/</span></code>:
-Directory where we will store large files. Make sure that you have space.</li>
+<li><code class="docutils literal notranslate"><span class="pre">/path/to/the/data/</span></code>: Folder containing data needed in our project.
+Also, we will probably be storing newly generated data in this directory.</li>
 <li><code class="docutils literal notranslate"><span class="pre">~/projects:/root/projects</span></code>: The folder containing all the projects
 needs to be accessible from inside the Docker, since we will basically be
 developing code there.</li>
 </ul>
-<p>Finally, you can easily instantiate the docker container</p>
+</div>
+<div class="section" id="start-docker-instance">
+<h3>Start Docker instance<a class="headerlink" href="#start-docker-instance" title="Permalink to this headline">¶</a></h3>
+<p>You can simply start the docker container as</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker start dlnii
 </pre></div>
 </div>

@@ -1,6 +1,15 @@
 Development environment
 =======================
 
+Currently, we only assure that **pyphoon** library will work with the
+environment presented in this page. Hence, make sure to follow all the steps
+provided here.
+
+
+Download library
+----------------
+
+
 First of all, create a directory for your projects. This is where we will
 place all the projects, including the **pyphoon** files.
 
@@ -8,11 +17,7 @@ place all the projects, including the **pyphoon** files.
 
    mkdir ~/projects
 
-
-Download library
-----------------
-
-Clone the repository and place it in the ``projects`` folder
+Next, clone the repository and place it in the ``projects`` folder
 
 .. code-block:: bash
 
@@ -44,8 +49,8 @@ or download. You can find tons of Docker images at the official Docker
 repository, `Docker Hub <https://hub.docker.com/>`_. A Docker container is
 fresh and new every time you run it.
 
-Install with GPU support
-************************
+Installation with GPU support
+*****************************
 
 First, make sure you have installed the `NVIDIA driver <https://github
 .com/NVIDIA/nvidia-docker/wiki/Frequently-Asked-Questions#how-do-i-install
@@ -61,11 +66,18 @@ nvidia-docker.
 CentOS/RHEL 7 x86_64
 ^^^^^^^^^^^^^^^^^^^^
 
+Make sure to remove any previous nvidia-docker installations. If you don't
+have any, the following code will just raise a not-found error.
+
 ..  code-block:: bash
 
     # If you have nvidia-docker 1.0 installed: we need to remove it and all existing GPU containers
     docker volume ls -q -f driver=nvidia-docker | xargs -r -I{} -n1 docker ps -q -a -f volume={} | xargs -r docker rm -f
     sudo yum remove nvidia-docker
+
+Next, let installation begin.
+
+..  code-block:: bash
 
     # Add the package repositories
     curl -s -L https://nvidia.github.io/nvidia-docker/centos7/x86_64/nvidia-docker.repo | \
@@ -81,11 +93,18 @@ CentOS/RHEL 7 x86_64
 Xenial x86_64
 ^^^^^^^^^^^^^
 
+Make sure to remove any previous nvidia-docker installations. If you don't
+have any, the following code will just raise a not-found error.
+
 ..  code-block:: bash
 
     # If you have nvidia-docker 1.0 installed: we need to remove it and all existing GPU containers
     docker volume ls -q -f driver=nvidia-docker | xargs -r -I{} -n1 docker ps -q -a -f volume={} | xargs -r docker rm -f
     sudo apt-get purge -y nvidia-docker
+
+Next, let installation begin.
+
+..  code-block:: bash
 
     # Add the package repositories
     curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | \
@@ -102,8 +121,8 @@ Xenial x86_64
     docker run --runtime=nvidia --rm nvidia/cuda nvidia-smi
 
 
-Install without GPU support
-***************************
+Installation without GPU support
+********************************
 
 We will be installing docker from the repository for CentOS. For more details
 check their `website <https://docs.docker
@@ -114,10 +133,18 @@ sure to uninstall other docker versions.
 CentOS/RHEL 7 x86_64
 ^^^^^^^^^^^^^^^^^^^^
 
+Make sure to remove any previous nvidia-docker installations. If you don't
+have any, the following code will just raise a not-found error.
+
 ..  code-block:: bash
 
     # Uninstall other versions
     sudo yum remove docker docker-common docker-selinux docker-engine
+
+Next, let installation begin.
+
+..  code-block:: bash
+
     # Install required packages
     sudo yum install -y yum-utils device-mapper-persistent-data lvm2
     # Set up stable repository
@@ -129,10 +156,19 @@ CentOS/RHEL 7 x86_64
 
 Xenial x86_64
 ^^^^^^^^^^^^^
+
+Make sure to remove any previous nvidia-docker installations. If you don't
+have any, the following code will just raise a not-found error.
+
 ..  code-block:: bash
 
     # Uninstall other versions
     sudo yum remove docker docker-common docker-selinux docker-engine
+
+Next, let installation begin.
+
+..  code-block:: bash
+
     # Update the apt package index
     sudo apt-get update
     # Install packages to allow apt to use a repository over HTTPS
@@ -149,8 +185,8 @@ Pull the project's docker image from the docker hub:
 
    docker pull lucasrodesg/deepo
 
-Creating your Docker Container
-******************************
+Creating an instance of the Docker image
+****************************************
 
 Creating an instance of a Docker image is very simple. The code below is for a
 GPU-ready environment, to use it for non-GPU environment simply replace
@@ -165,26 +201,25 @@ Let us create a simple container with name "dlnii" using the command ``run``:
 
 However, we want our container to have some features:
 
-*   **Port forwarding:** You might want to run some services from within your
-    container (e.g. jupyter, tensorboard etc.). Hence, we will make some ports
-    available from outside the container by using port-forwarding. This is done
-    by using the option ``-p`` when creating the Docker container.
+*   **Port forwarding:** We might want to run some services from within your
+    container (e.g. jupyter, tensorboard etc.). Hence, we will make sure some
+    ports are available from outside the container by using port-forwarding.
+    This is done by using the option ``-p`` when creating the Docker instance.
 *   **File access:** By default, a Docker container is completely isolated from
     the outside system. However, Docker provides option ``-v`` to enable access
     from container to files in the host machine. This is particularly necessary
-    in our case since the scripts in the Docker container need to access the
-    dataset files. It works as ``-v <host files path>:<accessible from this
-    path in container>``.
+    in our case since the scripts running in the Docker container need to
+    access the dataset files. It works as ``-v <host files path>:<accessible
+    from this path in container>``.
 
-All in all, we create the container using
+All in all, we create our docker instance using:
 
 ..  code-block:: bash
 
     nvidia-docker run -it \
     -p <host port>:<container port> \
     -v ~/projects:/root/projects \
-    -v /path/to/digital/typhoon/dataset/:/path/to/digital/typhoon/dataset/in/docker/ \
-    -v /path/to/new/data/:/path/to/digital/new/data/in/docker/ \
+    -v /path/to/the/data/:/path/to/data/in/docker/ \
     -v /host/config:/config \
     --name dlnii lucasrodesg/deepo  bash
 
@@ -192,14 +227,16 @@ All in all, we create the container using
 Let us explain below the different folders made accessible above with option
 ``-v``:
 
--   ``/path/to/digital/typhoon/dataset/:/path/to/digital/typhoon/dataset/in/docker/``: Digital Typhoon dataset.
--   ``/path/to/new/data/:/path/to/digital/new/data/in/docker/``:
-    Directory where we will store large files. Make sure that you have space.
+-   ``/path/to/the/data/``: Folder containing data needed in our project.
+    Also, we will probably be storing newly generated data in this directory.
 -   ``~/projects:/root/projects``: The folder containing all the projects
     needs to be accessible from inside the Docker, since we will basically be
     developing code there.
 
-Finally, you can easily instantiate the docker container
+Start Docker instance
+*********************
+
+You can simply start the docker container as
 
 ..  code-block:: bash
 

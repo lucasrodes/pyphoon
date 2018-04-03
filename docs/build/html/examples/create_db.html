@@ -197,7 +197,7 @@
 <p>For our needs, we created a batch of tools to generate an easy interaction
 with the Digital Typhoon data. In particular, we exploited the functionality
 of pandas.DataFrame objects to track which images have been corrected and
-other relevant image features. The core interface here is <code class="xref py py-class docutils literal notranslate"><span class="pre">PDManager</span></code>.</p>
+other relevant image features. The core interface here is <a class="reference internal" href="../pyphoon.db.html#pyphoon.db.pd_manager.PDManager" title="pyphoon.db.pd_manager.PDManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">PDManager</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.db</span> <span class="k">import</span> <span class="n">pd_manager</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span> <span class="o">=</span> <span class="n">pd_manager</span><span class="o">.</span><span class="n">PDManager</span><span class="p">()</span>
 </pre></div>
@@ -217,11 +217,11 @@ image data. You may have a look at as</p>
 </div>
 <p>Furthermore, you may want to save this table as a pickle file in
 <code class="docutils literal notranslate"><span class="pre">images_pkl_path</span></code> using</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">pkl_save_original_images</span><span class="p">(</span><span class="n">images_pkl_path</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">save_original_images</span><span class="p">(</span><span class="n">images_pkl_path</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In subsequent executions, you can load this table by using</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">pkl_load_original_images</span><span class="p">(</span><span class="n">images_pkl_path</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">load_original_images</span><span class="p">(</span><span class="n">images_pkl_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -229,7 +229,7 @@ image data. You may have a look at as</p>
 <h2>Best track data<a class="headerlink" href="#best-track-data" title="Permalink to this headline">¶</a></h2>
 <p>Assuming that <code class="docutils literal notranslate"><span class="pre">besttrack_dir</span></code> is a string containing the path to the
 best track data (as explained in section <a class="reference external" href="data.html">Data</a>), you can
-load this data using the method <code class="xref py py-func docutils literal notranslate"><span class="pre">add_besttrack()</span></code>.</p>
+load this data using the method <a class="reference internal" href="../pyphoon.db.html#pyphoon.db.pd_manager.PDManager.add_besttrack" title="pyphoon.db.pd_manager.PDManager.add_besttrack"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_besttrack()</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">add_besttrack</span><span class="p">(</span><span class="n">besttrack_dir</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -240,17 +240,17 @@ data. You may have a look at as</p>
 </div>
 <p>Furthermore, you may want to save this table as a pickle file in
 <code class="docutils literal notranslate"><span class="pre">besttrack_pkl_path</span></code> using</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">pkl_save_besttrack</span><span class="p">(</span><span class="n">besttrack_pkl_path</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">save_besttrack</span><span class="p">(</span><span class="n">besttrack_pkl_path</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In subsequent executions, you can load this table by using</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">pkl_load_besttrack</span><span class="p">(</span><span class="n">besttrack_pkl_path</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">load_besttrack</span><span class="p">(</span><span class="n">besttrack_pkl_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="corrected-image-data">
 <h2>Corrected image data<a class="headerlink" href="#corrected-image-data" title="Permalink to this headline">¶</a></h2>
-<p>To include corrupted image data in <code class="xref py py-class docutils literal notranslate"><span class="pre">PDManager</span></code>
+<p>To include corrupted image data in <a class="reference internal" href="../pyphoon.db.html#pyphoon.db.pd_manager.PDManager" title="pyphoon.db.pd_manager.PDManager"><code class="xref py py-class docutils literal notranslate"><span class="pre">PDManager</span></code></a>
 you need to first generate the dataset of the corrected versions of the
 originally corrupted images. To do so, you need to refer to method
 <code class="xref py py-func docutils literal notranslate"><span class="pre">generate_new_image_dataset()</span></code>.</p>
@@ -275,7 +275,7 @@ algorithm</p>
 <div class="section" id="generate-new-dataset">
 <h3>Generate new dataset<a class="headerlink" href="#generate-new-dataset" title="Permalink to this headline">¶</a></h3>
 <p>Once the algorithm is defined, let us apply generate the new dataset using
-method <a class="reference internal" href="../pyphoon.db.html#pyphoon.clean_satellite.fix.generate_new_image_dataset" title="pyphoon.clean_satellite.fix.generate_new_image_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate_new_image_dataset()</span></code></a>. Replace
+method <a class="reference internal" href="../pyphoon.clean_satellite.html#pyphoon.clean_satellite.fix.generate_new_image_dataset" title="pyphoon.clean_satellite.fix.generate_new_image_dataset"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate_new_image_dataset()</span></code></a>. Replace
 <code class="docutils literal notranslate"><span class="pre">images_orig_dir</span></code> with the directory of original images and
 <code class="docutils literal notranslate"><span class="pre">images_corrected_dir</span></code> with the directory for the new corrected data.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.fix</span> <span class="k">import</span> <span class="n">generate_corrected_image_dataset</span>
@@ -295,11 +295,11 @@ method <a class="reference internal" href="../pyphoon.db.html#pyphoon.clean_sate
 </pre></div>
 </div>
 <p>Like other table fields, you can save the table using</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pkl_save_corrupted_images</span><span class="p">(</span><span class="n">corrupted_pkl_path</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">save_corrupted_images</span><span class="p">(</span><span class="n">corrupted_pkl_path</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>and load</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pkl_load_corrupted_images</span><span class="p">(</span><span class="n">corrupted_pkl_path</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pd_man</span><span class="o">.</span><span class="n">load_corrupted_images</span><span class="p">(</span><span class="n">corrupted_pkl_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

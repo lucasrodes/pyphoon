@@ -11,7 +11,7 @@ You just found pyphoon
 to provide a simple, easy and, more importantly, pythonic interaction with
 the `Digital Typhoon`_ dataset. It contains a wide set of tools to assist in
 the exploration and management of the building components of the dataset.
-More details on the `GitHub repository`_.
+More details can be found in the `GitHub repository`_.
 
 .. _pyphoon: http://github.com/lucasrodes/pyphoon
 .. _Kitamoto Lab: http://agora.ex.nii.ac.jp/~kitamoto/index.html.en
@@ -51,26 +51,19 @@ Where do I get the data?
 This project only makes sense if you have access to the Digital Typhoon
 dataset. Before installing the library make sure you have the data.
 
-..  todo::
+For inquiries, please address to `Kitamoto-sensei`_
 
-    Add guideline for dataset inquiries.
+..  _Kitamoto-sensei:
+    https://www.nii.ac.jp/en/faculty/digital_content/kitamoto_asanobu/
 
 -----
 
 Installation
 ------------
 
-Currently only the development kit is available. Refer to
+Currently only the development kit is available. This implies installing a
+docker image that fully supports all libraries required by **pyphoon**. Refer to
 `Development environment <environment.html>`_ for more details.
-
-
-At your own risk you can try using `pip`, but we don't recommend this.
-
-..  code-block:: bash
-
-    pip install pyphoon
-
-
 
 -----
 
