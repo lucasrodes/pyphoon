@@ -8,18 +8,19 @@ Developed as part of the [Digital Typhoon](http://digital-typhoon.org) project f
 Provides a set of tools to enable easy and pythonic interaction the Digital Typhoon dataset.
 
 
-**Full documentation [here](http://lcsrg.me/pyphoon)**
+**Full documentation [here](http://lcsrg.me/pyphoon)**.
 
 
 ## Contents
 
-| **Section**              | **Description**                                                    |
-|--------------------------|--------------------------------------------------------------------|
-| [pyphoon](pyphooon)      | Library for Digital Typhoon project                                |
-| [docs](docs)             | Library documentation files                                        |
-| [notebooks](notebooks)   | Example code snippets                                              |
-| [scripts](scripts)       | Some example scripts using library tools                           |
-| [sampledata](sampledata) | Sample data from Digital Typhoon, used in scripts and notebooks    |
+| **Section**              | **Description**                                                                            |
+|--------------------------|--------------------------------------------------------------------------------------------|
+| [pyphoon](pyphooon)      | Library for Digital Typhoon project                                                        |
+| [docs](docs)             | Library documentation files                                                                |
+| [notebooks](notebooks)   | Example code snippets                                                                      |
+| [scripts](scripts)       | Some example scripts using library tools                                                   |
+| [sampledata](sampledata) | Sample data from Digital Typhoon, used in                                                  |
+| [tasks](tasks)           | Data and files related to specific applications of pyphoon (mainly DL/ML tasks) library    |
 
 
 ## Installation
@@ -51,12 +52,9 @@ DisplaySequence(
 ![](assets/201725.gif)
 
 
-## More
+### Tasks
 
-**pyphoon** is being used as a baseline for multiple projects at NII. These, 
-once matured, might be added to the main library. For now, they are available
- in their respective repositories.
-
-* [**tcxtc-deep-classifier**](http://github.com/lucasrodes/tcxtc-deep-classifier): Deep Learning for classification of 
-typhoon satellite imagery in two categories: Tropical Cyclone and 
-Extra-Tropical Cyclone 
+**pyphoon** was mainly conceived to assist in Machine Learning/Deep Learning 
+tasks. In the folder [tasks](tasks) you can find details on the 
+implementation of these tasks. These include keras implementations of the 
+network architectures and available weights for download. 
