@@ -52,7 +52,7 @@ DisplaySequence(
 ![](assets/201725.gif)
 
 
-### Tasks
+### [Tasks](tasks)
 
 **pyphoon** was mainly conceived to assist in Machine Learning/Deep Learning 
 tasks. In the folder [tasks](tasks) you can find details on the 
