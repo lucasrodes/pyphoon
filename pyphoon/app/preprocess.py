@@ -211,7 +211,7 @@ class DefaultImagePreprocessor(ImagePreprocessor):
     :var reshape_mode: Used to normalise the data. See
         :class:`~pyphoon.app.preprocess.ImagePreprocessor`
     """
-    def __init__(self, mean, std, resize_factor, reshape_mode):
+    def __init__(self, mean, std, reshape_mode, resize_factor=None):
         super().__init__(reshape_mode)
         self.mean = mean
         self.std = std
@@ -235,7 +235,8 @@ class DefaultImagePreprocessor(ImagePreprocessor):
                             "H: # image_height")
 
         # Resize chunk images
-        X = resize(X, self.resize_factor)
+        if self.resize_factor:
+            X = resize(X, self.resize_factor)
 
         X -= (X - self.mean)/self.std
 
@@ -262,7 +263,8 @@ class MeanImagePreprocessor(ImagePreprocessor):
     :var reshape_mode: Used to normalise the data. See
         :class:`~pyphoon.app.preprocess.ImagePreprocessor`
     """
-    def __init__(self, mean_image, scale_factor, resize_factor, reshape_mode):
+    def __init__(self, mean_image, scale_factor, reshape_mode,
+                 resize_factor=None):
         super().__init__(reshape_mode)
         self.mean = mean_image
         self.scale = scale_factor
@@ -287,7 +289,8 @@ class MeanImagePreprocessor(ImagePreprocessor):
                             "H: # image_height")
 
         # Resize chunk images
-        X = resize(X, self.resize_factor)
+        if self.resize_factor:
+            X = resize(X, self.resize_factor)
         # Centre & normalise
         X = (X - self.mean)/self.scale
 
