@@ -28,7 +28,7 @@ Make sure to preprocess the data before feeding it to the model.
 import h5py
 
 # Load preprocessing parameters
-with h5py.File('../../tasks/multiclass/preprocessing_sequence.h5') as f:
+with h5py.File('preprocessing_sequence.h5') as f:
     mean = f.get('image_mean_128').value
     scale_factor = f.get('max_value_128').value - f.get('min_value_128').value
 ```

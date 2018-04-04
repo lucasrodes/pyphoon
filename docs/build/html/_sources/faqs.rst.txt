@@ -84,11 +84,10 @@ What is Jupyter?
 Jupyter is an web environment that provides an interactive python
 sort-of-terminal. We use it throughout the whole project to provide some
 example usages of the code (found on the `project github repo`_. Info may be
-found
-`here`_
+found `this repo`_.
 
 ..  _project github repo:
     https://github.com/lucasrodes/pyphoon/tree/master/notebooks
 
-..  _here:
+..  _this repo:
     http://jupyter.org/

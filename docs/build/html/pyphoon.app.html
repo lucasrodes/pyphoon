@@ -406,7 +406,7 @@ the specified DL framework. So far, only ‘keras’ option is available.</p>
 
 <dl class="class">
 <dt id="pyphoon.app.preprocess.DefaultImagePreprocessor">
-<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">DefaultImagePreprocessor</code><span class="sig-paren">(</span><em>mean</em>, <em>std</em>, <em>resize_factor</em>, <em>reshape_mode</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.DefaultImagePreprocessor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">DefaultImagePreprocessor</code><span class="sig-paren">(</span><em>mean</em>, <em>std</em>, <em>reshape_mode</em>, <em>resize_factor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.DefaultImagePreprocessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphoon.app.preprocess.ImagePreprocessor</span></code></a></p>
 <p>Child of of <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a>.
 Assuming an input image <span class="math notranslate">\(X\)</span>, this preprocessor first centres and
@@ -454,7 +454,7 @@ specific DL framework.</p>
 
 <dl class="class">
 <dt id="pyphoon.app.preprocess.MeanImagePreprocessor">
-<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">MeanImagePreprocessor</code><span class="sig-paren">(</span><em>mean_image</em>, <em>scale_factor</em>, <em>resize_factor</em>, <em>reshape_mode</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.MeanImagePreprocessor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">MeanImagePreprocessor</code><span class="sig-paren">(</span><em>mean_image</em>, <em>scale_factor</em>, <em>reshape_mode</em>, <em>resize_factor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.MeanImagePreprocessor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphoon.app.preprocess.ImagePreprocessor</span></code></a></p>
 <p>Child of <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a>. Assuming an
 input image <span class="math notranslate">\(X\)</span>, this preprocessor first centres and normalises it as</p>
