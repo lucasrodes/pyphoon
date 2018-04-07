@@ -120,54 +120,70 @@ def load_h5datachunks(dataset_dir, chunk_filenames, features,
     return list(data.values())
 
 
+def parse_to_tcxtc_task(original_labels):
+    """ Maps an array with original labeling (i.e. 2, 3, 4, 5 and 6)
+    corresponding to an array of samples to the labeling for a binary
+    classifier "Tropical Cyclone" (0) vs "Extratropical Cyclone" (1).
+    Furthermore, it carefully chooses the samples to have a balanced category
+    distribution, which means two things:
+        - The amount of xTC and TC samples is roughly of 50% each.
+        - Considering only TC samples, this method tries to have a uniform
+        distribution of samples from categories 2, 3, 4 and 5.
+
+    :param original_labels:
+    :type original_labels: numpy.array
+    :return: Tuple with (1) new labels and (2) corresponding sample indices.
+    :rtype: tuple
+    """
+    pos = []  # Array storing positions to be used
+    label = []  # Array storing sample label indices
+
+    # Find positions of class 6 samples
+    pos_6 = np.argwhere(original_labels == 6)
+    n_6 = len(pos_6)
+    pos.append(pos_6)
+    label.append(np.ones(n_6, dtype=int))
+
+    # Get number of samples to take from each category (we want balanced
+    # distribution)
+    _ratio = np.ceil(n_6 / 4)  # Balanced number of samples from each category
+    if _ratio == 0:
+        _ratio = 1
+
+    # Find positions of non-6 class samples
+    for i in range(2, 6):
+        available_pos = np.argwhere(original_labels == i)
+        n_samples = len(available_pos)
+        if n_samples != 0:
+            ratio = int(np.minimum(_ratio, n_samples))
+            _pos = np.random.choice(n_samples, ratio, replace=False)
+            pos.append(available_pos[_pos])
+            label.append(np.zeros(ratio, dtype=int))
+    pos = np.concatenate(pos)[:, 0]
+    label = np.concatenate(label)
+
+    return label, pos
+
+
 ################################################################################
 # Data generators
 ################################################################################
-# TODO: Extend for unsupervised models, i.e. Y argument optional
-def data_generator(X, Y, batch_sz, shuffle=True):
-    """ Generates batches of data from samples **X** and labels **Y**.
-
-    :param X: Sample data.
-    :type X: numpy.array
-    :param Y: Label data.
-    :type Y: numpy.array
-    :param batch_sz: Batch size.
-    :type batch_sz: int
-    :param shuffle: Set to True to shuffle the batch data (recommended)
-    :type shuffle: bool, default True
-    :return:
-    """
-    while True:
-
-        if shuffle:
-            # Shuffle data
-            pos = np.arange(X.shape[0])
-            np.random.shuffle(pos)
-            _X = X[pos]
-            _Y = Y[pos]
-        else:
-            _X = X
-            _Y = Y
-
-        # Generate batches
-        imax = int(X.shape[0] / batch_sz)
-        for i in range(imax):
-            # Find list of IDs
-            x = _X[i * batch_sz:(i + 1) * batch_sz]
-            y = _Y[i * batch_sz:(i + 1) * batch_sz]
-            yield x, y
-
-
-def data_generator_from_chunklist(X, Y, batch_sz):
+def data_generator_from_chunklist(X, Y, batch_sz, crop=None):
     """ Generates batches of data from samples **X** and labels **Y**.
 
     :param X: Sample data.
     :type X: list
-    :param Y: Label data.
+    :param Y: Label data.'
     :type Y: list
     :param batch_sz: Batch size.
     :type batch_sz: int
-    :return:
+    :return: Generator of batches of samples, labels and weights (importance
+        of samples).
+    :rtype: tuple
+    :param crop: Define the cropping shape (number of pixels width and
+        height). It crops the input image according to this shape. The crop
+        is placed in the centre of the image.
+    :type crop: int
     """
     n_chunks = len(X)
     indices = list(range(n_chunks))
@@ -187,8 +203,11 @@ def data_generator_from_chunklist(X, Y, batch_sz):
         pos = np.arange(n_samples)
         np.random.shuffle(pos)
         _X = _X[pos]
+        if crop:
+            base = int(crop / 2)
+            _X = _X[:, base:base + crop, base:base + crop]
         _Y = _Y[pos]
-        #_Y = np_utils.to_categorical(_Y - 2, num_classes=4)
+        #  Y = np_utils.to_categorical(_Y - 2, num_classes=4)
 
         # Generate batches
         imax = int(n_samples / batch_sz)
@@ -196,46 +215,8 @@ def data_generator_from_chunklist(X, Y, batch_sz):
             # Find list of IDs
             x = _X[i * batch_sz:(i + 1) * batch_sz]
             y = _Y[i * batch_sz:(i + 1) * batch_sz]
-            yield x, y
+            sample_weights = np.ones(len(y))
+            # sample_weights[y < 960] = 2
+            # sample_weights[y < 930] = 4
+            yield x, y, sample_weights
         chunk_count += 1
-
-
-
-"""
-# TODO: not implemented
-def _data_generator_from_file(file, Y, batch_sz, shuffle=True):
-    Generates batches of data from samples **X** and labels **Y**.
-
-    :param X: Sample data.
-    :type X: numpy.array
-    :param Y: Label data.
-    :type Y: numpy.array
-    :param batch_sz: Batch size.
-    :type batch_sz: int
-    :param shuffle: Set to True to shuffle the batch data (recommended)
-    :type shuffle: bool, default True
-    :return:
-
-    count = 0
-    while True:
-        # Read
-
-        # Shuffle
-        if shuffle:
-            # Shuffle data
-            pos = np.arange(X.shape[0])
-            np.random.shuffle(pos)
-            _X = X[pos]
-            _Y = Y[pos]
-        else:
-            _X = X
-            _Y = Y
-
-        # Generate batches
-        imax = int(X.shape[0] / batch_sz)
-        for i in range(imax):
-            # Find list of IDs
-            x = _X[i * batch_sz:(i + 1) * batch_sz]
-            y = _Y[i * batch_sz:(i + 1) * batch_sz]
-            yield x, y
-"""
