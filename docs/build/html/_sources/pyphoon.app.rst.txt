@@ -20,3 +20,11 @@ pyphoon\.app\.utils
 .. automodule:: pyphoon.app.utils
     :members:
     :show-inheritance:
+
+-----
+
+pyphoon\.app\.callbacks
+************************
+.. automodule:: pyphoon.app.callbacks
+    :members:
+    :show-inheritance:

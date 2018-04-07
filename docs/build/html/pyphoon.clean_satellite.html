@@ -108,10 +108,10 @@
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.io.html">pyphoon.io</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pyphoon.clean_satellite</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#content">Content</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyphoon-clean-satellite-fix">pyphoon.clean_satellite.fix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyphoon-clean-satellite-detection">pyphoon.clean_satellite.detection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyphoon-clean-satellite-correction">pyphoon.clean_satellite.correction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#pyphoon-clean-satellite-fillgaps">pyphoon.clean_satellite.fillgaps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.clean_satellite.fix">pyphoon.clean_satellite.fix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.clean_satellite.detection">pyphoon.clean_satellite.detection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.clean_satellite.correction">pyphoon.clean_satellite.correction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.clean_satellite.generation">pyphoon.clean_satellite.generation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
@@ -180,9 +180,9 @@
            <div itemprop="articleBody">
             
     
-        <div class="section" id="pyphoon-clean-satellite">
-<h1>pyphoon.clean_satellite<a class="headerlink" href="#pyphoon-clean-satellite" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-pyphoon.clean_satellite.__init__"></span><div class="section" id="content">
+        <div class="section" id="module-pyphoon.clean_satellite.__init__">
+<span id="pyphoon-clean-satellite"></span><h1>pyphoon.clean_satellite<a class="headerlink" href="#module-pyphoon.clean_satellite.__init__" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="content">
 <h2>Content<a class="headerlink" href="#content" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="docutils">
 <colgroup>
@@ -204,7 +204,7 @@
 <tr class="row-even"><td><a class="reference internal" href="#module-pyphoon.clean_satellite.correction" title="pyphoon.clean_satellite.correction"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.clean_satellite.correction</span></code></a></td>
 <td>Provides set of algorithms to correct corrupted frames.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.clean_satellite.generation</span></code></td>
+<tr class="row-odd"><td><a class="reference internal" href="#module-pyphoon.clean_satellite.generation" title="pyphoon.clean_satellite.generation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.clean_satellite.generation</span></code></a></td>
 <td>Provides set of algorithms to fill the temporal gaps.</td>
 </tr>
 <tr class="row-even"><td><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.clean_satellite.utils</span></code></td>
@@ -214,9 +214,9 @@
 </table>
 </div>
 <hr class="docutils" />
-<div class="section" id="pyphoon-clean-satellite-fix">
-<h2>pyphoon.clean_satellite.fix<a class="headerlink" href="#pyphoon-clean-satellite-fix" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-pyphoon.clean_satellite.fix"></span><dl class="class">
+<div class="section" id="module-pyphoon.clean_satellite.fix">
+<span id="pyphoon-clean-satellite-fix"></span><h2>pyphoon.clean_satellite.fix<a class="headerlink" href="#module-pyphoon.clean_satellite.fix" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
 <dt id="pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm">
 <em class="property">class </em><code class="descclassname">pyphoon.clean_satellite.fix.</code><code class="descname">TyphoonListImageFixAlgorithm</code><span class="sig-paren">(</span><em>detect_fct=None</em>, <em>correct_fct=None</em>, <em>generate_fct=None</em>, <em>detect_params=None</em>, <em>n_frames_th=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -232,7 +232,7 @@ sequence.</p>
 <li><strong>correct_fct</strong> (<em>callable</em>) – Method used to correct corrupted frames (more details in
 <a class="reference internal" href="#module-pyphoon.clean_satellite.correction" title="pyphoon.clean_satellite.correction"><code class="xref py py-mod docutils literal notranslate"><span class="pre">correction</span></code></a>)</li>
 <li><strong>generate_fct</strong> (<em>callable</em>) – Method used to fill gaps in a sequence (more details in
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">generation</span></code>)</li>
+<a class="reference internal" href="#module-pyphoon.clean_satellite.generation" title="pyphoon.clean_satellite.generation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">generation</span></code></a>)</li>
 <li><strong>detect_params</strong> (<em>dict</em>) – Parameters required to assist the detection method.
 More details can be found in the specific detection method (see from
 <a class="reference internal" href="#module-pyphoon.clean_satellite.detection" title="pyphoon.clean_satellite.detection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">detection</span></code></a>)</li>
@@ -341,7 +341,7 @@ specified by class attribute <strong>generate_fct</strong>.</p>
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><code class="xref py py-mod docutils literal notranslate"><span class="pre">generation</span></code></p>
+<p class="last"><a class="reference internal" href="#module-pyphoon.clean_satellite.generation" title="pyphoon.clean_satellite.generation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">generation</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -380,9 +380,9 @@ used, all sequences are used.</li>
 
 </div>
 <hr class="docutils" />
-<div class="section" id="pyphoon-clean-satellite-detection">
-<h2>pyphoon.clean_satellite.detection<a class="headerlink" href="#pyphoon-clean-satellite-detection" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-pyphoon.clean_satellite.detection"></span><p>This submodule contains different methods to detect corrupted images. The
+<div class="section" id="module-pyphoon.clean_satellite.detection">
+<span id="pyphoon-clean-satellite-detection"></span><h2>pyphoon.clean_satellite.detection<a class="headerlink" href="#module-pyphoon.clean_satellite.detection" title="Permalink to this headline">¶</a></h2>
+<p>This submodule contains different methods to detect corrupted images. The
 standard notation is <code class="docutils literal notranslate"><span class="pre">detect_corrupted_pixels_&lt;method</span> <span class="pre">index&gt;</span></code>.</p>
 <dl class="function">
 <dt id="pyphoon.clean_satellite.detection.detect_corrupted_pixels_1">
@@ -419,9 +419,9 @@ are corrupted.</p>
 
 </div>
 <hr class="docutils" />
-<div class="section" id="pyphoon-clean-satellite-correction">
-<h2>pyphoon.clean_satellite.correction<a class="headerlink" href="#pyphoon-clean-satellite-correction" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-pyphoon.clean_satellite.correction"></span><p>This submodule contains different methods to correct corrupted images. The
+<div class="section" id="module-pyphoon.clean_satellite.correction">
+<span id="pyphoon-clean-satellite-correction"></span><h2>pyphoon.clean_satellite.correction<a class="headerlink" href="#module-pyphoon.clean_satellite.correction" title="Permalink to this headline">¶</a></h2>
+<p>This submodule contains different methods to correct corrupted images. The
 standard notation is <code class="docutils literal notranslate"><span class="pre">correct_corrupted_pixels_&lt;method</span> <span class="pre">index&gt;</span></code>.</p>
 <dl class="function">
 <dt id="pyphoon.clean_satellite.correction.correct_corrupted_pixels_1">
@@ -459,8 +459,38 @@ an array according to some given rules.</li>
 
 </div>
 <hr class="docutils" />
-<div class="section" id="pyphoon-clean-satellite-fillgaps">
-<h2>pyphoon.clean_satellite.fillgaps<a class="headerlink" href="#pyphoon-clean-satellite-fillgaps" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pyphoon.clean_satellite.generation">
+<span id="pyphoon-clean-satellite-generation"></span><h2>pyphoon.clean_satellite.generation<a class="headerlink" href="#module-pyphoon.clean_satellite.generation" title="Permalink to this headline">¶</a></h2>
+<p>This submodule contains different methods to fill the temporal gaps with new
+synthetic images. The standard notation is <code class="docutils literal notranslate"><span class="pre">generate_new_frames_&lt;method</span>
+<span class="pre">index&gt;</span></code>.</p>
+<dl class="function">
+<dt id="pyphoon.clean_satellite.generation.generate_new_frames_1">
+<code class="descclassname">pyphoon.clean_satellite.generation.</code><code class="descname">generate_new_frames_1</code><span class="sig-paren">(</span><em>images</em>, <em>frame_idx_0</em>, <em>frame_idx_1</em>, <em>n_frames=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.clean_satellite.generation.generate_new_frames_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linearly interpolates two frames from a typhoon sequence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>images</strong> (<em>list</em>) – List with image arrays. Each element of the list must be an
+array of 2 dimensions.</li>
+<li><strong>frame_idx_0</strong> (<em>int</em>) – First frame index.</li>
+<li><strong>frame_idx_1</strong> (<em>int</em>) – Second frame index.</li>
+<li><strong>n_frames</strong> (<em>int</em>) – Number of frames to generate using interpolation.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List with the new generated frames.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 </div>
 

@@ -112,6 +112,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#content">Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.app.preprocess">pyphoon.app.preprocess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.app.utils">pyphoon.app.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.app.callbacks">pyphoon.app.callbacks</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.visualise.html">pyphoon.visualise</a></li>
@@ -557,29 +558,6 @@ By default it considers all classes.</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyphoon.app.utils.data_generator">
-<code class="descclassname">pyphoon.app.utils.</code><code class="descname">data_generator</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>batch_sz</em>, <em>shuffle=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.data_generator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates batches of data from samples <strong>X</strong> and labels <strong>Y</strong>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>X</strong> (<em>numpy.array</em>) – Sample data.</li>
-<li><strong>Y</strong> (<em>numpy.array</em>) – Label data.</li>
-<li><strong>batch_sz</strong> (<em>int</em>) – Batch size.</li>
-<li><strong>shuffle</strong> (<em>bool</em><em>, </em><em>default True</em>) – Set to True to shuffle the batch data (recommended)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="pyphoon.app.utils.data_generator_from_chunklist">
 <code class="descclassname">pyphoon.app.utils.</code><code class="descname">data_generator_from_chunklist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>batch_sz</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.data_generator_from_chunklist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates batches of data from samples <strong>X</strong> and labels <strong>Y</strong>.</p>
@@ -594,11 +572,107 @@ By default it considers all classes.</li>
 </ul>
 </td>
 </tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Generator of batches of samples, labels and weights (importance
+of samples).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="module-pyphoon.app.callbacks">
+<span id="pyphoon-app-callbacks"></span><h2>pyphoon.app.callbacks<a class="headerlink" href="#module-pyphoon.app.callbacks" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyphoon.app.callbacks.StoreModelWeights">
+<em class="property">class </em><code class="descclassname">pyphoon.app.callbacks.</code><code class="descname">StoreModelWeights</code><span class="sig-paren">(</span><em>filepath</em>, <em>monitor='val_loss'</em>, <em>verbose=0</em>, <em>save_best_only=True</em>, <em>save_weights_only=False</em>, <em>mode='auto'</em>, <em>period=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.callbacks.StoreModelWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">keras.callbacks.ModelCheckpoint</span></code></p>
+<p>Keras callback used to store the model weights after each epoch. More
+details in <a class="reference external" href="keras.io/callbacks">keras documentation</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filepath</strong> (<em>str</em>) – Folder to store the weights HDF5 files.</li>
+<li><strong>monitor</strong> (<em>str</em><em>, </em><em>default 'val_loss'</em>) – Model metric to rely on when storing the weights.</li>
+<li><strong>verbose</strong> (<em>int</em>) – Set to 1 to display execution information</li>
+<li><strong>save_best_only</strong> – Set to True to only store weights when model
+performance (according to metric <strong>monitor</strong>) improves.</li>
+<li><strong>save_weights_only</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True to only store the weights.</li>
+<li><strong>mode</strong> (<em>str</em><em>, </em><em>default 'auto'</em>) – </li>
+<li><strong>period</strong> (<em>int</em><em>, </em><em>default 1</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyphoon.app.callbacks.PlotRegressionValidation">
+<em class="property">class </em><code class="descclassname">pyphoon.app.callbacks.</code><code class="descname">PlotRegressionValidation</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.callbacks.PlotRegressionValidation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">keras.callbacks.Callback</span></code></p>
+<p>Plot a scatterplot illustrating the ground truth values and the network
+predictions after each epoch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> – Batch of samples. Shape (N, W, H, C), where N: #samples,</td>
+</tr>
+</tbody>
+</table>
+<p>W: width, H: height and C: #channels.
+:type X: numpy.array
+:param Y: Target values.
+:type Y: numpy.array</p>
+<dl class="method">
+<dt id="pyphoon.app.callbacks.PlotRegressionValidation.plot_regression">
+<code class="descname">plot_regression</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_pred</em>, <em>show=False</em>, <em>save=False</em>, <em>filename='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.callbacks.PlotRegressionValidation.plot_regression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot scatterplot with network estimation and ground truth values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>y_true</strong> (<em>numpy.array</em>) – Ground truth values.</li>
+<li><strong>y_pred</strong> (<em>numpy.array</em>) – Network estimation values.</li>
+<li><strong>show</strong> (<em>bool</em>) – Set to True to plot a figure.</li>
+<li><strong>save</strong> (<em>bool</em>) – Set to True to store the image.</li>
+<li><strong>filename</strong> (<em>str</em>) – Name of the file if image is stored.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.app.callbacks.PlotRegressionValidation.on_epoch_end">
+<code class="descname">on_epoch_end</code><span class="sig-paren">(</span><em>epoch</em>, <em>logs={}</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.callbacks.PlotRegressionValidation.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executed after each epoch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>epoch</strong> – Current epoch.</li>
+<li><strong>logs</strong> – </li>
+</ul>
+</td>
+</tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
 </td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
