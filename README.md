@@ -20,7 +20,7 @@ Provides a set of tools to enable easy and pythonic interaction the Digital Typh
 | [notebooks](notebooks)   | Example code snippets                                                                      |
 | [scripts](scripts)       | Some example scripts using library tools                                                   |
 | [sampledata](sampledata) | Sample data from Digital Typhoon, used in                                                  |
-| [tasks](tasks)           | Data and files related to specific applications of pyphoon (mainly DL/ML tasks) library    |
+| [tasks](tasks)           | Data and files related to specific applications of pyphoon library                         |
 
 
 ## Installation
@@ -55,6 +55,13 @@ DisplaySequence(
 ### [Tasks](tasks)
 
 **pyphoon** was mainly conceived to assist in Machine Learning/Deep Learning 
-tasks. In the folder [tasks](tasks) you can find details on the 
-implementation of these tasks. These include keras implementations of the 
-network architectures and available weights for download. 
+tasks. In addition, this repository also provides examples of some of these 
+tasks that we have been working on.
+ 
+| **Section**              | **Description**                                                                            |
+|--------------------------|--------------------------------------------------------------------------------------------|
+| [tcxtc](tasks/tcxtc)                              | *Tropical cyclone* vs *Extratropical cyclone* binary classifier.  |
+| [multiclass](tasks/multiclass)                    | Classification of *Topical cyclone* intensity in four categories. |
+| [pressure regression](tasks/pressure_regression)  | Regression of the centre pressure in *Tropical cyclones*          |
+ 
+**Note**: All models have been implemented using [keras](http://keras.io).
