@@ -3,7 +3,7 @@ This task consists in estimating a phenomenon illustrated on an image is a
 
 ## Architecture
 
-![](assets/tcxtc_net)
+![](../../assets/tcxtc_net)
 
 ## Results
 
