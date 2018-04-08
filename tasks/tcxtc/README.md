@@ -1,6 +1,10 @@
 This task consists in estimating a phenomenon illustrated on an image is a 
 *Tropical cyclone* or an *Extratropical cyclone*. 
 
+Tropical Cyclone    |  Extra-Tropical Cyclone
+:------------------:|:-------------------------:
+![](../../assets/TC.gif)  |  ![](../../assets/xTC.gif)
+
 ## Architecture
 
 ![](../../assets/tcxtc_net)
