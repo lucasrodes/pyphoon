@@ -7,7 +7,7 @@ Tropical Cyclone    |  Extra-Tropical Cyclone
 
 ## Architecture
 
-![](../../assets/tcxtc_net)
+![](../../assets/tcxtc_net.png)
 
 ## Results
 
