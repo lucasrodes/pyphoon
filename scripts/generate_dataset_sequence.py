@@ -28,7 +28,7 @@ besttrack_pkl_path = join(db_dir, 'besttrack.pkl')
 missing_pkl_path = join(db_dir, 'missing.pkl')
 
 # New dataset directory
-output_dir = '../../../fs9/lucas/data/datasets/task_2'
+output_dir = '../../../fs9/lucas/data/datasets/all_sequence_256'
 
 ################################################################################
 # PD_MAN
@@ -56,12 +56,14 @@ seq_list = [(int(seq_no), 'train') for seq_no in ids_train] + \
 ################################################################################
 # PREPROCESSOR
 ################################################################################
-preprocessor = DefaultImagePreprocessor(mean=269.15, std=24.14,
-                                        resize_factor=2, reshape_mode='keras')
+# preprocessor = DefaultImagePreprocessor(mean=269.15, std=24.14,
+#                                        resize_factor=2, reshape_mode='keras')
 
 ################################################################################
 # GENERATE DATASET
 ################################################################################
+preprocessor = DefaultImagePreprocessor(mean=0, std=1, resize_factor=(256, 256))
+
 de = DataExtractor(original_images_dir=orig_images_dir,
                    corrected_images_dir=corrected_dir, pd_manager=man)
 

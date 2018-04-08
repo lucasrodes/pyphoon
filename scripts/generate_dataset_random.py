@@ -27,7 +27,7 @@ besttrack_pkl_path = join(db_dir, 'besttrack.pkl')
 missing_pkl_path = join(db_dir, 'missing.pkl')
 
 # New dataset directory
-output_dir = '../../../fs9/lucas/data/datasets/task_2b'
+output_dir = '../../../fs9/lucas/data/datasets/all_random_256'
 
 if not exists(output_dir):
     mkdir(output_dir)
@@ -44,8 +44,7 @@ man.load_corrected_images(corrected_pkl_path)
 ################################################################################
 # PREPROCESSOR
 ################################################################################
-preprocessor = DefaultImagePreprocessor(mean=0, std=1,
-                                        resize_factor=2, reshape_mode='keras')
+preprocessor = DefaultImagePreprocessor(mean=0, std=1, resize_factor=(256, 256))
 
 de = DataExtractor(orig_images_dir, corrected_dir, man)
 de.generate_images_shuffled_chunks(3500, output_dir,
