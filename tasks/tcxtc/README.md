@@ -27,13 +27,13 @@ python predict <weights.h5> <image_datafile.npy>
 ```
 
 #### Remarks on the image
-1. `<image_datafile.npy>` can be an image (shapes: (256, 256), (1, 256, 
-256) and (256, 256, 1)) or a batch of images (shapes: (N, 256, 256) or (N, 
-256, 256, 1))).
+1. `<image_datafile.npy>` can be an image of shape: (256, 256), (1, 256, 256) 
+    and (256, 256, 1) or a batch of images of shape: (N, 256, 256) or (N, 
+    256, 256, 1).
 
 2. `<image_datafile.npy>` must have an aspect ratio of roughly 1 pixel/X KM.
 
-### Further usages
+### Use in code
 You can use this model directly in your code.
 
 #### Load model
