@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from os.path import join
 import os
 import numpy as np
+from tempfile import NamedTemporaryFile
 
 
 def _create_folder(folderpath):
@@ -34,6 +35,23 @@ class OurTensorBoard(TensorBoard):
                          )
 
 
+class LossHistory(Callback):
+    """
+    Accumulates the losses and accuracies on training and validation sets.
+    """
+    def on_train_begin(self, logs={}):
+        self.losses = []
+        self.val_losses = []
+        self.accuracies = []
+        self.val_accuracies = []
+
+    def on_batch_end(self, batch, logs={}):
+        self.losses.append(logs.get('loss'))
+        self.val_losses.append(logs.get('val_loss'))
+        self.accuracies.append(logs.get('acc'))
+        self.val_accuracies.append(logs.get('val_acc'))
+
+
 class StoreModelWeights(ModelCheckpoint):
     """ Keras callback used to store the model weights after each epoch. More
     details in `keras documentation`_.
@@ -58,8 +76,8 @@ class StoreModelWeights(ModelCheckpoint):
     :type period: int, default 1
     """
     def __init__(self, folderpath, monitor='val_loss', verbose=0,
-                 save_best_only=True, save_weights_only=False, mode='auto',
-                 period=1):
+                 save_best_only=False, save_weights_only=True, mode='auto',
+                 period=1, naming="val_mean_error"):
         """ Constructor
         """
         # Create folder for storing weights
@@ -67,7 +85,7 @@ class StoreModelWeights(ModelCheckpoint):
         _create_folder(weights_dir)
         # Define name for weights HDF5 files
         filepath = join(weights_dir, "weights-improvement-{epoch:02d}-{"
-                                     "val_mean_error:.2f}.hdf5")
+                                     ""+naming+":.4f}.hdf5")
         super().__init__(filepath, monitor=monitor, verbose=verbose,
                          save_best_only=save_best_only,
                          save_weights_only=save_weights_only, mode=mode,
@@ -138,14 +156,21 @@ class PlotRegressionValidation(Callback):
         """
         y_pred = []
 
-        for idx in range(len(self.X)):
-            _X = self.X[idx]
-            if self.crop:
-                base = int(self.crop/2)
-                _X = _X[:, base:+base+self.crop, base:base+self.crop]
-            y_pred.append(self.model.predict(_X))
-        y_pred = np.concatenate(y_pred)[:, 0]
-        y_true = np.concatenate(self.Y)
+        if type(self.X) is list:
+            for idx in range(len(self.X)):
+                _X = self.X[idx]
+                if self.crop:
+                    base = int(self.crop/2)
+                    _X = _X[:, base:+base+self.crop, base:base+self.crop]
+                y_pred.append(self.model.predict(_X))
+            y_pred = np.concatenate(y_pred)[:, 0]
+        elif type(self.X) is np.ndarray:
+            y_pred = self.model.predict(self.X)[:, 0]
+
+        if type(self.Y) is list:
+            y_true = np.concatenate(self.Y)
+        elif type(self.Y) is np.ndarray:
+            y_true = self.Y
         # Plot &, eventually, store figure
         filename = 'regression-' + str(epoch)
         self.plot_regression(y_true, y_pred, save=True,
