@@ -1,5 +1,4 @@
 import numpy as np
-from skimage.transform import downscale_local_mean
 import cv2
 
 
@@ -152,7 +151,7 @@ def resize(X, size, ignore_last_axis=False):
             np.float32)
     else:
         im = np.array([cv2.resize(x, size) for x in X]).astype(np.float32)
-    return im  # np.expand_dims(im, axis=3)
+    return im
 
 
 ################################################################################
@@ -188,7 +187,9 @@ class ImagePreprocessor(object):
         :return: List of reshaped images
         :rtype: list
         """
-        if self.reshape_mode == 'keras':
+        if not self.reshape_mode:
+            return X
+        elif self.reshape_mode == 'keras':
             return X.reshape(-1, X.shape[1], X.shape[2], 1)
 
 
@@ -211,7 +212,7 @@ class DefaultImagePreprocessor(ImagePreprocessor):
     :var reshape_mode: Used to normalise the data. See
         :class:`~pyphoon.app.preprocess.ImagePreprocessor`
     """
-    def __init__(self, mean, std, reshape_mode, resize_factor=None):
+    def __init__(self, mean, std, resize_factor=None, reshape_mode=None):
         super().__init__(reshape_mode)
         self.mean = mean
         self.std = std
@@ -229,20 +230,19 @@ class DefaultImagePreprocessor(ImagePreprocessor):
         if not isinstance(X, np.ndarray):
             raise TypeError("Expected type for X is numpy.ndarray but got " +
                             X.__class__.__name__)
-        if X.ndim != 3:
-            raise Exception("X.ndim must be 3 with X.shape = (N, W, H), "
-                            "where N: #samples, W: image_width, "
-                            "H: # image_height")
+        #if X.ndim != 3:
+        #    raise Exception("X.ndim must be 3 with X.shape = (N, W, H), "
+        #                    "where N: #samples, W: image_width, "
+        #                    "H: # image_height")
 
         # Resize chunk images
         if self.resize_factor:
-            X = resize(X, self.resize_factor)
-
-        X -= (X - self.mean)/self.std
+            X = cv2.resize(X, self.resize_factor)
 
         # Normalise
-        X = self.reshape(X)
+        X = (X - self.mean)/self.std
 
+        X = self.reshape(X)
         return X
 
 
@@ -258,13 +258,13 @@ class MeanImagePreprocessor(ImagePreprocessor):
     :func:`resize`.
 
     :var mean_image: Mean image (2D matrix)
-    :var scale_factor: Used to normalise the data.
+    :var scale_factor: Used to normalise the data. By default it does not scale.
     :var resize_factor: To resize the image. Define the new size of the images.
     :var reshape_mode: Used to normalise the data. See
         :class:`~pyphoon.app.preprocess.ImagePreprocessor`
     """
-    def __init__(self, mean_image, scale_factor, reshape_mode,
-                 resize_factor=None):
+    def __init__(self, mean_image, scale_factor=1,
+                 resize_factor=None, reshape_mode=None):
         super().__init__(reshape_mode)
         self.mean = mean_image
         self.scale = scale_factor
@@ -290,7 +290,7 @@ class MeanImagePreprocessor(ImagePreprocessor):
 
         # Resize chunk images
         if self.resize_factor:
-            X = resize(X, self.resize_factor)
+            X = cv2.resize(X, self.resize_factor)
         # Centre & normalise
         X = (X - self.mean)/self.scale
 
