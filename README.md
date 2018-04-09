@@ -17,10 +17,10 @@ Provides a set of tools to enable easy and pythonic interaction the Digital Typh
 |--------------------------|--------------------------------------------------------------------------------------------|
 | [pyphoon](pyphooon)      | Library for Digital Typhoon project                                                        |
 | [docs](docs)             | Library documentation files                                                                |
-| [notebooks](notebooks)   | Example code snippets                                                                      |
+| [notebooks](notebooks)   | Basic code examples.                                                                       |
 | [scripts](scripts)       | Some example scripts using library tools                                                   |
 | [sampledata](sampledata) | Sample data from Digital Typhoon, used in                                                  |
-| [tasks](tasks)           | Data and files related to specific applications of pyphoon library                         |
+| [tasks](tasks)           | Data and files related to specific applications of pyphoon library (includes notebooks).   |
 
 
 ## Installation
@@ -61,7 +61,7 @@ tasks that we have been working on.
 | **Section**              | **Description**                                                                            |
 |--------------------------|--------------------------------------------------------------------------------------------|
 | [tcxtc](tasks/tcxtc)                              | *Tropical cyclone* vs *Extratropical cyclone* binary classifier.  |
-| [multiclass](tasks/multiclass)                    | Classification of *Topical cyclone* intensity in four categories. |
+| [multiclass](tasks/depracated)                    | Classification of *Topical cyclone* intensity in four categories. |
 | [pressure regression](tasks/pressure_regression)  | Regression of the centre pressure in *Tropical cyclones*          |
  
 **Note**: All models have been implemented using [keras](http://keras.io).
