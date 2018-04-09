@@ -71,8 +71,7 @@ class DataExtractor:
                                                              'obs_time',
                                                              'data']
                                     )
-        pd_read_data.set_index(['seq_no', 'obs_time'], drop=True,
-                                 inplace=True)
+        pd_read_data.set_index(['seq_no', 'obs_time'], drop=True, inplace=True)
         pd_read_data = pd_read_data.join(besttrack)
         return pd_read_data, size
 
@@ -270,6 +269,7 @@ class DataExtractor:
         data = {}
         data['pressure'] = united['pressure'].tolist()
         data['data'] = united['data'].tolist()
+        # Lower resolution
         data['seq_no'] = united['seq_no']
         data['idx'] = united['idx'].tolist()
         data['class'] = united['class'].tolist()
