@@ -45,7 +45,7 @@ class DataExtractor:
         besttrack = self.pd_man.besttrack
         corrected = self.pd_man.corrected
         if images.empty or besttrack.empty:
-            raise Exception('Images and Besttrack dataframes should be loaded')
+            raise Exception('Images and Besttrack dataframes should be loaded.')
         read_data = []
         size = 0
         seq = images.loc[seq_no]
@@ -59,21 +59,20 @@ class DataExtractor:
                                               corrected_entry.filename)
                                          )
                 if preprocess_algorithm:
-                    data = preprocess_algorithm(data.reshape(1, data.shape[0],
-                                                             data.shape[1]))[0]
+                    data = preprocess_algorithm(data)
             else:
                 size += frame['size']
                 data = read_source_image(join(self.original_images_dir,
                                               frame.directory, frame.filename))
                 if preprocess_algorithm:
-                    data = preprocess_algorithm(data.reshape(1, data.shape[0],
-                                                             data.shape[1]))[0]
+                    data = preprocess_algorithm(data)
             read_data.append([seq_no, obs_time, data])
         pd_read_data = pd.DataFrame(data=read_data, columns=['seq_no',
                                                              'obs_time',
                                                              'data']
                                     )
-        pd_read_data.set_index(['seq_no', 'obs_time'], drop=True, inplace=True)
+        pd_read_data.set_index(['seq_no', 'obs_time'], drop=True,
+                                 inplace=True)
         pd_read_data = pd_read_data.join(besttrack)
         return pd_read_data, size
 
@@ -120,8 +119,7 @@ class DataExtractor:
                 data = read_source_image(shuffled.loc[shuffled.index[j],
                                                       'full_filename'])
                 if preprocess_algorithm:
-                    data = preprocess_algorithm(data.reshape(1, data.shape[0],
-                                                             data.shape[1]))[0]
+                    data = preprocess_algorithm(data)
                 read_data.append(data)
             # data_df = pd.DataFrame(read_data, columns=['index', 'data'])
             # data_df.set_index('index')
@@ -199,42 +197,40 @@ class DataExtractor:
         self._parameter_checking(corrected, images, output_dir)
 
         # group by prefix
-        sequences = pd.DataFrame(sequence_list, columns=['seq_no', 'prefix'])
+        sequences = pd.DataFrame(sequence_list, columns=['seq_no'])
         chunk = []
         size = 0
-        _filename = ''
-        for prefix, data in sequences.groupby('prefix'):
-            print(prefix)
-            serial_num = 0
-            for entry in data.iterrows():
-                _seq_no = entry[1].seq_no
-                print("",_seq_no) if display else 0
-                data, seq_size = \
-                    self._read_seq(seq_no=_seq_no,
-                                   preprocess_algorithm=preprocess_algorithm)
-                chunk.append(data)
-                size += seq_size
-                if size >= chunk_size:
-                    # write chunk to disk
-                    _filename = join(output_dir, '{0}_{1}.h5'.format(prefix,
-                                                                     serial_num)
-                                     )
-                    print(" --> storing", _filename) if display else 0
-                    t0 = time.time()
-                    self._write_chunk(filename=_filename, chunk=chunk)
-                    print(" --> done in", time.time()-t0) if display else 0
-                    serial_num += 1
-                    size = 0
-                    chunk = []
-            if not len(chunk) == 0:
-                # write leftovers
+        serial_num = 0
+        prefix = "chunk"
+        for _seq_no, data in sequences.groupby('seq_no'):
+            print("", _seq_no) if display else 0
+            data, seq_size = \
+                self._read_seq(seq_no=int(_seq_no),
+                               preprocess_algorithm=preprocess_algorithm)
+            chunk.append(data)
+            size += seq_size
+            if size >= chunk_size:
+                # write chunk to disk
                 _filename = join(output_dir, '{0}_{1}.h5'.format(prefix,
                                                                  serial_num)
                                  )
                 print(" --> storing", _filename) if display else 0
                 t0 = time.time()
                 self._write_chunk(filename=_filename, chunk=chunk)
-                print(" --> done in", time.time() - t0) if display else 0
+                print(" --> done in", time.time()-t0) if display else 0
+                serial_num += 1
+                size = 0
+                chunk = []
+
+        if not len(chunk) == 0:
+            # write leftovers
+            _filename = join(output_dir, '{0}_{1}.h5'.format(prefix,
+                                                             serial_num)
+                             )
+            print(" --> storing", _filename) if display else 0
+            t0 = time.time()
+            self._write_chunk(filename=_filename, chunk=chunk)
+            print(" --> done in", time.time() - t0) if display else 0
 
     def _parameter_checking(self, corrupted, images, output_dir):
         if images.empty:
