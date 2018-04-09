@@ -197,7 +197,7 @@ class TyphoonListImageFixAlgorithm(object):
         :param images_original: Original list of image data.
         :type images_original: list
         :param images_original_ids: Original list of image ids.
-        :type images_original_ids: list
+        :type images_original_ids: listcat
         :param images_new: New list where new synthetic frames will be added.
         :type images_new: list
         :param index: We check if there are any temporal gaps between frame
