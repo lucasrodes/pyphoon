@@ -36,7 +36,7 @@ RANDOM = 1
 RANDOM_SEQUENCE = 2
 YEAR_SEQUENCE = 3
 
-mode = RANDOM
+mode = YEAR_SEQUENCE
 
 
 ################################################################################
@@ -55,14 +55,14 @@ from pyphoon.db.data_extractor import DataExtractor
 # PATHS
 ################################################################################
 # Paths to source data (provided by Digital Typhoon)
-orig_images_dir = 'root/fs9/datasets/typhoon/wnp/image/'
-besttrack_dir = 'root/fs9/datasets/typhoon/wnp/jma'
+orig_images_dir = '/root/fs9/datasets/typhoon/wnp/image/'
+besttrack_dir = '/root/fs9/datasets/typhoon/wnp/jma'
 
 # Path where corrected images will be stored
-corrected_dir = 'root/fs9/grishin/database/corrected'
+corrected_dir = '/root/fs9/grishin/database/corrected'
 
 # Path to new database files (contain information for PDManager object)
-db_dir = 'root/fs9/grishin/database'
+db_dir = '/root/fs9/grishin/database'
 # Pickle files (used to store dataframes)
 images_pkl_path = join(db_dir, 'images.pkl')
 corrected_pkl_path = join(db_dir, 'corrected.pkl')
@@ -70,7 +70,7 @@ besttrack_pkl_path = join(db_dir, 'besttrack.pkl')
 missing_pkl_path = join(db_dir, 'missing.pkl')
 
 # New dataset directory
-output_dir = 'root/fs9/lucas/data/datasets/all_random_256'
+output_dir = '/root/fs9/lucas/data/datasets/all_year_256'
 if not exists(output_dir):
     mkdir(output_dir)
 
@@ -86,15 +86,19 @@ man.load_corrected_images(corrected_pkl_path)
 ################################################################################
 # GENERATE DATASET
 ################################################################################
+from pyphoon.app.preprocess import DefaultImagePreprocessor
+preprocessor = DefaultImagePreprocessor(mean=0, std=1, resize_factor=(256, 256))
+
 de = DataExtractor(orig_images_dir, corrected_dir, man)
 if mode == RANDOM:
     de.generate_images_shuffled_chunks(3500, output_dir,
+                                       preprocess_algorithm=preprocessor.apply,
                                        display=True)
 if mode == RANDOM_SEQUENCE or mode == YEAR_SEQUENCE:
-    seed(1000)
-    files = listdir(orig_images_dir)
 
+    files = listdir(orig_images_dir)
     if mode == RANDOM_SEQUENCE:
+        seed(1000)
         shuffle(files)
 
     ratio = .2
@@ -106,6 +110,7 @@ if mode == RANDOM_SEQUENCE or mode == YEAR_SEQUENCE:
 
     de.generate_images_besttrack_chunks(seq_list, chunk_size=1 * 1024 ** 3,
                                         output_dir=output_dir,
+                                        preprocess_algorithm=preprocessor.apply,
                                         display=True)
 """
 # Example using preprocessor, only resizing image to 256x256.
