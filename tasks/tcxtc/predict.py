@@ -5,6 +5,7 @@ from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, \
 from keras.layers.normalization import BatchNormalization
 import argparse
 import numpy as np
+import h5py
 
 
 def get_model():
@@ -69,30 +70,40 @@ def get_parser_arguments():
     return args
 
 if __name__ == '__main__':
+    import os
+    import warnings
+    warnings.filterwarnings("ignore")
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
     # Load input arguments
     args = get_parser_arguments()
     weights = args.weights
-    X = args.input
+    filepath = args.input
+
+    # Load image
+    X = np.load(filepath)
+
+    # Load preprocessing params
+    with h5py.File('preprocessing_params.h5') as f:
+        mean = f.get('image_mean_256').value
+        scale_factor = f.get('max_value_256').value - f.get(
+            'min_value_256').value
 
     # Check X has good shape
-    exception_msg = "Wrong image shape. Accepted shapes are: (256, 256), " \
-                    "(256, 256, 1) or (1, 256, 256, 1) for single images and" \
-                    "(N, 256, 256) or (N, 256, 256, 1) for image batches."
+    exception_msg = "Input shape was "+str(X.shape)+". Accepted shapes are (" \
+                                                    "256, 256) for an image " \
+                                                    "or (N, 256, 256) for a " \
+                                                    "batch of images."
     if X.ndim == 2:
         if X.shape[0] == 256 and X.shape[1] == 256:
+            X = (X - mean) / scale_factor
             X = np.expand_dims(np.expand_dims(X, axis=0), axis=3)
         else:
             raise Exception(exception_msg)
     elif X.ndim == 3:
-        if X.shape[0] == 256 and X.shape[1] == 256 and X.shape[2] == 1:
-            X = np.expand_dims(X, axis=0)
-        elif X.shape[1] == 256 and X.shape[2] == 256:
+        if X.shape[1] == 256 and X.shape[2] == 256:
+            X = (X - mean) / scale_factor
             X = np.expand_dims(X, axis=3)
-        else:
-            raise Exception(exception_msg)
-    elif X.ndim == 4:
-        if X.shape[1] == 256 and X.shape[2] == 256 and X.shape[3] == 1:
-            pass
         else:
             raise Exception(exception_msg)
     else:
@@ -102,9 +113,9 @@ if __name__ == '__main__':
     model = get_model()
     model.load_weights(weights)
 
-    # Normalise
-    X = (X - 0) / 1
-
     # Predict
-    y = model.predict(X)
+    y = model.predict(X)[:, 0]
+    print("\n--------------------")
+    print("> Prediction(s):")
+    print("--------------------")
     print(y)

@@ -1,5 +1,5 @@
 This task consists in estimating a phenomenon illustrated on an image is a 
-*Tropical cyclone* or an *Extratropical cyclone*. 
+*Tropical cyclone* or an *Extratropical cyclone*.
 
 Tropical Cyclone    |  Extra-Tropical Cyclone
 :------------------:|:-------------------------:
@@ -33,7 +33,7 @@ python predict <weights.h5> <image_datafile.npy>
 2. The typhoon eye should be around the centre of the image `<image_datafile
     .npy>`.
     
-3. `<image_datafile.npy>` must have an aspect ratio of roughly 1 pixel/X KM.
+3. `<image_datafile.npy>` should have a resolution of approx. 1 pixel = 5KM.
 
 ### Use in code
 You can use this model directly in your code.
