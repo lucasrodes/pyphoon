@@ -4,6 +4,12 @@ import os
 from pyphoon.io.h5 import read_source_image, write_h5_dataset_file
 from pyphoon.db.pd_manager import PDManager
 import time
+import random
+import numpy as np
+
+
+def get_id(dt, seq):
+    return str(seq) + '_' + dt.strftime("%Y%m%d%H")
 
 
 class DataExtractor:
@@ -24,15 +30,120 @@ class DataExtractor:
         self.corrected_images_dir = corrected_images_dir
         self.pd_man = pd_manager
 
-    def get_good_triplets(self, seq_no, allow_corrected=True):
+    def _read_triplet_data(self, triplets, full_filenames, preprocessor=None):
+        """
+        Reads a triplet data from images
+
+        :param triplets: triplets dataframe
+        """
+        triplets = triplets.applymap(lambda x: full_filenames[x])
+        # dictionary for data, to avoid multiple readings
+        data = {}
+        filenames = pd.concat([triplets['start'], triplets['end'], triplets['middle']], axis=0).unique()
+        for f in filenames:
+            data[f] = read_source_image(f)
+        if preprocessor:
+            for key, val in data:
+                data[key] = preprocessor(val)
+
+        chunk_len = len(triplets.index)
+        im_size = np.shape(next(iter(data.values())))
+        # print(im_size)
+        X = np.zeros(shape=(chunk_len, im_size[0], im_size[1], 2))
+        Y = np.zeros(shape=(chunk_len, im_size[0], im_size[1], 1))
+        for i in range(len(triplets.index)):
+            X[i, :, :, 0] = data[triplets.loc[triplets.index[i], 'start']]
+            X[i, :, :, 1] = data[triplets.loc[triplets.index[i], 'end']]
+            Y[i, :, :, 0] = data[triplets.loc[triplets.index[i], 'middle']]
+        return {'X': X, 'Y': Y}
+
+    def get_good_triplets(self, dataframe):
         """
         Gets triplets of frames (3 subsequent frames) from a given sequence, where non of frames is missing
 
-        :param seq_no: Number of sequence (ID)
-        :type seq_no: int
-        :param allow_corrected: Allow including corrected images into triplets
-        :type allow_corrected: bool
+        :param dataframe: dataframe of source images
         """
+        # seq_data = dataframe.loc[dataframe.index.get_level_values('seq_no') == seq_no]
+        appended_data = []
+        for name, group in dataframe.groupby(level='seq_no'):
+            last_frame = int(max(group['frame']))
+            print(name)
+            for i in range(1, last_frame - 1):
+                if len(set(group['frame']).intersection({i - 1, i, i + 1})) == 3:
+                    start = group.loc[group.frame == i-1].index[0]
+                    middle = group.loc[group.frame == i].index[0]
+                    end = group.loc[group.frame == i + 1].index[0]
+                    appended_data.append([start, middle, end])
+        triplets = pd.DataFrame.from_records(appended_data, columns=['start', 'middle', 'end'])
+        return triplets
+
+    def generate_triplets_filenames(self, use_corrected=False):
+        triplets = self._get_one_hour_triplets(use_corrected)
+        filenames = self.get_full_filenames(triplets, use_corrected)
+        return filenames
+
+    def _get_one_hour_triplets(self, use_corrected):
+        pd_manager = self.pd_man
+        missing = pd_manager.missing
+        if len(missing.index) == 0:
+            raise Exception('Missing dataframe should not be empty')
+        images = pd_manager.images.copy()
+        corrected = pd_manager.corrected
+        if use_corrected is False:
+            images.drop(set(corrected.index).intersection(set(images.index)), inplace=True)
+        one_hour_seqs = missing[missing.time_step == pd.Timedelta(hours=1)]
+        images = images.loc[images.index.get_level_values('seq_no').isin(one_hour_seqs.index), :]
+        triplets = self.get_good_triplets(images)
+        return triplets
+
+    def generate_triplet_chunks(self, images_per_chunk, output_dir, seed=0, test_train_ratio=0.2,
+                                use_corrected=True, preprocess_algorithm=None,
+                                display=False):
+        """
+        Generates chunks of frames triplets for the interpolation task
+
+        :param use_corrected: Flag for including corrected images into training datasets
+        :type use_corrected: bool
+        :param images_per_chunk: number inages per chunk
+        :type images_per_chunk: int
+        :param output_dir: Output dir
+        :type output_dir: str
+        :param seed: seed for random shuffle
+        :type seed: int
+        :param preprocess_algorithm: Algorithm for data preprocessing, which returns data of the same shape as an input
+        :param display: flag for displaying output
+        :type display: bool
+        """
+        print('Start generating chunks...') if display else 0
+        t_start = time.time()
+        random.seed(seed)
+        self._parameter_checking(self.pd_man.corrected, self.pd_man.images, output_dir)
+        test_dir = join(output_dir, 'test')
+        train_dir = join(output_dir, 'train')
+        if not exists(test_dir):
+            os.mkdir(test_dir)
+        if not exists(train_dir):
+            os.mkdir(train_dir)
+        triplets = self._get_one_hour_triplets(use_corrected)
+
+        print('Triplets indexes generated {1} {0}'.format(time.time() - t_start, len(triplets.index))) if display else 0
+        i = 0
+        while len(triplets.index) > 0:
+            # keep getting triplets for random sequences
+            shuffled = triplets.sample(n=min(images_per_chunk, len(self.pd_man.images.index)), random_state=seed)
+            filenames = self.get_full_filenames(shuffled, use_corrected)
+            # print('Filenames generated. {0}'.format(time.time() - t_start)) if display else 0
+            data = self._read_triplet_data(triplets=shuffled, full_filenames=filenames)
+            # print('Data loaded. {0}'.format(time.time() - t_start)) if display else 0
+            # train / test split
+            rnd_dir = train_dir if random.random() > test_train_ratio else test_dir
+            output_filename = join(rnd_dir, '{0}_chunk.h5'.format(i))
+            t0 = time.time()
+            print('Generating chunk file {0}, containing {1} values of shape {2}. {3}'
+                  .format(output_filename, len(data['X']), data['X'].shape, t0-t_start)) if display else 0
+            write_h5_dataset_file(data, output_filename, compression='gzip')
+            i += 1
+            triplets.drop(shuffled.index, inplace=True)
 
     # TODO: read corrected/generated as optional
     def _read_seq(self, seq_no, preprocess_algorithm=None):
@@ -95,7 +206,7 @@ class DataExtractor:
         corrected = pd_manager.corrected
         besttrack = pd_manager.besttrack
         self._parameter_checking(corrected, images, output_dir)
-        filenames = self.get_full_filenames(use_corrected)
+        filenames = self.get_full_filenames(images, use_corrected)
         united_data = besttrack.join(filenames, how='inner')
         i = 0
         while len(united_data.index) > 0:
@@ -118,7 +229,7 @@ class DataExtractor:
             i += 1
             united_data.drop(shuffled.index, inplace=True)
 
-    def get_full_filenames(self, use_corrected=True):
+    def get_full_filenames(self, dataframe, use_corrected=True):
         """
         Get full_path series, preferring entries from the corrected df
 
@@ -126,8 +237,11 @@ class DataExtractor:
         :type use_corrected: bool
 
         """
+        indexes = pd.concat([dataframe['start'], dataframe['end'], dataframe['middle']], axis=0).unique()
         original = self.pd_man.images
         corrected = self.pd_man.corrected
+        original = original.loc[original.index.isin(indexes)]
+        corrected = corrected.loc[corrected.index.isin(indexes)]
 
         original_full_paths = original.apply(lambda row: join(self.original_images_dir,
                                                                 row['directory'], row['filename']), axis=1)
@@ -222,12 +336,9 @@ class DataExtractor:
         :type chunk: list of pd.DataFrame
         """
 
-        print(chunk)
+        # print(chunk)
         united = pd.concat(chunk, axis=0)
         united.reset_index(inplace=True)
-
-        def get_id(dt, seq):
-            return str(seq) + '_' + dt.strftime("%Y%m%d%H")
 
         united['idx'] = united.apply(lambda x: get_id(x['obs_time'], x['seq_no']), axis=1)
         # united.drop(['obs_time', 'seq_no'], inplace=True, axis=1)
@@ -263,3 +374,4 @@ class DataExtractor:
             features_data[feature] = data[feature].tolist()
 
         return images, images_ids, features_data
+
