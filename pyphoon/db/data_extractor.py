@@ -1,8 +1,8 @@
-import pandas as pd
-from os.path import exists, isdir, join
-import os
 from pyphoon.io.h5 import read_source_image, write_h5_dataset_file
 from pyphoon.db.pd_manager import PDManager
+import os
+from os.path import exists, isdir, join
+import pandas as pd
 import time
 import random
 import numpy as np
@@ -13,8 +13,7 @@ def get_id(dt, seq):
 
 
 class DataExtractor:
-    """
-    Data extractor. Operates with DataFrames, created by PDManager.
+    """ Data extractor. Operates with DataFrames, created by PDManager.
     """
 
     def __init__(self, original_images_dir, corrected_images_dir, pd_manager):
@@ -148,7 +147,6 @@ class DataExtractor:
     # TODO: read corrected/generated as optional
     def _read_seq(self, seq_no, preprocess_algorithm=None):
         """
-        Disclaimer: Dont read this code
 
         :param seq_no:
         :param preprocess_algorithm:
@@ -158,7 +156,7 @@ class DataExtractor:
         besttrack = self.pd_man.besttrack
         corrected = self.pd_man.corrected
         if images.empty or besttrack.empty:
-            raise Exception('Images and Besttrack dataframes should be loaded')
+            raise Exception('Images and Besttrack dataframes should be loaded.')
         read_data = []
         size = 0
         seq = images.loc[seq_no]
@@ -167,38 +165,49 @@ class DataExtractor:
             if corrected.index.contains(index):
                 corrected_entry = corrected.loc[index]
                 size += corrected_entry['size']
-                data = read_source_image(join(self.corrected_images_dir, corrected_entry.directory, corrected_entry.filename))
+                data = read_source_image(join(self.corrected_images_dir,
+                                              corrected_entry.directory,
+                                              corrected_entry.filename)
+                                         )
                 if preprocess_algorithm:
-                    data = preprocess_algorithm(data.reshape(1, data.shape[0],
-                                                             data.shape[1]))[0]
+                    data = preprocess_algorithm(data)
             else:
                 size += frame['size']
-                data = read_source_image(join(self.original_images_dir, frame.directory, frame.filename))
+                data = read_source_image(join(self.original_images_dir,
+                                              frame.directory, frame.filename))
                 if preprocess_algorithm:
-                    data = preprocess_algorithm(data.reshape(1, data.shape[0],
-                                                             data.shape[1]))[0]
+                    data = preprocess_algorithm(data)
             read_data.append([seq_no, obs_time, data])
-        pd_read_data = pd.DataFrame(data=read_data, columns=['seq_no', 'obs_time', 'data'])
+        pd_read_data = pd.DataFrame(data=read_data, columns=['seq_no',
+                                                             'obs_time',
+                                                             'data']
+                                    )
         pd_read_data.set_index(['seq_no', 'obs_time'], drop=True, inplace=True)
         pd_read_data = pd_read_data.join(besttrack)
         return pd_read_data, size
 
-    def generate_images_shuffled_chunks(self, images_per_chunk, output_dir, seed=0,
-                                        use_corrected=True, preprocess_algorithm=None,
+    def generate_images_shuffled_chunks(self, images_per_chunk, output_dir,
+                                        seed=0, use_corrected=True,
+                                        preprocess_algorithm=None,
                                         display=False):
-        """
-        Generates chunks of hdf5 files, containing shuffled images from different sequences and besttrack data
+        """ Generates chunks of hdf5 files, containing shuffled images from
+        different sequences and Best Track data. It does not care about the
+        typhoon IDs, hence images belonging to the same typhoon sequence
+        might be found in training, validation and/or test sets.
 
-        :param use_corrected: Flag for including corrected images into training datasets
-        :type use_corrected: bool
-        :param images_per_chunk: number inages per chunk
+        :param images_per_chunk: Number of images to be stored per chunk.
         :type images_per_chunk: int
-        :param output_dir: Output dir
+        :param output_dir: Directory to store chunk files.
         :type output_dir: str
-        :param seed: seed for random shuffle
-        :type seed: int
-        :param preprocess_algorithm: Algorithm for data preprocessing, which returns data of the same shape as an input
-        :param display: flag for displaying output
+        :param seed: Seed for random shuffle.
+        :type seed: int, default 0
+        :param use_corrected: Set to True to include corrected images into
+            training dataset.
+        :type use_corrected: bool
+        :param preprocess_algorithm: Algorithm for data pre-processing,
+            which returns data of the same shape as an input.
+        :type preprocess_algorithm: callable
+        :param display: flag for displaying execution information.
         :type display: bool
         """
         pd_manager = self.pd_man
@@ -210,11 +219,17 @@ class DataExtractor:
         united_data = besttrack.join(filenames, how='inner')
         i = 0
         while len(united_data.index) > 0:
-            shuffled = united_data.sample(n=min(images_per_chunk, len(united_data.index)), random_state=seed).copy()
+            shuffled = united_data.sample(n=min(images_per_chunk,
+                                                len(united_data.index)),
+                                          random_state=seed
+                                          ).copy()
             # shuffled['data'] = pd.Series()
             read_data = []
             for j in range(len(shuffled.index)):
-                data = read_source_image(shuffled.loc[shuffled.index[j], 'full_filename'])
+                data = read_source_image(shuffled.loc[shuffled.index[j],
+                                                      'full_filename'])
+                if preprocess_algorithm:
+                    data = preprocess_algorithm(data)
                 read_data.append(data)
             # data_df = pd.DataFrame(read_data, columns=['index', 'data'])
             # data_df.set_index('index')
@@ -225,17 +240,22 @@ class DataExtractor:
             # for index, row in shuffled.iterrows():
             #     data = read_source_image(row.full_filename)
             #     shuffled.loc[index, 'data'] = data
-            self._write_chunk(join(output_dir, '{0}_chunk.h5'.format(i)), [shuffled])
+            print("writing chunk", i) if display else 0
+            t0 = time.time()
+            self._write_chunk(join(output_dir, '{0}_chunk.h5'.format(i)),
+                              [shuffled])
+            print(" done in ", str(t0-time.time())) if display else 0
             i += 1
             united_data.drop(shuffled.index, inplace=True)
 
     def get_full_filenames(self, dataframe, use_corrected=True):
         """
-        Get full_path series, preferring entries from the corrected df
+        Get full_path series, preferring entries from the corrected dataframe.
 
-        :param use_corrected: Flag for including corrected images or not
+        :param use_corrected: Flag for including corrected images or not.
         :type use_corrected: bool
-
+        :rtype full_paths: List with paths of images.
+        :return full_paths: list
         """
         indexes = pd.concat([dataframe['start'], dataframe['end'], dataframe['middle']], axis=0).unique()
         original = self.pd_man.images
@@ -243,24 +263,32 @@ class DataExtractor:
         original = original.loc[original.index.isin(indexes)]
         corrected = corrected.loc[corrected.index.isin(indexes)]
 
-        original_full_paths = original.apply(lambda row: join(self.original_images_dir,
-                                                                row['directory'], row['filename']), axis=1)
-        corrected_full_paths = corrected.apply(lambda row: join(self.corrected_images_dir, row['directory'],
-                                                                  row['filename']), axis=1)
+        original_full_paths = original.apply(lambda row: join(
+            self.original_images_dir,
+            row['directory'],
+            row['filename']), axis=1
+                                             )
+        corrected_full_paths = corrected.apply(lambda row: join(
+            self.corrected_images_dir, row['directory'], row['filename']),
+                                               axis=1
+                                               )
         if use_corrected:
             full_paths = corrected_full_paths.combine_first(original_full_paths)
         else:
-            only_not_corrected = original.loc[~original.filename.isin(corrected.filename), ['directory', 'filename']]
-            full_paths = only_not_corrected.apply(lambda row: join(self.original_images_dir,
-                                                                row['directory'], row['filename']), axis=1)
+            only_not_corrected = original.loc[~original.filename.isin(
+                corrected.filename), ['directory', 'filename']]
+            full_paths = only_not_corrected.apply(lambda row: join(
+                self.original_images_dir, row['directory'], row['filename']),
+                                                  axis=1
+                                                  )
         full_paths.name = 'full_filename'
         return full_paths
 
-    def generate_images_besttrack_chunks(self, sequence_list, chunk_size, output_dir,
-                                         preprocess_algorithm=None,
+    def generate_images_besttrack_chunks(self, sequence_list, chunk_size,
+                                         output_dir, preprocess_algorithm=None,
                                          display=False):
-        """
-        Generates chunks of hdf5 files, containing images and besttrack data
+        """ Generates chunks of hdf5 files, containing images and Best Track
+        data.
 
         :param sequence_list: List of tuples [(seq_no, prefix), ...]
         :type sequence_list: list
@@ -268,7 +296,8 @@ class DataExtractor:
         :type chunk_size: int
         :param output_dir: Output dir
         :type output_dir: str
-        :param preprocess_algorithm: Algorithm for data preprocessing, which returns data of the same shape as an input
+        :param preprocess_algorithm: Algorithm for data preprocessing,
+            which returns data of the same shape as an input.
         """
         # Parameters checking
         pd_manager = self.pd_man
@@ -281,50 +310,56 @@ class DataExtractor:
         self._parameter_checking(corrected, images, output_dir)
 
         # group by prefix
-        sequences = pd.DataFrame(sequence_list, columns=['seq_no', 'prefix'])
+        sequences = pd.DataFrame(sequence_list, columns=['seq_no'])
         chunk = []
         size = 0
-        _filename = ''
-        for prefix, data in sequences.groupby('prefix'):
-            print(prefix)
-            serial_num = 0
-            for entry in data.iterrows():
-                _seq_no = entry[1].seq_no
-                print("",_seq_no) if display else 0
-                data, seq_size = self._read_seq(seq_no=_seq_no,
-                                                preprocess_algorithm=preprocess_algorithm)
-                chunk.append(data)
-                size += seq_size
-                if size >= chunk_size:
-                    # write chunk to disk
-                    _filename = join(output_dir, '{0}_{1}.h5'.format(prefix, serial_num))
-                    print(" --> storing", _filename) if display else 0
-                    t0 = time.time()
-                    self._write_chunk(filename=_filename, chunk=chunk)
-                    print(" --> done in", time.time()-t0) if display else 0
-                    serial_num += 1
-                    size = 0
-                    chunk = []
-            if not len(chunk) == 0:
-                # write leftovers
-                _filename = join(output_dir, '{0}_{1}.h5'.format(prefix, serial_num))
+        serial_num = 0
+        prefix = "chunk"
+        for _seq_no, data in sequences.groupby('seq_no'):
+            print("", _seq_no) if display else 0
+            data, seq_size = \
+                self._read_seq(seq_no=int(_seq_no),
+                               preprocess_algorithm=preprocess_algorithm)
+            chunk.append(data)
+            size += seq_size
+            if size >= chunk_size:
+                # write chunk to disk
+                _filename = join(output_dir, '{0}_{1}.h5'.format(prefix,
+                                                                 serial_num)
+                                 )
                 print(" --> storing", _filename) if display else 0
                 t0 = time.time()
                 self._write_chunk(filename=_filename, chunk=chunk)
-                print(" --> done in", time.time() - t0) if display else 0
+                print(" --> done in", time.time()-t0) if display else 0
+                serial_num += 1
+                size = 0
+                chunk = []
+
+        if not len(chunk) == 0:
+            # write leftovers
+            _filename = join(output_dir, '{0}_{1}.h5'.format(prefix,
+                                                             serial_num)
+                             )
+            print(" --> storing", _filename) if display else 0
+            t0 = time.time()
+            self._write_chunk(filename=_filename, chunk=chunk)
+            print(" --> done in", time.time() - t0) if display else 0
 
     def _parameter_checking(self, corrupted, images, output_dir):
         if images.empty:
             raise Exception('Images DataFrame should be created')
         if not isdir(self.original_images_dir):
-            raise NotADirectoryError(self.original_images_dir + ' is not a directory')
+            raise NotADirectoryError(self.original_images_dir + ' is not a '
+                                                                'directory')
         if not exists(output_dir):
             os.mkdir(output_dir)
         if self.corrected_images_dir is not None:
             if not isdir(self.corrected_images_dir):
-                raise NotADirectoryError(self.corrected_images_dir + ' is not a directory')
+                raise NotADirectoryError(self.corrected_images_dir +
+                                         ' is not a directory')
             if corrupted.empty:
-                raise Exception('Corrupted DataFrame should be created when corrected_dir is not None')
+                raise Exception('Corrupted DataFrame should be created '
+                                'when corrected_dir is not None')
 
     def _write_chunk(self, filename, chunk):
         """
@@ -336,15 +371,16 @@ class DataExtractor:
         :type chunk: list of pd.DataFrame
         """
 
-        # print(chunk)
         united = pd.concat(chunk, axis=0)
         united.reset_index(inplace=True)
 
-        united['idx'] = united.apply(lambda x: get_id(x['obs_time'], x['seq_no']), axis=1)
+        united['idx'] = united.apply(lambda x: get_id(x['obs_time'],
+                                                      x['seq_no']), axis=1)
         # united.drop(['obs_time', 'seq_no'], inplace=True, axis=1)
         data = {}
         data['pressure'] = united['pressure'].tolist()
         data['data'] = united['data'].tolist()
+        # Lower resolution
         data['seq_no'] = united['seq_no']
         data['idx'] = united['idx'].tolist()
         data['class'] = united['class'].tolist()
@@ -354,6 +390,7 @@ class DataExtractor:
         # dict['data'] = united['data']
 
         write_h5_dataset_file(data, filename, compression='gzip')
+        del data
         # store = pd.HDFStore(filename, mode='w')
         # for col in united.columns:
         #     store.put(col, united[col])
@@ -361,6 +398,22 @@ class DataExtractor:
         # don't know if i need to call flush() here or not
 
     def read_seq(self, seq_no, features, preprocess_algorithm=None):
+        """ Reads the features of a given typhoon sequence
+
+        :param seq_no: Number of typhoon sequence to be retrieved.
+        :type seq_no: str
+        :param features: Features to be obtained.
+        :type features: list
+        :param preprocess_algorithm: Algorithm for data preprocessing,
+            which returns data of the same shape as an input.
+        :type preprocess_algorithm: callable
+        :return: tuple with three elements:
+
+            *   *images*:
+            *   *images_ids*:
+            *   *feature_data*:
+        :rtype tuple
+        """
         from pyphoon.io.utils import date2id
 
         if isinstance(seq_no, str):
