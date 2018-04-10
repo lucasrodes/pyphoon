@@ -189,57 +189,57 @@
         <div class="section" id="typhoon-sequence">
 <h1>Typhoon sequence<a class="headerlink" href="#typhoon-sequence" title="Permalink to this headline">¶</a></h1>
 <p>Sometimes it may be interesting to visualise a single typhoon sequence.
-Luckily, this can be easily done with the module <a class="reference internal" href="../pyphoon.visualise.html#module-pyphoon.visualise" title="pyphoon.visualise"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.visualise</span></code></a>. In
+Luckily, this can be easily done with the module <a class="reference internal" href="../pyphoon.visualise.html#module-pyphoon.visualise" title="pyphoon.visualise"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.visualise</span></code></a>. In
 this example we will show first how to load the data related to a typhoon
 sequence and next we will show how to animate the list of images!</p>
-<p>Make sure to replace <code class="docutils literal"><span class="pre">path_image</span></code> with the path of the directory containing
-all sequence image folders, <code class="docutils literal"><span class="pre">sequence_no</span></code> with the typhoon sequence
-identifier (e.g. 201725) and <code class="docutils literal"><span class="pre">path_best</span></code> with the directory path containing
+<p>Make sure to replace <code class="docutils literal notranslate"><span class="pre">path_image</span></code> with the path of the directory containing
+all sequence image folders, <code class="docutils literal notranslate"><span class="pre">sequence_no</span></code> with the typhoon sequence
+identifier (e.g. 201725) and <code class="docutils literal notranslate"><span class="pre">path_best</span></code> with the directory path containing
 all sequence’s TSV best data files.</p>
 <div class="section" id="load-typhoon-sequence-data">
 <h2>Load typhoon sequence data<a class="headerlink" href="#load-typhoon-sequence-data" title="Permalink to this headline">¶</a></h2>
 <p>In this example we use the library methods to load the data, which assume
 that you follow the same data structure presented in section <a class="reference external" href="data">Data</a>.
 If that is not the case, feel free to implement your own loading functions.
-Note that the data, once loaded, should be of type <code class="docutils literal"><span class="pre">list</span></code>.</p>
+Note that the data, once loaded, should be of type <code class="docutils literal notranslate"><span class="pre">list</span></code>.</p>
 <p>On the one hand, to load the typhoon image data we use methods
-<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.h5.read_source_images" title="pyphoon.io.h5.read_source_images"><code class="xref py py-func docutils literal"><span class="pre">read_source_images()</span></code></a> and <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.utils.get_image_ids" title="pyphoon.io.utils.get_image_ids"><code class="xref py py-func docutils literal"><span class="pre">get_image_ids()</span></code></a>,
+<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.h5.read_source_images" title="pyphoon.io.h5.read_source_images"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_source_images()</span></code></a> and <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.utils.get_image_ids" title="pyphoon.io.utils.get_image_ids"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_image_ids()</span></code></a>,
 which load the images and get their correspoding sample ids, respectively.
 Each sample is identified by a unique <strong>ids</strong>, which is constructed using the
 sequence identifier of the sequence that frame belongs to and the date the
 sample data was registered.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="k">import</span> <span class="n">read_source_images</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="k">import</span> <span class="n">read_source_images</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.utils</span> <span class="k">import</span> <span class="n">get_image_ids</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="n">read_source_images</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_image</span><span class="p">,</span> <span class="n">sequence_no</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">images_ids</span> <span class="o">=</span> <span class="n">get_image_ids</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_image</span><span class="p">,</span> <span class="n">sequence_no</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Above, <code class="docutils literal"><span class="pre">images</span></code> is a list containing the images of the sequence as arrays and
-<code class="docutils literal"><span class="pre">image_ids</span></code> is a list with the corresponding image sample ids.</p>
+<p>Above, <code class="docutils literal notranslate"><span class="pre">images</span></code> is a list containing the images of the sequence as arrays and
+<code class="docutils literal notranslate"><span class="pre">image_ids</span></code> is a list with the corresponding image sample ids.</p>
 <p>On the other hand, we load best data is done similarly, using methods
-<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.tsv.read_tsv" title="pyphoon.io.tsv.read_tsv"><code class="xref py py-func docutils literal"><span class="pre">read_tsv()</span></code></a> and <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.utils.get_best_ids" title="pyphoon.io.utils.get_best_ids"><code class="xref py py-func docutils literal"><span class="pre">get_best_ids()</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.tsv</span> <span class="k">import</span> <span class="n">read_tsv</span>
+<a class="reference internal" href="../pyphoon.io.html#pyphoon.io.tsv.read_tsv" title="pyphoon.io.tsv.read_tsv"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_tsv()</span></code></a> and <a class="reference internal" href="../pyphoon.io.html#pyphoon.io.utils.get_best_ids" title="pyphoon.io.utils.get_best_ids"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_best_ids()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.tsv</span> <span class="k">import</span> <span class="n">read_tsv</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.utils</span> <span class="k">import</span> <span class="n">get_best_ids</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">best</span> <span class="o">=</span> <span class="n">read_tsv</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">path_best</span><span class="p">,</span> <span class="n">sequence_no</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">best_ids</span> <span class="o">=</span> <span class="n">get_best_ids</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Above, <code class="docutils literal"><span class="pre">best</span></code> is a list containing the best data of each sample in the
-typhoon sequence. Likewise, <code class="docutils literal"><span class="pre">best_ids</span></code> contains the corresponding sample ids.</p>
+<p>Above, <code class="docutils literal notranslate"><span class="pre">best</span></code> is a list containing the best data of each sample in the
+typhoon sequence. Likewise, <code class="docutils literal notranslate"><span class="pre">best_ids</span></code> contains the corresponding sample ids.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="visualise-a-typhoon-sequence">
 <h2>Visualise a typhoon sequence<a class="headerlink" href="#visualise-a-typhoon-sequence" title="Permalink to this headline">¶</a></h2>
 <p>Plotting one specific image frame from the sequence is rather easy.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">images</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Greys&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">images_ids</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>You can easily display all the image frames in a typhoon sequence using the
-class <code class="xref py py-class docutils literal"><span class="pre">DisplaySequence</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualize</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
+class <a class="reference internal" href="../pyphoon.visualise.html#pyphoon.visualise.DisplaySequence" title="pyphoon.visualise.DisplaySequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisplaySequence</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualise</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DisplaySequence</span><span class="p">(</span>
 <span class="gp">... </span>   <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span>
 <span class="gp">... </span>   <span class="n">images_ids</span><span class="o">=</span><span class="n">images_ids</span><span class="p">,</span>
@@ -249,8 +249,8 @@ class <code class="xref py py-class docutils literal"><span class="pre">DisplayS
 </pre></div>
 </div>
 <p>If you want to display the sequence in a Jupyter notebook use the method
-<code class="xref py py-func docutils literal"><span class="pre">run_html()</span></code> instead as</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualize</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
+<a class="reference internal" href="../pyphoon.visualise.html#pyphoon.visualise.DisplaySequence.run_html" title="pyphoon.visualise.DisplaySequence.run_html"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_html()</span></code></a> instead as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.visualise</span> <span class="k">import</span> <span class="n">DisplaySequence</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">HTML</span><span class="p">(</span><span class="n">DisplaySequence</span><span class="p">(</span>
 <span class="gp">... </span>   <span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span>

@@ -210,20 +210,20 @@ single HDF files. For this example, we assume the following paths for the
 respective data sources.</p>
 <ul class="simple">
 <li><strong>Satellite images:</strong> Directory with all satellite imagery folders (one
-per sequence), <code class="docutils literal"><span class="pre">../original_data/image/</span></code></li>
-<li><strong>Best track data:</strong> Directory with a TSV file per sequence, <code class="docutils literal"><span class="pre">../original_data/jma/</span></code></li>
+per sequence), <code class="docutils literal notranslate"><span class="pre">../original_data/image/</span></code></li>
+<li><strong>Best track data:</strong> Directory with a TSV file per sequence, <code class="docutils literal notranslate"><span class="pre">../original_data/jma/</span></code></li>
 </ul>
 <p>In the code example below, we generate three different datasets:</p>
 <ul class="simple">
-<li><strong>Original data:</strong> Sequences stored as single H5 files. Placed at <code class="docutils literal"><span class="pre">../data/sequences/compressed_1/</span></code></li>
+<li><strong>Original data:</strong> Sequences stored as single H5 files. Placed at <code class="docutils literal notranslate"><span class="pre">../data/sequences/compressed_1/</span></code></li>
 <li><strong>Corrected data:</strong> Sequences stored as single H5 files with corrected
-satellite imagery. Placed at <code class="docutils literal"><span class="pre">../data/sequences/corrected_1/</span></code></li>
+satellite imagery. Placed at <code class="docutils literal notranslate"><span class="pre">../data/sequences/corrected_1/</span></code></li>
 <li><strong>Gapfilled data:</strong> Sequences stored as single H5 files with corrected
 satellite imagery and image temporal gaps filled with synthetic frames.
-Placed at <code class="docutils literal"><span class="pre">../data/sequences/gapfilled_1/</span></code></li>
+Placed at <code class="docutils literal notranslate"><span class="pre">../data/sequences/gapfilled_1/</span></code></li>
 </ul>
 <p>We note that we store all the HDF generated files using compression.</p>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -310,7 +310,7 @@ Placed at <code class="docutils literal"><span class="pre">../data/sequences/gap
 
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">isdir</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
-<span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="kn">import</span> <span class="n">create_typhoonlist_from_source</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist2</span> <span class="kn">import</span> <span class="n">create_typhoonlist_from_source</span>
 <span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.fix</span> <span class="kn">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
 <span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.detection</span> <span class="kn">import</span> <span class="n">detect_corrupted_pixels_1</span>
 <span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.correction</span> <span class="kn">import</span> <span class="n">correct_corrupted_pixels_1</span>
@@ -384,7 +384,7 @@ Placed at <code class="docutils literal"><span class="pre">../data/sequences/gap
     <span class="n">generation_algorithm</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 </pre></div>
 </td></tr></table></div>
-<p>We note that <code class="xref py py-func docutils literal"><span class="pre">save_as_h5()</span></code> has an
+<p>We note that <code class="xref py py-func docutils literal notranslate"><span class="pre">save_as_h5()</span></code> has an
 option to save the data in a compressed format.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -403,10 +403,10 @@ Hence, the mean image has to be sequentially obtained. We can easily obtain
 the deviation image, the maximum value image and minimum value image as they
 do not require much more additional computation.</p>
 <p>For this example, we use the already generated datasets. In particular we
-will use the corrected version, stored at <code class="docutils literal"><span class="pre">../data/sequences/corrected_1/</span></code>.</p>
+will use the corrected version, stored at <code class="docutils literal notranslate"><span class="pre">../data/sequences/corrected_1/</span></code>.</p>
 <blockquote>
-<div>The resulting images wil be stored at <code class="docutils literal"><span class="pre">../data/params/params_1</span></code>.</div></blockquote>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+<div>The resulting images wil be stored at <code class="docutils literal notranslate"><span class="pre">../data/params/params_1</span></code>.</div></blockquote>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -503,9 +503,9 @@ will use the corrected version, stored at <code class="docutils literal"><span c
 <div class="section" id="visualize-a-typhoonlist">
 <span id="visualize-a-typhoonsequence"></span><h3>2.2 Visualize a TyphoonList<a class="headerlink" href="#visualize-a-typhoonlist" title="Permalink to this headline">¶</a></h3>
 <p>Visualizing a sequence can be sometimes helpful. In the following example we
-visualize the sequence <strong>197906</strong> stored at <code class="docutils literal"><span class="pre">../sampledata/197906.h5</span></code>.
+visualize the sequence <strong>197906</strong> stored at <code class="docutils literal notranslate"><span class="pre">../sampledata/197906.h5</span></code>.
 However, note that this can be extended to any other typhoon sequence.</p>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -556,11 +556,11 @@ given data.</p>
 <div class="section" id="corrupted-images">
 <span id="id8"></span><h3>3.1 Corrupted images<a class="headerlink" href="#corrupted-images" title="Permalink to this headline">¶</a></h3>
 <p>To find the corrupted files in our dataset, we employ the method
-<code class="xref py py-func docutils literal"><span class="pre">find_corrupted_frames_1()</span></code>, which implements a
+<code class="xref py py-func docutils literal notranslate"><span class="pre">find_corrupted_frames_1()</span></code>, which implements a
 very simple approach for detecting possible corrupted pixels. For this
-example, we use the data in <code class="docutils literal"><span class="pre">../data/sequences/compressed_1</span></code> as dataset and
-store the images considered as <em>corrupted</em> at <code class="docutils literal"><span class="pre">../data/iter_n</span></code>.</p>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+example, we use the data in <code class="docutils literal notranslate"><span class="pre">../data/sequences/compressed_1</span></code> as dataset and
+store the images considered as <em>corrupted</em> at <code class="docutils literal notranslate"><span class="pre">../data/iter_n</span></code>.</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -611,7 +611,7 @@ store the images considered as <em>corrupted</em> at <code class="docutils liter
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
-<span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist</span> <span class="kn">import</span> <span class="n">load_typhoonlist_h5</span>
+<span class="kn">from</span> <span class="nn">pyphoon.io.typhoonlist2</span> <span class="kn">import</span> <span class="n">load_typhoonlist_h5</span>
 <span class="kn">from</span> <span class="nn">pyphoon.io.h5</span> <span class="kn">import</span> <span class="n">get_h5_filenames</span>
 <span class="kn">from</span> <span class="nn">pyphoon.clean_satellite</span> <span class="kn">import</span> <span class="n">find_corrupted_frames_1</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>

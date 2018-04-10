@@ -177,19 +177,18 @@
 <span id="pyphoon-visualise"></span><h1>pyphoon.visualise<a class="headerlink" href="#module-pyphoon.visualise" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="pyphoon.visualise.DisplaySequence">
-<em class="property">class </em><code class="descclassname">pyphoon.visualise.</code><code class="descname">DisplaySequence</code><span class="sig-paren">(</span><em>images</em>, <em>images_ids</em>, <em>name</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em>, <em>show_title=True</em>, <em>alt_title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.DisplaySequence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>Used to animate a batch of images.
-:param images: List with image arrays. Each element of the list must be an</p>
-<blockquote>
-<div>array of 2 dimensions.</div></blockquote>
+<em class="property">class </em><code class="descclassname">pyphoon.visualise.</code><code class="descname">DisplaySequence</code><span class="sig-paren">(</span><em>images</em>, <em>images_ids</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em>, <em>show_title=True</em>, <em>alt_title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.DisplaySequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Animates a sequence of images. Mainly to be used to display a typhoon
+sequence temporal evolution.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>images</strong> (<em>list</em>) – List with image arrays. Each element of the list must be an
+array of 2 dimensions.</li>
 <li><strong>images_ids</strong> (<em>list</em>) – List of the ids of the elements in the list <em>images</em>.</li>
-<li><strong>name</strong> (<em>str</em>) – Name</li>
 <li><strong>interval</strong> (<em>int</em>) – Interval between frames while visualizing the animation.</li>
 <li><strong>start_frame</strong> (<em>int</em>) – First image frame of the list to visualize.</li>
 <li><strong>end_frame</strong> (<em>int</em>) – Last image frame of the list to visualize.</li>
@@ -211,6 +210,87 @@
 <dd><p>Runs the animation</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="class">
+<dt id="pyphoon.visualise.DisplayPredictedLabeledSequence">
+<em class="property">class </em><code class="descclassname">pyphoon.visualise.</code><code class="descname">DisplayPredictedLabeledSequence</code><span class="sig-paren">(</span><em>images</em>, <em>images_ids</em>, <em>predictions</em>, <em>ground_truth</em>, <em>interval=100</em>, <em>start_frame=0</em>, <em>end_frame=None</em>, <em>show_title=True</em>, <em>alt_title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.DisplayPredictedLabeledSequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyphoon.visualise.DisplaySequence" title="pyphoon.visualise.DisplaySequence"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphoon.visualise.DisplaySequence</span></code></a></p>
+<p>Animates a sequence of images and provides a visualisation of the
+network prediction. To be used to display a typhoon sequence temporal
+evolution. Currently, only working for binary predictions (0, 1).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>images</strong> (<em>list</em>) – List with image arrays. Each element of the list must
+be an array of 2 dimensions.</li>
+<li><strong>images_ids</strong> (<em>list</em>) – List of the ids of the elements in the list <em>images</em>.</li>
+<li><strong>predictions</strong> (Network predictions for samples in <strong>images</strong>.
+Note that this list should only contain ‘0’ and ‘1’.) – list</li>
+<li><strong>ground_truth</strong> (<em>list</em>) – Ground truth labels for samples in <strong>images</strong>.
+Note that this list should only contain ‘0’ and ‘1’.</li>
+<li><strong>interval</strong> (<em>int</em>) – Interval between frames while visualizing the
+animation.</li>
+<li><strong>start_frame</strong> (<em>int</em>) – First image frame of the list to visualize.</li>
+<li><strong>end_frame</strong> (<em>int</em>) – Last image frame of the list to visualize.</li>
+<li><strong>show_title</strong> (<em>bool</em>) – Set to false if no title should be shown in the
+figure.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.visualise.nice_imshow">
+<code class="descclassname">pyphoon.visualise.</code><code class="descname">nice_imshow</code><span class="sig-paren">(</span><em>ax</em>, <em>X</em>, <em>colorbar=False</em>, <em>vmin=None</em>, <em>vmax=None</em>, <em>cmap=None</em>, <em>barsize=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.nice_imshow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper around plt.imshow. Code from <a class="reference external" href="codefrom:https://github.com/julienr/ipynb_playground/blob/master/keras/convmnist/keras_cnn_mnist.ipynb">here</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ax</strong> (<em>matplotlib.axes.Axes instance</em>) – Plot axis.</li>
+<li><strong>X</strong> (<em>numpy.array</em>) – 2D image array.</li>
+<li><strong>colorbar</strong> – </li>
+<li><strong>vmin</strong> (<em>float</em>) – Minimum value in the bar.</li>
+<li><strong>vmax</strong> (<em>float</em>) – Maximum value in the bar.</li>
+<li><strong>cmap</strong> – If None, default to rc image.cmap value. cmap is ignored if
+X is 3-D, directly specifying RGB(A) values.</li>
+<li><strong>barsize</strong> (<em>float</em><em> or </em><em>str</em>) – Tick label font size in points or as a string (e.g., ‘large’).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.visualise.make_mosaic">
+<code class="descclassname">pyphoon.visualise.</code><code class="descname">make_mosaic</code><span class="sig-paren">(</span><em>imgs</em>, <em>nrows</em>, <em>ncols</em>, <em>border=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.visualise.make_mosaic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a set of images with all the same shape, makes a
+mosaic with nrows and ncols</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>imgs</strong> (<em>numpy.array</em>) – Array of shape (N, W, H), where N: #images, W: width and H:
+height.</li>
+<li><strong>nrows</strong> (<em>int</em>) – Number of rows in the plot grid.</li>
+<li><strong>ncols</strong> (<em>int</em>) – Number of columns in the plot grid.</li>
+<li><strong>border</strong> (<em>int</em><em> or </em><em>float.</em>) – padding between images.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

@@ -176,10 +176,7 @@
 <span id="pyphoon-eda-jma"></span><h1>pyphoon.eda_jma<a class="headerlink" href="#module-pyphoon.eda_jma" title="Permalink to this headline">¶</a></h1>
 <p>Get to know the stats behind your best track data. This module focuses on
 the, JMA provided data. Therefore we encourage your to read on the details of
-the data format at <a class="reference external" href="http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html">JMA RSMC Tokyo-Typhoon Center</a>.
-.. _JMA RSMC Tokyo-Typhoon Center:</p>
-<blockquote>
-<div><a class="reference external" href="http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html">http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html</a></div></blockquote>
+the data format at <a class="reference external" href="http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html">JMA RSMC Tokyo-Typhoon Center</a>.</p>
 <dl class="function">
 <dt id="pyphoon.eda_jma.update_feature_names">
 <code class="descclassname">pyphoon.eda_jma.</code><code class="descname">update_feature_names</code><span class="sig-paren">(</span><em>names</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.eda_jma.update_feature_names" title="Permalink to this definition">¶</a></dt>
@@ -265,7 +262,7 @@ forth features, which represent the wind speed and the class
 identifier, respectively. Hence, we aim to visualize
 the distribution of the pressure values depending on the class
 they belong to.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.tsv</span> <span class="k">import</span> <span class="n">read_tsvs</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.io.tsv</span> <span class="k">import</span> <span class="n">read_tsvs</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.eda_jma</span> <span class="k">import</span> <span class="n">plot_2feature_heatmap</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load data and convert to np.array</span>

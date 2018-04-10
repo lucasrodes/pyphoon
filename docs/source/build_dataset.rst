@@ -1,12 +1,12 @@
 Building the Dataset
-====
+====================
 
 In this project, we use *Digital Typhoon* data for different tasks. Below we
 describe how we build the respective datasets for each task.
 
 
 1. Tropical Cyclone vs. Extra-Tropical Cyclone
-------
+----------------------------------------------
 
 Typhoons are categorised in 5 different categories. On the one hand,
 categories 2, 3, 4 and 5 refer to different intensity levels of Typhoons
@@ -17,7 +17,7 @@ between both phenomena can be found `here <http://www.aoml.noaa
 .hk/education/edu01met/01met_tropical_cyclones/ele_typhoon3_e.htm>`_.
 
 1.1 Generating the dataset
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For this task, we label tropical cyclones as 0 and extra-tropical
 cyclones as 1. We note that from the original dataset, only 12% of the
@@ -41,7 +41,7 @@ data (i.e. one chunk contains approximately 37,000/20 samples).
     `script <https://github.com/lucasrodes/pyphoon/tree/master/scripts/build_dataset_1.py>`_
 
 1.2 Scaling dataset
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
 To reduce the computational complexity of this task, we scale the images
 from 512x512 to 256x256. As input it uses the files stored at ``.
@@ -57,7 +57,7 @@ at ``../data/datasets/task_1/original_256``
 
 
 1.3 Spliting dataset
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 As already explained before, the dataset is stored in chunks of 5% of
 data. Hence, we just need to select some chunks for training and some for
@@ -71,7 +71,7 @@ select 4 chunks for testing (20% of data) and rest for training (80%).
 *       **Test**: Chunks 16 - 19
 
 1.4 Normalizing dataset
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
 
 With the dataset built, we can proceed to compute the mean of the pixel
 values to correctly normalise the dataset using training-only information.

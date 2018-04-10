@@ -39,7 +39,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="pyphoon documentation" href="index.html"/>
         <link rel="next" title="pyphoon.visualise" href="pyphoon.visualise.html"/>
-        <link rel="prev" title="pyphoon.clean_satellite" href="pyphoon.db.html"/> 
+        <link rel="prev" title="pyphoon.db" href="pyphoon.db.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -109,8 +109,10 @@
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.clean_satellite.html">pyphoon.clean_satellite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.db.html">pyphoon.db</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pyphoon.app</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#content">Content</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.app.preprocess">pyphoon.app.preprocess</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.app.utils">pyphoon.app.utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-pyphoon.app.callbacks">pyphoon.app.callbacks</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pyphoon.visualise.html">pyphoon.visualise</a></li>
@@ -179,13 +181,178 @@
     
         <div class="section" id="module-pyphoon.app.__init__">
 <span id="pyphoon-app"></span><h1>pyphoon.app<a class="headerlink" href="#module-pyphoon.app.__init__" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="content">
+<h2>Content<a class="headerlink" href="#content" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">module</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#module-pyphoon.app.preprocess" title="pyphoon.app.preprocess"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.app.preprocess</span></code></a></td>
+<td>Pre-processing tools for DL/ML applications.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#module-pyphoon.app.utils" title="pyphoon.app.utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.app.utils</span></code></a></td>
+<td>General tools.</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr class="docutils" />
 <div class="section" id="module-pyphoon.app.preprocess">
 <span id="pyphoon-app-preprocess"></span><h2>pyphoon.app.preprocess<a class="headerlink" href="#module-pyphoon.app.preprocess" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pyphoon.app.preprocess.get_mean_image">
+<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">get_mean_image</code><span class="sig-paren">(</span><em>X</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.get_mean_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the mean image from a list of image batches.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
+is of shape (N, W, H), where N: #samples, W: image width, H: image
+height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+If you only have a single batch (e.g. <code class="docutils literal notranslate"><span class="pre">B</span></code>), you just need to
+encapsulate it in a list (i.e. <code class="docutils literal notranslate"><span class="pre">[B]</span></code>).</li>
+<li><strong>display</strong> (<em>bool</em>) – Set to True to display information as function is executed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Mean image (size W x H).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.app.preprocess.get_mean_pixel">
+<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">get_mean_pixel</code><span class="sig-paren">(</span><em>X</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.get_mean_pixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the mean pixel from all samples in the list of image batches
+<strong>X</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
+is of shape (N, W, H), where N: #samples, W: image width, H: image
+height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+If you only have a single batch (e.g. <code class="docutils literal notranslate"><span class="pre">B</span></code>), you just need to
+encapsulate it in a list (i.e. <code class="docutils literal notranslate"><span class="pre">[B]</span></code>).</li>
+<li><strong>display</strong> (<em>bool</em>) – Set to True to display information as function is executed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Pixel mean (scalar).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.app.preprocess.get_std_pixel">
+<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">get_std_pixel</code><span class="sig-paren">(</span><em>X</em>, <em>pmean</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.get_std_pixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the pixel standard deviation from all samples in the list of
+image batches <strong>X</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
+is of shape (N, W, H), where N: #samples, W: image width, H: image
+height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+If you only have a single batch (e.g. <code class="docutils literal notranslate"><span class="pre">B</span></code>), you just need to
+encapsulate it in a list (i.e. <code class="docutils literal notranslate"><span class="pre">[B]</span></code>).</li>
+<li><strong>pmean</strong> (<em>float</em>) – Pixel mean of bath list <strong>X</strong> (see <a class="reference internal" href="#pyphoon.app.preprocess.get_mean_pixel" title="pyphoon.app.preprocess.get_mean_pixel"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_mean_pixel()</span></code></a>).</li>
+<li><strong>display</strong> (<em>bool</em>) – Set to True to display information as function is executed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Pixel standard deviation (scalar).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.app.preprocess.get_max_min">
+<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">get_max_min</code><span class="sig-paren">(</span><em>X</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.get_max_min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the maximum and minimum pixel values of a list of image batches.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>list</em>) – List containing image batches. That is, an element of the list
+is of shape (N, W, H), where N: #samples, W: image width, H: image
+height. Arrays of size (N, W, H, C) with C: #channels are also accepted.
+If you only have a single batch (e.g. <code class="docutils literal notranslate"><span class="pre">B</span></code>), you just need to
+encapsulate it in a list (i.e. <code class="docutils literal notranslate"><span class="pre">[B]</span></code>).</li>
+<li><strong>display</strong> (<em>bool</em>) – Set to True to display information as function is executed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Maximum (first element) and minimum (second element) values.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.app.preprocess.resize">
+<code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">resize</code><span class="sig-paren">(</span><em>X</em>, <em>size</em>, <em>ignore_last_axis=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes the image according to <strong>size</strong> using <a href="#id1"><span class="problematic" id="id2">`cv2.resize`_</span></a> with
+bilinear interpolation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>X</strong> (<em>numpy.array</em>) – Image of shape (N, W, H), where N: #samples, W: image width,
+H: image height.</li>
+<li><strong>size</strong> (<em>tuple</em>) – Size to reshape images.</li>
+<li><strong>ignore_last_axis</strong> (<em>bool</em>) – Set to True if images have dimensionality
+(W, H, 1).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List containing image batches with resized images. E.g. (2,2).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy.array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="class">
 <dt id="pyphoon.app.preprocess.ImagePreprocessor">
 <em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">ImagePreprocessor</code><span class="sig-paren">(</span><em>reshape_mode</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.ImagePreprocessor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Parent class for image preprocessing classes. This class does not
 implement any method, please refer to its child classes.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -196,7 +363,7 @@ implement any method, please refer to its child classes.</p>
 Available modes:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>keras</strong>: Reshape to have an extra axis for Keras.</li>
+<li><em>keras</em>: Reshape to have an extra axis for Keras.</li>
 </ul>
 </div></blockquote>
 </td>
@@ -206,12 +373,12 @@ Available modes:</p>
 <dl class="method">
 <dt id="pyphoon.app.preprocess.ImagePreprocessor.apply">
 <code class="descname">apply</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.ImagePreprocessor.apply" title="Permalink to this definition">¶</a></dt>
-<dd><p>Applies the preprocessing pipeline to <strong>data</strong>.</p>
+<dd><p>Applies the preprocessing pipeline to class attribute <strong>data</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>list</em>) – List with images.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>numpy array</em>) – Array with images.</td>
 </tr>
 </tbody>
 </table>
@@ -221,7 +388,7 @@ Available modes:</p>
 <dt id="pyphoon.app.preprocess.ImagePreprocessor.reshape">
 <code class="descname">reshape</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.ImagePreprocessor.reshape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reshapes the dimensions of the list so that it is suitable for
-the specified DL framework.</p>
+the specified DL framework. So far, only ‘keras’ option is available.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -240,16 +407,16 @@ the specified DL framework.</p>
 
 <dl class="class">
 <dt id="pyphoon.app.preprocess.DefaultImagePreprocessor">
-<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">DefaultImagePreprocessor</code><span class="sig-paren">(</span><em>mean</em>, <em>std</em>, <em>resize_factor</em>, <em>reshape_mode</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.DefaultImagePreprocessor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal"><span class="pre">pyphoon.app.preprocess.ImagePreprocessor</span></code></a></p>
-<p>Class of <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal"><span class="pre">ImagePreprocessor</span></code></a>,
-implementing an specific preprocessing of images. Assuming an input image
-<span class="math">\(X\)</span>, this preprocessor first centres and normalises it as</p>
-<div class="math">
+<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">DefaultImagePreprocessor</code><span class="sig-paren">(</span><em>mean</em>, <em>std</em>, <em>reshape_mode</em>, <em>resize_factor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.DefaultImagePreprocessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphoon.app.preprocess.ImagePreprocessor</span></code></a></p>
+<p>Child of of <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a>.
+Assuming an input image <span class="math notranslate">\(X\)</span>, this preprocessor first centres and
+normalises it as</p>
+<div class="math notranslate">
 \[\frac{X-\mu}{\sigma}\]</div>
-<p>where <span class="math">\(\mu\)</span> and <span class="math">\(\sigma\)</span> denote the pixel mean and standard
+<p>where <span class="math notranslate">\(\mu\)</span> and <span class="math notranslate">\(\sigma\)</span> denote the pixel mean and standard
 deviation, respectively. Next, it resizes the image using the method
-<code class="xref py py-func docutils literal"><span class="pre">skimage.transform.downscale_local_mean()</span></code>.</p>
+<a class="reference internal" href="#pyphoon.app.preprocess.resize" title="pyphoon.app.preprocess.resize"><code class="xref py py-func docutils literal notranslate"><span class="pre">resize()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -260,7 +427,7 @@ dimensions by setting this parameter equal to 2.</li>
 <li><strong>mean</strong> – Used to centre the data.</li>
 <li><strong>std</strong> – Used to normalise the data.</li>
 <li><strong>reshape_mode</strong> – Used to normalise the data. See
-<a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal"><span class="pre">ImagePreprocessor</span></code></a></li>
+<a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a></li>
 </ul>
 </td>
 </tr>
@@ -286,13 +453,60 @@ specific DL framework.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="pyphoon.app.preprocess.MeanImagePreprocessor">
+<em class="property">class </em><code class="descclassname">pyphoon.app.preprocess.</code><code class="descname">MeanImagePreprocessor</code><span class="sig-paren">(</span><em>mean_image</em>, <em>scale_factor</em>, <em>reshape_mode</em>, <em>resize_factor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.MeanImagePreprocessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyphoon.app.preprocess.ImagePreprocessor</span></code></a></p>
+<p>Child of <a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a>. Assuming an
+input image <span class="math notranslate">\(X\)</span>, this preprocessor first centres and normalises it as</p>
+<div class="math notranslate">
+\[\frac{X \ominus \hat{X}}{s}\]</div>
+<p>where <span class="math notranslate">\(\hat{X}\)</span> denotes the image mean (same size as :math: <cite>X</cite>),
+<span class="math notranslate">\(s\)</span> is the scale factor (scalar) and <span class="math notranslate">\(\ominus\)</span> is pixel-wise
+subtraction operations. Next, it resizes the image using the method
+<a class="reference internal" href="#pyphoon.app.preprocess.resize" title="pyphoon.app.preprocess.resize"><code class="xref py py-func docutils literal notranslate"><span class="pre">resize()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mean_image</strong> – Mean image (2D matrix)</li>
+<li><strong>scale_factor</strong> – Used to normalise the data.</li>
+<li><strong>resize_factor</strong> – To resize the image. Define the new size of the images.</li>
+<li><strong>reshape_mode</strong> – Used to normalise the data. See
+<a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImagePreprocessor</span></code></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pyphoon.app.preprocess.MeanImagePreprocessor.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>X</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.preprocess.MeanImagePreprocessor.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Processes an array of images, scaling and normalising them
+as required and, eventually, reshapes the list to be suitable for a
+specific DL framework.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> (<em>numpy.ndarray</em>) – List with image data (images as numpy arrays).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Updated, preprocessed list of images.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <hr class="docutils" />
 <div class="section" id="module-pyphoon.app.utils">
 <span id="pyphoon-app-utils"></span><h2>pyphoon.app.utils<a class="headerlink" href="#module-pyphoon.app.utils" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="pyphoon.app.utils.read_h5datachunk">
-<code class="descclassname">pyphoon.app.utils.</code><code class="descname">read_h5datachunk</code><span class="sig-paren">(</span><em>path_to_file</em>, <em>shuffle=False</em>, <em>preprocessor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.read_h5datachunk" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.app.utils.read_h5datachunk_old">
+<code class="descclassname">pyphoon.app.utils.</code><code class="descname">read_h5datachunk_old</code><span class="sig-paren">(</span><em>path_to_file</em>, <em>shuffle=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.read_h5datachunk_old" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads a chunk of data stored as h5.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -301,8 +515,6 @@ specific DL framework.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>path_to_file</strong> (<em>str</em>) – Path name to the H5 file to read</li>
 <li><strong>shuffle</strong> (<em>bool</em>) – Set to true if data should be shuffled.</li>
-<li><strong>preprocessor</strong> (<a class="reference internal" href="#pyphoon.app.preprocess.ImagePreprocessor" title="pyphoon.app.preprocess.ImagePreprocessor"><code class="xref py py-class docutils literal"><span class="pre">ImagePreprocessor</span></code></a> or
-child classes) – Preprocessor used to preprocess the data.</li>
 </ul>
 </td>
 </tr>
@@ -317,18 +529,140 @@ child classes) – Preprocessor used to preprocess the data.</li>
 </dd></dl>
 
 <dl class="function">
-<dt id="pyphoon.app.utils.data_generator">
-<code class="descclassname">pyphoon.app.utils.</code><code class="descname">data_generator</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>batch_sz</em>, <em>shuffle=True</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.data_generator" title="Permalink to this definition">¶</a></dt>
+<dt id="pyphoon.app.utils.load_h5datachunks">
+<code class="descclassname">pyphoon.app.utils.</code><code class="descname">load_h5datachunks</code><span class="sig-paren">(</span><em>dataset_dir</em>, <em>chunk_filenames</em>, <em>features</em>, <em>ignore_classes=None</em>, <em>display=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.load_h5datachunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a set of h5 files as individual arrays in a list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset_dir</strong> (<em>str</em>) – Directory containing the chunk files.</li>
+<li><strong>chunk_filenames</strong> (<em>list</em>) – Filenames of the data chunks.</li>
+<li><strong>features</strong> (<em>list</em>) – Features to retrieve from the h5 data chunks as string
+names.</li>
+<li><strong>ignore_classes</strong> (<em>list</em><em>, </em><em>default None</em>) – List of class labels to consider. Labels as ints.
+By default it considers all classes.</li>
+<li><strong>display</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True to have some informative messages printed out.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List with the data chunks as numpy.arrays.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pyphoon.app.utils.data_generator_from_chunklist">
+<code class="descclassname">pyphoon.app.utils.</code><code class="descname">data_generator_from_chunklist</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em>, <em>batch_sz</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.utils.data_generator_from_chunklist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates batches of data from samples <strong>X</strong> and labels <strong>Y</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>X</strong> (<em>numpy.array</em>) – Sample data.</li>
-<li><strong>Y</strong> (<em>numpy.array</em>) – Label data.</li>
+<li><strong>X</strong> (<em>list</em>) – Sample data.</li>
+<li><strong>Y</strong> (<em>list</em>) – Label data.</li>
 <li><strong>batch_sz</strong> (<em>int</em>) – Batch size.</li>
-<li><strong>shuffle</strong> (<em>bool</em><em>, </em><em>default True</em>) – Set to True to shuffle the batch data (recommended)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Generator of batches of samples, labels and weights (importance
+of samples).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="module-pyphoon.app.callbacks">
+<span id="pyphoon-app-callbacks"></span><h2>pyphoon.app.callbacks<a class="headerlink" href="#module-pyphoon.app.callbacks" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pyphoon.app.callbacks.StoreModelWeights">
+<em class="property">class </em><code class="descclassname">pyphoon.app.callbacks.</code><code class="descname">StoreModelWeights</code><span class="sig-paren">(</span><em>filepath</em>, <em>monitor='val_loss'</em>, <em>verbose=0</em>, <em>save_best_only=True</em>, <em>save_weights_only=False</em>, <em>mode='auto'</em>, <em>period=1</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.callbacks.StoreModelWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">keras.callbacks.ModelCheckpoint</span></code></p>
+<p>Keras callback used to store the model weights after each epoch. More
+details in <a class="reference external" href="keras.io/callbacks">keras documentation</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filepath</strong> (<em>str</em>) – Folder to store the weights HDF5 files.</li>
+<li><strong>monitor</strong> (<em>str</em><em>, </em><em>default 'val_loss'</em>) – Model metric to rely on when storing the weights.</li>
+<li><strong>verbose</strong> (<em>int</em>) – Set to 1 to display execution information</li>
+<li><strong>save_best_only</strong> – Set to True to only store weights when model
+performance (according to metric <strong>monitor</strong>) improves.</li>
+<li><strong>save_weights_only</strong> (<em>bool</em><em>, </em><em>default False</em>) – Set to True to only store the weights.</li>
+<li><strong>mode</strong> (<em>str</em><em>, </em><em>default 'auto'</em>) – </li>
+<li><strong>period</strong> (<em>int</em><em>, </em><em>default 1</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pyphoon.app.callbacks.PlotRegressionValidation">
+<em class="property">class </em><code class="descclassname">pyphoon.app.callbacks.</code><code class="descname">PlotRegressionValidation</code><span class="sig-paren">(</span><em>X</em>, <em>Y</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.callbacks.PlotRegressionValidation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">keras.callbacks.Callback</span></code></p>
+<p>Plot a scatterplot illustrating the ground truth values and the network
+predictions after each epoch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>X</strong> – Batch of samples. Shape (N, W, H, C), where N: #samples,</td>
+</tr>
+</tbody>
+</table>
+<p>W: width, H: height and C: #channels.
+:type X: numpy.array
+:param Y: Target values.
+:type Y: numpy.array</p>
+<dl class="method">
+<dt id="pyphoon.app.callbacks.PlotRegressionValidation.plot_regression">
+<code class="descname">plot_regression</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_pred</em>, <em>show=False</em>, <em>save=False</em>, <em>filename='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.callbacks.PlotRegressionValidation.plot_regression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot scatterplot with network estimation and ground truth values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>y_true</strong> (<em>numpy.array</em>) – Ground truth values.</li>
+<li><strong>y_pred</strong> (<em>numpy.array</em>) – Network estimation values.</li>
+<li><strong>show</strong> (<em>bool</em>) – Set to True to plot a figure.</li>
+<li><strong>save</strong> (<em>bool</em>) – Set to True to store the image.</li>
+<li><strong>filename</strong> (<em>str</em>) – Name of the file if image is stored.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyphoon.app.callbacks.PlotRegressionValidation.on_epoch_end">
+<code class="descname">on_epoch_end</code><span class="sig-paren">(</span><em>epoch</em>, <em>logs={}</em><span class="sig-paren">)</span><a class="headerlink" href="#pyphoon.app.callbacks.PlotRegressionValidation.on_epoch_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executed after each epoch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>epoch</strong> – Current epoch.</li>
+<li><strong>logs</strong> – </li>
 </ul>
 </td>
 </tr>
@@ -337,6 +671,8 @@ child classes) – Preprocessor used to preprocess the data.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -356,7 +692,7 @@ child classes) – Preprocessor used to preprocess the data.</li>
         <a href="pyphoon.visualise.html" class="btn btn-neutral float-right" title="pyphoon.visualise" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="pyphoon.db.html" class="btn btn-neutral" title="pyphoon.clean_satellite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="pyphoon.db.html" class="btn btn-neutral" title="pyphoon.db" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -7,15 +7,14 @@ from matplotlib import gridspec
 
 
 class DisplaySequence(object):
-    """ Used to animate a batch of images.
+    """ Animates a sequence of images. Mainly to be used to display a typhoon
+    sequence temporal evolution.
 
     :param images: List with image arrays. Each element of the list must be an
         array of 2 dimensions.
     :type images: list
     :param images_ids: List of the ids of the elements in the list *images*.
     :type images_ids: list
-    :param name: Name
-    :type name: str
     :param interval: Interval between frames while visualizing the animation.
     :type interval: int
     :param start_frame: First image frame of the list to visualize.
@@ -25,7 +24,7 @@ class DisplaySequence(object):
     :param show_title: Set to false if no title should be shown in the figure.
     :type show_title: bool
     """
-    def __init__(self, images, images_ids, name, interval=100, start_frame=0,
+    def __init__(self, images, images_ids, interval=100, start_frame=0,
                  end_frame=None, show_title=True, alt_title=None):
 
         # TODO: check len(images) == len(images_ids)
@@ -33,9 +32,6 @@ class DisplaySequence(object):
         # Load images
         self.images = images
         self.ids = images_ids
-
-        # Load name
-        self.name = name
 
         # Define display window
         self.start_frame = start_frame
@@ -105,11 +101,38 @@ class DisplaySequence(object):
 
 
 class DisplayPredictedLabeledSequence(DisplaySequence):
-    def __init__(self, images, images_ids, predictions, ground_truth, name,
+    """ Animates a sequence of images and provides a visualisation of the
+    network prediction. To be used to display a typhoon sequence temporal
+    evolution. Currently, only working for binary predictions (0, 1).
+
+    :param images: List with image arrays. Each element of the list must
+        be an array of 2 dimensions.
+    :type images: list
+    :param images_ids: List of the ids of the elements in the list *images*.
+    :type images_ids: list
+    :type predictions: Network predictions for samples in **images**.
+        Note that this list should only contain '0' and '1'.
+    :param predictions: list
+    :param ground_truth: Ground truth labels for samples in **images**.
+        Note that this list should only contain '0' and '1'.
+    :type ground_truth: list
+    :param interval: Interval between frames while visualizing the
+        animation.
+    :type interval: int
+    :param start_frame: First image frame of the list to visualize.
+    :type start_frame: int
+    :param end_frame: Last image frame of the list to visualize.
+    :type end_frame: int
+    :param show_title: Set to false if no title should be shown in the
+        figure.
+    :type show_title: bool
+    """
+
+    def __init__(self, images, images_ids, predictions, ground_truth,
                  interval=100, start_frame=0, end_frame=None,
                  show_title=True, alt_title=None):
 
-        super().__init__(images, images_ids, name, interval=interval,
+        super().__init__(images, images_ids, interval=interval,
                          start_frame=start_frame, end_frame=end_frame,
                          show_title=show_title, alt_title=alt_title)
 

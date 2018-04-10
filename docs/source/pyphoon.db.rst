@@ -1,44 +1,22 @@
-pyphoon\.clean_satellite
+pyphoon\.db
 --------------
 
-.. automodule:: pyphoon.clean_satellite.__init__
+.. automodule:: pyphoon.db.__init__
     :members:
     :show-inheritance:
 
 -----
 
-pyphoon\.clean_satellite\.fix
+pyphoon\.db\.data_extractor
 ************************
-.. automodule:: pyphoon.clean_satellite.fix
+.. automodule:: pyphoon.db.data_extractor
     :members:
     :show-inheritance:
 
 -----
 
-pyphoon\.clean_satellite\.detection
+pyphoon\.db\.pd_manager
 ************************
-.. automodule:: pyphoon.clean_satellite.detection
-    :members:
-    :show-inheritance:
-
------
-
-pyphoon\.clean_satellite\.correction
-************************
-.. automodule:: pyphoon.clean_satellite.correction
-    :members:
-    :show-inheritance:
-
------
-
-pyphoon\.clean_satellite\.generation
-************************
-.. automodule:: pyphoon.clean_satellite.generation
-    :members:
-    :show-inheritance:
-
-pyphoon\.clean_satellite\.utils
-************************
-.. automodule:: pyphoon.clean_satellite.utils
+.. automodule:: pyphoon.db.pd_manager
     :members:
     :show-inheritance:

@@ -211,14 +211,14 @@ Hence, with some methods, we can artificially generate the images that
 should occupy this temporal space.</li>
 </ul>
 <p>Each of the above techniques may be implemented using different algorithms.
-These can be found in the modules <a class="reference internal" href="../pyphoon.db.html#module-pyphoon.clean_satellite.detection" title="pyphoon.clean_satellite.detection"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean_satellite.detection</span></code></a>,
-<a class="reference internal" href="../pyphoon.db.html#module-pyphoon.clean_satellite.correction" title="pyphoon.clean_satellite.correction"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean_satellite.correction</span></code></a> and <a class="reference internal" href="../pyphoon.db.html#module-pyphoon.clean_satellite.generation" title="pyphoon.clean_satellite.generation"><code class="xref py py-mod docutils literal"><span class="pre">pyphoon.clean_satellite.generation</span></code></a>,
+These can be found in the modules <a class="reference internal" href="../pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.detection" title="pyphoon.clean_satellite.detection"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.clean_satellite.detection</span></code></a>,
+<a class="reference internal" href="../pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.correction" title="pyphoon.clean_satellite.correction"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.clean_satellite.correction</span></code></a> and <a class="reference internal" href="../pyphoon.clean_satellite.html#module-pyphoon.clean_satellite.generation" title="pyphoon.clean_satellite.generation"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyphoon.clean_satellite.generation</span></code></a>,
 respectively. A fixing algorithm is defined using the class
-<a class="reference internal" href="../pyphoon.db.html#pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm" title="pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm"><code class="xref py py-class docutils literal"><span class="pre">TyphoonListImageFixAlgorithm</span></code></a>. This
+<a class="reference internal" href="../pyphoon.clean_satellite.html#pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm" title="pyphoon.clean_satellite.fix.TyphoonListImageFixAlgorithm"><code class="xref py py-class docutils literal notranslate"><span class="pre">TyphoonListImageFixAlgorithm</span></code></a>. This
 class, accepts as arguments methods for <strong>detection</strong>, <strong>correction</strong> and
 <strong>generation</strong>. There is no need to use all of them, so one might decide to
 only perform, for instance, detection and correction.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.fix</span> <span class="k">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.fix</span> <span class="k">import</span> <span class="n">TyphoonListImageFixAlgorithm</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.detection</span> <span class="k">import</span> <span class="n">detect_corrupted_pixels_1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.correction</span> <span class="k">import</span> <span class="n">correct_corrupted_pixels_1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pyphoon.clean_satellite.generation</span> <span class="k">import</span> <span class="n">generate_new_frames_1</span>
@@ -232,8 +232,8 @@ only perform, for instance, detection and correction.</p>
 <span class="go">...)</span>
 </pre></div>
 </div>
-<p>Finally, To apply the algorithm simply use method <code class="xref py py-func docutils literal"><span class="pre">apply()</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">iamges_fixed</span><span class="p">,</span> <span class="n">images_ids_fixed</span> <span class="o">=</span> <span class="n">fix_algorithm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">images_ids</span><span class="p">)</span>
+<p>Finally, To apply the algorithm simply use method <code class="xref py py-func docutils literal notranslate"><span class="pre">apply()</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">iamges_fixed</span><span class="p">,</span> <span class="n">images_ids_fixed</span> <span class="o">=</span> <span class="n">fix_algorithm</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">images_ids</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

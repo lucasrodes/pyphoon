@@ -4,13 +4,10 @@ from pyphoon.io.utils import id2date
 def get_sample_distance(id_0, id_1):
     """ Obtains the distance between samples idx_0 and idx_1 from data
     field specified by ``key``. Distance is measured in slots of 1h,
-    i.e. a distance of 2 means that both sampels are two hours apart. By
+    i.e. a distance of 2 means that both samples are two hours apart. By
     default, distance of 1 is expected since the maximum observation
     frequency is of 1 hour.
 
-    :param ids: Frame distance can be obtained from different sources. To
-        this end, you can specify the which field to look at using ``key``.
-    :type ids: str
     :param id_0: Id of first frame.
     :type id_0: str
     :param id_1: Id of second frame.
@@ -26,16 +23,14 @@ def get_sample_distance(id_0, id_1):
 
 # TODO: get_date <-> get_id
 def generate_image_ids(id_0, id_1, n_frames=1):
-    """ Generates ids of n_frames in between positions ``frame_idx_0`` and
-    ``frame_idx_1``. This is useful when new image frames have been generated
+    """ Generates ids of **n_frames** in between images with ids **id_0** and
+    **id_1**. This is useful when new image frames have been generated
     through interpolation and require an id.
 
-    :param image_ids: List of image ids
-    :type image_ids: list
-    :param frame_idx_0: Index of first frame
-    :type frame_idx_0: int
-    :param frame_idx_1: Index of second frame
-    :type frame_idx_1: int
+    :param id_0: Index of first frame
+    :type id_0: str
+    :param id_1: Index of second frame
+    :type id_1: str
     :param n_frames: Number of frames for which an id has to be generated.
     :return: List of newly generated ids.
     :rtype: list

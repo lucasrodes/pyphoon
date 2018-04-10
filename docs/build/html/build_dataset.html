@@ -191,8 +191,8 @@ imbalance in the class category. To overcome this, we consider all
 extra-TC samples but only a subset of TC samples, so as to have a 50/50
 dataset.</p>
 <p>The following script builds the dataset, assuming the typhoon sequences are
-located at <code class="docutils literal"><span class="pre">../data/sequences/corrected_1/</span></code> it places the newly generated
-dataset at <code class="docutils literal"><span class="pre">../data/datasets/task_1/original_512</span></code>. The new dataset
+located at <code class="docutils literal notranslate"><span class="pre">../data/sequences/corrected_1/</span></code> it places the newly generated
+dataset at <code class="docutils literal notranslate"><span class="pre">../data/datasets/task_1/original_512</span></code>. The new dataset
 contains, roughly, 37,000 samples and stores them in chunks of 5% of the
 data (i.e. one chunk contains approximately 37,000/20 samples).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -213,9 +213,9 @@ data (i.e. one chunk contains approximately 37,000/20 samples).</p>
 <div class="section" id="scaling-dataset">
 <h3>1.2 Scaling dataset<a class="headerlink" href="#scaling-dataset" title="Permalink to this headline">¶</a></h3>
 <p>To reduce the computational complexity of this task, we scale the images
-from 512x512 to 256x256. As input it uses the files stored at <code class="docutils literal"><span class="pre">.</span>
+from 512x512 to 256x256. As input it uses the files stored at <code class="docutils literal notranslate"><span class="pre">.</span>
 <span class="pre">./data/datasets/task_1/original_512</span></code> and places the new scaled versions
-at <code class="docutils literal"><span class="pre">../data/datasets/task_1/original_256</span></code></p>
+at <code class="docutils literal notranslate"><span class="pre">../data/datasets/task_1/original_256</span></code></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last"><a class="reference external" href="https://github.com/lucasrodes/pyphoon/tree/master/scripts/scale_256.py">script</a></p>

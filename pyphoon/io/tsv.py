@@ -8,28 +8,33 @@ import numpy as np
 #  TSV RELATED FUNCTIONS  #
 ###########################
 
-def read_tsvs(directory):
+def read_tsvs(path_best):
     """ Reads all the files from the jma directory and returns a list of *N*
-    elements, each being a list of typhoon features.
+    elements, each being a list of typhoon features. To this end, it assumes
+    that **path_best** contains all .TSV JMA data files.
 
-    :param directory: Path of the JMA metadata
-    :type directory: str
-    :return: List with the metadata of the *N* images
+    :param path_best: Path to the directory containing the JMA .TSV data files.
+    :type path_best: str
+    :return: List with all best data from all samples in the .TSV files.
+    :rtype: list
     """
-    files = listdir(directory)
+    files = listdir(path_best)
     metadata = []
     for f in files:
-        f = join(directory, f)
+        f = join(path_best, f)
         metadata.extend(read_tsv(f))
     return metadata
 
 
 def read_tsv(path_to_file):
-    """ Reads a TSV file from the best track dataset.
+    """ Retrieves the data from a .TSV JMA data file.
 
     :param path_to_file: Complete path to the TSV file
     :type path_to_file: str
-    :return: *NxD* Numpy array (*N*: #samples, *D*: #features)
+    :return: List with JMA data extracted from given .TSV file. The length of
+        the list is equal to the number of samples and each element in the
+        list is a list with length equal to number of features.
+    :rtype: list
     """
     metadata = []
     if isfile(path_to_file):
@@ -43,16 +48,17 @@ def read_tsv(path_to_file):
 
 
 def check_constant_distance_in_tsv(path_best, time_distance=3600):
-    """ Checks that all provided JMA data is correct, i.e. that all samples
-    within a typhoon sequence have a constant tome distance between themselves.
+    """ Checks that within a typhoon sequence the time distance between
+    consecutive image frames remains constant.
 
     :param path_best: Directory containing TSV files.
     :type path_best: str
     :param time_distance: Distance between frames in seconds.
     :type time_distance: int
     :return: List providing, per each sequence (tsv file), the number of
-        time-gaps greater than *time_distance* without a satellite image.
+        time-gaps greater than **time_distance** without a satellite image.
         Element n:th in the list refers to the n:th typhoon sequence.
+    :rtype: list
     """
 
     assert isinstance(time_distance, int), "time_distance is not aninteger: " \

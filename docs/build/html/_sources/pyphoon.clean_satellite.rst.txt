@@ -1,38 +1,38 @@
-pyphoon\.clean
---------------
+pyphoon\.clean_satellite
+------------------------
 
-.. automodule:: pyphoon.clean.__init__
+.. automodule:: pyphoon.clean_satellite.__init__
     :members:
     :show-inheritance:
 
 -----
 
-pyphoon\.clean\.fix
-************************
-.. automodule:: pyphoon.clean.fix
+pyphoon\.clean_satellite\.fix
+*****************************
+.. automodule:: pyphoon.clean_satellite.fix
     :members:
     :show-inheritance:
 
 -----
 
-pyphoon\.clean\.detection
-************************
-.. automodule:: pyphoon.clean.detection
+pyphoon\.clean_satellite\.detection
+***********************************
+.. automodule:: pyphoon.clean_satellite.detection
     :members:
     :show-inheritance:
 
 -----
 
-pyphoon\.clean\.correction
-************************
-.. automodule:: pyphoon.clean.correction
+pyphoon\.clean_satellite\.correction
+************************************
+.. automodule:: pyphoon.clean_satellite.correction
     :members:
     :show-inheritance:
 
 -----
 
-pyphoon\.clean\.fillgaps
-************************
-.. automodule:: pyphoon.clean.fillgaps
+pyphoon\.clean_satellite\.generation
+************************************
+.. automodule:: pyphoon.clean_satellite.generation
     :members:
     :show-inheritance:

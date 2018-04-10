@@ -26,11 +26,11 @@ image data. You may have a look at as
 Furthermore, you may want to save this table as a pickle file in
 ``images_pkl_path`` using
 
->>> pd_man.pkl_save_original_images(images_pkl_path)
+>>> pd_man.save_original_images(images_pkl_path)
 
 In subsequent executions, you can load this table by using
 
->>> pd_man.pkl_load_original_images(images_pkl_path)
+>>> pd_man.load_original_images(images_pkl_path)
 
 Best track data
 ---------------
@@ -49,11 +49,11 @@ data. You may have a look at as
 Furthermore, you may want to save this table as a pickle file in
 ``besttrack_pkl_path`` using
 
->>> pd_man.pkl_save_besttrack(besttrack_pkl_path)
+>>> pd_man.save_besttrack(besttrack_pkl_path)
 
 In subsequent executions, you can load this table by using
 
->>> pd_man.pkl_load_besttrack(besttrack_pkl_path)
+>>> pd_man.load_besttrack(besttrack_pkl_path)
 
 Corrected image data
 --------------------
@@ -107,8 +107,8 @@ Once the dataset is created, its information can be easily imported to
 
 Like other table fields, you can save the table using
 
->>> pkl_save_corrupted_images(corrupted_pkl_path)
+>>> pd_man.save_corrupted_images(corrupted_pkl_path)
 
 and load
 
->>> pkl_load_corrupted_images(corrupted_pkl_path)
+>>> pd_man.load_corrupted_images(corrupted_pkl_path)
