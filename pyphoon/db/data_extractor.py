@@ -209,6 +209,7 @@ class DataExtractor:
             chunk.append(data)
             size += seq_size
             if size >= chunk_size:
+                print("WRITING")
                 # write chunk to disk
                 _filename = join(output_dir, '{0}_{1}.h5'.format(prefix,
                                                                  serial_num)
