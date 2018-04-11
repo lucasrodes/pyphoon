@@ -1,5 +1,4 @@
 import unittest
-
 from os.path import join, exists
 import shutil
 from pyphoon.db.pd_manager import PDManager
@@ -138,6 +137,7 @@ class TestPdManagerMethods(unittest.TestCase):
         pd_man.add_besttrack(self.best_dir)
         self.assertFalse(pd_man.images.columns.contains('frame'))
         pd_man.add_missing_images_info()
+        pd_man.add_frames()
         self.assertTrue(pd_man.images.columns.contains('frame'))
         self.assertTrue(pd_man.images.loc[198702, 'frame'].is_monotonic_increasing)
         self.assertTrue(len(set(pd_man.images.loc[198702, 'frame']).intersection([19, 21, 40, 149])) == 0)

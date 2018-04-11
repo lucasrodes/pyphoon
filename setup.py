@@ -10,5 +10,5 @@ setup(
     url='https://github.com/lucasrodes/pyphoon',
     download_url='https://github.com/lucasrodes/pyphoon/archive/0.1b.tar.gz', # I'll explain this in a second
     keywords=['testing', 'logging', 'example'], # arbitrary keywords
-    classifiers=[],
+    classifiers=[], install_requires=['keras']
 )
