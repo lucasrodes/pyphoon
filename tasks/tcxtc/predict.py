@@ -15,38 +15,40 @@ def get_model():
     # Convolutional Layers
     ############################################################################
     model.add(Conv2D(filters=8, kernel_size=(3, 3), input_shape=(256, 256, 1),
-                     use_bias=False))
-    model.add(Activation('relu'))
-    model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2)))
+                     use_bias=False, name='conv2d_1'))
+    model.add(Activation('relu', name='activation_1'))
+    model.add(BatchNormalization(name="batch_normalization_1"))
+    model.add(MaxPooling2D(pool_size=(2, 2), name="max_pooling2d_1"))
 
-    model.add(Conv2D(filters=16, kernel_size=(3, 3), use_bias=False))
-    model.add(Activation('relu'))
-    model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Conv2D(filters=16, kernel_size=(3, 3), use_bias=False,
+                     name="conv2d_2"))
+    model.add(Activation('relu', name="activation_2"))
+    model.add(BatchNormalization(name="batch_normalization_2"))
+    model.add(MaxPooling2D(pool_size=(2, 2), name="max_pooling2d_2"))
 
-    model.add(Conv2D(filters=32, kernel_size=(3, 3), use_bias=False))
-    model.add(Activation('relu'))
-    model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Conv2D(filters=32, kernel_size=(3, 3), use_bias=False,
+                     name="conv2d_3"))
+    model.add(Activation('relu', name="activation_3"))
+    model.add(BatchNormalization(name="batch_normalization_3"))
+    model.add(MaxPooling2D(pool_size=(2, 2), name="max_pooling2d_3"))
     ############################################################################
     # Dense Layers
     ############################################################################
-    model.add(Flatten())
+    model.add(Flatten(name="flatten_1"))
 
-    model.add(Dense(100, use_bias=False))
-    model.add(Activation('relu'))
-    model.add(BatchNormalization())
-    model.add(Dropout(p_drop))
+    model.add(Dense(100, use_bias=False, name="dense_1"))
+    model.add(Activation('relu', name="activation_4"))
+    model.add(BatchNormalization(name="batch_normalization_4"))
+    model.add(Dropout(p_drop, name="dropout_1"))
 
-    model.add(Dense(50, use_bias=False))
-    model.add(Activation('relu'))
-    model.add(BatchNormalization())
+    model.add(Dense(50, use_bias=False, name="dense_2"))
+    model.add(Activation('relu', name="activation_5"))
+    model.add(BatchNormalization(name="batch_normalization_5"))
 
     ############################################################################
     # Output Layer
     ############################################################################
-    model.add(Dense(units=1, activation='sigmoid'))
+    model.add(Dense(units=1, activation='sigmoid', name="dense_3"))
 
     return model
 
@@ -122,9 +124,9 @@ if __name__ == '__main__':
     # Load preprocessing params
     from pyphoon.app.preprocess import MeanImagePreprocessor
     import h5py
-    import cv2
+
     with h5py.File('preprocessing_year.h5') as f:
-        mean = cv2.resize(f.get('image_mean').value, (256, 256))
+        mean = f.get('image_mean').value
         scale_factor = f.get('max_value').value - f.get('min_value').value
 
     # Check X has good shape
