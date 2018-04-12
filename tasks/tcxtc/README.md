@@ -1,9 +1,7 @@
 This task consists in estimating a phenomenon illustrated on an image is a 
 *Tropical cyclone* or an *Extratropical cyclone*.
 
-Tropical Cyclone    |  Extra-Tropical Cyclone
-:------------------:|:-------------------------:
-![](../../assets/TC.gif)  |  ![](../../assets/xTC.gif)
+![](../../assets/200813_est.gif)
 
 ## Architecture
 
@@ -14,8 +12,6 @@ Our model achieved nearly **96.27% accuracy** on the validation set and **94
 .9% accuracy** on the test set. For more details refer to the examples in 
 [notebooks](notebooks). 
 
-
-![](../../assets/200813_est.gif)
 
 ## Using the model
 
