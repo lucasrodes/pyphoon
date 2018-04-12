@@ -10,40 +10,32 @@ Tropical Cyclone    |  Extra-Tropical Cyclone
 ![](../../assets/tcxtc_net.png)
 
 ## Results
-Our model achieved nearly **94.4% accuracy** on the validation set.
+Our model achieved nearly **95.08% accuracy** on the validation set and **93
+.6% accuracy** on the test set. For more details refer to the examples in 
+[notebooks](notebooks).
 
 ## Using the model
 
-### Download weights
-You can download model's weights [here](https://mega.nz/#!rioSgAQD!7bzyh3tOfsi8y2th9lUwQa3BAC0Ap2Na4xeZ6NlDXYo).
-
-### Prediction
-Assuming you have stored the downloaded weights as `weights.h5` and that you 
-have the image stored as `image_datafile.npy` simply execute:
+We provide the weights of the model (`weights.hdf5`) and a script to do new 
+predictions ([`predict.py`](predict.py)). Simply run
 
 ```
-python predict <weights.h5> <image_datafile.npy>
+python predict weights.hdf5 <image_datafile.npy>
 ```
 
-#### Remarks on the input image
-1. `<image_datafile.npy>` can be an image of shape: (256, 256), (1, 256, 256) 
-    and (256, 256, 1) or a batch of images of shape: (N, 256, 256) or (N, 
-    256, 256, 1).
-
-2. The typhoon eye should be around the centre of the image `<image_datafile
-    .npy>`.
-    
-3. `<image_datafile.npy>` should have a resolution of approx. 1 pixel = 5KM.
+where `image_datafile.npy` is an image (or images) stored as a numpy array. 
+Accepted shapes are (256, 256) for a single image and (N, 256, 256) for a 
+batch of N images.
 
 ### Use in code
-You can use this model directly in your code.
+Alternatively, you can use this model in your code.
 
 #### Load model
 
 ```python
 from predict import get_model
 model = get_model()
-model.load_weights('path/to/weights.h5')
+model.load_weights('weights.hdf5')
 ```
 
 #### Preprocess data
@@ -52,11 +44,11 @@ model.load_weights('path/to/weights.h5')
 import h5py
 
 # Load preprocessing parameters
-with h5py.File('preprocessing_params.h5.h5') as f:
-    mean = f.get('image_mean_256').value
-    scale_factor = f.get('max_value_256').value - f.get('min_value_256').value
+with h5py.File('preprocessing_year.h5.h5') as f:
+    mean = f.get('image_mean').value
+    scale_factor = f.get('max_value').value - f.get('min_value').value
 
-X = ...
+X = ...  # Load (256, 256) image or (N, 256, 256) array of images
 X = (X - mean )/scale_factor
 ```
 
