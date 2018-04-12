@@ -1,13 +1,3 @@
-# Import keras libraries
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, \
-    Activation
-from keras.layers.normalization import BatchNormalization
-import argparse
-import numpy as np
-import h5py
-
-
 def get_model():
     p_drop = 0.2
 
@@ -53,7 +43,11 @@ def get_model():
 
 
 def get_parser_arguments():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Performs prediction on a "
+                                                 "set of images. Predicted "
+                                                 "labels are 0 for 'Tropical "
+                                                 "cyclone' and 1 for "
+                                                 "'Extratropical cyclone'.")
     # Positional arguments
     parser.add_argument(
         "weights",
@@ -62,8 +56,26 @@ def get_parser_arguments():
     )
     parser.add_argument(
         "input",
-        help="Image file in .npy format",
+        help="Image file in .npy format.",
         type=str
+    )
+
+    parser.add_argument(
+        "-b",
+        "--batch_size",
+        help="Size of batch when doing the prediction. If "
+             "you are using GPU, make sure the batch of images fits in "
+             "memory. Also, to make the prediction faster, you might want to "
+             " this value. Default is 16.",
+        type=int
+    )
+
+    parser.add_argument(
+        "-p",
+        "--probabilities",
+        help="Use this option to print probabilities of images belonging to "
+             "an Extratropical cyclone instead of class labels.",
+        action='store_true'
     )
 
     args = parser.parse_args()
@@ -76,18 +88,25 @@ if __name__ == '__main__':
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
     # Load input arguments
+    import argparse
     args = get_parser_arguments()
     weights = args.weights
     filepath = args.input
+    probabilities = args.probabilities
+    if args.batch_size:
+        batch_size = args.batch_size
+    else:
+        batch_size = 16
 
     # Load image
+    import numpy as np
     X = np.load(filepath)
 
     # Load preprocessing params
-    with h5py.File('preprocessing_params.h5') as f:
-        mean = f.get('image_mean_256').value
-        scale_factor = f.get('max_value_256').value - f.get(
-            'min_value_256').value
+    import h5py
+    with h5py.File('preprocessing_year.h5') as f:
+        mean = f.get('image_mean').value
+        scale_factor = f.get('max_value').value - f.get('min_value').value
 
     # Check X has good shape
     exception_msg = "Input shape was "+str(X.shape)+". Accepted shapes are (" \
@@ -109,13 +128,25 @@ if __name__ == '__main__':
     else:
         raise Exception(exception_msg)
 
+    # Import keras libraries
+    from keras.models import Sequential
+    from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, \
+        Activation
+    from keras.layers.normalization import BatchNormalization
+    from os import environ
+    environ["CUDA_VISIBLE_DEVICES"] = "1"
     # Load model
     model = get_model()
     model.load_weights(weights)
 
     # Predict
-    y = model.predict(X)[:, 0]
+    y = model.predict(X, batch_size=batch_size)[:, 0]
+
+    # Print results
     print("\n--------------------")
     print("> Prediction(s):")
     print("--------------------")
-    print(y)
+    if probabilities:
+        print(y)
+    else:
+        print(np.round(y).astype(int))

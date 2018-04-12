@@ -25,7 +25,8 @@ python predict weights.hdf5 <image_datafile.npy>
 
 where `image_datafile.npy` is an image (or images) stored as a numpy array. 
 Accepted shapes are (256, 256) for a single image and (N, 256, 256) for a 
-batch of N images.
+batch of N images. In addition, you can use option `-p` to display 
+probabilities instead of labels. Find more details using `--help`.
 
 ### Use in code
 Alternatively, you can use this model in your code.
