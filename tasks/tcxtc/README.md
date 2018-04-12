@@ -10,9 +10,9 @@ Tropical Cyclone    |  Extra-Tropical Cyclone
 ![](../../assets/tcxtc_net.png)
 
 ## Results
-Our model achieved nearly **95.08% accuracy** on the validation set and **93
-.6% accuracy** on the test set. For more details refer to the examples in 
-[notebooks](notebooks).
+Our model achieved nearly **96.27% accuracy** on the validation set and **94
+.9% accuracy** on the test set. For more details refer to the examples in 
+[notebooks](notebooks). 
 
 ## Using the model
 
@@ -27,6 +27,11 @@ where `image_datafile.npy` is an image (or images) stored as a numpy array.
 Accepted shapes are (256, 256) for a single image and (N, 256, 256) for a 
 batch of N images. In addition, you can use option `-p` to display 
 probabilities instead of labels. Find more details using `--help`.
+
+### On input images
+
+Images should be in range of [0, 255], where 0 and 255 correspond to 160 Kelvin 
+and 255 Kelvin, correspondingly.
 
 ### Use in code
 Alternatively, you can use this model in your code.
