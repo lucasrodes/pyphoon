@@ -1,4 +1,13 @@
+import sys
+sys.path.insert(0, '../..')
+
+
 def get_model():
+    from keras.models import Sequential
+    from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, \
+        Activation
+    from keras.layers.normalization import BatchNormalization
+
     p_drop = 0.2
 
     model = Sequential()
@@ -78,6 +87,13 @@ def get_parser_arguments():
         action='store_true'
     )
 
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        help="Add verbosity.",
+        action='store_true'
+    )
+
     args = parser.parse_args()
     return args
 
@@ -97,15 +113,18 @@ if __name__ == '__main__':
         batch_size = args.batch_size
     else:
         batch_size = 16
+    verbose = args.verbose
 
     # Load image
     import numpy as np
     X = np.load(filepath)
 
     # Load preprocessing params
+    from pyphoon.app.preprocess import MeanImagePreprocessor
     import h5py
+    import cv2
     with h5py.File('preprocessing_year.h5') as f:
-        mean = f.get('image_mean').value
+        mean = cv2.resize(f.get('image_mean').value, (256, 256))
         scale_factor = f.get('max_value').value - f.get('min_value').value
 
     # Check X has good shape
@@ -115,37 +134,36 @@ if __name__ == '__main__':
                                                     "batch of images."
     if X.ndim == 2:
         if X.shape[0] == 256 and X.shape[1] == 256:
-            X = (X - mean) / scale_factor
-            X = np.expand_dims(np.expand_dims(X, axis=0), axis=3)
+            axis = [0, 3]
         else:
             raise Exception(exception_msg)
     elif X.ndim == 3:
         if X.shape[1] == 256 and X.shape[2] == 256:
-            X = (X - mean) / scale_factor
-            X = np.expand_dims(X, axis=3)
+            axis = [3]
         else:
             raise Exception(exception_msg)
     else:
         raise Exception(exception_msg)
 
-    # Import keras libraries
-    from keras.models import Sequential
-    from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, \
-        Activation
-    from keras.layers.normalization import BatchNormalization
+    # Preprocess
+    preprocessor = MeanImagePreprocessor(mean, scale_factor, add_axis=axis,
+                                         resize_factor=(256, 256))
+    X = preprocessor.apply(X)
     from os import environ
     environ["CUDA_VISIBLE_DEVICES"] = "1"
     # Load model
     model = get_model()
+    print('> Loading weights...') if verbose else 0
     model.load_weights(weights)
 
     # Predict
+    print('> Predicting...') if verbose else 0
     y = model.predict(X, batch_size=batch_size)[:, 0]
 
     # Print results
-    print("\n--------------------")
-    print("> Prediction(s):")
-    print("--------------------")
+    print("\n--------------------") if verbose else 0
+    print("> Prediction(s):") if verbose else 0
+    print("--------------------") if verbose else 0
     if probabilities:
         print(y)
     else:
