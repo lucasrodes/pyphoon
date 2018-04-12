@@ -28,6 +28,34 @@ is splitted among training/test/validation sets:
 NOTE: Make sure to change directories in section PATHS according to your
 environment.
 """
+################################################################################
+# ARGPARSE
+################################################################################
+import argparse
+
+parser = argparse.ArgumentParser()
+# Positional arguments
+parser.add_argument(
+    "split_mode",
+    help="Choose mode of data split: 'y' for split by year, 's' to split by "
+         "sequence randomly and 'r' to completly randomise samples",
+    type=str
+)
+
+parser.add_argument(
+    "folder",
+    help="Choose folder name",
+    type=str
+)
+
+parser.add_argument(
+    "-r",
+    "--resize",
+    help="Size of resized images, i.e. 256",
+    type=int
+)
+
+args = parser.parse_args()
 
 ################################################################################
 # CHOOSE MODE
@@ -36,8 +64,13 @@ RANDOM = 1
 RANDOM_SEQUENCE = 2
 YEAR_SEQUENCE = 3
 
-mode = YEAR_SEQUENCE
+mode_mapping = {'y': YEAR_SEQUENCE, 's': RANDOM_SEQUENCE, 'r': RANDOM}
+mode = mode_mapping[args.split_mode]
 
+if args.resize:
+    resize = args.resize
+else:
+    resize = False
 
 ################################################################################
 # LIBRARIES
@@ -50,16 +83,17 @@ from random import shuffle, seed
 
 from pyphoon.db.pd_manager import PDManager
 from pyphoon.db.data_extractor import DataExtractor
+from pyphoon.app.preprocess import DefaultImagePreprocessor
 
 ################################################################################
 # PATHS
 ################################################################################
 # Paths to source data (provided by Digital Typhoon)
-orig_images_dir = '/root/fs9/datasets/typhoon/wnp/image/'
+orig_images_dir = '/root/fs9/grishin/database/uintimages/original'
 besttrack_dir = '/root/fs9/datasets/typhoon/wnp/jma'
 
 # Path where corrected images will be stored
-corrected_dir = '/root/fs9/grishin/database/corrected'
+corrected_dir = '/root/fs9/grishin/database/uintimages/corrected'
 
 # Path to new database files (contain information for PDManager object)
 db_dir = '/root/fs9/grishin/database'
@@ -70,7 +104,7 @@ besttrack_pkl_path = join(db_dir, 'besttrack.pkl')
 missing_pkl_path = join(db_dir, 'missing.pkl')
 
 # New dataset directory
-output_dir = '/root/fs9/lucas/data/datasets/all_year_256'
+output_dir = args.folder  #'/root/fs9/lucas/data/datasets/some_name'
 if not exists(output_dir):
     mkdir(output_dir)
 
@@ -86,38 +120,36 @@ man.load_corrected_images(corrected_pkl_path)
 ################################################################################
 # GENERATE DATASET
 ################################################################################
-from pyphoon.app.preprocess import DefaultImagePreprocessor
-preprocessor = DefaultImagePreprocessor(mean=0, std=1, resize_factor=(256, 256))
-
 de = DataExtractor(orig_images_dir, corrected_dir, man)
+import numpy as np
+
 if mode == RANDOM:
-    de.generate_images_shuffled_chunks(3500, output_dir,
-                                       preprocess_algorithm=preprocessor.apply,
-                                       display=True)
+    if resize:
+        preprocessor = DefaultImagePreprocessor(mean=0, std=1,
+                                                resize_factor=(resize, resize),
+                                                type=np.uint8
+                                                )
+        de.generate_images_shuffled_chunks(3500, output_dir,
+                                        preprocess_algorithm=preprocessor.apply,
+                                        display=True)
+    else:
+        de.generate_images_shuffled_chunks(3500, output_dir,
+                                           display=True)
 if mode == RANDOM_SEQUENCE or mode == YEAR_SEQUENCE:
 
-    files = listdir(orig_images_dir)
+    seq_list = listdir(orig_images_dir)
     if mode == RANDOM_SEQUENCE:
         seed(1000)
-        shuffle(files)
+        shuffle(seq_list)
 
-    ratio = .2
-    pos_test = int(ratio * len(files))
-    ids_train = files[:-pos_test]
-    ids_test = files[-pos_test:]
-    seq_list = [(int(seq_no), 'train') for seq_no in ids_train] + \
-               [(int(seq_no), 'test') for seq_no in ids_test]
-
-    de.generate_images_besttrack_chunks(seq_list, chunk_size=1 * 1024 ** 3,
+    if resize:
+        preprocessor = DefaultImagePreprocessor(mean=0, std=1,
+                                                resize_factor=(resize, resize))
+        de.generate_images_besttrack_chunks(seq_list, chunk_size=1 * 1024 ** 3,
                                         output_dir=output_dir,
                                         preprocess_algorithm=preprocessor.apply,
                                         display=True)
-"""
-# Example using preprocessor, only resizing image to 256x256.
-from pyphoon.app.preprocess import DefaultImagePreprocessor
-preprocessor = DefaultImagePreprocessor(mean=0, std=1, resize_factor=(256, 256))
-de = DataExtractor(orig_images_dir, corrected_dir, man)
-de.generate_images_shuffled_chunks(3500, output_dir,
-                                   preprocess_algorithm=preprocessor.apply,
-                                   display=True)
-"""
+    else:
+        de.generate_images_besttrack_chunks(seq_list, chunk_size=1 * 1024 ** 3,
+                                            output_dir=output_dir,
+                                            display=True)
