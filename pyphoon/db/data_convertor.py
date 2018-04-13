@@ -12,7 +12,15 @@ def convert2byte_per_pixel(src_file, dst_file):
         makedirs(dir_name)
     src_imag = read_source_image(src_file)
     new_imag = convert_float_to_uint(src_imag)
-    write_image(dst_file, new_imag, 'gzip')
+    for attempt in range(5):
+        write_image(dst_file, new_imag, 'gzip')
+        # verification of integrity
+        verification = read_source_image(dst_file)
+        restored_img = convert_uint_to_float(verification)
+        if abs((src_imag - restored_img)).min() < 0.5:
+            break
+    if attempt == 4:
+        print('======  >>>  ERRRORRRRRRRR when converting file {0}'.format(src_file))
 
 
 def convert_float_to_uint(src_data):
@@ -42,5 +50,7 @@ def process_folder(display, folder, input_dir, output_dir):
         convert2byte_per_pixel(join(input_dir_full, f), join(output_dir_full, f))
         files_count += 1
     t2 = time.time()
+    print('.', end='', flush=True)
     print("Converting {0} files done in {1} seconds.".format(files_count, t2 - t1)) if display is True else None
+
 

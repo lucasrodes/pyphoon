@@ -1,7 +1,7 @@
 from pyphoon.io.h5 import read_source_image, write_h5_dataset_file
 from pyphoon.db.pd_manager import PDManager
 import os
-from os.path import exists, isdir, join
+from os.path import exists, isdir, join, abspath
 import pandas as pd
 import time
 import random
@@ -56,7 +56,7 @@ class DataExtractor:
             Y[i, :, :, 0] = data[triplets.loc[triplets.index[i], 'middle']]
         return {'X': X, 'Y': Y}
 
-    def get_good_triplets(self, dataframe):
+    def get_good_triplets(self, dataframe, display=False):
         """
         Gets triplets of frames (3 subsequent frames) from a given sequence, where non of frames is missing
 
@@ -66,7 +66,7 @@ class DataExtractor:
         appended_data = []
         for name, group in dataframe.groupby(level='seq_no'):
             last_frame = int(max(group['frame']))
-            print(name)
+            print(name) if display is True else None
             for i in range(1, last_frame - 1):
                 if len(set(group['frame']).intersection({i - 1, i, i + 1})) == 3:
                     start = group.loc[group.frame == i-1].index[0]
@@ -76,12 +76,14 @@ class DataExtractor:
         triplets = pd.DataFrame.from_records(appended_data, columns=['start', 'middle', 'end'])
         return triplets
 
-    def generate_triplets_filenames(self, use_corrected=False):
-        triplets = self._get_one_hour_triplets(use_corrected)
-        filenames = self.get_full_filenames(triplets, use_corrected)
-        return filenames
+    def get_one_hour_triplets(self, use_corrected):
+        """
+        Selects triplets from sequences with one hour resolution.
 
-    def _get_one_hour_triplets(self, use_corrected):
+        :param use_corrected: Include corrected images into the selection.
+        :type use_corrected: bool
+        :return: Dataframe with triplets
+        """
         pd_manager = self.pd_man
         missing = pd_manager.missing
         if len(missing.index) == 0:
@@ -94,6 +96,28 @@ class DataExtractor:
         images = images.loc[images.index.get_level_values('seq_no').isin(one_hour_seqs.index), :]
         triplets = self.get_good_triplets(images)
         return triplets
+
+    def generate_triplets_csv(self, filename, use_corrected, seed=0, test_ratio=0.1):
+        """
+        Generates triplets training set for further use in generator.
+
+        :param filename: Output file name.
+        :type filename: str
+        :param use_corrected: Include corrected images into the selection.
+        :type use_corrected: bool
+        :param seed: Seed for random generator.
+        :type seed: int
+        :param test_ratio: Test portion of data.
+        :type test_ratio: float
+        """
+        triplets = self.get_one_hour_triplets(use_corrected)
+        filenames = self.get_full_filenames(triplets, use_corrected)
+        full_filenames = filenames.apply(abspath)
+        triplet_files = triplets.applymap(lambda x: full_filenames[x])
+        random.seed(seed)
+        triplet_files['test'] = triplet_files.apply(lambda x: True if random.random() < test_ratio else False, axis=1)
+        triplet_files.to_csv(filename)
+
 
     def generate_triplet_chunks(self, images_per_chunk, output_dir, seed=0, test_train_ratio=0.2,
                                 use_corrected=True, preprocess_algorithm=None,
@@ -123,7 +147,7 @@ class DataExtractor:
             os.mkdir(test_dir)
         if not exists(train_dir):
             os.mkdir(train_dir)
-        triplets = self._get_one_hour_triplets(use_corrected)
+        triplets = self.get_one_hour_triplets(use_corrected)
 
         print('Triplets indexes generated {1} {0}'.format(time.time() - t_start, len(triplets.index))) if display else 0
         i = 0
@@ -272,7 +296,7 @@ class DataExtractor:
             self.corrected_images_dir, row['directory'], row['filename']),
                                                axis=1
                                                )
-        if use_corrected:
+        if use_corrected and len(corrected.index) > 0:
             full_paths = corrected_full_paths.combine_first(original_full_paths)
         else:
             only_not_corrected = original.loc[~original.filename.isin(
