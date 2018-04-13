@@ -1,5 +1,5 @@
-Create database
-===============
+Build PDMAN database
+====================
 
 For our needs, we created a batch of tools to generate an easy interaction
 with the Digital Typhoon data. In particular, we exploited the functionality

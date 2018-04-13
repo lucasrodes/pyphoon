@@ -5,7 +5,7 @@ import cv2
 ################################################################################
 # IMAGE OPERATIONS
 ################################################################################
-def get_mean_image(X, display=False):
+def get_mean_image(X, verbose=False):
     """ Computes the mean image from a list of image batches.
 
     :param X: List containing image batches. That is, an element of the list
@@ -14,8 +14,8 @@ def get_mean_image(X, display=False):
         If you only have a single batch (e.g. ``B``), you just need to
         encapsulate it in a list (i.e. ``[B]``).
     :type X: list
-    :param display: Set to True to display information as function is executed.
-    :type display: bool
+    :param verbose: Set to True to display information as function is executed.
+    :type verbose: bool
     :return: Mean image (size W x H).
     :rtype: numpy.array
     """
@@ -23,7 +23,7 @@ def get_mean_image(X, display=False):
     count = 0
     n_samples = 0
     for x in X:
-        print(count) if display else 0
+        print(count) if verbose else 0
         count += 1
         if mean is None:
             mean = np.sum(x, axis=0)
@@ -32,7 +32,7 @@ def get_mean_image(X, display=False):
 
         n_samples += len(x)
 
-    mean /= n_samples
+    mean = mean/n_samples
     return mean
 
 
@@ -64,7 +64,7 @@ def get_mean_pixel(X, display=False):
     return pmean
 
 
-def get_std_pixel(X, pmean, display=False):
+def get_std_pixel(X, pmean, verbose=False):
     """ Computes the pixel standard deviation from all samples in the list of
     image batches **X**.
 
@@ -76,22 +76,23 @@ def get_std_pixel(X, pmean, display=False):
     :type X: list
     :param pmean: Pixel mean of bath list **X** (see :func:`get_mean_pixel`).
     :type pmean: float
-    :param display: Set to True to display information as function is executed.
-    :type display: bool
+    :param verbose: Set to True to display information as function is executed.
+    :type verbose: bool
     :return: Pixel standard deviation (scalar).
     :rtype: float
     """
-    pstd = 0
+    mu2 = 0
     n_samples = 0
     count = 0
     for x in X:
-        if display:
+        if verbose:
             print(count)
             count += 1
-        pstd += len(x) * (x ** 2).mean()
+        mu2 += len(x) * (x.astype(np.float16) ** 2).mean()
         n_samples += len(x)
-    pstd /= n_samples
-    pstd = np.sqrt(pstd - pmean ** 2)
+    mu2 = mu2/n_samples
+    s = mu2 - pmean ** 2
+    pstd = np.sqrt(s)
     return pstd
 
 
@@ -128,47 +129,97 @@ def get_max_min(X, display=False):
     return max_value, min_value
 
 
-def resize(X, size, ignore_last_axis=False):
+def resize(X, resize_factor):
     """ Resizes the image according to **size** using `cv2.resize`_ with
     bilinear interpolation.
 
     ..  _cv.resize:
             https://docs.opencv.org/3.4.0/da/d54/group__imgproc__transform.html#ga47a974309e9102f5f08231edc7e7529d
 
-    :param X: Image of shape (N, W, H), where N: #samples, W: image width,
-        H: image height.
+    :param X: Image of shape (W, H) or batch of images of shape (N, W, H),
+        where N: #samples, W: image width, H: image height.
     :type X: numpy.array
-    :param size: Size to reshape images.
-    :type size: tuple
-    :param ignore_last_axis: Set to True if images have dimensionality
-        (W, H, 1).
-    :type ignore_last_axis: bool
+    :param resize_factor: Size to reshape images.
+    :type resize_factor: tuple
     :return: List containing image batches with resized images. E.g. (2,2).
     :rtype: numpy.array
     """
-    if ignore_last_axis:
-        im = np.array([cv2.resize(x[:, :, 0], size) for x in X]).astype(
-            np.float32)
-    else:
-        im = np.array([cv2.resize(x, size) for x in X]).astype(np.float32)
+    im = []
+    if X.ndim == 2:
+        im = cv2.resize(X, resize_factor)
+    elif X.ndim == 3:
+        im = np.array([cv2.resize(x, resize_factor) for x in X])
     return im
 
 
 ################################################################################
 # PROCESSORS
 ################################################################################
+def generate_preprocess_params(X, filepath, verbose=False):
+    """
+    Generates an HDF5 file with the preprocessing parameters. These include:
+
+        - Mean image: Image containing the mean for each pixel location.
+        - Pixel mean: Overal pixel intensity mean (scalar value).
+        - Pixel standard deviation: Overall pixel standard deviation (scalar
+            value).
+        - Pixel maximum value: Overall maximum pixel intensity value (scalar
+            value).
+        - Pixel minimum value: Overall minimum pixel intensity value (scalar
+            value).
+
+    This
+    :param X: List with numpy.arrays of data. Each array is a chunk of the
+        data. If you only have one single array, say `B`, just use `[B]`.
+    :type X: list
+    :param filepath: Path where preprocessing param file will be stored.
+    :type filepath: str
+    :return:
+    """
+    # Compute image mean
+    print("Computing mean image...") if verbose else 0
+    mean = get_mean_image(X)
+    # Find maximum/Minimum values
+    print("Computing max/min values...") if verbose else 0
+    max_value, min_value = get_max_min(X)
+    # Get pixel mean
+    print("Computing mean pixel...") if verbose else 0
+    pmean = get_mean_pixel(X)
+    # Get pixel standard deviation
+    print("Computing pixel std...") if verbose else 0
+    pstd = get_std_pixel(X, pmean)
+
+    # Create dictionary with params
+    data = {
+        'image_mean': mean,
+        'pixel_mean': pmean,
+        'pixel_std': pstd,
+        'max_value': max_value,
+        'min_value': min_value
+    }
+    from pyphoon.io.h5 import write_h5_dataset_file
+    # Store params
+    print("Storing...") if verbose else 0
+    write_h5_dataset_file(data, filepath, compression=None)
+
+
 class ImagePreprocessor(object):
     """ Parent class for image preprocessing classes. This class does not
     implement any method, please refer to its child classes.
 
-    :param reshape_mode: Use the mode according to your DL framework.
-        Available modes:
-
-            *   *keras*: Reshape to have an extra axis for Keras.
+    :param add_axis: Adds an axis to your data files. This is convenient as
+    many DL frameworks require specific shapes, like Keras which requires
+    number of channels to be present. You can expand several axis,
+    be careful, however that order matters. Therefore if you want to add to
+    position 0 and N, use **add_axis** = [0, N+1] or [N, 0].
+    :type add_axis: list of int
+    :param type: Specify the type of the image file after preprocessing.
+    :type: type
     """
 
-    def __init__(self, reshape_mode):
-        self.reshape_mode = reshape_mode
+    def __init__(self, add_axis, type):
+        self.add_axis = add_axis
+        self.type = type
 
     def apply(self, X):
         """ Applies the preprocessing pipeline to class attribute **data**.
@@ -187,10 +238,14 @@ class ImagePreprocessor(object):
         :return: List of reshaped images
         :rtype: list
         """
-        if not self.reshape_mode:
-            return X
-        elif self.reshape_mode == 'keras':
-            return X.reshape(-1, X.shape[1], X.shape[2], 1)
+        if not self.add_axis:
+            if self.type:
+                X = X.astype(self.type)
+        else:
+            for axis in self.add_axis:
+                X = np.expand_dims(X, axis=axis)
+            X = X.astype(self.type)
+        return X
 
 
 class DefaultImagePreprocessor(ImagePreprocessor):
@@ -209,11 +264,13 @@ class DefaultImagePreprocessor(ImagePreprocessor):
         dimensions by setting this parameter equal to 2.
     :var mean: Used to centre the data.
     :var std: Used to normalise the data.
-    :var reshape_mode: Used to normalise the data. See
+    :var add_axis: Adds axis to arrays. See
         :class:`~pyphoon.app.preprocess.ImagePreprocessor`
+    :param type: Specify the type of the image file after preprocessing.
+    :type: type
     """
-    def __init__(self, mean, std, resize_factor=None, reshape_mode=None):
-        super().__init__(reshape_mode)
+    def __init__(self, mean, std, resize_factor=None, add_axis=None, type=None):
+        super().__init__(add_axis, type)
         self.mean = mean
         self.std = std
         self.resize_factor = resize_factor
@@ -237,7 +294,7 @@ class DefaultImagePreprocessor(ImagePreprocessor):
 
         # Resize chunk images
         if self.resize_factor:
-            X = cv2.resize(X, self.resize_factor)
+            X = resize(X, self.resize_factor)
 
         # Normalise
         X = (X - self.mean)/self.std
@@ -257,15 +314,22 @@ class MeanImagePreprocessor(ImagePreprocessor):
     subtraction operations. Next, it resizes the image using the method
     :func:`resize`.
 
-    :var mean_image: Mean image (2D matrix)
-    :var scale_factor: Used to normalise the data. By default it does not scale.
-    :var resize_factor: To resize the image. Define the new size of the images.
-    :var reshape_mode: Used to normalise the data. See
+    :param mean_image: Mean image (2D matrix)
+    :type mean_image: numpy.array
+    :param scale_factor: Used to normalise the data. By default it does not
+        scale.
+    :type scale_factor: int
+    :param resize_factor: To resize the image. Define the new size of the images.
+    :type resize_factor: tuple
+    :param add_axis: Adds axis to arrays. See
         :class:`~pyphoon.app.preprocess.ImagePreprocessor`
+    :type add_axis: list of int
+    :param type: Specify the type of the image file after preprocessing.
+    :type: type
     """
     def __init__(self, mean_image, scale_factor=1,
-                 resize_factor=None, reshape_mode=None):
-        super().__init__(reshape_mode)
+                 resize_factor=None, add_axis=None, type=None):
+        super().__init__(add_axis, type)
         self.mean = mean_image
         self.scale = scale_factor
         self.resize_factor = resize_factor
@@ -283,15 +347,18 @@ class MeanImagePreprocessor(ImagePreprocessor):
             raise TypeError("Expected type for X is numpy.ndarray but got " +
                             X.__class__.__name__)
 
-        if X.ndim != 3:
-            raise Exception("X.ndim must be 3 with X.shape = (N, W, H), "
-                            "where N: #samples, W: image_width, "
-                            "H: # image_height")
+        #if X.ndim != 3:
+        #    raise Exception("X.ndim must be 3 with X.shape = (N, W, H), "
+        #                    "where N: #samples, W: image_width, "
+        #                    "H: # image_height")
 
         # Resize chunk images
         if self.resize_factor:
-            X = cv2.resize(X, self.resize_factor)
+            X = resize(X, self.resize_factor)
+
         # Centre & normalise
         X = (X - self.mean)/self.scale
 
+        # Reshape
+        X = self.reshape(X)
         return X

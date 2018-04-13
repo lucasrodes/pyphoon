@@ -9,6 +9,9 @@ from tempfile import NamedTemporaryFile
 
 
 def _create_folder(folderpath):
+    """
+    Creates a folder if it does not exist.
+    """
     if not os.path.exists(folderpath):
         # Create folder
         os.makedirs(folderpath)
@@ -74,6 +77,8 @@ class StoreModelWeights(ModelCheckpoint):
     :type mode: str, default 'auto'
     :param period:
     :type period: int, default 1
+    :param naming: Parameter to use in the naming of the weights HDF5 file.
+    :type naming: str
     """
     def __init__(self, folderpath, monitor='val_loss', verbose=0,
                  save_best_only=False, save_weights_only=True, mode='auto',
