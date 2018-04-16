@@ -4,6 +4,9 @@
 import matplotlib.pyplot as plt
 from matplotlib import animation
 from matplotlib import gridspec
+import numpy.ma as ma
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+import numpy as np
 
 
 class DisplaySequence(object):
@@ -209,3 +212,73 @@ class DisplayPredictedLabeledSequence(DisplaySequence):
                 )
                 self.ax1.set_title("Satellite image")
                 self.ax2.set_title("Network output")
+
+
+def nice_imshow(ax, X, colorbar=False, vmin=None, vmax=None, cmap=None,
+                barsize=None):
+    """ Wrapper around plt.imshow. Code from `here`_.
+
+    ..  _here:
+        code from: https://github.com/julienr/ipynb_playground/blob/master/keras/convmnist/keras_cnn_mnist.ipynb
+
+    :param ax: Plot axis.
+    :type ax: matplotlib.axes.Axes instance
+    :param X: 2D image array.
+    :type X: numpy.array
+    :param colorbar:
+    :param vmin: Minimum value in the bar.
+    :type vmin: float
+    :param vmax: Maximum value in the bar.
+    :type vmax: float
+    :param cmap: If None, default to rc image.cmap value. cmap is ignored if
+        X is 3-D, directly specifying RGB(A) values.
+    :param barsize: Tick label font size in points or as a string (e.g., ‘large’).
+    :type barsize: float or str
+    """
+    # if cmap is None:
+    #    cmap = cm.jet
+    if vmin is None:
+        vmin = X.min()
+    if vmax is None:
+        vmax = X.max()
+    divider = make_axes_locatable(ax)
+    im = ax.imshow(X, vmin=vmin, vmax=vmax, interpolation='nearest',
+                   cmap=cmap)
+    if colorbar:
+        cax = divider.append_axes("right", size="5%", pad=0.1)
+        cbar = plt.colorbar(im, cax=cax)
+        if barsize:
+            cbar.ax.tick_params(labelsize=barsize)
+
+
+def make_mosaic(imgs, nrows, ncols, border=1):
+    """ Given a set of images with all the same shape, makes a
+    mosaic with nrows and ncols
+
+    :param imgs: Array of shape (N, W, H), where N: #images, W: width and H:
+        height.
+    :type imgs: numpy.array
+    :param nrows: Number of rows in the plot grid.
+    :type nrows: int
+    :param ncols: Number of columns in the plot grid.
+    :type ncols: int
+    :param border: padding between images.
+    :type border: int or float.
+    :return:
+    """
+    nimgs = imgs.shape[0]
+    imshape = imgs.shape[1:]
+
+    mosaic = ma.masked_all((nrows * imshape[0] + (nrows - 1) * border,
+                            ncols * imshape[1] + (ncols - 1) * border),
+                           dtype=np.float32)
+
+    paddedh = imshape[0] + border
+    paddedw = imshape[1] + border
+    for i in range(nimgs):
+        row = int(np.floor(i / ncols))
+        col = i % ncols
+
+        mosaic[row * paddedh:row * paddedh + imshape[0],
+        col * paddedw:col * paddedw + imshape[1]] = imgs[i]
+    return mosaic
