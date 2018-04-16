@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from os.path import join
 import os
 import numpy as np
-from tempfile import NamedTemporaryFile
 
 
 def _create_folder(folderpath):

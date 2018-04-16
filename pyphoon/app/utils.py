@@ -2,6 +2,8 @@ from pyphoon.io.h5 import read_h5_dataset_file
 import numpy as np
 import h5py
 from os.path import join
+from keras.utils import np_utils
+import warnings
 
 
 ################################################################################
@@ -168,7 +170,101 @@ def parse_to_tcxtc_task(original_labels):
 ################################################################################
 # Data generators
 ################################################################################
-def data_generator_from_chunklist(X, Y, batch_sz, crop=None):
+class DataGeneratorFromChunklist:
+    """ Generates batches of data.
+
+        :param batch_sz: Batch size.
+        :type batch_sz: int
+        :return: Generator of batches of samples, labels and weights (importance
+            of samples).
+        :rtype: tuple
+        :param crop: Defines the cropping shape (number of pixels width and
+            height). It crops the input image according to this shape. The crop
+            is placed in the centre of the image.
+        :type crop: int
+        :param target_enc: If target values are ints, they can be encoded using
+            one hot encoding ('ohe') or binary representation ('bin').
+        :type target_enc: str
+        :param target_offset: Labels are assumed to be consecutive, but allowed
+        to start at an arbirtary integer value. For instance, '2', '3' and '4'
+        is a valid set of class labels. In the case of Digital Typhoon dataset,
+        the lowest label integer is '2', hence use target_offset = 2 (set by
+        default).
+        :type target_offset: int, default = 2
+        """
+
+    def __init__(self, batch_sz, crop=None, target_enc=None,
+                 target_offset=2):
+        self.batch_sz = batch_sz
+        self.crop = crop
+        self.target_enc = target_enc
+        self.target_offset = target_offset
+
+    def _crop(self, X):
+        base = int(self.crop / 2)
+        return X[:, base:base + self.crop, base:base + self.crop]
+
+    def feed(self, X, Y):
+        """
+        :param X: Sample data.
+        :type X: list
+        :param Y: Label data.'
+        :type Y: list
+        """
+        # Get number of chunks
+        n_chunks = len(X)
+        indices = list(range(n_chunks))
+
+        chunk_count = 0
+        while True:
+            # Randomise chunk order once all chunks have been seen
+            if chunk_count % n_chunks == 0:
+                np.random.shuffle(indices)
+
+            # Get chunk for batch generation
+            idx = indices[chunk_count % n_chunks]
+            _X = X[idx]
+            _Y = Y[idx]
+
+            # Shuffle batch data
+            n_samples = len(_Y)
+            pos = np.arange(n_samples)
+            np.random.shuffle(pos)
+            _X = _X[pos]
+            _Y = _Y[pos]
+
+            # Crop image if needed
+            if self.crop:
+                _X = self._crop(_X)
+            # Encode target values
+            if self.target_enc:
+                _Y = _target_encoder(_Y, self.target_enc, self.target_offset)
+
+            # Generate batches
+            imax = int(n_samples / self.batch_sz)
+            for i in range(imax):
+                # Find list of IDs
+                x = _X[i * self.batch_sz:(i + 1) * self.batch_sz]
+                y = _Y[i * self.batch_sz:(i + 1) * self.batch_sz]
+                sample_weights = np.ones(len(y))
+                # sample_weights[y < 960] = 2
+                # sample_weights[y < 930] = 4
+                yield x, y, sample_weights
+            chunk_count += 1
+
+
+def _target_encoder(_Y, encoding, offset):
+    if encoding == 'ohe':
+        return np_utils.to_categorical(_Y - offset)
+    elif encoding == 'bin':
+        pass
+    else:
+        raise Exception("Please chose a valid encoder. 'ohe' for one-hot or "
+                        "'bin' for binary.")
+
+
+def data_generator_from_chunklist(X, Y, batch_sz, crop=None, target_enc=None,
+                                  target_offset=2):
     """ Generates batches of data from samples **X** and labels **Y**.
 
     :param X: Sample data.
@@ -180,11 +276,22 @@ def data_generator_from_chunklist(X, Y, batch_sz, crop=None):
     :return: Generator of batches of samples, labels and weights (importance
         of samples).
     :rtype: tuple
-    :param crop: Define the cropping shape (number of pixels width and
+    :param crop: Defines the cropping shape (number of pixels width and
         height). It crops the input image according to this shape. The crop
         is placed in the centre of the image.
     :type crop: int
+    :param target_enc: If target values are ints, they can be encoded using
+        one hot encoding ('ohe') or binary representation ('bin').
+    :type target_enc: str
+    :param target_offset: Labels are assumed to be consecutive, but allowed
+    to start at an arbirtary integer value. For instance, '2', '3' and '4'
+    is a valid set of class labels. In the case of Digital Typhoon dataset,
+    the lowest label integer is '2', hence use target_offset = 2 (set by
+    default).
+    :type target_offset: int, default = 2
     """
+    warnings.warn("This method has been depracated. Use class "
+                  "DataGeneratorFromChunklist instead", DeprecationWarning)
     n_chunks = len(X)
     indices = list(range(n_chunks))
 
@@ -207,6 +314,7 @@ def data_generator_from_chunklist(X, Y, batch_sz, crop=None):
             base = int(crop / 2)
             _X = _X[:, base:base + crop, base:base + crop]
         _Y = _Y[pos]
+        _Y = _target_encoder(_Y, target_enc, target_offset)
         #  Y = np_utils.to_categorical(_Y - 2, num_classes=4)
 
         # Generate batches
