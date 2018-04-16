@@ -19,7 +19,7 @@ We provide the weights of the model (`weights.hdf5`) and a script to do new
 predictions ([`predict.py`](predict.py)). Simply run
 
 ```
-python predict weights.hdf5 <image_datafile.npy>
+python predict.py weights.hdf5 <image_datafile.npy>
 ```
 
 where `image_datafile.npy` is an image (or images) stored as a numpy array. 
