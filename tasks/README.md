@@ -2,15 +2,15 @@
 
 Here you will find a folder for each of the tasks that we worked on. 
 
-*   **[tcxtc](tcxtc)**: Binary image classification of *Tropical Cyclones* and 
-    *Extra-Tropical Cyclones*.
-*   **[multiclas](pressure_regression)**: Image classification of *Tropical Cyclones* (i
-    .e. *Typhoons*) in categories 2-5, according to labeling in 
-    [JMA website](http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html).
-*   **[pressure_regression](pressure_regression)**: Regression from 
-    *Tropical Cyclones* images -> centre pressure values. 
+| **Section**                                   | **Description**                                                                                                                                                                                                   |
+|-----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [tcxtc](tcxtc)                                | Binary image classification of *Tropical Cyclones* and *Extra-Tropical Cyclones*.                                                                                                                                 |                                                                                                                                                |
+| [multiclas](multiclass)                       | Image classification of *Tropical Cyclones* (i.e. *Typhoons*) in categories 2-5, according to labeling in [JMA website](http://www.jma.go.jp/jma/jma-eng/jma-center/rsmc-hp-pub-eg/Besttracks/e_format_bst.html). |
+| [pressure_regression](pressure_regression)    | Regression from *Tropical Cyclones* images -> centre pressure values.                                                                      |
 
-In these, you will find the following contents:
+
+## Folders content
+In each of the folders, you will find the following content:
 
 - **notebooks**: Folder containing some code snippets of the implemented task.
 - **predict.py**: Script used to perform predictions on new data.
