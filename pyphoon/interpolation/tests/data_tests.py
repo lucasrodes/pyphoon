@@ -5,7 +5,7 @@ from pyphoon.app.preprocess import DefaultImagePreprocessor
 from pyphoon.interpolation.data import read_chunk
 
 
-class TestPdManagerMethods(unittest.TestCase):
+class TestDataMethods(unittest.TestCase):
 
     def setUp(self):
         self.preprocessor = DefaultImagePreprocessor(mean=269.15, std=24.14,

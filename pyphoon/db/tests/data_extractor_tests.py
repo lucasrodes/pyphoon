@@ -137,7 +137,22 @@ class TestDataExtractorMethods(unittest.TestCase):
         chunk = de._read_triplet_data(triplets=triplets_ds, full_filenames=filenames)
         self.assertEquals(len(chunk), len(triplets_ds.index))
 
-
+    def test_generate_triplets_csv(self):
+        pd_man = PDManager()
+        pd_man.add_original_images(self.images_dir)
+        pd_man.add_besttrack(self.best_dir)
+        pd_man.add_corrected_images(self.corrected_dir)
+        pd_man.add_missing_images_info()
+        pd_man.add_frames()
+        de = DataExtractor(self.images_dir, self.corrected_dir, pd_man)
+        csv_file = 'temp.csv'
+        self.assertFalse(exists(csv_file))
+        de.generate_triplets_csv(csv_file, True)
+        self.assertTrue(exists(csv_file))
+        read_from_csv = pd.read_csv(csv_file)
+        self.assertTrue(len(read_from_csv.index) > 0)
+        if exists(csv_file):
+            remove(csv_file)
 
 if __name__ == '__main__':
     unittest.main()

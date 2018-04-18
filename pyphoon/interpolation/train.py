@@ -1,20 +1,16 @@
 import sys
 sys.path.insert(0, '../..')
 
-import os
 import pandas as pd
-import random
-from random import shuffle
 import time
-from keras.optimizers import SGD, adadelta, adagrad, adam, adamax, nadam
-from keras.callbacks import ModelCheckpoint, TensorBoard, CSVLogger, ReduceLROnPlateau
+from keras.optimizers import adam
+from keras.callbacks import ModelCheckpoint, TensorBoard, ReduceLROnPlateau
 from keras import backend as K
-from os.path import join, exists
+from os.path import exists
 
 from pyphoon.app.preprocess import DefaultImagePreprocessor
-from pyphoon.interpolation.data import read_chunk
-from pyphoon.interpolation.model import get_model, get_unet, get_model2
-from pyphoon.db.triplets_generator import generator_from_df, threadsafe_generator
+from pyphoon.interpolation.model import get_model2
+from pyphoon.interpolation.triplets_generator import generator_from_df
 
 LEARNING_RATE = 0.0001
 BATCH_SIZE = 16
