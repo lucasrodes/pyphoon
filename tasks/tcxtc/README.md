@@ -13,37 +13,22 @@ Our model achieved nearly **96.27% accuracy** on the validation set and **94
 [notebooks](notebooks). 
 
 
-## Using the model
-
-We provide the weights of the model (`weights.hdf5`) and a script to do new 
-predictions ([`predict.py`](predict.py)). Simply run
-
-```
-python predict.py weights.hdf5 <image_datafile.npy>
-```
-
-where `image_datafile.npy` is an image (or images) stored as a numpy array. 
-Accepted shapes are (256, 256) for a single image and (N, 256, 256) for a 
-batch of N images. In addition, you can use option `-p` to display 
-probabilities instead of labels. Find more details using `--help`.
-
-### On input images
+## Image format
 
 Images should be in range of [0, 255], where 0 and 255 correspond to 160 Kelvin 
 and 255 Kelvin, correspondingly.
 
-### Use in code
+## Using the model in code
 Alternatively, you can use this model in your code.
 
-#### Load model
+### Load model
 
 ```python
-from predict import get_model
-model = get_model()
-model.load_weights('weights.hdf5')
+from pyphoon.app.models.tcxtc import tcxtcNet
+model = tcxtcNet('weights.hdf5')
 ```
 
-#### Preprocess data
+### Preprocess data
 
 ```python
 import h5py
@@ -57,7 +42,7 @@ X = ...  # Load (256, 256) image or (N, 256, 256) array of images
 X = (X - mean )/scale_factor
 ```
 
-#### Prediction
+### Prediction
 
 ```python
 Y = model.predict(X)
