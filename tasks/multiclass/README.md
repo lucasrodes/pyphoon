@@ -15,17 +15,17 @@ accuracy** on the test set. For more details refer to the examples in
 
 ## Image format
 
-Images must be in range of [0, 255], where 0 and 255 correspond to 160 Kelvin 
+*   Images must be in range of [0, 255], where 0 and 255 correspond to 160 Kelvin 
 and 255 Kelvin, correspondingly.
 
-The model accepts 256x256 images with resolution 1 pixel ≈ 5 Km. Note that 
-images are assumed to have the typhoon eye in the image centre (i.e. position
-[128, 128]).
+*   The model accepts **256x256 images** with **resolution 1 pixel ≈ 5 Km**. Note 
+that images are assumed to have the typhoon eye in the image centre (i.e. at
+position [128, 128]).
 
 ![](../../assets/crop_multiclass.png)
 
 ## Use in code
-Alternatively, you can use this model in your code.
+You can also use the model in your code.
 
 ### Load model
 

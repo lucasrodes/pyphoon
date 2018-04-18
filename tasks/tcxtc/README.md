@@ -8,18 +8,19 @@ This task consists in estimating a phenomenon illustrated on an image is a
 ![](../../assets/tcxtc_net.png)
 
 ## Results
-Our model achieved nearly **96.27% accuracy** on the validation set and **94
-.9% accuracy** on the test set. For more details refer to the examples in 
+Our model achieved nearly **96.27% accuracy** on the validation set and **94.9% 
+accuracy** on the test set. For more details refer to the examples in 
 [notebooks](notebooks). 
 
 
 ## Image format
 
-Images should be in range of [0, 255], where 0 and 255 correspond to 160 Kelvin 
-and 255 Kelvin, correspondingly.
+*   Images should be in range of [0, 255], where 0 and 255 correspond to 160 
+Kelvin and 255 Kelvin, correspondingly.
+*   The model accepts **256x256 images** with **resolution 1 pixel ≈ 10 Km**.
 
 ## Using the model in code
-Alternatively, you can use this model in your code.
+You can also use the model in your code.
 
 ### Load model
 
