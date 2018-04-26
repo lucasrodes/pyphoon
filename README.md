@@ -13,14 +13,14 @@ Provides a set of tools to enable easy and pythonic interaction the Digital Typh
 
 ## Contents
 
-| **Section**              | **Description**                                                                            |
-|--------------------------|--------------------------------------------------------------------------------------------|
-| [pyphoon](pyphooon)      | Library for Digital Typhoon project                                                        |
-| [docs](docs)             | Library documentation files                                                                |
-| [notebooks](notebooks)   | Basic code examples.                                                                       |
-| [scripts](scripts)       | Some example scripts using library tools                                                   |
-| [sampledata](sampledata) | Sample data from Digital Typhoon, used in                                                  |
-| [tasks](tasks)           | Data and files related to specific applications of pyphoon library (includes notebooks).   |
+| **Section**                | **Description**                                                                            |
+|----------------------------|--------------------------------------------------------------------------------------------|
+| [pyphoon](pyphooon)        | Library for Digital Typhoon project                                                        |
+| [docs](docs)               | Library documentation files                                                                |
+| [notebooks](notebooks)     | Basic code examples.                                                                       |
+| [scripts](scripts)         | Some example scripts using library tools                                                   |
+| [sampledata](sampledata)   | Sample data from Digital Typhoon, used in                                                  |
+| [experiments](experiments) | Data and files related to specific applications of pyphoon library (includes notebooks).   |
 
 
 ## Installation
@@ -52,16 +52,16 @@ DisplaySequence(
 ![](assets/201725.gif)
 
 
-### [Tasks](tasks)
+### [Experiments](experiments)
 
-**pyphoon** was mainly conceived to assist in Machine Learning/Deep Learning 
-tasks. In addition, this repository also provides examples of some of these 
-tasks that we have been working on.
+**pyphoon** was mainly conceived to assist researchers in Machine Learning/Deep 
+Learning experiments. To this end, this repository provides examples of 
+experiments carried by Kitamoto-lab interns:
  
-| **Section**              | **Description**                                                                            |
-|--------------------------|--------------------------------------------------------------------------------------------|
-| [tcxtc](tasks/tcxtc)                              | *Tropical cyclone* vs *Extratropical cyclone* binary classifier.  |
-| [multiclass](tasks/depracated)                    | Classification of *Topical cyclone* intensity in four categories. |
-| [pressure regression](tasks/pressure_regression)  | Regression of the centre pressure in *Tropical cyclones*          |
+| **Section**                                             | **Description**                                                                            |
+|---------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| [tcxtc](experiments/tcxtc)                              | *Tropical cyclone* vs *Extratropical cyclone* binary classifier.  |
+| [multiclass](experiments/depracated)                    | Classification of *Topical cyclone* intensity in four categories. |
+| [pressure regression](experiments/pressure_regression)  | Regression of the centre pressure in *Tropical cyclones*          |
  
 **Note**: All models have been implemented using [keras](http://keras.io).
