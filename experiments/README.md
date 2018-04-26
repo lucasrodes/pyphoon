@@ -1,6 +1,6 @@
 # Content
 
-Here you will find a folder for each of the tasks that we worked on. 
+Here you will find a folder for each of the experiments that we worked on. 
 
 | **Section**                                   | **Description**                                                                                                                                                                                                   |
 |-----------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -12,7 +12,8 @@ Here you will find a folder for each of the tasks that we worked on.
 ## Folders content
 In each of the folders, you will find the following content:
 
-- **notebooks**: Folder containing some code snippets of the implemented task.
+- **notebooks**: Folder containing some code snippets of the implemented 
+experiment.
 - **predict.py**: Script used to perform predictions on new data.
 - **weights.hdf5**: Weights of the pre-trained model.
 - **preprocessing_x.h5**: Parameters to preprocess the data (more details in 
@@ -34,8 +35,8 @@ probabilities instead of labels. Find more details using `--help`.
 
 ## Remarks
 
-Input image format for each of the tasks (i.e. models) may vary. Please 
-review section **Image format** in the README file of the task you are 
+Input image format for each of the experiments (i.e. models) may vary. Please 
+review section **Image format** in the README file of the experiment you are 
 interested in for more details.
 
 
