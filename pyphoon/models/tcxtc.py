@@ -3,6 +3,8 @@ from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, \
     Activation
 from keras.layers.normalization import BatchNormalization
 import h5py
+from pyphoon.app.preprocess import MeanImagePreprocessor
+import os
 
 
 def tcxtcNet(weights_path):
@@ -65,20 +67,31 @@ def tcxtcNet(weights_path):
     return model
 
 
-def tcxtcPreprocessor(path_to_params=None):
-    if not path_to_params:
-        path_to_params = 'preprocessing_params/preprocessing_tcxtc_year.h5'
-    # Load preprocessing parameters
-    with h5py.File(path_to_params) as f:
-        mean = f.get('image_mean').value
-        scale_factor = f.get('max_value').value - f.get('min_value').value
-    preprocessor = MeanImagePreprocessor(mean, scale_factor, add_axis=[3])
+class tcxtcPreprocessor(MeanImagePreprocessor):
+    """
+        Preprocessor for tcxtcNet.
 
+        :param path_to_params: Path to the hdf5 file containing preprocessing
+            parameters. By default it uses the one the library provides.
+        :type path_to_params: str
+        :param add_axis: Adds axis to arrays. See
+        :class:`~pyphoon.app.preprocess.ImagePreprocessor`
+        :type add_axis: list of int
+        """
+    def __init__(self, path_to_params=None, add_axis=None, resize_factor=None):
+        if not path_to_params:
+            this_dir, this_filename = os.path.split(__file__)
+            path_to_params = os.path.join(this_dir, "preprocessing_params",
+                                          "tcxtc_year.h5")
 
-def get_preprocessor(path_to_params=None):
-    if not path_to_params:
-        path_to_params = 'preprocessing_params/preprocessing_year.h5
-         # Load preprocessing parameters
+        # Load pre-processing parameters
         with h5py.File(path_to_params) as f:
             mean = f.get('image_mean').value
             scale_factor = f.get('max_value').value - f.get('min_value').value
+
+        if add_axis:
+            super().__init__(mean, scale_factor, add_axis=add_axis,
+                             resize_factor=resize_factor)
+        else:
+            super().__init__(mean, scale_factor, add_axis=[3],
+                             resize_factor=resize_factor)

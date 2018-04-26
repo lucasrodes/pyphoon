@@ -49,7 +49,7 @@ def read_h5datachunk_old(path_to_file, shuffle=False):
 
 
 def load_h5datachunks(dataset_dir, chunk_filenames, features,
-                      ignore_classes=None, display=False):
+                      ignore_classes=None, display=False, crop=None):
     """ Loads a set of h5 files as individual arrays in a list.
 
     :param dataset_dir: Directory containing the chunk files.
@@ -64,6 +64,10 @@ def load_h5datachunks(dataset_dir, chunk_filenames, features,
     :type ignore_classes: list, default None
     :param display: Set to True to have some informative messages printed out.
     :type display: bool, default False
+    :param crop: Defines the cropping shape (number of pixels width and
+            height). It crops the input image according to this shape. The crop
+            is placed in the centre of the image.
+    :type crop: int, default None
     :return: List with the data chunks as numpy.arrays.
     :rtype: list
     """
@@ -114,6 +118,12 @@ def load_h5datachunks(dataset_dir, chunk_filenames, features,
 
                     if feature == 'class':
                         data[feature].append(Y_chunk[valid_samples])
+                    elif feature == 'data' and crop:
+                        base = int(crop / 2)
+                        data[feature].append(
+                            f.get(feature).value[valid_samples]
+                            [:, base:base + crop, base:base + crop]
+                        )
                     else:
                         data[feature].append(f.get(feature).value[valid_samples])
 
@@ -175,15 +185,14 @@ class DataGeneratorFromChunklist:
 
         :param batch_sz: Batch size.
         :type batch_sz: int
-        :return: Generator of batches of samples, labels and weights (importance
-            of samples).
-        :rtype: tuple
+        :param preprocess_algorithm: Algorithm to preprocess a batch of data.
+        :type preprocess_algorithm: callable
         :param crop: Defines the cropping shape (number of pixels width and
             height). It crops the input image according to this shape. The crop
             is placed in the centre of the image.
         :type crop: int
         :param target_enc: If target values are ints, they can be encoded using
-            one hot encoding ('ohe') or binary representation ('bin').
+            one hot encoding ('ohe') or cummulative one hot encoding ('cumohe').
         :type target_enc: str
         :param target_offset: Labels are assumed to be consecutive, but allowed
         to start at an arbirtary integer value. For instance, '2', '3' and '4'
@@ -191,25 +200,39 @@ class DataGeneratorFromChunklist:
         the lowest label integer is '2', hence use target_offset = 2 (set by
         default).
         :type target_offset: int, default = 2
+        :param verbose: Set to True to display information.
+        :type verbose: bool
         """
 
-    def __init__(self, batch_sz, crop=None, target_enc=None,
-                 target_offset=2):
+    def __init__(self, batch_sz, preprocess_algorithm=None, crop=None,
+                 target_enc=None, num_classes=4, target_offset=2,
+                 verbose=False):
         self.batch_sz = batch_sz
         self.crop = crop
         self.target_enc = target_enc
         self.target_offset = target_offset
+        self.num_classes = num_classes
+        self.verbose = verbose
+        self.preprocess_algorithm = preprocess_algorithm
 
     def _crop(self, X):
         base = int(self.crop / 2)
         return X[:, base:base + self.crop, base:base + self.crop]
 
-    def feed(self, X, Y):
+    def feed(self, X, Y, shuffle_batches=True, shuffle_samples=True):
         """
         :param X: Sample data.
         :type X: list
-        :param Y: Label data.'
+        :param Y: Label data.
         :type Y: list
+        :param shuffle_batches: Set to true to shuffle the order of the batches.
+        :type shuffle_batches: bool
+        :param shuffle_samples: Set to true to shuffle the order of the
+            samples within the data batches.
+        :type shuffle_samples: bool
+        :return: Generator of batches of samples, labels and weights (importance
+            of samples).
+        :rtype: tuple
         """
         # Get number of chunks
         n_chunks = len(X)
@@ -218,7 +241,8 @@ class DataGeneratorFromChunklist:
         chunk_count = 0
         while True:
             # Randomise chunk order once all chunks have been seen
-            if chunk_count % n_chunks == 0:
+            print(chunk_count) if self.verbose else 0
+            if chunk_count % n_chunks == 0 and shuffle_batches:
                 np.random.shuffle(indices)
 
             # Get chunk for batch generation
@@ -226,45 +250,90 @@ class DataGeneratorFromChunklist:
             _X = X[idx]
             _Y = Y[idx]
 
+            # Preprocess batch if needed
+            if self.preprocess_algorithm:
+                _X = self.preprocess_algorithm(_X)
+
             # Shuffle batch data
             n_samples = len(_Y)
-            pos = np.arange(n_samples)
-            np.random.shuffle(pos)
-            _X = _X[pos]
-            _Y = _Y[pos]
+            if shuffle_samples:
+                pos = np.arange(n_samples)
+                np.random.shuffle(pos)
+                _X = _X[pos]
+                _Y = _Y[pos]
 
             # Crop image if needed
             if self.crop:
                 _X = self._crop(_X)
             # Encode target values
             if self.target_enc:
-                _Y = _target_encoder(_Y, self.target_enc, self.target_offset)
+                _Y = _target_encoder(_Y, self.target_enc,
+                                     self.num_classes, self.target_offset)
 
             # Generate batches
-            imax = int(n_samples / self.batch_sz)
+            imax = np.ceil(n_samples / self.batch_sz).astype(int)
             for i in range(imax):
                 # Find list of IDs
-                x = _X[i * self.batch_sz:(i + 1) * self.batch_sz]
-                y = _Y[i * self.batch_sz:(i + 1) * self.batch_sz]
+                if i == imax:
+                    x = _X[i * self.batch_sz:]
+                    y = _Y[i * self.batch_sz:]
+
+                    print(x)
+                    print('************************************************')
+                    print(y)
+                else:
+                    x = _X[i * self.batch_sz:(i + 1) * self.batch_sz]
+                    y = _Y[i * self.batch_sz:(i + 1) * self.batch_sz]
+
                 sample_weights = np.ones(len(y))
                 # sample_weights[y < 960] = 2
                 # sample_weights[y < 930] = 4
                 yield x, y, sample_weights
+
             chunk_count += 1
 
 
-def _target_encoder(_Y, encoding, offset):
+def _target_encoder(_Y, encoding, num_classes, offset):
+    """
+    Encodes an array of integers to the appropriate format.
+
+    :param _Y: Array with target values.
+    :type _Y: numpy.array
+    :param encoding: Encoding format.
+    :type encoding: str
+    :param num_classes: Number of classes.
+    :type num_classes: int
+    :param offset: Use this if lowest label is not zero.
+    :type offset: int
+    :return: Encoded labels.
+    :rtype: list
+    """
     if encoding == 'ohe':
-        return np_utils.to_categorical(_Y - offset)
-    elif encoding == 'bin':
-        pass
+        return np_utils.to_categorical(_Y - offset, num_classes)
+    elif encoding == 'cumohe':
+        return _cumohe(_Y - offset, num_classes)
     else:
         raise Exception("Please chose a valid encoder. 'ohe' for one-hot or "
-                        "'bin' for binary.")
+                        "'cumohe' for cummulative one-hot.")
+
+
+def _cumohe(_Y, num_classes):
+    """
+    :param _Y: List of labels
+    :param num_classes: Number of classes
+    :type num_classes: int
+    :return: Encoded list of labels using cumohe.
+    :rtype: list
+    """
+    _Y = np.array(_Y, dtype='int')
+    new_Y = np.zeros((len(_Y), num_classes))
+    for yy, ny in zip(_Y, new_Y):
+        ny[:yy+1] = 1
+    return new_Y
 
 
 def data_generator_from_chunklist(X, Y, batch_sz, crop=None, target_enc=None,
-                                  target_offset=2):
+                                  num_classes=4, target_offset=2):
     """ Generates batches of data from samples **X** and labels **Y**.
 
     :param X: Sample data.
@@ -281,7 +350,7 @@ def data_generator_from_chunklist(X, Y, batch_sz, crop=None, target_enc=None,
         is placed in the centre of the image.
     :type crop: int
     :param target_enc: If target values are ints, they can be encoded using
-        one hot encoding ('ohe') or binary representation ('bin').
+        one hot encoding ('ohe') or cummulative one hot encoding ('cumohe').
     :type target_enc: str
     :param target_offset: Labels are assumed to be consecutive, but allowed
     to start at an arbirtary integer value. For instance, '2', '3' and '4'
@@ -314,7 +383,7 @@ def data_generator_from_chunklist(X, Y, batch_sz, crop=None, target_enc=None,
             base = int(crop / 2)
             _X = _X[:, base:base + crop, base:base + crop]
         _Y = _Y[pos]
-        _Y = _target_encoder(_Y, target_enc, target_offset)
+        _Y = _target_encoder(_Y, target_enc, num_classes, target_offset)
         #  Y = np_utils.to_categorical(_Y - 2, num_classes=4)
 
         # Generate batches

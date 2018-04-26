@@ -18,6 +18,9 @@ class DisplaySequence(object):
     :type images: list
     :param images_ids: List of the ids of the elements in the list *images*.
     :type images_ids: list
+    :param fig: Figure object where sequence will be displayed. Use this in
+        case you want, for instance, to adjust the size of the plot.
+    :type fig: matplotlib.figure.Figure
     :param interval: Interval between frames while visualizing the animation.
     :type interval: int
     :param start_frame: First image frame of the list to visualize.
@@ -27,8 +30,9 @@ class DisplaySequence(object):
     :param show_title: Set to false if no title should be shown in the figure.
     :type show_title: bool
     """
-    def __init__(self, images, images_ids, interval=100, start_frame=0,
-                 end_frame=None, show_title=True, alt_title=None):
+    def __init__(self, images, images_ids, fig=None, interval=100,
+                 start_frame=0, end_frame=None, show_title=True,
+                 alt_title=None):
 
         # TODO: check len(images) == len(images_ids)
 
@@ -49,7 +53,10 @@ class DisplaySequence(object):
         # Plot properties
         self.alt_title = alt_title
         self.show_title = show_title
-        self.fig = plt.figure()
+        if fig:
+            self.fig = fig
+        else:
+            self.fig = plt.figure()
         self.ax = plt.gca()
         self.image_plt = self.ax.imshow(self.images[0], cmap="Greys")
         plt.axis('off')
@@ -77,6 +84,12 @@ class DisplaySequence(object):
 
     def run(self, save=False, filename="untitled"):
         """ Runs the animation
+
+        :param save: Set to True to store the animation as a GIF or video file.
+        :type save: boold
+        :param filename: Name of the generated file. Make sure to choose the
+            format too, e.g. '.gif' or '.mp4'.
+        :type filename: str
         """
         anim = animation.FuncAnimation(self.fig,
                                        func=self._animate,
@@ -87,7 +100,7 @@ class DisplaySequence(object):
         )
 
         if save:
-            anim.save(filename+'.gif', dpi=80, writer='imagemagick')
+            anim.save(filename, dpi=80, writer='imagemagick')
 
         plt.show()
 
@@ -103,7 +116,7 @@ class DisplaySequence(object):
         return anim.to_html5_video()
 
 
-class DisplayPredictedLabeledSequence(DisplaySequence):
+class DisplayPredictedLabeledSequenceTCxTC(DisplaySequence):
     """ Animates a sequence of images and provides a visualisation of the
     network prediction. To be used to display a typhoon sequence temporal
     evolution. Currently, only working for binary predictions (0, 1).
@@ -119,6 +132,9 @@ class DisplayPredictedLabeledSequence(DisplaySequence):
     :param ground_truth: Ground truth labels for samples in **images**.
         Note that this list should only contain '0' and '1'.
     :type ground_truth: list
+    :param fig: Figure object where sequence will be displayed. Use this in
+        case you want, for instance, to adjust the size of the plot.
+    :type fig: matplotlib.figure.Figure
     :param interval: Interval between frames while visualizing the
         animation.
     :type interval: int
@@ -131,7 +147,7 @@ class DisplayPredictedLabeledSequence(DisplaySequence):
     :type show_title: bool
     """
 
-    def __init__(self, images, images_ids, predictions, ground_truth,
+    def __init__(self, images, images_ids, predictions, ground_truth, fig=None,
                  interval=100, start_frame=0, end_frame=None,
                  show_title=True, alt_title=None):
 
@@ -144,11 +160,15 @@ class DisplayPredictedLabeledSequence(DisplaySequence):
         self.ground_truth = ground_truth
 
         # Plot
-        self.fig = plt.figure()
+        if fig:
+            self.fig=fig
+        else:
+            self.fig = plt.figure()
         gs = gridspec.GridSpec(1, 2, width_ratios=[3, 2])
         # Image plot
         self.ax1 = self.fig.add_subplot(gs[0])
         self.image_plt = self.ax1.imshow(self.images[0], cmap="Greys")
+        plt.axis('off')
 
         # Label plot
         self.ax2 = self.fig.add_subplot(gs[1])
@@ -162,7 +182,7 @@ class DisplayPredictedLabeledSequence(DisplaySequence):
         self.ax2.set_yticks([0, 1])
         self.ax2.set_yticklabels(['TC', 'x-TC'])
         self.ax2.set_xlim(0, 1)
-        plt.axis('off')
+
 
     @staticmethod
     def _get_colors(prediction, ground_truth):

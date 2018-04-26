@@ -208,10 +208,10 @@ class ImagePreprocessor(object):
     implement any method, please refer to its child classes.
 
     :param add_axis: Adds an axis to your data files. This is convenient as
-    many DL frameworks require specific shapes, like Keras which requires
-    number of channels to be present. You can expand several axis,
-    be careful, however that order matters. Therefore if you want to add to
-    position 0 and N, use **add_axis** = [0, N+1] or [N, 0].
+        many DL frameworks require specific shapes, like Keras which requires
+        number of channels to be present. You can expand several axis,
+        be careful, however that order matters. Therefore if you want to add to
+        position 0 and N, use **add_axis** = [0, N+1] or [N, 0].
     :type add_axis: list of int
     :param type: Specify the type of the image file after preprocessing.
     :type: type
@@ -260,12 +260,13 @@ class DefaultImagePreprocessor(ImagePreprocessor):
     :func:`resize`.
 
 
-    :var resize_factor: To resize the image. For instance, half the
+    :param resize_factor: To resize the image. For instance, half the
         dimensions by setting this parameter equal to 2.
-    :var mean: Used to centre the data.
-    :var std: Used to normalise the data.
-    :var add_axis: Adds axis to arrays. See
+    :param mean: Used to centre the data.
+    :param std: Used to normalise the data.
+    :param add_axis: Adds axis to arrays. See
         :class:`~pyphoon.app.preprocess.ImagePreprocessor`
+    :type add_axis: list of int
     :param type: Specify the type of the image file after preprocessing.
     :type: type
     """
