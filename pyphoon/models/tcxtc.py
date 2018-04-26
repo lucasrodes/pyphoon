@@ -2,6 +2,7 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, \
     Activation
 from keras.layers.normalization import BatchNormalization
+import h5py
 
 
 def tcxtcNet(weights_path):
@@ -62,3 +63,22 @@ def tcxtcNet(weights_path):
         model.load_weights(weights_path)
 
     return model
+
+
+def tcxtcPreprocessor(path_to_params=None):
+    if not path_to_params:
+        path_to_params = 'preprocessing_params/preprocessing_tcxtc_year.h5'
+    # Load preprocessing parameters
+    with h5py.File(path_to_params) as f:
+        mean = f.get('image_mean').value
+        scale_factor = f.get('max_value').value - f.get('min_value').value
+    preprocessor = MeanImagePreprocessor(mean, scale_factor, add_axis=[3])
+
+
+def get_preprocessor(path_to_params=None):
+    if not path_to_params:
+        path_to_params = 'preprocessing_params/preprocessing_year.h5
+         # Load preprocessing parameters
+        with h5py.File(path_to_params) as f:
+            mean = f.get('image_mean').value
+            scale_factor = f.get('max_value').value - f.get('min_value').value
