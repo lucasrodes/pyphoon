@@ -8,7 +8,7 @@ This task consists in estimating a phenomenon illustrated on an image is a
 ![](../../assets/tcxtc_net.png)
 
 ## Results
-Our model achieved nearly **96.27% accuracy** on the validation set and **94.9% 
+Our model achieved nearly **94.65% accuracy** on the validation set and **94.9% 
 accuracy** on the test set. For more details refer to the examples in 
 [notebooks](notebooks). 
 
@@ -19,28 +19,22 @@ accuracy** on the test set. For more details refer to the examples in
 Kelvin and 255 Kelvin, correspondingly.
 *   The model accepts **256x256 images** with **resolution 1 pixel ≈ 10 Km**.
 
-## Using the model in code
+## Usage in code
 You can also use the model in your code.
 
 ### Load model
 
 ```python
-from pyphoon.app.models.tcxtc import tcxtcNet
+from pyphoon.models.tcxtc import tcxtcNet
 model = tcxtcNet('weights.hdf5')
 ```
 
 ### Preprocess data
 
 ```python
-import h5py
-
-# Load preprocessing parameters
-with h5py.File('preprocessing_year.h5.h5') as f:
-    mean = f.get('image_mean').value
-    scale_factor = f.get('max_value').value - f.get('min_value').value
-
-X = ...  # Load (256, 256) image or (N, 256, 256) array of images
-X = (X - mean )/scale_factor
+from pyphoon.models.tcxtc import tcxtcPreprocessor
+X = ...  # Load (1, 256, 256) image or (N, 256, 256) array of images
+X = tcxtcPreprocessor().apply(X)
 ```
 
 ### Prediction
