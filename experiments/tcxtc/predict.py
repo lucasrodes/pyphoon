@@ -148,11 +148,13 @@ if __name__ == '__main__':
         raise Exception(exception_msg)
 
     # Preprocess
-    preprocessor = MeanImagePreprocessor(mean, scale_factor, add_axis=axis,
-                                         resize_factor=(256, 256))
+    preprocessor = MeanImagePreprocessor(mean, scale_factor, add_axis=axis)
     X = preprocessor.apply(X)
+
+    # Use this to limit GPU usage. Remove if you don't really care
     from os import environ
     environ["CUDA_VISIBLE_DEVICES"] = "1"
+
     # Load model
     model = get_model()
     print('> Loading weights...') if verbose else 0
