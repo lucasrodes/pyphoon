@@ -34,7 +34,8 @@ model = tcxtcNet('weights.hdf5')
 ```python
 from pyphoon.models.tcxtc import tcxtcPreprocessor
 X = ...  # Load (1, 256, 256) image or (N, 256, 256) array of images
-X = tcxtcPreprocessor().apply(X)
+preprocessor = tcxtcPreprocessor()
+X = preprocessor.apply(X)
 ```
 
 ### Prediction
