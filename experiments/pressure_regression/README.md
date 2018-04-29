@@ -7,7 +7,8 @@ achieved a mean error of 7.63 hPa.
 ![](../../assets/tc_reg_net.png)
 
 ## Results
-![](../../assets/regression_results.png)
+
+![](../../assets/regression_results.eps)
 
 ## Image format
 
