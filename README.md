@@ -17,7 +17,7 @@ Provides a set of tools to enable easy and pythonic interaction the Digital Typh
 |----------------------------|--------------------------------------------------------------------------------------------|
 | [pyphoon](pyphooon)        | Library for Digital Typhoon project                                                        |
 | [docs](docs)               | Library documentation files                                                                |
-| [notebooks](notebooks)     | Basic code examples.                                                                       |
+| [notebooks](notebooks)     | Basic code examples. (will be removed in near future)                                      |
 | [scripts](scripts)         | Some example scripts using library tools                                                   |
 | [sampledata](sampledata)   | Sample data from Digital Typhoon, used in                                                  |
 | [experiments](experiments) | Data and files related to specific applications of pyphoon library (includes notebooks).   |
