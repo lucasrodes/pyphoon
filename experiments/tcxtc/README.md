@@ -43,5 +43,5 @@ X = preprocessor.apply(X)
 ### Prediction
 
 ```python
-Y = model.predict(X)
+y_pred = model.predict(X)
 ```

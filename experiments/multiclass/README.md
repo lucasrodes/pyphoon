@@ -58,5 +58,5 @@ Make sure to crop the images so as to take a centred square of dimension
 
 ```python
 X = X[:, 64:64+128, 64:64+128, :]
-Y = model.predict(X)
+y_pred = model.predict(X)
 ```

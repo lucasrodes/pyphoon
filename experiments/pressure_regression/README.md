@@ -1,45 +1,51 @@
 Here you can find the architecture and weights of our model. This model 
-achieved a mean error of 7.8 hPa.
+achieved a mean error of 7.63 hPa.
 
 
 ## Architecture
 
-![](../../assets/regressionNet.png)
-
-## Using the model
-
-### Download weights
-You can download model's weights [here](https://mega.nz/#!j7BRGJaI!vCLq9VBSR-Gyj_c7On5KCaMTe7AkwlfZx3DBG9EMl6M).
-
-### Load the model
-
-```python
-from architecture import pressureRegressionModel
-model = pressureRegressionModel()
-model.load_weights('weights-improvement-09-8.02.hdf5')
-```
-
-### Usage
-
-#### Preprocessing
-Make sure to preprocess the data before feeding it to the model.
-
-```python
-import h5py
-
-# Load preprocessing parameters
-with h5py.File('preprocessing_sequence.h5') as f:
-    mean = f.get('image_mean_128').value
-    scale_factor = f.get('max_value_128').value - f.get('min_value_128').value
-```
-
-#### Getting predictions
-Model requires input `X` to be of shape `(N, 128, 128, 1)`, where `N` denotes 
-the number of samples. 
-
-```python
-model.predict(X)
-```
+![](../../assets/tc_reg_net.png)
 
 ## Results
 ![](../../assets/regression.png)
+
+## Image format
+
+*   Images must be in range of [0, 255], where 0 and 255 correspond to 160 
+Kelvin and 310 Kelvin, correspondingly.
+*   The model accepts **128x128 images** with **resolution 1 pixel ≈ 10 Km**.
+ To this end we crop 128x128 regions from resized Digital Typhoon 256x256 
+ images (original images come as 512x512).
+*   Images are assumed to have the typhoon eye in the image centre (i.e
+. at position [63, 63]).
+
+![](../../assets/crop_multiclass.png)
+
+## Usage in code
+You can also use the model in your code.
+
+### Load model
+
+```python
+from pyphoon.models.tc_pressure_regression import tcRegNet
+model = tcRegNet('weights.hdf5')
+```
+
+### Preprocess data
+
+```python
+from pyphoon.models.tc_pressure_regression import tcRegPreprocessor
+X = ...  # Load (1, 256, 256) image or (N, 256, 256) array of images
+X = tcRegPreprocessor().apply(X)
+```
+
+### Prediction
+Make sure to crop the images so as to take a centred square of dimension 
+128x128.
+
+```python
+X = X[:, 64:64+128, 64:64+128, :]
+y_pred = model.predict(X)
+```
+
+
