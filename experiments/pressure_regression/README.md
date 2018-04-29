@@ -8,7 +8,7 @@ achieved a mean error of 7.63 hPa.
 
 ## Results
 
-![](../../assets/regression_results.eps)
+![](../../assets/regression_results.png)
 
 ## Image format
 
