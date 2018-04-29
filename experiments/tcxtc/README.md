@@ -18,6 +18,8 @@ accuracy** on the test set. For more details refer to the examples in
 *   Images should be in range of [0, 255], where 0 and 255 correspond to 160 
 Kelvin and 255 Kelvin, correspondingly.
 *   The model accepts **256x256 images** with **resolution 1 pixel ≈ 10 Km**.
+*   Images are assumed to have the typhoon eye in the image centre (i.e
+. at position [127, 127]).
 
 ## Usage in code
 You can also use the model in your code.
