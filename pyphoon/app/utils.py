@@ -49,7 +49,7 @@ def read_h5datachunk_old(path_to_file, shuffle=False):
 
 
 def load_h5datachunks(dataset_dir, chunk_filenames, features,
-                      ignore_classes=None, display=False, crop=None):
+                      ignore_classes=None, verbose=False, crop=None):
     """ Loads a set of h5 files as individual arrays in a list.
 
     :param dataset_dir: Directory containing the chunk files.
@@ -62,8 +62,8 @@ def load_h5datachunks(dataset_dir, chunk_filenames, features,
     :param ignore_classes: List of class labels to consider. Labels as ints.
         By default it considers all classes.
     :type ignore_classes: list, default None
-    :param display: Set to True to have some informative messages printed out.
-    :type display: bool, default False
+    :param verbose: Set to True to have some informative messages printed out.
+    :type verbose: bool, default False
     :param crop: Defines the cropping shape (number of pixels width and
             height). It crops the input image according to this shape. The crop
             is placed in the centre of the image.
@@ -127,12 +127,12 @@ def load_h5datachunks(dataset_dir, chunk_filenames, features,
                     else:
                         data[feature].append(f.get(feature).value[valid_samples])
 
-        print(" file", chunk_filename, "read") if display else 0
+        print(" file", chunk_filename, "read") if verbose else 0
 
     return list(data.values())
 
 
-def parse_to_tcxtc_task(original_labels):
+def parse_to_tcxtc_task(original_labels, seed=0):
     """ Maps an array with original labeling (i.e. 2, 3, 4, 5 and 6)
     corresponding to an array of samples to the labeling for a binary
     classifier "Tropical Cyclone" (0) vs "Extratropical Cyclone" (1).
@@ -144,9 +144,14 @@ def parse_to_tcxtc_task(original_labels):
 
     :param original_labels:
     :type original_labels: numpy.array
+    :param seed: Set seed to compare results
+    :type seed: int, default 0
     :return: Tuple with (1) new labels and (2) corresponding sample indices.
     :rtype: tuple
     """
+    # Set seed
+    np.random.seed(seed)
+
     pos = []  # Array storing positions to be used
     label = []  # Array storing sample label indices
 
@@ -175,6 +180,43 @@ def parse_to_tcxtc_task(original_labels):
     label = np.concatenate(label)
 
     return label, pos
+
+
+def balance_dataset(Y, categories, seed=0):
+    """
+
+    :param Y: Labels of a batch of data.
+    :type Y: numpy.array
+    :param categories: List with the possible category indices. For TC tasks,
+        usually [2,3,4,5]
+    :type categories: list
+    :param seed: Set seed to compare results
+    :type seed: int, default 0
+    :return: Positions of samples to preserve.
+    :rtype: list
+    """
+
+    # Set seed
+    np.random.seed(seed)
+
+    # Find category with less appearances
+    categories.append(categories[-1]+1)
+    cat_hist = np.histogram(Y, categories)[0]
+    cat_min = np.argmin(cat_hist) + 2
+    cat_min_nsamples = np.min(cat_hist)
+
+    # Collect positions of samples
+    pos = []
+    for category in categories[:-1]:
+        available_pos = np.argwhere(Y == category)
+        if category == cat_min:
+            pos.extend(available_pos[:, 0])
+        else:
+            _pos = np.random.choice(len(available_pos), cat_min_nsamples,
+                                    replace=False)
+            pos.extend(available_pos[_pos][:, 0])
+
+    return pos
 
 
 ################################################################################
