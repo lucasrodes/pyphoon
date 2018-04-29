@@ -12,7 +12,8 @@ def tcxtcNet(weights_path):
     Network model to estimate if an image is a Tropical cyclone or an
     Extratropical cyclone.
 
-    :param weights_path: Path to the HDF5 file containing the weights.
+    :param weights_path: Path to the HDF5 file containing the weights of
+    pre-trained model.
     :type weights_path: str
     :return: Keras model of the network.
     :rtype: keras.models.Model

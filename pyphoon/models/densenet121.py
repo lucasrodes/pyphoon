@@ -8,7 +8,7 @@ from keras.layers.pooling import AveragePooling2D, GlobalAveragePooling2D, \
     MaxPooling2D
 from keras.models import Model
 
-from pyphoon.app.models.custom_layers import Scale
+from pyphoon.models.custom_layers import Scale
 
 
 def DenseNet(nb_dense_block=4, growth_rate=32, nb_filter=64, reduction=0.0,
