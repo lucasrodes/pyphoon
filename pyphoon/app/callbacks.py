@@ -102,24 +102,31 @@ class PlotRegressionValidation(Callback):
     predictions after each epoch. This callback should only be used in
     regression models, where output and target are real values.
 
+    :param folderpath: Folder to store the plots
+    :type folderpath: str
+    :param generator: Generator of input samples (recommended use).
+    :type generator: callable
+    :param steps: Number of steps to run the generator
+    :type steps: int
     :param X: Batch of samples. Shape (N, W, H, C), where N: #samples,
         W: width, H: height and C: #channels.
     :type X: numpy.array
     :param Y: Target values.
     :type Y: numpy.array
-    :param folderpath: Folder to store the plots
-    :type folderpath: str
     :param crop: Define the cropping shape (number of pixels width and
         height). It crops the input image according to this shape. The crop
         is placed in the centre of the image.
     :type crop: int
     """
-    def __init__(self, X, Y, folderpath, crop=None):
+    def __init__(self, folderpath, generator=None, steps=None, X=None, Y=None,
+                 crop=None):
         """ Constructor
         """
         self.X = X
         self.Y = Y
         self.crop = crop
+        self.generator = generator
+        self.steps = steps
         self.regression_plot_dir = join(folderpath, 'regression_plots')
         # Create folder for storing regression plots
         _create_folder(self.regression_plot_dir)
@@ -144,8 +151,8 @@ class PlotRegressionValidation(Callback):
         plt.plot(y_true, y_true, 'k--')
 
         plt.title("Pressure regression", fontsize=20)
-        plt.xlabel("Ground truth (hPa)")
-        plt.ylabel("Estimation (hPa)")
+        plt.xlabel("Ground truth (hPa)", fontsize=16)
+        plt.ylabel("Estimation (hPa)", fontsize=16)
         plt.legend(["ground truth", "estimation"])
         if show:
             plt.show()
@@ -159,22 +166,27 @@ class PlotRegressionValidation(Callback):
         :param logs:
         """
         y_pred = []
-
-        if type(self.X) is list:
-            for idx in range(len(self.X)):
-                _X = self.X[idx]
-                if self.crop:
-                    base = int(self.crop/2)
-                    _X = _X[:, base:+base+self.crop, base:base+self.crop]
-                y_pred.append(self.model.predict(_X))
-            y_pred = np.concatenate(y_pred)[:, 0]
-        elif type(self.X) is np.ndarray:
-            y_pred = self.model.predict(self.X)[:, 0]
+        if self.generator:
+            y_pred = self.model.predict_generator(self.generator,
+                                                  steps=self.steps)[:, 0]
+        else:
+            if type(self.X) is list:
+                for idx in range(len(self.X)):
+                    _X = self.X[idx]
+                    if self.crop:
+                        base = int(self.crop/2)
+                        _X = _X[:, base:+base+self.crop, base:base+self.crop]
+                    y_pred.append(self.model.predict(_X))
+                y_pred = np.concatenate(y_pred)[:, 0]
+            elif type(self.X) is np.ndarray:
+                y_pred = self.model.predict(self.X)[:, 0]
 
         if type(self.Y) is list:
             y_true = np.concatenate(self.Y)
         elif type(self.Y) is np.ndarray:
             y_true = self.Y
+
+        print("pred:", len(y_pred), "true:", len(y_true))
         # Plot &, eventually, store figure
         filename = 'regression-' + str(epoch)
         self.plot_regression(y_true, y_pred, save=True,

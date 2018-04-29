@@ -261,12 +261,12 @@ class DataGeneratorFromChunklist:
         base = int(self.crop / 2)
         return X[:, base:base + self.crop, base:base + self.crop]
 
-    def feed(self, X, Y, shuffle_batches=True, shuffle_samples=True):
+    def feed(self, X, Y=None, shuffle_batches=True, shuffle_samples=True):
         """
         :param X: Sample data.
         :type X: list
         :param Y: Label data.
-        :type Y: list
+        :type Y: list, default None
         :param shuffle_batches: Set to true to shuffle the order of the batches.
         :type shuffle_batches: bool
         :param shuffle_samples: Set to true to shuffle the order of the
@@ -290,27 +290,30 @@ class DataGeneratorFromChunklist:
             # Get chunk for batch generation
             idx = indices[chunk_count % n_chunks]
             _X = X[idx]
-            _Y = Y[idx]
+            if Y:
+                _Y = Y[idx]
 
             # Preprocess batch if needed
             if self.preprocess_algorithm:
                 _X = self.preprocess_algorithm(_X)
 
             # Shuffle batch data
-            n_samples = len(_Y)
+            n_samples = len(_X)
             if shuffle_samples:
                 pos = np.arange(n_samples)
                 np.random.shuffle(pos)
                 _X = _X[pos]
-                _Y = _Y[pos]
+                if Y:
+                    _Y = _Y[pos]
 
             # Crop image if needed
             if self.crop:
                 _X = self._crop(_X)
             # Encode target values
             if self.target_enc:
-                _Y = _target_encoder(_Y, self.target_enc,
-                                     self.num_classes, self.target_offset)
+                if Y:
+                    _Y = _target_encoder(_Y, self.target_enc,
+                                         self.num_classes, self.target_offset)
 
             # Generate batches
             imax = np.ceil(n_samples / self.batch_sz).astype(int)
@@ -318,19 +321,24 @@ class DataGeneratorFromChunklist:
                 # Find list of IDs
                 if i == imax:
                     x = _X[i * self.batch_sz:]
-                    y = _Y[i * self.batch_sz:]
+                    if Y:
+                        y = _Y[i * self.batch_sz:]
 
                     print(x)
                     print('************************************************')
                     print(y)
                 else:
                     x = _X[i * self.batch_sz:(i + 1) * self.batch_sz]
-                    y = _Y[i * self.batch_sz:(i + 1) * self.batch_sz]
+                    if Y:
+                        y = _Y[i * self.batch_sz:(i + 1) * self.batch_sz]
 
-                sample_weights = np.ones(len(y))
                 # sample_weights[y < 960] = 2
                 # sample_weights[y < 930] = 4
-                yield x, y, sample_weights
+                if Y:
+                    sample_weights = np.ones(len(y))
+                    yield x, y, sample_weights
+                else:
+                    yield x
 
             chunk_count += 1
 

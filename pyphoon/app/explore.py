@@ -27,7 +27,7 @@ def good_shape_conv_weights(weight):
 
 
 # Function to get activation specific layer
-def get_activations(model, layer, X, dense=False, expand=False):
+def get_activations(model, layer, X, dense=False, expand=None):
     """
     Gets the activations from **layer**. For convolutional layers, it gets
     the activations as a numpy.array of shape (N, W, H) with N: #kernels,
@@ -44,9 +44,9 @@ def get_activations(model, layer, X, dense=False, expand=False):
     :type X: numpy.array
     :param dense: Set to True if **layer** is a dense layer.
     :type dense: bool
-    :param expand: Set to True only when **dense** has been set to True. It
+    :param expand: Set a number to expand the output's width. It
         basically pads the output activation vector for easier visualisation.
-    :type expand: bool
+    :type expand: int
     :return: Matrix of shape (N, W, H), where N: #Number of feature maps,
         W: width, H: height.
     :rtype: numpy.array
@@ -60,7 +60,7 @@ def get_activations(model, layer, X, dense=False, expand=False):
     activations = _get_activations([X, 0])
     if dense:
         if expand:
-            return np.vstack([activations[0]]*10).T
+            return np.vstack([activations[0]]*expand).T
         else:
             return activations[0].T
     else:
