@@ -1,5 +1,5 @@
-Here you can find the architecture and weights of our model. This model 
-achieved a mean error of 7.63 hPa.
+In this experiment we implement a model to estimate the centre pressure value
+(hPa) of a typhoon given its satellite image.
 
 
 ## Architecture
@@ -7,6 +7,10 @@ achieved a mean error of 7.63 hPa.
 ![](../../assets/tc_reg_net.png)
 
 ## Results
+
+Our model achieved a mean error of **8.56 hPa**. Below you can find a scatter 
+plot showing the estimation vs ground truth values on the validation data. We 
+remark that the model is able to capture the overall trend.
 
 ![](../../assets/regression_results.png)
 
