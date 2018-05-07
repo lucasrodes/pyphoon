@@ -1,5 +1,5 @@
 import unittest
-from pyphoon.interpolation.triplets_generator import TripletsGenerator
+from pyphoon.interpolation.triplets_generator import TripletsGenerator, TripletsWithFlowGenerator
 from pyphoon.db.pd_manager import PDManager
 from pyphoon.db.data_extractor import DataExtractor
 from os.path import join
@@ -51,3 +51,12 @@ class TestTripletsGeneratorMethods(unittest.TestCase):
         self.assertEquals(len(x2), len(y2))
         self.assertEquals(len(x2), batch_size)
         self.assertFalse(np.array_equal(x, x2))
+
+class TripletsWithFlowGeneratorMethods(unittest.TestCase):
+    def test___getitem__(self):
+        df = pd.read_csv('/root/fs9/grishin/database/triplets_training_set.csv')
+        gen = TripletsWithFlowGenerator(df, flow_dir='/root/fs9/grishin/database/optical_flow')
+        x, y = gen[0]
+        self.assertEquals(len(x), len(y))
+        self.assertEquals(len(x), 16)
+        self.assertEquals(x.shape[3], 6)
