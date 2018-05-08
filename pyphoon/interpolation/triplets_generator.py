@@ -1,12 +1,13 @@
 import threading
 import numpy as np
-from os.path import exists
+from os.path import exists, join
 import keras
 import pandas as pd
 import sys
 from skimage.transform import resize
 from pyphoon.io.h5 import read_source_image
-
+from pyphoon.interpolation.optical_flow import get_flow_filename
+import h5py
 
 class TripletsGenerator(keras.utils.Sequence):
 
@@ -49,21 +50,6 @@ class TripletsGenerator(keras.utils.Sequence):
         self.df = self.df.sample(frac=1, random_state=self.seed)
         self.seed += 1
 
-    def __data_generation(self, list_IDs_temp):
-        'Generates data containing batch_size samples'  # X : (n_samples, *dim, n_channels)
-        # Initialization
-        X = np.empty((self.batch_size, *self.dim, self.n_channels))
-        y = np.empty((self.batch_size), dtype=int)
-
-        # Generate data
-        for i, ID in enumerate(list_IDs_temp):
-            # Store sample
-            X[i,] = np.load('data/' + ID + '.npy')
-
-            # Store class
-            y[i] = self.labels[ID]
-
-        return X, keras.utils.to_categorical(y, num_classes=self.n_classes)
 
 def generator_from_df(df, batch_size, target_size, data):
 
@@ -141,4 +127,60 @@ def generator_from_df(df, batch_size, target_size, data):
             j += batch_size
             count += 1
 
+
+class TripletsWithFlowGenerator(keras.utils.Sequence):
+
+    def __init__(self, df, flow_dir, batch_size=16, target_size=(256, 256), seed=0):
+        # 'Initialization'
+        self.cache = {}
+        self.df = df
+        self.flow_dir = flow_dir
+        self.seed = seed
+        self.target_size = target_size
+        self.batch_size = batch_size
+        self.on_epoch_end()
+
+    def __len__(self):
+        # 'Denotes the number of batches per epoch'
+        return len(self.df.index) // self.batch_size
+
+    def __getitem__(self, index):
+        # 'Generate one batch of data'
+        sub = self.df.iloc[index:min(len(self.df.index), index+self.batch_size)]
+        filenames = pd.concat([sub['start'], sub['end'], sub['middle']], axis=0).unique()
+        for f in filenames:
+            if f not in self.cache.keys():
+                im = read_source_image(f)
+                self.cache[f] = np.round(resize(im, self.target_size, preserve_range=True)).astype(dtype='uint')
+        chunk_len = len(sub.index)
+        im_size = np.shape(next(iter(self.cache.values())))
+        # we have the shape of x of (width, height, 6) because 6 contains of 2 dimensions
+        # for 2 images and 4 dimensions for forward and backward vertical and horizontal optical flow
+        x = np.zeros(shape=(chunk_len, im_size[0], im_size[1], 6), dtype=np.float32)
+        y = np.zeros(shape=(chunk_len, im_size[0], im_size[1], 1), dtype=np.float32)
+        for i in range(len(sub.index)):
+            start = sub.loc[sub.index[i], 'start']
+            end = sub.loc[sub.index[i], 'end']
+            middle = sub.loc[sub.index[i], 'middle']
+            flow_fname = get_flow_filename(start, end)
+            full_flow_path = join(self.flow_dir, flow_fname)
+            assert exists(full_flow_path)
+            with h5py.File(full_flow_path, "a") as f:
+                forward_flow = f['forward_flow']
+                reverse_flow = f['reverse_flow']
+                x[i, :, :, 2] = resize(forward_flow[:, :, 0], self.target_size, preserve_range=True)
+                x[i, :, :, 3] = resize(forward_flow[:, :, 1], self.target_size, preserve_range=True)
+                x[i, :, :, 4] = resize(reverse_flow[:, :, 0], self.target_size, preserve_range=True)
+                x[i, :, :, 5] = resize(reverse_flow[:, :, 1], self.target_size, preserve_range=True)
+            x[i, :, :, 0] = (self.cache[start]) / 128 - 1.0
+            x[i, :, :, 1] = (self.cache[end]) / 128 - 1.0
+            y[i, :, :, 0] = (self.cache[middle]) / 128 - 1.0
+
+        return x, y
+
+    def on_epoch_end(self):
+        # 'Updates indexes after each epoch'
+        print('Randomizing sequence')
+        self.df = self.df.sample(frac=1, random_state=self.seed)
+        self.seed += 1
 
