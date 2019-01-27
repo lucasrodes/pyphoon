@@ -61,7 +61,7 @@ experiments carried by Kitamoto-lab interns:
 | **Section**                                             | **Description**                                                                            |
 |---------------------------------------------------------|--------------------------------------------------------------------------------------------|
 | [tcxtc](experiments/tcxtc)                              | *Tropical cyclone* vs *Extratropical cyclone* binary classifier.  |
-| [multiclass](experiments/depracated)                    | Classification of *Topical cyclone* intensity in four categories. |
+| [multiclass](experiments/multiclass)                    | Classification of *Topical cyclone* intensity in four categories. |
 | [pressure regression](experiments/pressure_regression)  | Regression of the centre pressure in *Tropical cyclones*          |
  
 **Note**: All models have been implemented using [keras](http://keras.io).
