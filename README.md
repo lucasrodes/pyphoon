@@ -25,7 +25,7 @@ Provides a set of tools to enable easy and pythonic interaction the Digital Typh
 
 ## Installation
 
-Refer to the instructions [here](http://lcsrg.me/pyphoon/build/html/env_setup.html).
+Refer to the instructions [here](http://lcsrg.me/pyphoon/build/html/environment.html).
  
 ## Getting started
 
