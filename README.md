@@ -1,3 +1,5 @@
+⚠️ This library is no longer maintained. Please refer to the updated version: at https://github.com/kitamoto-lab/pyphoon2
+
 # pyphoon
 
 ![](docs/source/_static/banner_small.png)
